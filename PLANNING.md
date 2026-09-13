@@ -23,14 +23,23 @@ lesson after it by one position.
 
 ## Lesson kinds
 
-- `Lesson` — regular district lesson
+- `Lesson` — regular district lesson (a review day also uses this kind — it
+  carries no new content, so it isn't an assessment of any kind)
 - `Opener` — topic opener
-- `Assessment` — quiz, test, or review day
+- `Quiz` — formative, graded, visually distinct from a Test
+- `Test` — summative, the second of a district topic-test's two days
 - `3-Act` — 3-Act Math task
 
 ## Assessments
 
-**Quizzes go on Wednesdays**, as a standing rhythm.
+**Quizzes go on Wednesdays.** This is a firm rule, not just a rhythm, with
+three exceptions — none of these weeks get a quiz:
+
+1. **A test lands anywhere that week** (Mon-Fri), even if not on the Wednesday
+   itself.
+2. **It's the first week back from a break of a week or more** (e.g. the week
+   school resumes after winter break or spring break).
+3. **The day before Thanksgiving.**
 
 A quiz covers only what's been taught since the last quiz — never cumulative
 unless I say so.
@@ -41,7 +50,8 @@ Homework is tracked as a **weekly completion grade**, not as individual
 formatives.
 
 **District topic tests occupy two days. I split them as one review day plus one
-test day**, not two test days. The review day carries no new content.
+test day**, not two test days. The review day carries no new content and uses
+kind `Lesson`, not `Test` — only the second day is the actual `Test`.
 
 ## The day budget
 
@@ -63,15 +73,22 @@ Earns:
 edit, check where the sequence lands relative to the district's review and test
 dates. Landing on them is the target.
 
-## What I cut first when I need days (assumed)
+## What I cut first when I need days
 
 In order:
 
-1. 3-Act Math tasks
-2. Topic Openers
+1. Topic Openers
+2. 3-Act Math tasks
 3. Second days on lessons students already have
 
 I don't cut assessments, and I don't cut a lesson that later lessons depend on.
+
+Cutting to make room for a run of new quizzes isn't one cut per quiz picked
+in isolation — inserting a quiz shifts every quiz-worthy Wednesday after it by
+one day too (which day counts as "the Wednesday of a test week" can shift as a
+result), so the right way to check this is: apply the cuts and insertions
+together, then re-derive which weeks are test weeks from the *result*, not
+from where tests were before the edit.
 
 ## Pairing (assumed)
 
@@ -93,12 +110,14 @@ The calendar is student-facing. That governs everything on it:
 - **Homework / DeltaMath assignments render** alongside the lesson.
 - Lesson text is written for a sixth grader, not copied from district titles
   where those are opaque.
-- Assessment days are visually flagged.
+- Quiz and Test days are visually flagged, in **different colors** — formative
+  vs. summative reads differently at a glance.
 - **No student names, grades, or anything student-identifying. Ever.**
 
 ## Sanity checks after any edit
 
 - Does the last lesson still land on or before the last instructional day?
 - Do lessons run out before days do, or the reverse? Report the count either way.
-- Did any assessment move off a Wednesday?
+- Did any **quiz** move off a Wednesday? (Tests have no day-of-week rule —
+  only quizzes do.)
 - Did a review day end up separated from its test?

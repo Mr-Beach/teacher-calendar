@@ -29,8 +29,11 @@ TYPE_CLASS = {
     "Other": "day--other",
 }
 # CSS class per lesson kind, for instructional cells.
+# Quiz (formative) and Test (summative) get distinct colors -- PLANNING.md:
+# "Quizzes are formatives... District topic tests" are the graded summative.
 KIND_CLASS = {
-    "Assessment": "day--assessment",
+    "Quiz": "day--quiz",
+    "Test": "day--test",
     "Opener": "day--opener",
     "3-Act": "day--threeact",
     "Lesson": "day--lesson",
@@ -184,8 +187,10 @@ def build_page(course, calendar):
     --lesson-border: #6366f1;
     --opener: #ecfeff;
     --opener-border: #06b6d4;
-    --assessment: #fef2f2;
-    --assessment-border: #ef4444;
+    --quiz: #ecfdf5;
+    --quiz-border: #059669;
+    --test: #fef2f2;
+    --test-border: #ef4444;
     --threeact: #fefce8;
     --threeact-border: #ca8a04;
     --noschool: #f3f4f6;
@@ -269,7 +274,8 @@ def build_page(course, calendar):
   .day__note {{ font-style: italic; }}
   .day--lesson {{ background: var(--lesson); border-left: 3px solid var(--lesson-border); }}
   .day--opener {{ background: var(--opener); border-left: 3px solid var(--opener-border); }}
-  .day--assessment {{ background: var(--assessment); border-left: 3px solid var(--assessment-border); }}
+  .day--quiz {{ background: var(--quiz); border-left: 3px solid var(--quiz-border); }}
+  .day--test {{ background: var(--test); border-left: 3px solid var(--test-border); }}
   .day--threeact {{ background: var(--threeact); border-left: 3px solid var(--threeact-border); }}
   .day--noschool {{ background: var(--noschool); color: var(--muted); }}
   .day--testing {{ background: var(--testing); }}
@@ -315,7 +321,8 @@ def build_page(course, calendar):
 <div class="legend">
   <span><i style="background:var(--lesson-border)"></i>Lesson</span>
   <span><i style="background:var(--opener-border)"></i>Opener</span>
-  <span><i style="background:var(--assessment-border)"></i>Assessment</span>
+  <span><i style="background:var(--quiz-border)"></i>Quiz (formative)</span>
+  <span><i style="background:var(--test-border)"></i>Test (summative)</span>
   <span><i style="background:var(--threeact-border)"></i>3-Act</span>
 </div>
 <nav class="months">{"".join(nav_links)}</nav>

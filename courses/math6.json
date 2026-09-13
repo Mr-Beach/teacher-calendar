@@ -1394,7 +1394,7 @@
       "topic": "2",
       "lesson_code": null,
       "district_title": "Quiz + Schoology tour",
-      "kind": "Assessment",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1411,14 +1411,6 @@
       "lesson_code": "2.3",
       "district_title": "Understand Absolute Value of Rational Numbers",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "2",
-      "lesson_code": "2.4",
-      "district_title": "3-Act Math \"The Ultimate Throw\"",
-      "kind": "3-Act",
       "student_text": null,
       "homework": null
     },
@@ -1466,28 +1458,12 @@
       "topic": "2",
       "lesson_code": null,
       "district_title": "Topic 2 Assessment",
-      "kind": "Assessment",
+      "kind": "Test",
       "student_text": "Topic 2 Test",
       "homework": null
     },
     {
       "topic": "1",
-      "lesson_code": null,
-      "district_title": "Topic 1 Opener Positive Rational Numbers",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "1",
-      "lesson_code": null,
-      "district_title": "Topic 1 Opener",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "1",
       "lesson_code": "1.1",
       "district_title": "Operate with Decimals",
       "kind": "Lesson",
@@ -1535,10 +1511,10 @@
       "homework": null
     },
     {
-      "topic": "1",
-      "lesson_code": "1.4",
-      "district_title": "3-Act \"Stocking Up\"",
-      "kind": "3-Act",
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1591,6 +1567,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "1",
       "lesson_code": "1.8",
       "district_title": "Divide Mixed Numbers",
@@ -1626,32 +1610,16 @@
       "topic": "1",
       "lesson_code": null,
       "district_title": "Topic 1 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
+      "kind": "Lesson",
+      "student_text": "Topic 1 Review",
       "homework": null
     },
     {
       "topic": "1",
       "lesson_code": null,
       "district_title": "Topic 1 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "3",
-      "lesson_code": null,
-      "district_title": "Topic 3 Opener Numeric and Algebraic Expressions",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "3",
-      "lesson_code": null,
-      "district_title": "Topic 3 Opener Numeric and Algebraic Expressions",
-      "kind": "Opener",
-      "student_text": null,
+      "kind": "Test",
+      "student_text": "Topic 1 Test",
       "homework": null
     },
     {
@@ -1675,6 +1643,14 @@
       "lesson_code": "3.2",
       "district_title": "Find Greatest Common Factor and Least Common Multiple",
       "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1731,14 +1707,6 @@
       "lesson_code": "3.5",
       "district_title": "Evaluate Algebraic Expressions",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "3",
-      "lesson_code": "3.6",
-      "district_title": "3-Act Math \"The Field Trip\"",
-      "kind": "3-Act",
       "student_text": null,
       "homework": null
     },
@@ -1747,6 +1715,14 @@
       "lesson_code": "3.7",
       "district_title": "Understand Equivalent Expressions",
       "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1778,32 +1754,16 @@
       "topic": "3",
       "lesson_code": null,
       "district_title": "Topic 3 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
+      "kind": "Lesson",
+      "student_text": "Topic 3 Review",
       "homework": null
     },
     {
       "topic": "3",
       "lesson_code": null,
       "district_title": "Topic 3 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "4",
-      "lesson_code": null,
-      "district_title": "Topic 4 Opener Equations and Inequalities",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "4",
-      "lesson_code": null,
-      "district_title": "Topic 4 Opener Equations and Inequalities",
-      "kind": "Opener",
-      "student_text": null,
+      "kind": "Test",
+      "student_text": "Topic 3 Test",
       "homework": null
     },
     {
@@ -1835,6 +1795,14 @@
       "lesson_code": "4.2",
       "district_title": "Apply Properties of Equality",
       "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1871,10 +1839,10 @@
       "homework": null
     },
     {
-      "topic": "4",
-      "lesson_code": "4.5",
-      "district_title": "Write and Solve Equations with Rational Numbers",
-      "kind": "Lesson",
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1888,9 +1856,9 @@
     },
     {
       "topic": "4",
-      "lesson_code": "4.6",
-      "district_title": "3-Act Math \"I've Got You Covered\"",
-      "kind": "3-Act",
+      "lesson_code": "4.5",
+      "district_title": "Write and Solve Equations with Rational Numbers",
+      "kind": "Lesson",
       "student_text": null,
       "homework": null
     },
@@ -1943,6 +1911,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "4",
       "lesson_code": "4.10",
       "district_title": "Relate Tables, Graphs, and Equations",
@@ -1962,32 +1938,16 @@
       "topic": "4",
       "lesson_code": null,
       "district_title": "Topic 4 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
+      "kind": "Lesson",
+      "student_text": "Topic 4 Review",
       "homework": null
     },
     {
       "topic": "4",
       "lesson_code": null,
       "district_title": "Topic 4 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "5",
-      "lesson_code": null,
-      "district_title": "Topic 5 Opener Ratio and Rate",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "5",
-      "lesson_code": null,
-      "district_title": "Topic 5 Opener Ratio and Rate",
-      "kind": "Opener",
-      "student_text": null,
+      "kind": "Test",
+      "student_text": "Topic 4 Test",
       "homework": null
     },
     {
@@ -2023,6 +1983,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "5",
       "lesson_code": "5.3",
       "district_title": "Compare Ratios",
@@ -2039,6 +2007,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "5",
       "lesson_code": "5.4",
       "district_title": "Represent and Graph Ratios",
@@ -2071,6 +2047,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "5",
       "lesson_code": "5.6",
       "district_title": "Use Rates to Compare",
@@ -2091,14 +2075,6 @@
       "lesson_code": "5.7",
       "district_title": "Solve Unit Rate Problems",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "5",
-      "lesson_code": "5.8",
-      "district_title": "3-Act Math \"Every Drop Counts\"",
-      "kind": "3-Act",
       "student_text": null,
       "homework": null
     },
@@ -2135,10 +2111,10 @@
       "homework": null
     },
     {
-      "topic": "5",
+      "topic": null,
       "lesson_code": null,
-      "district_title": "Topic 5 Assessment",
-      "kind": "Assessment",
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2146,24 +2122,16 @@
       "topic": "5",
       "lesson_code": null,
       "district_title": "Topic 5 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
+      "kind": "Lesson",
+      "student_text": "Topic 5 Review",
       "homework": null
     },
     {
-      "topic": "6",
+      "topic": "5",
       "lesson_code": null,
-      "district_title": "Topic 6 Opener Percent",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "6",
-      "lesson_code": null,
-      "district_title": "Topic 6 Opener Percent",
-      "kind": "Opener",
-      "student_text": null,
+      "district_title": "Topic 5 Assessment",
+      "kind": "Test",
+      "student_text": "Topic 5 Test",
       "homework": null
     },
     {
@@ -2215,6 +2183,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "6",
       "lesson_code": "6.4",
       "district_title": "Estimate to Find Percent",
@@ -2248,42 +2224,18 @@
     },
     {
       "topic": "6",
-      "lesson_code": "6.6",
-      "district_title": "3-Act Math \"Ace the Test\"",
-      "kind": "3-Act",
-      "student_text": null,
+      "lesson_code": null,
+      "district_title": "Topic 6 Assessment",
+      "kind": "Lesson",
+      "student_text": "Topic 6 Review",
       "homework": null
     },
     {
       "topic": "6",
       "lesson_code": null,
       "district_title": "Topic 6 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "6",
-      "lesson_code": null,
-      "district_title": "Topic 6 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "7",
-      "lesson_code": null,
-      "district_title": "Topic 7 Opener Variability in Data and Distributions",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "7",
-      "lesson_code": null,
-      "district_title": "Topic 7 Opener Variability in Data and Distributions",
-      "kind": "Opener",
-      "student_text": null,
+      "kind": "Test",
+      "student_text": "Topic 6 Test",
       "homework": null
     },
     {
@@ -2307,6 +2259,14 @@
       "lesson_code": "7.2",
       "district_title": "Summarize Data Using Mean, Median, Mode, and Range",
       "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2339,6 +2299,14 @@
       "lesson_code": "7.4",
       "district_title": "Display Data in Frequency Tables and Histograms",
       "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2391,6 +2359,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "7",
       "lesson_code": "7.8",
       "district_title": "Choose Appropriate Statistical Measures",
@@ -2426,32 +2402,16 @@
       "topic": "7",
       "lesson_code": null,
       "district_title": "Topic 7 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
+      "kind": "Lesson",
+      "student_text": "Topic 7 Review",
       "homework": null
     },
     {
       "topic": "7",
       "lesson_code": null,
       "district_title": "Topic 7 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "8",
-      "lesson_code": null,
-      "district_title": "Topic 8 Opener Area, Surface Area, and Volume",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "8",
-      "lesson_code": null,
-      "district_title": "Topic 8 Opener Area, Surface Area, and Volume",
-      "kind": "Opener",
-      "student_text": null,
+      "kind": "Test",
+      "student_text": "Topic 7 Test",
       "homework": null
     },
     {
@@ -2475,6 +2435,14 @@
       "lesson_code": null,
       "district_title": "(exact dates vary by school)",
       "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2511,6 +2479,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "8",
       "lesson_code": "8.3",
       "district_title": "Solve Triangle Area Problems",
@@ -2539,6 +2515,14 @@
       "lesson_code": "8.4",
       "district_title": "Find Areas of Trapezoids and Kites",
       "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2563,6 +2547,14 @@
       "lesson_code": "8.6",
       "district_title": "Find Surface areas of Prisms",
       "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2599,6 +2591,14 @@
       "homework": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Quiz",
+      "kind": "Quiz",
+      "student_text": null,
+      "homework": null
+    },
+    {
       "topic": "8",
       "lesson_code": "8.9",
       "district_title": "Find Volume with Fractional Edge Lengths",
@@ -2618,16 +2618,16 @@
       "topic": "8",
       "lesson_code": null,
       "district_title": "Topic 8 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
+      "kind": "Lesson",
+      "student_text": "Topic 8 Review",
       "homework": null
     },
     {
       "topic": "8",
       "lesson_code": null,
       "district_title": "Topic 8 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
+      "kind": "Test",
+      "student_text": "Topic 8 Test",
       "homework": null
     },
     {
