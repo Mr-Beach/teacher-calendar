@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+
+# macOS
+.DS_Store
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Source workbook: one-time import only. courses/*.json is the source of
+# truth from here on; the workbook is a local archive, not tracked.
+data/*.xlsx
