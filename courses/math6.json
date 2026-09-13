@@ -1319,19 +1319,11 @@
   ],
   "sequence": [
     {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "First Day of School",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
       "topic": "0",
       "lesson_code": null,
       "district_title": "Topic 0 Day 1",
       "kind": "Lesson",
-      "student_text": null,
+      "student_text": "Syllabus and class puzzle-piece activity.",
       "homework": null
     },
     {
@@ -1339,7 +1331,7 @@
       "lesson_code": null,
       "district_title": "Topic 0 Day 2",
       "kind": "Lesson",
-      "student_text": null,
+      "student_text": "Syllabus and class puzzle-piece activity.",
       "homework": null
     },
     {
@@ -1347,22 +1339,14 @@
       "lesson_code": null,
       "district_title": "Topic 0 Day 3",
       "kind": "Lesson",
-      "student_text": null,
+      "student_text": "Syllabus and class puzzle-piece activity.",
       "homework": null
     },
     {
       "topic": "2",
-      "lesson_code": null,
-      "district_title": "Topic 2 Opener Integers and the Coordinate Plane",
-      "kind": "Opener",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "2",
-      "lesson_code": null,
-      "district_title": "Topic 2 Opener Integers and the Coordinate Plane",
-      "kind": "Opener",
+      "lesson_code": "2.1",
+      "district_title": "Understand Integers",
+      "kind": "Lesson",
       "student_text": null,
       "homework": null
     },
@@ -1372,6 +1356,22 @@
       "district_title": "Understand Integers",
       "kind": "Lesson",
       "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Fractions & Decimals Review",
+      "kind": "Lesson",
+      "student_text": "Convert between fractions and decimals.",
+      "homework": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Fractions & Decimals Review",
+      "kind": "Lesson",
+      "student_text": "Convert between fractions and decimals.",
       "homework": null
     },
     {
