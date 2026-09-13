@@ -3,8 +3,11 @@
 Usage:
     python3 render.py courses/math6.json > docs/index.html
 
-docs/ is what GitHub Pages serves. Re-run this and push any time the course
-JSON changes so the published page updates.
+docs/ is what GitHub Pages serves. A GitHub Action (.github/workflows/
+render.yml) runs this automatically and commits the result whenever
+courses/*.json (or this file) changes on main -- so pushing a data edit is
+enough; you don't have to run this locally first. Still useful to run by
+hand to preview a change before committing.
 """
 import calendar as calendar_module
 import json

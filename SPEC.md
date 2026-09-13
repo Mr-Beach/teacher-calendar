@@ -39,7 +39,7 @@ No accounts. No manual-entry UI. No iCal. No imports beyond the one-time Excel c
 
 - Output is a **public, read-only web page** — no login for viewers.
 - Must update **instantly** on republish. This rules out iCal/webcal for v1: calendar apps typically poll external feeds only every 12–24 hours, which doesn't fit "I fixed a day, the page must show it now."
-- No accounts, no draft/published state — I re-run the render/deploy step when something changes, and the page reflects it immediately.
+- No accounts, no draft/published state — editing `courses/*.json` and pushing is enough; a GitHub Action re-runs the render step and commits the result automatically, and the page reflects it within about a minute.
 
 ## Explicit constraints
 
