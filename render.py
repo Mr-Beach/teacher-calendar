@@ -70,7 +70,16 @@ def render_day_cell(day):
         css.append(TYPE_CLASS.get(day["type"], "day--other"))
         if day["display"]:
             body += f'<div class="day__note">{esc(day["display"])}</div>'
-    return f'<div class="{" ".join(css)}"><div class="day__num">{day_num}</div>{body}</div>'
+    # Fixed-size cell with clamped text, not size-to-content: guarantees the
+    # cell can never overhang regardless of title length or device font
+    # metrics. Tap/click opens the full, untruncated detail.
+    return (
+        f'<div class="{" ".join(css)}" role="button" tabindex="0" '
+        f'aria-label="View details" '
+        f'onclick="showDetail(\'{day["date"]}\')" '
+        f"onkeydown=\"if(event.key==='Enter'||event.key===' '){{event.preventDefault();showDetail('{day['date']}')}}\">"
+        f'<div class="day__num">{day_num}</div><div class="day__body">{body}</div></div>'
+    )
 
 
 def render_agenda_row(day):
@@ -128,6 +137,20 @@ def render_month(year, month, days):
     )
 
 
+def build_details_map(calendar):
+    details = {}
+    for day in calendar:
+        d = date.fromisoformat(day["date"])
+        weekday_full = d.strftime("%A")
+        details[day["date"]] = {
+            "date": f"{weekday_full}, {MONTH_NAMES[d.month - 1]} {d.day}, {d.year}",
+            "title": day["lesson_text"] if day["type"] == "Instruction" else day["display"],
+            "homework": day["homework"],
+            "note": day["note"] if day["type"] == "Instruction" else None,
+        }
+    return details
+
+
 def build_page(course, calendar):
     months = []
     nav_links = []
@@ -140,6 +163,8 @@ def build_page(course, calendar):
 
     title = esc(course["course"])
     year_label = esc(course.get("school_year") or "")
+    # </script> can't appear literally inside a script body.
+    details_json = json.dumps(build_details_map(calendar)).replace("</", "<\\/")
 
     return f"""<!doctype html>
 <html lang="en">
@@ -221,15 +246,27 @@ def build_page(course, calendar):
     display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
   }}
   .day {{
-    min-height: 74px; min-width: 0; border: 1px solid var(--border); border-radius: 6px;
+    height: 96px; min-width: 0; border: 1px solid var(--border); border-radius: 6px;
     background: var(--card); padding: 4px 5px; font-size: 0.72rem;
-    overflow-wrap: break-word;
+    overflow-wrap: break-word; overflow: hidden; cursor: pointer;
   }}
-  .day--pad {{ background: transparent; border-color: transparent; }}
+  .day:hover {{ box-shadow: inset 0 0 0 1px var(--muted); }}
+  .day:focus-visible {{ outline: 2px solid var(--lesson-border); outline-offset: 1px; }}
+  .day--pad {{ background: transparent; border-color: transparent; cursor: default; }}
+  .day--pad:hover {{ box-shadow: none; }}
   .day__num {{ font-size: 0.68rem; color: var(--muted); margin-bottom: 2px; }}
-  .day__lesson {{ font-weight: 600; line-height: 1.25; }}
-  .day__homework {{ color: var(--muted); margin-top: 2px; }}
-  .day__note {{ color: var(--muted); font-style: italic; margin-top: 2px; }}
+  .day__body {{ overflow: hidden; }}
+  /* Line-clamp, not auto-height: the cell's size never depends on content
+     length or how a given device/browser measures the font. */
+  .day__lesson {{
+    font-weight: 600; line-height: 1.25; display: -webkit-box;
+    -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+  }}
+  .day__homework, .day__note {{
+    color: var(--muted); margin-top: 2px; display: -webkit-box;
+    -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;
+  }}
+  .day__note {{ font-style: italic; }}
   .day--lesson {{ background: var(--lesson); border-left: 3px solid var(--lesson-border); }}
   .day--opener {{ background: var(--opener); border-left: 3px solid var(--opener-border); }}
   .day--assessment {{ background: var(--assessment); border-left: 3px solid var(--assessment-border); }}
@@ -238,18 +275,36 @@ def build_page(course, calendar):
   .day--testing {{ background: var(--testing); }}
   .day--flex {{ background: var(--flex); }}
   @media (max-width: 480px) {{
-    .day {{ font-size: 0.62rem; min-height: 60px; }}
+    .day {{ font-size: 0.62rem; height: 82px; }}
     .grid, .grid__header {{ gap: 2px; }}
   }}
   /* Phones in landscape: wide enough to trigger the grid, but short enough
      that desktop-scale text overflows narrow columns. Target by height
      (phones in landscape are short), not width, so real desktop windows
-     are unaffected. */
+     are unaffected. Cell height is fixed here too, just smaller, with the
+     lesson clamped to 2 lines instead of 3 to match. */
   @media (orientation: landscape) and (max-height: 500px) {{
-    .day {{ font-size: 0.58rem; min-height: 46px; padding: 3px 4px; }}
+    .day {{ font-size: 0.58rem; height: 68px; padding: 3px 4px; }}
     .day__num {{ font-size: 0.54rem; }}
+    .day__lesson {{ -webkit-line-clamp: 2; }}
     .grid, .grid__header {{ gap: 2px; }}
   }}
+
+  dialog#detail {{
+    border: none; border-radius: 10px; padding: 0; max-width: 380px; width: calc(100% - 32px);
+    color: var(--text); box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  }}
+  dialog#detail::backdrop {{ background: rgba(0,0,0,0.4); }}
+  .detail {{ padding: 16px 18px; }}
+  .detail__date {{ font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }}
+  .detail__title {{ font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }}
+  .detail__homework, .detail__note {{ font-size: 0.9rem; margin-top: 6px; }}
+  .detail__note {{ font-style: italic; color: var(--muted); }}
+  .detail__close {{
+    position: absolute; top: 10px; right: 12px; border: none; background: none;
+    font-size: 1.3rem; line-height: 1; cursor: pointer; color: var(--muted); padding: 4px;
+  }}
+  .detail {{ position: relative; }}
 </style>
 </head>
 <body>
@@ -265,6 +320,34 @@ def build_page(course, calendar):
 </div>
 <nav class="months">{"".join(nav_links)}</nav>
 {"".join(months)}
+<dialog id="detail">
+  <div class="detail">
+    <button class="detail__close" onclick="document.getElementById('detail').close()" aria-label="Close">&times;</button>
+    <div class="detail__date" id="detail-date"></div>
+    <div class="detail__title" id="detail-title"></div>
+    <div class="detail__homework" id="detail-homework" hidden></div>
+    <div class="detail__note" id="detail-note" hidden></div>
+  </div>
+</dialog>
+<script>
+  const DETAILS = {details_json};
+  function showDetail(dateStr) {{
+    const d = DETAILS[dateStr];
+    if (!d) return;
+    document.getElementById('detail-date').textContent = d.date;
+    document.getElementById('detail-title').textContent = d.title || '';
+    const hw = document.getElementById('detail-homework');
+    hw.textContent = d.homework ? 'HW: ' + d.homework : '';
+    hw.hidden = !d.homework;
+    const note = document.getElementById('detail-note');
+    note.textContent = d.note || '';
+    note.hidden = !d.note;
+    document.getElementById('detail').showModal();
+  }}
+  document.getElementById('detail').addEventListener('click', (e) => {{
+    if (e.target.id === 'detail') e.target.close();
+  }});
+</script>
 </body>
 </html>
 """
