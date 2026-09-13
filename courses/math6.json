@@ -72,7 +72,7 @@
       "date": "2026-09-16",
       "weekday": "Wed",
       "type": "Instruction",
-      "note": null
+      "note": "Bring your computer."
     },
     {
       "date": "2026-09-17",
@@ -102,7 +102,7 @@
       "date": "2026-09-23",
       "weekday": "Wed",
       "type": "Instruction",
-      "note": null
+      "note": "Quiz"
     },
     {
       "date": "2026-09-24",
@@ -1265,13 +1265,13 @@
     {
       "date": "2027-06-22",
       "weekday": "Tue",
-      "type": "Instruction",
+      "type": "Other",
       "note": "Snow make up if"
     },
     {
       "date": "2027-06-23",
       "weekday": "Wed",
-      "type": "Instruction",
+      "type": "Other",
       "note": "Snow make up if"
     },
     {
@@ -1376,10 +1376,10 @@
     },
     {
       "topic": "2",
-      "lesson_code": "2.1",
-      "district_title": "Understand Integers",
+      "lesson_code": "2.2",
+      "district_title": "Represent Rational Numbers on the Number Line",
       "kind": "Lesson",
-      "student_text": null,
+      "student_text": "Build a number line with positive and negative fractions and decimals.",
       "homework": null
     },
     {
@@ -1387,14 +1387,14 @@
       "lesson_code": "2.2",
       "district_title": "Represent Rational Numbers on the Number Line",
       "kind": "Lesson",
-      "student_text": null,
+      "student_text": "Order numbers least to greatest; compare with <, >, =",
       "homework": null
     },
     {
       "topic": "2",
-      "lesson_code": "2.2",
-      "district_title": "Represent Rational Numbers on the Number Line",
-      "kind": "Lesson",
+      "lesson_code": null,
+      "district_title": "Quiz + Schoology tour",
+      "kind": "Assessment",
       "student_text": null,
       "homework": null
     },
@@ -1403,7 +1403,7 @@
       "lesson_code": "2.3",
       "district_title": "Understand Absolute Value of Rational Numbers",
       "kind": "Lesson",
-      "student_text": null,
+      "student_text": "Absolute value",
       "homework": null
     },
     {
@@ -1458,8 +1458,8 @@
       "topic": "2",
       "lesson_code": null,
       "district_title": "Topic 2 Assessment",
-      "kind": "Assessment",
-      "student_text": null,
+      "kind": "Lesson",
+      "student_text": "Topic 2 Review",
       "homework": null
     },
     {
@@ -1467,7 +1467,7 @@
       "lesson_code": null,
       "district_title": "Topic 2 Assessment",
       "kind": "Assessment",
-      "student_text": null,
+      "student_text": "Topic 2 Test",
       "homework": null
     },
     {

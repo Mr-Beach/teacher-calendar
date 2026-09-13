@@ -222,7 +222,7 @@ def build_page(course, calendar):
   }}
   .day {{
     min-height: 74px; min-width: 0; border: 1px solid var(--border); border-radius: 6px;
-    background: var(--card); padding: 4px 5px; font-size: 0.72rem; overflow: hidden;
+    background: var(--card); padding: 4px 5px; font-size: 0.72rem;
     overflow-wrap: break-word;
   }}
   .day--pad {{ background: transparent; border-color: transparent; }}
@@ -239,6 +239,15 @@ def build_page(course, calendar):
   .day--flex {{ background: var(--flex); }}
   @media (max-width: 480px) {{
     .day {{ font-size: 0.62rem; min-height: 60px; }}
+    .grid, .grid__header {{ gap: 2px; }}
+  }}
+  /* Phones in landscape: wide enough to trigger the grid, but short enough
+     that desktop-scale text overflows narrow columns. Target by height
+     (phones in landscape are short), not width, so real desktop windows
+     are unaffected. */
+  @media (orientation: landscape) and (max-height: 500px) {{
+    .day {{ font-size: 0.58rem; min-height: 46px; padding: 3px 4px; }}
+    .day__num {{ font-size: 0.54rem; }}
     .grid, .grid__header {{ gap: 2px; }}
   }}
 </style>
