@@ -396,7 +396,7 @@
     {
       "date": "2026-12-01",
       "weekday": "Tue",
-      "type": "No School",
+      "type": "Instruction",
       "note": null
     },
     {
@@ -408,7 +408,7 @@
     {
       "date": "2026-12-03",
       "weekday": "Thu",
-      "type": "No School",
+      "type": "Instruction",
       "note": null
     },
     {

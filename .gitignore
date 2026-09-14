@@ -13,6 +13,8 @@ venv/
 # Claude Code local settings
 .claude/settings.local.json
 
-# Source workbook: one-time import only. courses/*.json is the source of
-# truth from here on; the workbook is a local archive, not tracked.
+# Source material: workbook, district master calendar, scope-and-sequence
+# reference. courses/*.json is the source of truth from here on; these stay
+# as local archives/references, not tracked.
 data/*.xlsx
+data/*.pdf
