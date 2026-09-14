@@ -165,12 +165,38 @@ def check_test_placement(course):
     return warnings
 
 
+def check_unexplained_closures(course):
+    """Flag a non-Instruction day with no note, sandwiched by Instruction
+    days on both sides. Every *real* closure in this data (holiday, PD day,
+    early dismissal) has a note explaining it -- an isolated one without a
+    note has twice now turned out to be a data-entry mistake in the source
+    workbook (a day that should have been Instruction). Heuristic, not a
+    hard rule: a district could have a genuine unexplained one-off closure,
+    but that's rare enough that a warning is worth the occasional false
+    positive."""
+    days = course["school_days"]
+    warnings = []
+    for i, d in enumerate(days):
+        if d["type"] == "Instruction" or d["note"]:
+            continue
+        prev_instruction = i > 0 and days[i - 1]["type"] == "Instruction"
+        next_instruction = i < len(days) - 1 and days[i + 1]["type"] == "Instruction"
+        if prev_instruction and next_instruction:
+            warnings.append(
+                f"{d['date']} ({d['weekday']}): isolated '{d['type']}' with no note, "
+                f"sandwiched by Instruction days -- double-check this against the source calendar"
+            )
+    return warnings
+
+
 if __name__ == "__main__":
     path = Path(sys.argv[1] if len(sys.argv) > 1 else "courses/math6.json")
     course = json.loads(path.read_text())
     calendar, leftover = render(course)
     print(f"leftover lessons with no day left: {leftover}", file=sys.stderr)
     for w in check_test_placement(course):
+        print(f"warning: {w}", file=sys.stderr)
+    for w in check_unexplained_closures(course):
         print(f"warning: {w}", file=sys.stderr)
     for day in calendar:
         if day["date"].startswith(sys.argv[2] if len(sys.argv) > 2 else "2026-09"):

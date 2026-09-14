@@ -140,3 +140,10 @@ The calendar is student-facing. That governs everything on it:
 - Did a review day end up separated from its test?
 - Does `engine.check_test_placement()` report any Monday tests or
   post-break Mon-Wed tests? (Not auto-fixed — flag for a decision.)
+- Does `engine.check_unexplained_closures()` report anything? Every real
+  closure in this data has a note explaining it — an isolated `No School`
+  (or other non-Instruction) day with no note, sandwiched by Instruction
+  days, has twice turned out to be a data-entry mistake in the source
+  workbook rather than a real day off. `scripts/import_workbook.py` also
+  runs this automatically on import, so a fresh course import flags these
+  immediately instead of surfacing months later.

@@ -17,6 +17,9 @@ from pathlib import Path
 
 import openpyxl
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from engine import check_unexplained_closures
+
 DAYS_SHEET = "Days"
 LESSONS_SHEET = "Lessons"
 
@@ -96,6 +99,16 @@ def main():
         "school_days": school_days,
         "sequence": sequence,
     }
+
+    closure_warnings = check_unexplained_closures(course)
+    if closure_warnings:
+        print(
+            f"NOTE: {len(closure_warnings)} isolated closure(s) with no note found "
+            "-- double-check these against the source calendar before trusting them:",
+            file=sys.stderr,
+        )
+        for w in closure_warnings:
+            print(f"  {w}", file=sys.stderr)
 
     out_path = Path("courses") / f"{args.slug}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)

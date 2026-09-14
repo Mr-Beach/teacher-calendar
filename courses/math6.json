@@ -660,7 +660,7 @@
     {
       "date": "2027-02-01",
       "weekday": "Mon",
-      "type": "No School",
+      "type": "Instruction",
       "note": null
     },
     {
@@ -786,7 +786,7 @@
     {
       "date": "2027-03-02",
       "weekday": "Tue",
-      "type": "No School",
+      "type": "Instruction",
       "note": null
     },
     {
@@ -798,7 +798,7 @@
     {
       "date": "2027-03-04",
       "weekday": "Thu",
-      "type": "No School",
+      "type": "Instruction",
       "note": null
     },
     {
