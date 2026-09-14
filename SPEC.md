@@ -52,6 +52,8 @@ No accounts. No manual-entry UI. No iCal. No imports beyond the one-time Excel c
 
 User accounts & authentication; hosted multi-tenant SaaS; manual-entry UI; iCal feed; a general recurrence engine; draft-vs-published workflow; third-party imports (Google Classroom/Sheets/Canvas); embed widget; PDF export.
 
+**Planning aid**: a view comparing the live (edited) calendar against the original district scope-and-sequence, showing how far ahead/behind each topic is. The point is to help decide where to condense or where slack exists *before* making a pacing edit, rather than figuring it out from scratch each time. Would need the original district sequence preserved as a separate reference (it currently only exists in the archived, untracked workbook) so there's something fixed to compare the live sequence against.
+
 ## Definition of done
 
 I publish a real two-week calendar for one course through this tool and stop maintaining that calendar by hand.

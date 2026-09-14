@@ -41,6 +41,22 @@ three exceptions — none of these weeks get a quiz:
    school resumes after winter break or spring break).
 3. **The day before Thanksgiving.**
 
+Quizzes are **never stored as sequence entries** — the engine computes quiz
+placement fresh every render, straight from this rule. That's deliberate:
+editing lesson content (adding a day, cutting a day) must never be able to
+knock a quiz off Wednesday, and it can't, because quiz placement doesn't
+depend on where anything sits in `sequence`.
+
+`course["quiz_rhythm_start"]` is the first date this rule applies from —
+the first couple weeks of school (syllabus, routines) aren't quiz weeks even
+though they include Wednesdays.
+
+**Test placement** (checked, not auto-fixed — see below): avoid a Test
+landing on a Monday, and avoid one landing on the Monday, Tuesday, or
+Wednesday immediately after a break of a week or more. When this happens,
+fixing it is an editorial call (what moves, and where), so it's surfaced as
+a warning rather than silently resolved.
+
 A quiz covers only what's been taught since the last quiz — never cumulative
 unless I say so.
 
@@ -118,6 +134,9 @@ The calendar is student-facing. That governs everything on it:
 
 - Does the last lesson still land on or before the last instructional day?
 - Do lessons run out before days do, or the reverse? Report the count either way.
-- Did any **quiz** move off a Wednesday? (Tests have no day-of-week rule —
-  only quizzes do.)
+- Did any **quiz** move off a Wednesday? (Should be structurally impossible
+  now that quizzes are computed, not stored — if this ever fires, something's
+  actually broken, not just unbalanced.)
 - Did a review day end up separated from its test?
+- Does `engine.check_test_placement()` report any Monday tests or
+  post-break Mon-Wed tests? (Not auto-fixed — flag for a decision.)

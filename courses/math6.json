@@ -1,6 +1,7 @@
 {
   "course": "Math 6",
   "school_year": "2026-27",
+  "quiz_rhythm_start": "2026-09-16",
   "school_days": [
     {
       "date": "2026-09-01",
@@ -1363,7 +1364,7 @@
       "lesson_code": null,
       "district_title": "Fractions & Decimals Review",
       "kind": "Lesson",
-      "student_text": "Convert between fractions and decimals.",
+      "student_text": "Convert between fractions and decimals, day 1.",
       "homework": null
     },
     {
@@ -1371,7 +1372,15 @@
       "lesson_code": null,
       "district_title": "Fractions & Decimals Review",
       "kind": "Lesson",
-      "student_text": "Convert between fractions and decimals.",
+      "student_text": "Convert between fractions and decimals, day 2.",
+      "homework": "Convert Between Fractions and Decimals Practice - Worksheet"
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Fractions & Decimals Review",
+      "kind": "Lesson",
+      "student_text": "Convert between fractions and decimals, day 3.",
       "homework": null
     },
     {
@@ -1388,14 +1397,6 @@
       "district_title": "Represent Rational Numbers on the Number Line",
       "kind": "Lesson",
       "student_text": "Order numbers least to greatest; compare with <, >, =",
-      "homework": null
-    },
-    {
-      "topic": "2",
-      "lesson_code": null,
-      "district_title": "Quiz + Schoology tour",
-      "kind": "Quiz",
-      "student_text": null,
       "homework": null
     },
     {
@@ -1511,14 +1512,6 @@
       "homework": null
     },
     {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
-      "student_text": null,
-      "homework": null
-    },
-    {
       "topic": "1",
       "lesson_code": "1.5",
       "district_title": "Multiply Fractions",
@@ -1563,14 +1556,6 @@
       "lesson_code": "1.7",
       "district_title": "Divide Fractions",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1647,14 +1632,6 @@
       "homework": null
     },
     {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
-      "student_text": null,
-      "homework": null
-    },
-    {
       "topic": "3",
       "lesson_code": "3.2",
       "district_title": "Find Greatest Common Factor and Least Common Multiple",
@@ -1715,14 +1692,6 @@
       "lesson_code": "3.7",
       "district_title": "Understand Equivalent Expressions",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1799,14 +1768,6 @@
       "homework": null
     },
     {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
-      "student_text": null,
-      "homework": null
-    },
-    {
       "topic": "4",
       "lesson_code": "4.3",
       "district_title": "Write and Solve Addition and Subtraction Equations",
@@ -1835,14 +1796,6 @@
       "lesson_code": "4.4",
       "district_title": "Write and Solve Multiplication and Division Equations",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1907,14 +1860,6 @@
       "lesson_code": "4.9",
       "district_title": "Understand Independent and Dependent Variables",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -1983,14 +1928,6 @@
       "homework": null
     },
     {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
-      "student_text": null,
-      "homework": null
-    },
-    {
       "topic": "5",
       "lesson_code": "5.3",
       "district_title": "Compare Ratios",
@@ -2003,14 +1940,6 @@
       "lesson_code": "5.4",
       "district_title": "Represent and Graph Ratios",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2043,14 +1972,6 @@
       "lesson_code": "5.6",
       "district_title": "Use Rates to Compare",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2107,14 +2028,6 @@
       "lesson_code": "5.11",
       "district_title": "Relate Customary and Metric Units",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2179,14 +2092,6 @@
       "lesson_code": "6.3",
       "district_title": "Represent Percents Greater Than 100 or Less Than 1",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2263,14 +2168,6 @@
       "homework": null
     },
     {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
-      "student_text": null,
-      "homework": null
-    },
-    {
       "topic": "7",
       "lesson_code": "7.2",
       "district_title": "Summarize Data Using Mean, Median, Mode, and Range",
@@ -2299,14 +2196,6 @@
       "lesson_code": "7.4",
       "district_title": "Display Data in Frequency Tables and Histograms",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2355,14 +2244,6 @@
       "lesson_code": "7.7",
       "district_title": "Summarize Data Using Measures of Variability",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2441,14 +2322,6 @@
     {
       "topic": null,
       "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
       "district_title": "(exact dates vary by school)",
       "kind": "Lesson",
       "student_text": null,
@@ -2475,14 +2348,6 @@
       "lesson_code": "8.2",
       "district_title": "Find Areas of Parallelograms and Rhombuses",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2515,14 +2380,6 @@
       "lesson_code": "8.4",
       "district_title": "Find Areas of Trapezoids and Kites",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2547,14 +2404,6 @@
       "lesson_code": "8.6",
       "district_title": "Find Surface areas of Prisms",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
@@ -2587,14 +2436,6 @@
       "lesson_code": "8.8",
       "district_title": "3-Act Math \"That's a Wrap\"",
       "kind": "3-Act",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "Quiz",
-      "kind": "Quiz",
       "student_text": null,
       "homework": null
     },
