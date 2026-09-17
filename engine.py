@@ -165,6 +165,26 @@ def check_test_placement(course):
     return warnings
 
 
+def check_lesson_shortfall(course):
+    """Flag Instructional days with nothing planned -- the mirror image of
+    the surplus `leftover` already returned by render(). render()'s leftover
+    can only ever report the sequence running long (lessons with no day
+    left); it floors at zero, so it can't represent the opposite case
+    (sequence running out before days do). Not auto-fixed -- adding content
+    or cutting a day is an editorial call -- so this just surfaces it."""
+    calendar, _ = render(course)
+    empty_dates = [
+        d["date"] for d in calendar
+        if d["type"] == "Instruction" and d["kind"] is None
+    ]
+    if not empty_dates:
+        return []
+    return [
+        f"{len(empty_dates)} instructional day(s) with nothing planned, "
+        f"{empty_dates[0]} through {empty_dates[-1]}"
+    ]
+
+
 def check_unexplained_closures(course):
     """Flag a non-Instruction day with no note, sandwiched by Instruction
     days on both sides. Every *real* closure in this data (holiday, PD day,
@@ -189,15 +209,27 @@ def check_unexplained_closures(course):
     return warnings
 
 
+def run_all_checks(course):
+    """Every check.yield/render together, as (label, [warnings]) pairs --
+    the one place that knows the full checklist, so nothing added here has
+    to be separately wired into the CLI, the import script, and anywhere
+    else that wants "is this course file okay?" See PLANNING.md's Sanity
+    checks section, which this is meant to mirror."""
+    return [
+        ("test placement", check_test_placement(course)),
+        ("unexplained closures", check_unexplained_closures(course)),
+        ("lesson shortfall", check_lesson_shortfall(course)),
+    ]
+
+
 if __name__ == "__main__":
     path = Path(sys.argv[1] if len(sys.argv) > 1 else "courses/math6.json")
     course = json.loads(path.read_text())
     calendar, leftover = render(course)
     print(f"leftover lessons with no day left: {leftover}", file=sys.stderr)
-    for w in check_test_placement(course):
-        print(f"warning: {w}", file=sys.stderr)
-    for w in check_unexplained_closures(course):
-        print(f"warning: {w}", file=sys.stderr)
+    for label, warnings in run_all_checks(course):
+        for w in warnings:
+            print(f"warning ({label}): {w}", file=sys.stderr)
     for day in calendar:
         if day["date"].startswith(sys.argv[2] if len(sys.argv) > 2 else "2026-09"):
             print(day["date"], day["weekday"], "|", day["display"])

@@ -144,6 +144,16 @@ The calendar is student-facing. That governs everything on it:
   closure in this data has a note explaining it — an isolated `No School`
   (or other non-Instruction) day with no note, sandwiched by Instruction
   days, has twice turned out to be a data-entry mistake in the source
-  workbook rather than a real day off. `scripts/import_workbook.py` also
-  runs this automatically on import, so a fresh course import flags these
-  immediately instead of surfacing months later.
+  workbook rather than a real day off.
+- Does `engine.check_lesson_shortfall()` report anything? The mirror image
+  of the leftover-lessons count above — instructional days at the end of
+  the year with nothing planned, because the sequence ran out first. Not
+  itself a problem (could just be intentional wrap-up time), but worth
+  knowing about rather than discovering it in June.
+
+`engine.run_all_checks()` runs the full checklist above (everything except
+the two lesson-count arithmetic lines) in one call, and is what
+`scripts/import_workbook.py` runs automatically at import — so a fresh
+course starts from a known-checked state instead of these surfacing months
+into the school year. Adding a new check means adding it to this list, not
+separately wiring it into the CLI and the import script by hand.

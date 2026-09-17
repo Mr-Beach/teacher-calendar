@@ -16,7 +16,7 @@ from datetime import date
 from itertools import groupby
 from pathlib import Path
 
-from engine import render
+from engine import render, run_all_checks
 
 MONTH_NAMES = [
     "January", "February", "March", "April", "May", "June",
@@ -369,4 +369,7 @@ if __name__ == "__main__":
     calendar, leftover = render(course)
     if leftover:
         print(f"warning: {leftover} lessons have no day left", file=sys.stderr)
+    for label, warnings in run_all_checks(course):
+        for w in warnings:
+            print(f"warning ({label}): {w}", file=sys.stderr)
     print(build_page(course, calendar))

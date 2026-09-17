@@ -18,7 +18,7 @@ from pathlib import Path
 import openpyxl
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from engine import check_unexplained_closures
+from engine import run_all_checks
 
 DAYS_SHEET = "Days"
 LESSONS_SHEET = "Lessons"
@@ -100,15 +100,20 @@ def main():
         "sequence": sequence,
     }
 
-    closure_warnings = check_unexplained_closures(course)
-    if closure_warnings:
-        print(
-            f"NOTE: {len(closure_warnings)} isolated closure(s) with no note found "
-            "-- double-check these against the source calendar before trusting them:",
-            file=sys.stderr,
-        )
-        for w in closure_warnings:
+    # Run the full checklist (PLANNING.md's "Sanity checks") right at import,
+    # not just the leftover/instructional-day-count arithmetic above -- so a
+    # fresh course starts from a known-checked state instead of surfacing
+    # problems months into the school year.
+    any_warnings = False
+    for label, warnings in run_all_checks(course):
+        if not warnings:
+            continue
+        any_warnings = True
+        print(f"NOTE ({label}):", file=sys.stderr)
+        for w in warnings:
             print(f"  {w}", file=sys.stderr)
+    if not any_warnings:
+        print("checks: none of the automated checks found anything to flag", file=sys.stderr)
 
     out_path = Path("courses") / f"{args.slug}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
