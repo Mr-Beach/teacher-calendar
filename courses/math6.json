@@ -2462,22 +2462,6 @@
       "kind": "Test",
       "student_text": "Topic 8 Test",
       "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "needed",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "needed",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
     }
   ]
 }
