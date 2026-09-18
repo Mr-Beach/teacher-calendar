@@ -21,6 +21,11 @@ QUIZ_ITEM = {
     "kind": "Quiz", "student_text": None, "homework": None,
 }
 
+# The closed sets from SPEC.md's data model. Edit functions below validate
+# against these instead of accepting free text.
+VALID_DAY_TYPES = {"Instruction", "Flex", "Testing", "No School", "Other"}
+VALID_LESSON_KINDS = {"Lesson", "Opener", "Quiz", "Test", "3-Act"}
+
 # A note mentioning "quiz" marks a day where a quiz was deliberately paired
 # with a lesson instead of taking a full day (PLANNING.md's "Pairing"). The
 # automatic Wednesday rule must not double up on a day already handled this
@@ -138,6 +143,99 @@ def render(course):
                 "homework": None, "note": note,
             })
     return calendar, leftover
+
+
+_UNSET = object()
+
+
+def set_day(course, date_str, type=_UNSET, note=_UNSET):
+    """Change an existing school day's type and/or note in place. This is
+    how a day is spent (Instruction -> No School/Other, an assembly or snow
+    day) or earned back (Flex -> Instruction). Quizzes are never touched
+    here -- they're computed by render(), never stored (see module
+    docstring) -- so this only ever affects the five school-day types.
+
+    Omit `type`/`note` to leave it unchanged; pass `note=None` explicitly
+    to clear an existing note (e.g. undoing an assembly note)."""
+    if type is not _UNSET and type not in VALID_DAY_TYPES:
+        raise ValueError(f"not a valid day type: {type!r} (want one of {sorted(VALID_DAY_TYPES)})")
+    for day in course["school_days"]:
+        if day["date"] == date_str:
+            if type is not _UNSET:
+                day["type"] = type
+            if note is not _UNSET:
+                day["note"] = note
+            return day
+    raise ValueError(f"no school day dated {date_str}")
+
+
+def insert_lesson(course, index, lesson):
+    """Insert one entry into the sequence at `index` (a "spend" per
+    PLANNING.md's day budget -- an extra lesson day, a make-up activity).
+    `lesson` needs at least `district_title`; everything else defaults."""
+    kind = lesson.get("kind", "Lesson")
+    if kind not in VALID_LESSON_KINDS:
+        raise ValueError(f"not a valid lesson kind: {kind!r} (want one of {sorted(VALID_LESSON_KINDS)})")
+    if kind == "Quiz":
+        raise ValueError('quizzes are computed by render(), never stored in the sequence -- see module docstring')
+    entry = {
+        "topic": lesson.get("topic"),
+        "lesson_code": lesson.get("lesson_code"),
+        "district_title": lesson["district_title"],
+        "kind": kind,
+        "student_text": lesson.get("student_text"),
+        "homework": lesson.get("homework"),
+    }
+    seq = course["sequence"]
+    if not 0 <= index <= len(seq):
+        raise IndexError(f"sequence index {index} out of range (0-{len(seq)})")
+    seq.insert(index, entry)
+    return entry
+
+
+def cut_lesson(course, index):
+    """Remove one entry from the sequence (an "earn" per PLANNING.md's day
+    budget -- cutting an Opener, a 3-Act, or a duplicate lesson day)."""
+    seq = course["sequence"]
+    if not 0 <= index < len(seq):
+        raise IndexError(f"sequence index {index} out of range (0-{len(seq) - 1})")
+    return seq.pop(index)
+
+
+def edit_lesson(course, index, **fields):
+    """Update fields (title, homework, student_text, ...) on an existing
+    sequence entry in place. Content only -- no day-budget effect."""
+    seq = course["sequence"]
+    if not 0 <= index < len(seq):
+        raise IndexError(f"sequence index {index} out of range (0-{len(seq) - 1})")
+    entry = seq[index]
+    for key, value in fields.items():
+        if key not in entry:
+            raise ValueError(f"not a sequence field: {key!r} (want one of {sorted(entry)})")
+        if key == "kind" and value not in VALID_LESSON_KINDS:
+            raise ValueError(f"not a valid lesson kind: {value!r} (want one of {sorted(VALID_LESSON_KINDS)})")
+        entry[key] = value
+    return entry
+
+
+def diff_impact(course, before_calendar, before_leftover):
+    """Compare a pre-edit render() snapshot against the course's current
+    state. Call render() before editing, make the edit, then pass its
+    result here -- gives back the leftover-count change and the first date
+    where the rendered calendar actually starts differing, which is what
+    "everything after here shifted" means in practice. Report this in
+    Aaron's terms (dates, what moved), not by dumping the raw diff."""
+    after_calendar, after_leftover = render(course)
+    first_shifted_date = None
+    for before_day, after_day in zip(before_calendar, after_calendar):
+        if before_day["display"] != after_day["display"]:
+            first_shifted_date = after_day["date"]
+            break
+    return {
+        "leftover_before": before_leftover,
+        "leftover_after": after_leftover,
+        "first_shifted_date": first_shifted_date,
+    }
 
 
 def check_test_placement(course):
