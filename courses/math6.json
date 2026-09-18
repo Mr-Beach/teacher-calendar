@@ -1417,14 +1417,6 @@
     },
     {
       "topic": "2",
-      "lesson_code": "2.5",
-      "district_title": "Represent Locations on the Coordinate Plane",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "2",
       "lesson_code": "2.6",
       "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
@@ -1445,6 +1437,14 @@
       "district_title": "Topic 2 Assessment",
       "kind": "Test",
       "student_text": "Topic 2 Test",
+      "homework": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Topic 1 Opener",
+      "kind": "Opener",
+      "student_text": "Positive Rational Numbers",
       "homework": null
     },
     {
@@ -1593,6 +1593,14 @@
     },
     {
       "topic": "3",
+      "lesson_code": null,
+      "district_title": "Topic 3 Opener",
+      "kind": "Opener",
+      "student_text": "Numeric and Algebraic Expressions",
+      "homework": null
+    },
+    {
+      "topic": "3",
       "lesson_code": "3.1",
       "district_title": "Understand and Represent Exponents",
       "kind": "Lesson",
@@ -1681,8 +1689,32 @@
     },
     {
       "topic": "3",
+      "lesson_code": "3.7",
+      "district_title": "Understand Equivalent Expressions",
+      "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": "3",
       "lesson_code": "3.8",
       "district_title": "Generate Equivalent Expressions",
+      "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.8",
+      "district_title": "Generate Equivalent Expressions",
+      "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.9",
+      "district_title": "Simplify Algebraic Expressions",
       "kind": "Lesson",
       "student_text": null,
       "homework": null
@@ -1713,6 +1745,14 @@
     },
     {
       "topic": "4",
+      "lesson_code": null,
+      "district_title": "Topic 4 Opener",
+      "kind": "Opener",
+      "student_text": "Equations and Inequalities",
+      "homework": null
+    },
+    {
+      "topic": "4",
       "lesson_code": "4.1",
       "district_title": "Understand Equations and Solutions",
       "kind": "Lesson",
@@ -1835,14 +1875,6 @@
       "topic": "4",
       "lesson_code": "4.9",
       "district_title": "Understand Independent and Dependent Variables",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "4",
-      "lesson_code": "4.10",
-      "district_title": "Relate Tables, Graphs, and Equations",
       "kind": "Lesson",
       "student_text": null,
       "homework": null
@@ -1869,6 +1901,22 @@
       "district_title": "Topic 4 Assessment",
       "kind": "Test",
       "student_text": "Topic 4 Test",
+      "homework": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Topic 5 Opener",
+      "kind": "Opener",
+      "student_text": "Ratio and Rate",
+      "homework": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.1",
+      "district_title": "Understand Ratios",
+      "kind": "Lesson",
+      "student_text": null,
       "homework": null
     },
     {
@@ -1985,8 +2033,32 @@
     },
     {
       "topic": "5",
+      "lesson_code": "5.9",
+      "district_title": "Ratio Reasoning: Convert Customary Units",
+      "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": "5",
       "lesson_code": "5.10",
       "district_title": "Ratio Reasoning: Convert Metric Units",
+      "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.10",
+      "district_title": "Ratio Reasoning: Convert Metric Units",
+      "kind": "Lesson",
+      "student_text": null,
+      "homework": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.11",
+      "district_title": "Relate Customary and Metric Units",
       "kind": "Lesson",
       "student_text": null,
       "homework": null
@@ -2013,6 +2085,14 @@
       "district_title": "Topic 5 Assessment",
       "kind": "Test",
       "student_text": "Topic 5 Test",
+      "homework": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Topic 6 Opener",
+      "kind": "Opener",
+      "student_text": "Percent",
       "homework": null
     },
     {
@@ -2113,6 +2193,14 @@
     },
     {
       "topic": "7",
+      "lesson_code": null,
+      "district_title": "Topic 7 Opener",
+      "kind": "Opener",
+      "student_text": "Variability in Data and Distributions",
+      "homework": null
+    },
+    {
+      "topic": "7",
       "lesson_code": "7.1",
       "district_title": "Recognize Statistical Questions",
       "kind": "Lesson",
@@ -2172,14 +2260,6 @@
       "lesson_code": "7.4",
       "district_title": "Display Data in Frequency Tables and Histograms",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "7",
-      "lesson_code": "7.5",
-      "district_title": "3-Act \"Vocal Range\"",
-      "kind": "3-Act",
       "student_text": null,
       "homework": null
     },
@@ -2265,10 +2345,10 @@
     },
     {
       "topic": "8",
-      "lesson_code": "8.1",
-      "district_title": "Find Areas of Polygons",
-      "kind": "Lesson",
-      "student_text": null,
+      "lesson_code": null,
+      "district_title": "Topic 8 Opener",
+      "kind": "Opener",
+      "student_text": "Area, Surface Area, and Volume",
       "homework": null
     },
     {
@@ -2280,25 +2360,9 @@
       "homework": null
     },
     {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "(exact dates vary by school)",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "(exact dates vary by school)",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": null,
-      "lesson_code": null,
-      "district_title": "(exact dates vary by school)",
+      "topic": "8",
+      "lesson_code": "8.1",
+      "district_title": "Find Areas of Polygons",
       "kind": "Lesson",
       "student_text": null,
       "homework": null
@@ -2396,14 +2460,6 @@
       "lesson_code": "8.7",
       "district_title": "Find Surface Areas of Pyramids",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "8",
-      "lesson_code": "8.8",
-      "district_title": "3-Act Math \"That's a Wrap\"",
-      "kind": "3-Act",
       "student_text": null,
       "homework": null
     },
