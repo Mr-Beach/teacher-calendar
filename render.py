@@ -81,7 +81,7 @@ def render_day_cell(day):
     # metrics. Tap/click opens the full, untruncated detail.
     return (
         f'<div class="{" ".join(css)}" role="button" tabindex="0" '
-        f'aria-label="View details" '
+        f'data-date="{day["date"]}" aria-label="View details" '
         f'onclick="showDetail(\'{day["date"]}\')" '
         f"onkeydown=\"if(event.key==='Enter'||event.key===' '){{event.preventDefault();showDetail('{day['date']}')}}\">"
         f'<div class="day__num">{day_num}</div><div class="day__body">{body}</div></div>'
@@ -104,7 +104,7 @@ def render_agenda_row(day):
         if day["display"]:
             body += f'<div class="day__note">{esc(day["display"])}</div>'
     return (
-        f'<div class="{" ".join(css)}">'
+        f'<div class="{" ".join(css)}" data-date="{day["date"]}">'
         f'<div class="agenda-date">{day["weekday"]}<br>{d.month}/{d.day}</div>'
         f'<div class="agenda-body">{body}</div>'
         f"</div>"
@@ -283,6 +283,15 @@ def build_page(course, calendar):
   .day--noschool {{ background: var(--noschool); color: var(--muted); }}
   .day--testing {{ background: var(--testing); }}
   .day--flex {{ background: var(--flex); }}
+  /* Today marker: a ring plus a small badge, layered on top of whichever
+     kind/type color the cell already has -- must read at a glance without
+     fighting that color. */
+  .day--today {{ box-shadow: 0 0 0 2px var(--text); }}
+  .day--today .day__num::after {{
+    content: "TODAY"; margin-left: 6px; font-weight: 700; letter-spacing: 0.03em;
+    color: var(--text);
+  }}
+  .agenda-row.day--today {{ box-shadow: 0 0 0 2px var(--text); }}
   @media (max-width: 480px) {{
     .day {{ font-size: 0.62rem; height: 82px; }}
     .grid, .grid__header {{ gap: 2px; }}
@@ -357,6 +366,31 @@ def build_page(course, calendar):
   document.getElementById('detail').addEventListener('click', (e) => {{
     if (e.target.id === 'detail') e.target.close();
   }});
+
+  // Mark today's cell and scroll to it. Computed in the visitor's browser,
+  // not baked in at render time -- the page is only rebuilt when the
+  // calendar data changes, not daily, so a server-side "today" would go
+  // stale the very next day.
+  function todayISO() {{
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-'
+      + String(d.getDate()).padStart(2, '0');
+  }}
+  function markToday() {{
+    const keys = Object.keys(DETAILS); // ascending, same order as the calendar
+    const todayStr = todayISO();
+    // Weekends, breaks, and summer have no cell for the exact date -- fall
+    // back to the nearest upcoming school day, or the last one if the year
+    // has ended.
+    const target = DETAILS[todayStr] ? todayStr
+      : (keys.find((k) => k > todayStr) || keys[keys.length - 1]);
+    if (!target) return;
+    const matches = document.querySelectorAll(`[data-date="${{target}}"]`);
+    matches.forEach((el) => el.classList.add('day--today'));
+    const visible = Array.from(matches).find((el) => el.offsetParent !== null);
+    (visible || matches[0])?.scrollIntoView({{ block: 'center' }});
+  }}
+  markToday();
 </script>
 </body>
 </html>
