@@ -44,7 +44,13 @@ sequence.
      "spend"). `lesson` needs at least `district_title`; `kind` defaults to
      `"Lesson"`.
    - `engine.edit_lesson(course, index, **fields)` — correct content
-     (title, homework, student_text) on an existing entry. No budget effect.
+     (title, homework, student_text, link) on an existing entry. No budget
+     effect.
+   - `link` (on `insert_lesson`/`edit_lesson`) is an optional URL to a
+     student-facing resource for that day — a Drive link shared as "anyone
+     with the link", or a relative path to a file committed under `docs/`.
+     Renders as a button on the day's detail popup. Leave it unset/`None`
+     for a day with nothing to attach.
    - Never hand-insert a `"Quiz"`-kind entry — quizzes are computed by
      `render()`, never stored (`insert_lesson` rejects this; see `engine.py`'s
      module docstring for why).

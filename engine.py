@@ -18,7 +18,7 @@ from pathlib import Path
 
 QUIZ_ITEM = {
     "topic": None, "lesson_code": None, "district_title": "Quiz",
-    "kind": "Quiz", "student_text": None, "homework": None,
+    "kind": "Quiz", "student_text": None, "homework": None, "link": None,
 }
 
 # The closed sets from SPEC.md's data model. Edit functions below validate
@@ -133,6 +133,7 @@ def render(course):
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": display, "lesson_text": base, "kind": kind,
                 "homework": lesson["homework"] if lesson else None, "note": note,
+                "link": lesson.get("link") if lesson else None,
             })
         else:
             # A non-instructional day has no lesson to show alongside, so the
@@ -140,7 +141,7 @@ def render(course):
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": note or day["type"], "lesson_text": None, "kind": None,
-                "homework": None, "note": note,
+                "homework": None, "note": note, "link": None,
             })
     return calendar, leftover
 
@@ -172,7 +173,13 @@ def set_day(course, date_str, type=_UNSET, note=_UNSET):
 def insert_lesson(course, index, lesson):
     """Insert one entry into the sequence at `index` (a "spend" per
     PLANNING.md's day budget -- an extra lesson day, a make-up activity).
-    `lesson` needs at least `district_title`; everything else defaults."""
+    `lesson` needs at least `district_title`; everything else defaults.
+
+    `link` is an optional URL to a student-facing resource for that day (a
+    worksheet, a slide deck) -- either a link to a Drive file shared as
+    "anyone with the link", or a relative path to a file committed under
+    docs/. Rendered as a button on the day's detail popup; omit it for a
+    day with nothing to attach."""
     kind = lesson.get("kind", "Lesson")
     if kind not in VALID_LESSON_KINDS:
         raise ValueError(f"not a valid lesson kind: {kind!r} (want one of {sorted(VALID_LESSON_KINDS)})")
@@ -185,6 +192,7 @@ def insert_lesson(course, index, lesson):
         "kind": kind,
         "student_text": lesson.get("student_text"),
         "homework": lesson.get("homework"),
+        "link": lesson.get("link"),
     }
     seq = course["sequence"]
     if not 0 <= index <= len(seq):
@@ -203,8 +211,9 @@ def cut_lesson(course, index):
 
 
 def edit_lesson(course, index, **fields):
-    """Update fields (title, homework, student_text, ...) on an existing
-    sequence entry in place. Content only -- no day-budget effect."""
+    """Update fields (title, homework, student_text, link, ...) on an
+    existing sequence entry in place. Content only -- no day-budget
+    effect."""
     seq = course["sequence"]
     if not 0 <= index < len(seq):
         raise IndexError(f"sequence index {index} out of range (0-{len(seq) - 1})")

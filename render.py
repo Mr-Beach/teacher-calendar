@@ -72,6 +72,8 @@ def render_day_cell(day):
             body += f'<div class="day__homework">HW: {esc(day["homework"])}</div>'
         if day["note"]:
             body += f'<div class="day__note">{esc(day["note"])}</div>'
+        if day["link"]:
+            body += '<div class="day__link">\U0001f517 Resource</div>'
     else:
         css.append(TYPE_CLASS.get(day["type"], "day--other"))
         if day["display"]:
@@ -99,6 +101,8 @@ def render_agenda_row(day):
             body += f'<div class="day__homework">HW: {esc(day["homework"])}</div>'
         if day["note"]:
             body += f'<div class="day__note">{esc(day["note"])}</div>'
+        if day["link"]:
+            body += '<div class="day__link">\U0001f517 Resource</div>'
     else:
         css.append(TYPE_CLASS.get(day["type"], "day--other"))
         if day["display"]:
@@ -153,6 +157,7 @@ def build_details_map(calendar):
             "title": day["lesson_text"] if day["type"] == "Instruction" else day["display"],
             "homework": day["homework"],
             "note": day["note"] if day["type"] == "Instruction" else None,
+            "link": day["link"],
         }
     return details
 
@@ -270,11 +275,12 @@ def build_page(course, calendar):
     font-weight: 600; line-height: 1.25; display: -webkit-box;
     -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
   }}
-  .day__homework, .day__note {{
+  .day__homework, .day__note, .day__link {{
     color: var(--muted); margin-top: 2px; display: -webkit-box;
     -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;
   }}
   .day__note {{ font-style: italic; }}
+  .day__link {{ font-weight: 600; }}
   .day--lesson {{ background: var(--lesson); border-left: 3px solid var(--lesson-border); }}
   .day--opener {{ background: var(--opener); border-left: 3px solid var(--opener-border); }}
   .day--quiz {{ background: var(--quiz); border-left: 3px solid var(--quiz-border); }}
@@ -318,6 +324,11 @@ def build_page(course, calendar):
   .detail__title {{ font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }}
   .detail__homework, .detail__note {{ font-size: 0.9rem; margin-top: 6px; }}
   .detail__note {{ font-style: italic; color: var(--muted); }}
+  .detail__link {{
+    display: inline-block; margin-top: 10px; padding: 8px 14px; border-radius: 6px;
+    background: var(--lesson-border); color: #fff; text-decoration: none;
+    font-size: 0.9rem; font-weight: 600;
+  }}
   .detail__close {{
     position: absolute; top: 10px; right: 12px; border: none; background: none;
     font-size: 1.3rem; line-height: 1; cursor: pointer; color: var(--muted); padding: 4px;
@@ -336,6 +347,7 @@ def build_page(course, calendar):
   <span><i style="background:var(--quiz-border)"></i>Quiz (formative)</span>
   <span><i style="background:var(--test-border)"></i>Test (summative)</span>
   <span><i style="background:var(--threeact-border)"></i>3-Act</span>
+  <span>&#128279; Has a linked resource</span>
 </div>
 <nav class="months">{"".join(nav_links)}</nav>
 {"".join(months)}
@@ -346,6 +358,7 @@ def build_page(course, calendar):
     <div class="detail__title" id="detail-title"></div>
     <div class="detail__homework" id="detail-homework" hidden></div>
     <div class="detail__note" id="detail-note" hidden></div>
+    <a class="detail__link" id="detail-link" target="_blank" rel="noopener" hidden>Open resource &#8599;</a>
   </div>
 </dialog>
 <script>
@@ -361,6 +374,9 @@ def build_page(course, calendar):
     const note = document.getElementById('detail-note');
     note.textContent = d.note || '';
     note.hidden = !d.note;
+    const link = document.getElementById('detail-link');
+    link.href = d.link || '#';
+    link.hidden = !d.link;
     document.getElementById('detail').showModal();
   }}
   document.getElementById('detail').addEventListener('click', (e) => {{
