@@ -1377,14 +1377,6 @@
     },
     {
       "topic": "2",
-      "lesson_code": null,
-      "district_title": "Fractions & Decimals Review",
-      "kind": "Lesson",
-      "student_text": "Convert between fractions and decimals, day 3.",
-      "homework": null
-    },
-    {
-      "topic": "2",
       "lesson_code": "2.2",
       "district_title": "Represent Rational Numbers on the Number Line",
       "kind": "Lesson",
@@ -1427,14 +1419,6 @@
       "topic": "2",
       "lesson_code": "2.5",
       "district_title": "Represent Locations on the Coordinate Plane",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "2",
-      "lesson_code": "2.6",
-      "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
       "student_text": null,
       "homework": null
@@ -1683,14 +1667,6 @@
       "topic": "3",
       "lesson_code": "3.5",
       "district_title": "Evaluate Algebraic Expressions",
-      "kind": "Lesson",
-      "student_text": null,
-      "homework": null
-    },
-    {
-      "topic": "3",
-      "lesson_code": "3.7",
-      "district_title": "Understand Equivalent Expressions",
       "kind": "Lesson",
       "student_text": null,
       "homework": null
