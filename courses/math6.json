@@ -91,7 +91,7 @@
       "date": "2026-09-21",
       "weekday": "Mon",
       "type": "Instruction",
-      "note": null
+      "note": "Topic 2 study guide distributed today."
     },
     {
       "date": "2026-09-22",
@@ -103,7 +103,7 @@
       "date": "2026-09-23",
       "weekday": "Wed",
       "type": "Instruction",
-      "note": "Quiz"
+      "note": "No quiz this week \u2014 the Topic 2 summative is four days out."
     },
     {
       "date": "2026-09-24",
@@ -1423,7 +1423,25 @@
       "lesson_code": "2.5",
       "district_title": "Represent Locations on the Coordinate Plane",
       "kind": "Lesson",
-      "student_text": null,
+      "student_text": "I can name the parts of the coordinate plane and plot points with negative coordinates. Sailboat graphing (50 pts).",
+      "homework": "Finish Sailboat coordinate graphing if not done in class",
+      "link": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.5",
+      "district_title": "Represent Locations on the Coordinate Plane",
+      "kind": "Lesson",
+      "student_text": "I can name the coordinates of a point and identify its quadrant. Owl graphing (96 pts). Early finishers: Desmos graphing activity.",
+      "homework": "Topic 2 Lesson 4 Practice",
+      "link": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.6",
+      "district_title": "Find Distances on the Coordinate Plane",
+      "kind": "Lesson",
+      "student_text": "I can find the distance between two points that share an x- or y-coordinate. Optional take-home: Rocket graphing (133 pts).",
       "homework": null,
       "link": null
     },
@@ -1432,8 +1450,17 @@
       "lesson_code": "2.6",
       "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
-      "student_text": null,
-      "homework": null,
+      "student_text": "Warm up: what do negative values mean on each axis? I can use absolute value to find distances, including with decimal and fraction coordinates.",
+      "homework": "Workbook pp. 103\u2013104, problems 10\u201321",
+      "link": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.7",
+      "district_title": "Draw Polygons in the Coordinate Plane",
+      "kind": "Lesson",
+      "student_text": "I can plot a polygon from its vertices' coordinates and connect them in order.",
+      "homework": "Workbook p. 108, problems 1\u20136 (due Monday)",
       "link": null
     },
     {
@@ -1441,8 +1468,8 @@
       "lesson_code": null,
       "district_title": "Topic 2 Assessment",
       "kind": "Lesson",
-      "student_text": "Topic 2 Review",
-      "homework": null,
+      "student_text": "Topic 2 Review \u2014 I can apply everything in Topic 2 to unfamiliar problems.",
+      "homework": "Study guide",
       "link": null
     },
     {
@@ -1450,7 +1477,7 @@
       "lesson_code": null,
       "district_title": "Topic 2 Assessment",
       "kind": "Test",
-      "student_text": "Topic 2 Test",
+      "student_text": "Topic 2 Test \u2014 covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3",
       "homework": null,
       "link": null
     },
