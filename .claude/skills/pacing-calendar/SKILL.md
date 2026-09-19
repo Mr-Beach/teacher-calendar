@@ -98,12 +98,11 @@ they disagree, the repo is right and the workbook is stale.
 2. `engine.run_all_checks(course)` — report any warning.
 3. Get Aaron's go-ahead on the content — every time, live calendar, no
    exceptions — before committing.
-4. Commit `courses/math6.json` + the re-rendered `docs/index.html`.
-5. This session's environment assigns a dedicated branch; pushing there
-   satisfies the repo's stop-hook but isn't publishing. Pushing that branch
-   to `main` is the actual publish step (the Action re-renders, GitHub Pages
-   serves `docs/`, live in about a minute). Confirm that push explicitly and
-   separately from the content go-ahead in step 3.
+4. Commit `courses/math6.json` + the re-rendered `docs/index.html` directly
+   on `main`, then push to `origin/main` — that's the actual publish step
+   (the Action re-renders, GitHub Pages serves `docs/`, live in about a
+   minute). Confirm that push explicitly, separately from the content
+   go-ahead in step 3.
 
 ## Input format Aaron hands over
 
