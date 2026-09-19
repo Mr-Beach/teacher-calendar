@@ -36,7 +36,8 @@ never a note to self (SPEC.md).
   "lesson_code": "2.6",
   "district_title": "Find Distances on the Coordinate Plane",
   "kind": "Lesson",
-  "student_text": "Warm up: what do negative values mean on each axis? I can use absolute value to find distances, including with decimal and fraction coordinates.",
+  "target": "I can use absolute value to find distances, including with decimal and fraction coordinates.",
+  "classwork": "Warm up: what do negative values mean on each axis?",
   "homework": "Workbook pp. 103–104, problems 10–21",
   "link": null
 }
@@ -45,6 +46,15 @@ never a note to self (SPEC.md).
 hand-insert `Quiz` (see below). `link` is an optional URL to a student
 resource (Drive link shared "anyone with the link", or a path under `docs/`),
 rendered as a button on that day's detail popup.
+
+**The tile/detail title is always `lesson_code` + `district_title` — never
+`target` or `classwork`.** `target` (the day's I-can statement) and
+`classwork` (the activity, with its point value if any) are detail-only:
+shown in the popup when a student clicks the day, never on the tile. If the
+district's own title is opaque (a generic "Topic N Opener", "Topic N
+Assessment"), write a clearer `district_title` instead of relying on
+`target` to stand in for it — that's what got this wrong for the week of
+9/21 (see below).
 
 Edit only through `engine.py`'s functions (`set_day`, `cut_lesson`,
 `insert_lesson`, `edit_lesson`) — never hand-write JSON mutations. Find
@@ -108,11 +118,12 @@ they disagree, the repo is right and the workbook is stale.
 
 A week as a plain-text block, one entry per school day: date, lesson name, a
 `Target` (I-can statement), `Class work` (activity + point value),
-`Homework`, and sometimes `Note` / `Extension` / `Warm up`. None of those
-sub-labels are schema fields — compress them into `student_text` (target +
-classwork + extension, terse, matching the file's existing style, not
-transcribed in full) and `homework` (close to verbatim). Worked example,
-verbatim, from the week-of-9/21/2026 update:
+`Homework`, and sometimes `Note` / `Extension` / `Warm up`. Map `Target` →
+`target` and `Class work` (plus any `Extension`/`Warm up`) → `classwork`,
+terse and matching the file's existing style, not transcribed in full —
+both are detail-only, never the tile title (see above). `Homework` →
+`homework`, close to verbatim. Worked example, verbatim, from the
+week-of-9/21/2026 update:
 
 ```
 Mon 9/21 - Topic 2 Lesson 4: The Coordinate Plane, Day 1
@@ -193,3 +204,15 @@ or its output. Ever — true at every version, not a v1-only cut (SPEC.md).
   entries about to be replaced by `topic`/`lesson_code`/`kind`/`district_title`
   match immediately before cutting, rather than trusting index numbers from
   an earlier read in the same conversation.
+- **`student_text` (this schema's old single field) doubled as a title
+  override, and that broke this week's entries.** `render()` used
+  `student_text or district_title` as the tile title, so when this session
+  compressed Target + Class work + Extension into `student_text` per the
+  guidance above, the full blob became the title instead of "2.5 Represent
+  Locations on the Coordinate Plane". A later session split the field into
+  `target`/`classwork` (detail-only, never the title) and fixed `render()`
+  to always title from `lesson_code` + `district_title`. About two dozen
+  older entries (Topic Openers, Reviews, Tests, the Topic 0 days) had been
+  using the old override *correctly* — their `district_title` was a genuine
+  opaque placeholder like "Topic 2 Assessment" — so that text was migrated
+  into `district_title` itself rather than lost.

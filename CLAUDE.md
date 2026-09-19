@@ -44,8 +44,14 @@ sequence.
      "spend"). `lesson` needs at least `district_title`; `kind` defaults to
      `"Lesson"`.
    - `engine.edit_lesson(course, index, **fields)` — correct content
-     (title, homework, student_text, link) on an existing entry. No budget
-     effect.
+     (district_title, homework, target, classwork, link) on an existing
+     entry. No budget effect.
+   - The tile/detail title is always `lesson_code` + `district_title` —
+     never `target` or `classwork`. If the district's own title is opaque
+     (e.g. a generic "Topic N Opener"), write a clearer `district_title`
+     rather than relying on `target` to stand in for it. `target` (the
+     day's I-can statement) and `classwork` (the activity, with its point
+     value) are detail-only — shown only when a student clicks the day.
    - `link` (on `insert_lesson`/`edit_lesson`) is an optional URL to a
      student-facing resource for that day — a Drive link shared as "anyone
      with the link", or a relative path to a file committed under `docs/`.
