@@ -155,6 +155,8 @@ def build_details_map(calendar):
         details[day["date"]] = {
             "date": f"{weekday_full}, {MONTH_NAMES[d.month - 1]} {d.day}, {d.year}",
             "title": day["lesson_text"] if day["type"] == "Instruction" else day["display"],
+            "target": day["target"],
+            "classwork": day["classwork"],
             "homework": day["homework"],
             "note": day["note"] if day["type"] == "Instruction" else None,
             "link": day["link"],
@@ -322,7 +324,9 @@ def build_page(course, calendar):
   .detail {{ padding: 16px 18px; }}
   .detail__date {{ font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }}
   .detail__title {{ font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }}
-  .detail__homework, .detail__note {{ font-size: 0.9rem; margin-top: 6px; }}
+  .detail__target, .detail__classwork, .detail__homework, .detail__note {{
+    font-size: 0.9rem; margin-top: 6px;
+  }}
   .detail__note {{ font-style: italic; color: var(--muted); }}
   .detail__link {{
     display: inline-block; margin-top: 10px; padding: 8px 14px; border-radius: 6px;
@@ -356,6 +360,8 @@ def build_page(course, calendar):
     <button class="detail__close" onclick="document.getElementById('detail').close()" aria-label="Close">&times;</button>
     <div class="detail__date" id="detail-date"></div>
     <div class="detail__title" id="detail-title"></div>
+    <div class="detail__target" id="detail-target" hidden></div>
+    <div class="detail__classwork" id="detail-classwork" hidden></div>
     <div class="detail__homework" id="detail-homework" hidden></div>
     <div class="detail__note" id="detail-note" hidden></div>
     <a class="detail__link" id="detail-link" target="_blank" rel="noopener" hidden>Open resource &#8599;</a>
@@ -368,6 +374,12 @@ def build_page(course, calendar):
     if (!d) return;
     document.getElementById('detail-date').textContent = d.date;
     document.getElementById('detail-title').textContent = d.title || '';
+    const target = document.getElementById('detail-target');
+    target.textContent = d.target ? 'I can: ' + d.target : '';
+    target.hidden = !d.target;
+    const classwork = document.getElementById('detail-classwork');
+    classwork.textContent = d.classwork || '';
+    classwork.hidden = !d.classwork;
     const hw = document.getElementById('detail-homework');
     hw.textContent = d.homework ? 'HW: ' + d.homework : '';
     hw.hidden = !d.homework;

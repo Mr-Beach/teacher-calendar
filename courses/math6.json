@@ -1322,1352 +1322,1502 @@
     {
       "topic": "0",
       "lesson_code": null,
-      "district_title": "Topic 0 Day 1",
+      "district_title": "Syllabus and class puzzle-piece activity.",
       "kind": "Lesson",
-      "student_text": "Syllabus and class puzzle-piece activity.",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "0",
       "lesson_code": null,
-      "district_title": "Topic 0 Day 2",
+      "district_title": "Syllabus and class puzzle-piece activity.",
       "kind": "Lesson",
-      "student_text": "Syllabus and class puzzle-piece activity.",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "0",
       "lesson_code": null,
-      "district_title": "Topic 0 Day 3",
+      "district_title": "Syllabus and class puzzle-piece activity.",
       "kind": "Lesson",
-      "student_text": "Syllabus and class puzzle-piece activity.",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": "2.1",
       "district_title": "Understand Integers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": "2.1",
       "district_title": "Understand Integers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": null,
-      "district_title": "Fractions & Decimals Review",
+      "district_title": "Convert between fractions and decimals, day 1.",
       "kind": "Lesson",
-      "student_text": "Convert between fractions and decimals, day 1.",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": null,
-      "district_title": "Fractions & Decimals Review",
+      "district_title": "Convert between fractions and decimals, day 2.",
       "kind": "Lesson",
-      "student_text": "Convert between fractions and decimals, day 2.",
       "homework": "Convert Between Fractions and Decimals Practice - Worksheet",
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": "2.2",
       "district_title": "Represent Rational Numbers on the Number Line",
       "kind": "Lesson",
-      "student_text": "Build a number line with positive and negative fractions and decimals.",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": "Build a number line with positive and negative fractions and decimals."
     },
     {
       "topic": "2",
       "lesson_code": "2.2",
       "district_title": "Represent Rational Numbers on the Number Line",
       "kind": "Lesson",
-      "student_text": "Order numbers least to greatest; compare with <, >, =",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": "Order numbers least to greatest; compare with <, >, ="
     },
     {
       "topic": "2",
       "lesson_code": "2.3",
       "district_title": "Understand Absolute Value of Rational Numbers",
       "kind": "Lesson",
-      "student_text": "Absolute value",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": "Absolute value",
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": "2.3",
       "district_title": "Understand Absolute Value of Rational Numbers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": "2.5",
       "district_title": "Represent Locations on the Coordinate Plane",
       "kind": "Lesson",
-      "student_text": "I can name the parts of the coordinate plane and plot points with negative coordinates. Sailboat graphing (50 pts).",
       "homework": "Finish Sailboat coordinate graphing if not done in class",
-      "link": null
+      "link": null,
+      "target": "I can name the parts of the coordinate plane and plot points with negative coordinates.",
+      "classwork": "Sailboat graphing (50 pts)."
     },
     {
       "topic": "2",
       "lesson_code": "2.5",
       "district_title": "Represent Locations on the Coordinate Plane",
       "kind": "Lesson",
-      "student_text": "I can name the coordinates of a point and identify its quadrant. Owl graphing (96 pts). Early finishers: Desmos graphing activity.",
       "homework": "Topic 2 Lesson 4 Practice",
-      "link": null
+      "link": null,
+      "target": "I can name the coordinates of a point and identify its quadrant.",
+      "classwork": "Owl graphing (96 pts). Early finishers: Desmos graphing activity."
     },
     {
       "topic": "2",
       "lesson_code": "2.6",
       "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
-      "student_text": "I can find the distance between two points that share an x- or y-coordinate. Optional take-home: Rocket graphing (133 pts).",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": "I can find the distance between two points that share an x- or y-coordinate.",
+      "classwork": "Optional take-home: Rocket graphing (133 pts)."
     },
     {
       "topic": "2",
       "lesson_code": "2.6",
       "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
-      "student_text": "Warm up: what do negative values mean on each axis? I can use absolute value to find distances, including with decimal and fraction coordinates.",
       "homework": "Workbook pp. 103\u2013104, problems 10\u201321",
-      "link": null
+      "link": null,
+      "target": "I can use absolute value to find distances, including with decimal and fraction coordinates.",
+      "classwork": "Warm up: what do negative values mean on each axis?"
     },
     {
       "topic": "2",
       "lesson_code": "2.7",
       "district_title": "Draw Polygons in the Coordinate Plane",
       "kind": "Lesson",
-      "student_text": "I can plot a polygon from its vertices' coordinates and connect them in order.",
       "homework": "Workbook p. 108, problems 1\u20136 (due Monday)",
-      "link": null
+      "link": null,
+      "target": "I can plot a polygon from its vertices' coordinates and connect them in order.",
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": null,
-      "district_title": "Topic 2 Assessment",
+      "district_title": "Topic 2 Review",
       "kind": "Lesson",
-      "student_text": "Topic 2 Review \u2014 I can apply everything in Topic 2 to unfamiliar problems.",
       "homework": "Study guide",
-      "link": null
+      "link": null,
+      "target": "I can apply everything in Topic 2 to unfamiliar problems.",
+      "classwork": null
     },
     {
       "topic": "2",
       "lesson_code": null,
-      "district_title": "Topic 2 Assessment",
+      "district_title": "Topic 2 Test",
       "kind": "Test",
-      "student_text": "Topic 2 Test \u2014 covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": "Covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3"
     },
     {
       "topic": "1",
       "lesson_code": null,
-      "district_title": "Topic 1 Opener",
+      "district_title": "Positive Rational Numbers",
       "kind": "Opener",
-      "student_text": "Positive Rational Numbers",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.1",
       "district_title": "Operate with Decimals",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.1",
       "district_title": "Operate with Decimals",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.2",
       "district_title": "Fluently Add, Subtract, and Multiply Decimals",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.2",
       "district_title": "Fluently Add, Subtract, and Multiply Decimals",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.3",
       "district_title": "Fluently Divide Whole Numbers and Decimals",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.3",
       "district_title": "Fluently Divide Whole Numbers and Decimals",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.5",
       "district_title": "Multiply Fractions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.5",
       "district_title": "Multiply Fractions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.6",
       "district_title": "Understand Division with Fractions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.6",
       "district_title": "Understand Division with Fractions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.7",
       "district_title": "Divide Fractions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.7",
       "district_title": "Divide Fractions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.8",
       "district_title": "Divide Mixed Numbers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.8",
       "district_title": "Divide Mixed Numbers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.9",
       "district_title": "Solve Problems with Rational Numbers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": "1.9",
       "district_title": "Solve Problems with Rational Numbers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": null,
-      "district_title": "Topic 1 Assessment",
+      "district_title": "Topic 1 Review",
       "kind": "Lesson",
-      "student_text": "Topic 1 Review",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "1",
       "lesson_code": null,
-      "district_title": "Topic 1 Assessment",
+      "district_title": "Topic 1 Test",
       "kind": "Test",
-      "student_text": "Topic 1 Test",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": null,
-      "district_title": "Topic 3 Opener",
+      "district_title": "Numeric and Algebraic Expressions",
       "kind": "Opener",
-      "student_text": "Numeric and Algebraic Expressions",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.1",
       "district_title": "Understand and Represent Exponents",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.1",
       "district_title": "Understand and Represent Exponents",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.2",
       "district_title": "Find Greatest Common Factor and Least Common Multiple",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.2",
       "district_title": "Find Greatest Common Factor and Least Common Multiple",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.3",
       "district_title": "Using Numerical Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.3",
       "district_title": "Using Numerical Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.4",
       "district_title": "Write Algebraic Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.4",
       "district_title": "Write Algebraic Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.5",
       "district_title": "Evaluate Algebraic Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.5",
       "district_title": "Evaluate Algebraic Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.7",
       "district_title": "Understand Equivalent Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.7",
       "district_title": "Understand Equivalent Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.8",
       "district_title": "Generate Equivalent Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.8",
       "district_title": "Generate Equivalent Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.9",
       "district_title": "Simplify Algebraic Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": "3.9",
       "district_title": "Simplify Algebraic Expressions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": null,
-      "district_title": "Topic 3 Assessment",
+      "district_title": "Topic 3 Review",
       "kind": "Lesson",
-      "student_text": "Topic 3 Review",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "3",
       "lesson_code": null,
-      "district_title": "Topic 3 Assessment",
+      "district_title": "Topic 3 Test",
       "kind": "Test",
-      "student_text": "Topic 3 Test",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": null,
-      "district_title": "Topic 4 Opener",
+      "district_title": "Equations and Inequalities",
       "kind": "Opener",
-      "student_text": "Equations and Inequalities",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.1",
       "district_title": "Understand Equations and Solutions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.1",
       "district_title": "Understand Equations and Solutions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.2",
       "district_title": "Apply Properties of Equality",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.2",
       "district_title": "Apply Properties of Equality",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.3",
       "district_title": "Write and Solve Addition and Subtraction Equations",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.3",
       "district_title": "Write and Solve Addition and Subtraction Equations",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.4",
       "district_title": "Write and Solve Multiplication and Division Equations",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.4",
       "district_title": "Write and Solve Multiplication and Division Equations",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.5",
       "district_title": "Write and Solve Equations with Rational Numbers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.5",
       "district_title": "Write and Solve Equations with Rational Numbers",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.7",
       "district_title": "Understand and Write Inequalities",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.7",
       "district_title": "Understand and Write Inequalities",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.8",
       "district_title": "Solve Inequalities",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.8",
       "district_title": "Solve Inequalities",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.9",
       "district_title": "Understand Independent and Dependent Variables",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.9",
       "district_title": "Understand Independent and Dependent Variables",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": "4.10",
       "district_title": "Relate Tables, Graphs, and Equations",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": null,
-      "district_title": "Topic 4 Assessment",
+      "district_title": "Topic 4 Review",
       "kind": "Lesson",
-      "student_text": "Topic 4 Review",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "4",
       "lesson_code": null,
-      "district_title": "Topic 4 Assessment",
+      "district_title": "Topic 4 Test",
       "kind": "Test",
-      "student_text": "Topic 4 Test",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": null,
-      "district_title": "Topic 5 Opener",
+      "district_title": "Ratio and Rate",
       "kind": "Opener",
-      "student_text": "Ratio and Rate",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.1",
       "district_title": "Understand Ratios",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.1",
       "district_title": "Understand Ratios",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.2",
       "district_title": "Generate Equivalent Ratios",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.2",
       "district_title": "Generate Equivalent Ratios",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.3",
       "district_title": "Compare Ratios",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.3",
       "district_title": "Compare Ratios",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.4",
       "district_title": "Represent and Graph Ratios",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.4",
       "district_title": "Represent and Graph Ratios",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.5",
       "district_title": "Understand Rates and Unit Rates",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.5",
       "district_title": "Understand Rates and Unit Rates",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.6",
       "district_title": "Use Rates to Compare",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.6",
       "district_title": "Use Rates to Compare",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.7",
       "district_title": "Solve Unit Rate Problems",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.7",
       "district_title": "Solve Unit Rate Problems",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.9",
       "district_title": "Ratio Reasoning: Convert Customary Units",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.9",
       "district_title": "Ratio Reasoning: Convert Customary Units",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.10",
       "district_title": "Ratio Reasoning: Convert Metric Units",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.10",
       "district_title": "Ratio Reasoning: Convert Metric Units",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.11",
       "district_title": "Relate Customary and Metric Units",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": "5.11",
       "district_title": "Relate Customary and Metric Units",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": null,
-      "district_title": "Topic 5 Assessment",
+      "district_title": "Topic 5 Review",
       "kind": "Lesson",
-      "student_text": "Topic 5 Review",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "5",
       "lesson_code": null,
-      "district_title": "Topic 5 Assessment",
+      "district_title": "Topic 5 Test",
       "kind": "Test",
-      "student_text": "Topic 5 Test",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": null,
-      "district_title": "Topic 6 Opener",
+      "district_title": "Percent",
       "kind": "Opener",
-      "student_text": "Percent",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.1",
       "district_title": "Understand Percent",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.1",
       "district_title": "Understand Percent",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.2",
       "district_title": "Relate Fractions, Decimals, and Percents",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.2",
       "district_title": "Relate Fractions, Decimals, and Percents",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.3",
       "district_title": "Represent Percents Greater Than 100 or Less Than 1",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.3",
       "district_title": "Represent Percents Greater Than 100 or Less Than 1",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.4",
       "district_title": "Estimate to Find Percent",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.4",
       "district_title": "Estimate to Find Percent",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.5",
       "district_title": "Solve Percent Problems",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": "6.5",
       "district_title": "Solve Percent Problems",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": null,
-      "district_title": "Topic 6 Assessment",
+      "district_title": "Topic 6 Review",
       "kind": "Lesson",
-      "student_text": "Topic 6 Review",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "6",
       "lesson_code": null,
-      "district_title": "Topic 6 Assessment",
+      "district_title": "Topic 6 Test",
       "kind": "Test",
-      "student_text": "Topic 6 Test",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": null,
-      "district_title": "Topic 7 Opener",
+      "district_title": "Variability in Data and Distributions",
       "kind": "Opener",
-      "student_text": "Variability in Data and Distributions",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.1",
       "district_title": "Recognize Statistical Questions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.1",
       "district_title": "Recognize Statistical Questions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.2",
       "district_title": "Summarize Data Using Mean, Median, Mode, and Range",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.2",
       "district_title": "Summarize Data Using Mean, Median, Mode, and Range",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.3",
       "district_title": "Display Data in Box Plots",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.3",
       "district_title": "Display Data in Box Plots",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.4",
       "district_title": "Display Data in Frequency Tables and Histograms",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.4",
       "district_title": "Display Data in Frequency Tables and Histograms",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.6",
       "district_title": "Communicate with Data",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.6",
       "district_title": "Communicate with Data",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.7",
       "district_title": "Summarize Data Using Measures of Variability",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.7",
       "district_title": "Summarize Data Using Measures of Variability",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.8",
       "district_title": "Choose Appropriate Statistical Measures",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.8",
       "district_title": "Choose Appropriate Statistical Measures",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.9",
       "district_title": "Summarize Data Distributions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": "7.9",
       "district_title": "Summarize Data Distributions",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": null,
-      "district_title": "Topic 7 Assessment",
+      "district_title": "Topic 7 Review",
       "kind": "Lesson",
-      "student_text": "Topic 7 Review",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "7",
       "lesson_code": null,
-      "district_title": "Topic 7 Assessment",
+      "district_title": "Topic 7 Test",
       "kind": "Test",
-      "student_text": "Topic 7 Test",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": null,
-      "district_title": "Topic 8 Opener",
+      "district_title": "Area, Surface Area, and Volume",
       "kind": "Opener",
-      "student_text": "Area, Surface Area, and Volume",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.1",
       "district_title": "Find Areas of Polygons",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.1",
       "district_title": "Find Areas of Polygons",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.2",
       "district_title": "Find Areas of Parallelograms and Rhombuses",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.2",
       "district_title": "Find Areas of Parallelograms and Rhombuses",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.3",
       "district_title": "Solve Triangle Area Problems",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.3",
       "district_title": "Solve Triangle Area Problems",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.4",
       "district_title": "Find Areas of Trapezoids and Kites",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.4",
       "district_title": "Find Areas of Trapezoids and Kites",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.5",
       "district_title": "Using Nets to Find Surface Area",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.5",
       "district_title": "Using Nets to Find Surface Area",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.6",
       "district_title": "Find Surface areas of Prisms",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.6",
       "district_title": "Find Surface areas of Prisms",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.7",
       "district_title": "Find Surface Areas of Pyramids",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.7",
       "district_title": "Find Surface Areas of Pyramids",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.9",
       "district_title": "Find Volume with Fractional Edge Lengths",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": "8.9",
       "district_title": "Find Volume with Fractional Edge Lengths",
       "kind": "Lesson",
-      "student_text": null,
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": null,
-      "district_title": "Topic 8 Assessment",
+      "district_title": "Topic 8 Review",
       "kind": "Lesson",
-      "student_text": "Topic 8 Review",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     },
     {
       "topic": "8",
       "lesson_code": null,
-      "district_title": "Topic 8 Assessment",
+      "district_title": "Topic 8 Test",
       "kind": "Test",
-      "student_text": "Topic 8 Test",
       "homework": null,
-      "link": null
+      "link": null,
+      "target": null,
+      "classwork": null
     }
   ]
 }

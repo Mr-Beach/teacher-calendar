@@ -18,7 +18,8 @@ from pathlib import Path
 
 QUIZ_ITEM = {
     "topic": None, "lesson_code": None, "district_title": "Quiz",
-    "kind": "Quiz", "student_text": None, "homework": None, "link": None,
+    "kind": "Quiz", "target": None, "classwork": None, "homework": None,
+    "link": None,
 }
 
 # The closed sets from SPEC.md's data model. Edit functions below validate
@@ -123,8 +124,14 @@ def render(course):
                 base = "(no lesson planned)"
                 kind = None
             else:
-                text = lesson["student_text"] or lesson["district_title"]
-                base = f"{lesson['lesson_code']} {text}".strip() if lesson["lesson_code"] else text
+                # The tile/detail title is always lesson_code + district_title --
+                # never overridden by target/classwork, which are detail-only
+                # (PLANNING.md: title text should be readable, not a dumping
+                # ground for the day's full learning target).
+                base = (
+                    f"{lesson['lesson_code']} {lesson['district_title']}".strip()
+                    if lesson["lesson_code"] else lesson["district_title"]
+                )
                 kind = lesson["kind"]
             # A note on an instructional day is a reminder alongside the lesson
             # (a testing window, a snow-make-up flag), not a replacement for it.
@@ -133,6 +140,8 @@ def render(course):
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": display, "lesson_text": base, "kind": kind,
                 "homework": lesson["homework"] if lesson else None, "note": note,
+                "target": lesson.get("target") if lesson else None,
+                "classwork": lesson.get("classwork") if lesson else None,
                 "link": lesson.get("link") if lesson else None,
             })
         else:
@@ -141,7 +150,8 @@ def render(course):
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": note or day["type"], "lesson_text": None, "kind": None,
-                "homework": None, "note": note, "link": None,
+                "homework": None, "note": note, "target": None, "classwork": None,
+                "link": None,
             })
     return calendar, leftover
 
@@ -175,6 +185,17 @@ def insert_lesson(course, index, lesson):
     PLANNING.md's day budget -- an extra lesson day, a make-up activity).
     `lesson` needs at least `district_title`; everything else defaults.
 
+    The tile/detail title is always `lesson_code` + `district_title` --
+    never overridden by `target`/`classwork`. So `district_title` should
+    already be something a student can read; if the district's own title is
+    opaque, write a clearer one here rather than relying on `target` to
+    stand in for it (PLANNING.md: lesson text should be written for a sixth
+    grader, not copied from an opaque district title).
+
+    `target` (the day's I-can statement) and `classwork` (the activity,
+    with its point value if any) are detail-only -- shown when a student
+    clicks the day, never in the tile. Both are optional.
+
     `link` is an optional URL to a student-facing resource for that day (a
     worksheet, a slide deck) -- either a link to a Drive file shared as
     "anyone with the link", or a relative path to a file committed under
@@ -190,7 +211,8 @@ def insert_lesson(course, index, lesson):
         "lesson_code": lesson.get("lesson_code"),
         "district_title": lesson["district_title"],
         "kind": kind,
-        "student_text": lesson.get("student_text"),
+        "target": lesson.get("target"),
+        "classwork": lesson.get("classwork"),
         "homework": lesson.get("homework"),
         "link": lesson.get("link"),
     }
@@ -211,9 +233,9 @@ def cut_lesson(course, index):
 
 
 def edit_lesson(course, index, **fields):
-    """Update fields (title, homework, student_text, link, ...) on an
-    existing sequence entry in place. Content only -- no day-budget
-    effect."""
+    """Update fields (district_title, homework, target, classwork, link,
+    ...) on an existing sequence entry in place. Content only -- no
+    day-budget effect."""
     seq = course["sequence"]
     if not 0 <= index < len(seq):
         raise IndexError(f"sequence index {index} out of range (0-{len(seq) - 1})")
