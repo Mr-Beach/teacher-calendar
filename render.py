@@ -12,7 +12,7 @@ hand to preview a change before committing.
 import calendar as calendar_module
 import json
 import sys
-from datetime import date
+from datetime import date, timedelta
 from itertools import groupby
 from pathlib import Path
 
@@ -60,9 +60,42 @@ def month_key(day):
     return (int(y), int(m))
 
 
+def fill_weekends(calendar):
+    """Insert a display-only row for each Saturday/Sunday between school
+    days. school_days (the engine's source of truth) stays weekdays-only --
+    weekends have no bearing on lesson placement -- but the rendered page
+    needs a cell for every literal calendar date so "today" can land on the
+    actual date, weekend included, instead of snapping to the next school
+    day (which mislabels a future day as "TODAY")."""
+    filled = []
+    prev_date = None
+    for day in calendar:
+        d = date.fromisoformat(day["date"])
+        if prev_date is not None:
+            cursor = prev_date + timedelta(days=1)
+            while cursor < d:
+                filled.append({
+                    "date": cursor.isoformat(), "weekday": cursor.strftime("%a"),
+                    "type": "Weekend", "display": "", "lesson_text": None,
+                    "kind": None, "homework": None, "note": None,
+                    "target": None, "classwork": None, "link": None,
+                })
+                cursor += timedelta(days=1)
+        filled.append(day)
+        prev_date = d
+    return filled
+
+
 def render_day_cell(day):
     d = date.fromisoformat(day["date"])
     day_num = d.day
+    if day["type"] == "Weekend":
+        # Not clickable, not a "type" from the data model -- just a
+        # placeholder cell so the actual date has somewhere to sit.
+        return (
+            f'<div class="day day--weekend" data-date="{day["date"]}">'
+            f'<div class="day__num">{day_num}</div></div>'
+        )
     css = ["day"]
     body = ""
     if day["type"] == "Instruction":
@@ -92,6 +125,12 @@ def render_day_cell(day):
 
 def render_agenda_row(day):
     d = date.fromisoformat(day["date"])
+    if day["type"] == "Weekend":
+        return (
+            f'<div class="agenda-row day--weekend" data-date="{day["date"]}">'
+            f'<div class="agenda-date">{day["weekday"]}<br>{d.month}/{d.day}</div>'
+            f'<div class="agenda-body"></div></div>'
+        )
     css = ["agenda-row"]
     body = ""
     if day["type"] == "Instruction":
@@ -150,6 +189,8 @@ def render_month(year, month, days):
 def build_details_map(calendar):
     details = {}
     for day in calendar:
+        if day["type"] == "Weekend":
+            continue  # not clickable -- nothing to show
         d = date.fromisoformat(day["date"])
         weekday_full = d.strftime("%A")
         details[day["date"]] = {
@@ -269,6 +310,9 @@ def build_page(course, calendar):
   .day:focus-visible {{ outline: 2px solid var(--lesson-border); outline-offset: 1px; }}
   .day--pad {{ background: transparent; border-color: transparent; cursor: default; }}
   .day--pad:hover {{ box-shadow: none; }}
+  .day--weekend {{ background: transparent; color: var(--muted); cursor: default; }}
+  .day--weekend:hover {{ box-shadow: none; }}
+  .agenda-row.day--weekend {{ background: transparent; border-style: dashed; padding: 4px 10px; }}
   .day__num {{ font-size: 0.68rem; color: var(--muted); margin-bottom: 2px; }}
   .day__body {{ overflow: hidden; }}
   /* Line-clamp, not auto-height: the cell's size never depends on content
@@ -405,15 +449,19 @@ def build_page(course, calendar):
       + String(d.getDate()).padStart(2, '0');
   }}
   function markToday() {{
-    const keys = Object.keys(DETAILS); // ascending, same order as the calendar
     const todayStr = todayISO();
-    // Weekends, breaks, and summer have no cell for the exact date -- fall
-    // back to the nearest upcoming school day, or the last one if the year
-    // has ended.
-    const target = DETAILS[todayStr] ? todayStr
-      : (keys.find((k) => k > todayStr) || keys[keys.length - 1]);
-    if (!target) return;
-    const matches = document.querySelectorAll(`[data-date="${{target}}"]`);
+    // Every school day and every weekend within the school year has a cell
+    // (see fill_weekends in render.py), so the literal date almost always
+    // matches. Only before the year starts or after it ends is there no
+    // cell at all -- fall back to the nearest upcoming school day, or the
+    // last one if the year has ended.
+    let matches = document.querySelectorAll(`[data-date="${{todayStr}}"]`);
+    if (matches.length === 0) {{
+      const keys = Object.keys(DETAILS); // ascending, same order as the calendar
+      const target = keys.find((k) => k > todayStr) || keys[keys.length - 1];
+      if (!target) return;
+      matches = document.querySelectorAll(`[data-date="${{target}}"]`);
+    }}
     matches.forEach((el) => el.classList.add('day--today'));
     const visible = Array.from(matches).find((el) => el.offsetParent !== null);
     (visible || matches[0])?.scrollIntoView({{ block: 'center' }});
@@ -429,6 +477,7 @@ if __name__ == "__main__":
     path = Path(sys.argv[1] if len(sys.argv) > 1 else "courses/math6.json")
     course = json.loads(path.read_text())
     calendar, leftover = render(course)
+    calendar = fill_weekends(calendar)
     if leftover:
         print(f"warning: {leftover} lessons have no day left", file=sys.stderr)
     for label, warnings in run_all_checks(course):
