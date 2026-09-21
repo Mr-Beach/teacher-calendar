@@ -53,12 +53,12 @@ sequence.
      day's I-can statement) and `classwork` (the activity, with its point
      value) are detail-only — shown only when a student clicks the day.
    - `link` (on `insert_lesson`/`edit_lesson`) is an optional URL to a
-     student-facing resource for that day. When a lesson has a deck (built
-     with the lesson-builder skill), the convention is: Aaron exports it to
-     PDF, saves/shares it from OneDrive (his students are already on
-     Outlook accounts, so no extra access setup), and hands you that share
-     link to set with `engine.edit_lesson(course, index, link=...)`. A
-     relative path to a file committed under `docs/` also works for
+     student-facing resource for that day — **not** a lesson-builder deck
+     (Aaron isn't sharing those with students). The current plan is a
+     Savvas key-concept excerpt for the lesson, shared from OneDrive (his
+     students are already on Outlook accounts, so no extra access setup);
+     hand the share link to `engine.edit_lesson(course, index, link=...)`.
+     A relative path to a file committed under `docs/` also works for
      anything simple enough to keep in this repo. Renders as a button on
      the day's detail popup. Leave it unset/`None` for a day with nothing
      to attach.
