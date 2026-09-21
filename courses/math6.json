@@ -1376,7 +1376,7 @@
       "kind": "Lesson",
       "homework": null,
       "link": null,
-      "target": null,
+      "target": "I can convert a fraction to a decimal by writing an equivalent fraction with a power of 10 in the denominator, and using place value.",
       "classwork": null
     },
     {
@@ -1385,10 +1385,10 @@
       "district_title": "Convert between fractions and decimals, day 2.",
       "kind": "Lesson",
       "homework": [
-        "Convert Between Fractions and Decimals Practice - Worksheet"
+        "Convert Between Fractions and Decimals Practice - Worksheet, due Wed 9/16"
       ],
       "link": null,
-      "target": null,
+      "target": "I can convert a decimal to a fraction by using place value.",
       "classwork": null
     },
     {
@@ -1398,8 +1398,8 @@
       "kind": "Lesson",
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067894",
-      "target": null,
-      "classwork": "Build a number line with positive and negative fractions and decimals."
+      "target": "I can build a number line with positive and negative fractions and decimals.",
+      "classwork": null
     },
     {
       "topic": "2",
@@ -1408,17 +1408,7 @@
       "kind": "Lesson",
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067894",
-      "target": null,
-      "classwork": "Order numbers least to greatest; compare with <, >, ="
-    },
-    {
-      "topic": "2",
-      "lesson_code": "2.3",
-      "district_title": "Understand Absolute Value of Rational Numbers",
-      "kind": "Lesson",
-      "homework": null,
-      "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067895",
-      "target": "Absolute value",
+      "target": "I can order numbers least to greatest; compare with <, >, =",
       "classwork": null
     },
     {
@@ -1428,7 +1418,17 @@
       "kind": "Lesson",
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067895",
-      "target": null,
+      "target": "I can find and interpret absolute value",
+      "classwork": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.3",
+      "district_title": "Understand Absolute Value of Rational Numbers",
+      "kind": "Lesson",
+      "homework": null,
+      "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067895",
+      "target": "I can differentiate between location on a number line and distance from zero",
       "classwork": null
     },
     {
