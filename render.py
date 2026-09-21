@@ -195,6 +195,9 @@ def build_details_map(calendar):
         weekday_full = d.strftime("%A")
         details[day["date"]] = {
             "date": f"{weekday_full}, {MONTH_NAMES[d.month - 1]} {d.day}, {d.year}",
+            "weekday": day["weekday"],
+            "type": day["type"],
+            "kind": day["kind"],
             "title": day["lesson_text"] if day["type"] == "Instruction" else day["display"],
             "target": day["target"],
             "classwork": day["classwork"],
@@ -259,6 +262,42 @@ def build_page(course, calendar):
   header {{ max-width: 900px; margin: 0 auto 16px; }}
   h1 {{ font-size: 1.4rem; margin: 0 0 4px; }}
   .subtitle {{ color: var(--muted); font-size: 0.9rem; margin: 0 0 12px; }}
+  .hero {{
+    max-width: 900px; margin: 0 auto 20px; padding: 20px 22px; border-radius: 14px;
+    border: 1px solid var(--border); background: var(--card); border-left: 5px solid var(--muted);
+  }}
+  .hero--lesson {{ background: var(--lesson); border-left-color: var(--lesson-border); }}
+  .hero--opener {{ background: var(--opener); border-left-color: var(--opener-border); }}
+  .hero--quiz {{ background: var(--quiz); border-left-color: var(--quiz-border); }}
+  .hero--test {{ background: var(--test); border-left-color: var(--test-border); }}
+  .hero--threeact {{ background: var(--threeact); border-left-color: var(--threeact-border); }}
+  .hero--noschool {{ background: var(--noschool); }}
+  .hero--testing {{ background: var(--testing); }}
+  .hero--flex {{ background: var(--flex); }}
+  .hero--empty {{ background: var(--card); border-left-color: var(--border); }}
+  .hero__eyebrow {{
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
+    color: var(--muted); margin-bottom: 4px;
+  }}
+  .hero__date {{ font-size: 0.95rem; color: var(--muted); margin-bottom: 6px; }}
+  .hero__title {{ font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; line-height: 1.25; }}
+  .hero__row {{ font-size: 0.95rem; margin-top: 10px; }}
+  .hero__row--note {{ font-style: italic; color: var(--muted); }}
+  .hero__hw {{ margin-top: 4px; }}
+  .hero__link {{
+    display: inline-block; margin-top: 16px; padding: 10px 18px; border-radius: 8px;
+    background: var(--lesson-border); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+  }}
+  .hero__next {{
+    margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border);
+    font-size: 0.9rem; color: var(--muted);
+  }}
+  .hero__next a {{ color: var(--text); font-weight: 600; text-decoration: none; cursor: pointer; }}
+  .hero__next a:hover {{ text-decoration: underline; }}
+  @media (max-width: 480px) {{
+    .hero {{ padding: 16px; }}
+    .hero__title {{ font-size: 1.2rem; }}
+  }}
   nav.months {{
     display: flex; flex-wrap: wrap; gap: 6px; margin: 0 auto 20px; max-width: 900px;
   }}
@@ -391,6 +430,7 @@ def build_page(course, calendar):
   <h1>{title}</h1>
   <p class="subtitle">{year_label}</p>
 </header>
+<section class="hero" id="today-hero" hidden></section>
 <div class="legend">
   <span><i style="background:var(--lesson-border)"></i>Lesson</span>
   <span><i style="background:var(--opener-border)"></i>Opener</span>
@@ -455,6 +495,63 @@ def build_page(course, calendar):
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-'
       + String(d.getDate()).padStart(2, '0');
   }}
+  // The "today" hero card at the top of the page -- same
+  // computed-in-the-browser reasoning as markToday() below.
+  const HERO_KIND_CLASS = {{Lesson: 'lesson', Opener: 'opener', Quiz: 'quiz', Test: 'test', '3-Act': 'threeact'}};
+  const HERO_TYPE_CLASS = {{Flex: 'flex', Testing: 'testing', 'No School': 'noschool', Other: 'noschool'}};
+  function heroEl(tag, cls, text) {{
+    const node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    return node;
+  }}
+  function renderTodayHero() {{
+    const hero = document.getElementById('today-hero');
+    if (!hero) return;
+    const todayStr = todayISO();
+    const entry = DETAILS[todayStr];
+    hero.replaceChildren();
+    hero.hidden = false;
+
+    if (entry) {{
+      const cls = entry.type === 'Instruction'
+        ? 'hero--' + (HERO_KIND_CLASS[entry.kind] || 'lesson')
+        : 'hero--' + (HERO_TYPE_CLASS[entry.type] || 'noschool');
+      hero.className = 'hero ' + cls;
+      hero.appendChild(heroEl('div', 'hero__eyebrow', 'Today'));
+      hero.appendChild(heroEl('div', 'hero__date', entry.date));
+      hero.appendChild(heroEl('div', 'hero__title', entry.title || ''));
+      if (entry.target) hero.appendChild(heroEl('div', 'hero__row', 'Target: ' + entry.target));
+      if (entry.classwork) hero.appendChild(heroEl('div', 'hero__row', entry.classwork));
+      for (const hw of (entry.homework || [])) hero.appendChild(heroEl('div', 'hero__row hero__hw', 'HW: ' + hw));
+      if (entry.note) hero.appendChild(heroEl('div', 'hero__row hero__row--note', entry.note));
+      if (entry.link) {{
+        const a = document.createElement('a');
+        a.className = 'hero__link'; a.href = entry.link; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = 'Open resource ↗';
+        hero.appendChild(a);
+      }}
+    }} else {{
+      hero.className = 'hero hero--empty';
+      hero.appendChild(heroEl('div', 'hero__eyebrow', 'Today'));
+      const todayLabel = new Date().toLocaleDateString('en-US', {{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }});
+      hero.appendChild(heroEl('div', 'hero__date', todayLabel));
+      hero.appendChild(heroEl('div', 'hero__title', 'No class today'));
+      const keys = Object.keys(DETAILS); // ascending, same order as the calendar
+      const nextKey = keys.find((k) => k > todayStr) || keys[keys.length - 1];
+      if (nextKey) {{
+        const next = DETAILS[nextKey];
+        const wrap = heroEl('div', 'hero__next');
+        wrap.appendChild(document.createTextNode('Next up: '));
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = next.date + ' — ' + (next.title || '');
+        a.addEventListener('click', (e) => {{ e.preventDefault(); showDetail(nextKey); }});
+        wrap.appendChild(a);
+        hero.appendChild(wrap);
+      }}
+    }}
+  }}
   function markToday() {{
     const todayStr = todayISO();
     // Every school day and every weekend within the school year has a cell
@@ -473,6 +570,7 @@ def build_page(course, calendar):
     const visible = Array.from(matches).find((el) => el.offsetParent !== null);
     (visible || matches[0])?.scrollIntoView({{ block: 'center' }});
   }}
+  renderTodayHero();
   markToday();
 </script>
 </body>
