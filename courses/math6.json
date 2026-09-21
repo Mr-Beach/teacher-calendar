@@ -91,7 +91,7 @@
       "date": "2026-09-21",
       "weekday": "Mon",
       "type": "Instruction",
-      "note": "Topic 2 study guide distributed today."
+      "note": "Quiz Wednesday 9/23. Topic 2 Test Tuesday 9/29."
     },
     {
       "date": "2026-09-22",
@@ -103,7 +103,7 @@
       "date": "2026-09-23",
       "weekday": "Wed",
       "type": "Instruction",
-      "note": "No quiz this week \u2014 the Topic 2 summative is four days out."
+      "note": "Choosing axes for temperature data; graphing work time (Owl or Sailboat)"
     },
     {
       "date": "2026-09-24",
@@ -127,7 +127,7 @@
       "date": "2026-09-29",
       "weekday": "Tue",
       "type": "Instruction",
-      "note": null
+      "note": "Covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3"
     },
     {
       "date": "2026-09-30",
@@ -1384,7 +1384,9 @@
       "lesson_code": null,
       "district_title": "Convert between fractions and decimals, day 2.",
       "kind": "Lesson",
-      "homework": "Convert Between Fractions and Decimals Practice - Worksheet",
+      "homework": [
+        "Convert Between Fractions and Decimals Practice - Worksheet"
+      ],
       "link": null,
       "target": null,
       "classwork": null
@@ -1434,9 +1436,11 @@
       "lesson_code": "2.5",
       "district_title": "Represent Locations on the Coordinate Plane",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        "finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067897",
-      "target": "I can name the parts of the coordinate plane and plot points with negative coordinates.",
+      "target": "I can name the parts of the coordinate plane and plot ordered pairs with negative coordinates.",
       "classwork": "Sailboat graphing (50 pts)."
     },
     {
@@ -1444,9 +1448,11 @@
       "lesson_code": "2.5",
       "district_title": "Represent Locations on the Coordinate Plane",
       "kind": "Lesson",
-      "homework": "Topic 2 Lesson 4 Practice",
+      "homework": [
+        "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067897",
-      "target": "I can name the coordinates of a point and identify its quadrant.",
+      "target": "I can name a point's coordinates, including half units, and explain how points with matching numbers but different signs reflect across the axes.",
       "classwork": "Owl graphing (96 pts). Early finishers: Desmos graphing activity."
     },
     {
@@ -1454,39 +1460,37 @@
       "lesson_code": "2.6",
       "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        "Topic 2 study guide, due Tue 9/29",
+        "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
-      "target": "I can find the distance between two points that share an x- or y-coordinate.",
-      "classwork": "Optional take-home: Rocket graphing (133 pts)."
+      "target": "I can use absolute value to find the distance between two points that share an x- or y-coordinate.",
+      "classwork": "Explore and Share (textbook p. 95); workbook pp. 100\u2013102, problems 9\u201311, 18\u201321, 23, 29."
     },
     {
       "topic": "2",
       "lesson_code": "2.6",
       "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
-      "homework": "Workbook pp. 103\u2013104, problems 10\u201321",
+      "homework": [
+        "(continued) Topic 2 study guide, due Tue 9/29",
+        "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
-      "target": "I can use absolute value to find distances, including with decimal and fraction coordinates.",
-      "classwork": "Warm up: what do negative values mean on each axis?"
-    },
-    {
-      "topic": "2",
-      "lesson_code": "2.7",
-      "district_title": "Draw Polygons in the Coordinate Plane",
-      "kind": "Lesson",
-      "homework": "Workbook p. 108, problems 1\u20136 (due Monday)",
-      "link": null,
-      "target": "I can plot a polygon from its vertices' coordinates and connect them in order.",
-      "classwork": null
+      "target": "I can plot a polygon from its vertices' coordinates and use absolute value to find its side lengths and perimeter.",
+      "classwork": "Workbook pp. 100\u2013102, problems 12\u201317, 22, 24\u201326. Extension: problems 27\u201328."
     },
     {
       "topic": "2",
       "lesson_code": null,
       "district_title": "Topic 2 Review",
       "kind": "Lesson",
-      "homework": "Study guide",
+      "homework": [
+        "(continued) Topic 2 study guide, due Tue 9/29"
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067902",
-      "target": "I can apply everything in Topic 2 to unfamiliar problems.",
+      "target": "I can apply everything in Topic 2 to problems I have not seen before.",
       "classwork": null
     },
     {

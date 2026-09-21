@@ -196,6 +196,12 @@ def insert_lesson(course, index, lesson):
     with its point value if any) are detail-only -- shown when a student
     clicks the day, never in the tile. Both are optional.
 
+    `homework` is a list of strings, one entry per open assignment --
+    plural because it's normal, not an edge case, for an assignment given
+    earlier in the week to still be open when a new one is given later in
+    the same week. Each renders on its own line. Omit or pass `[]`/`None`
+    for a day with nothing open.
+
     `link` is an optional URL to a student-facing resource for that day --
     not the lesson-builder deck itself (Aaron isn't sharing those), but
     something like a Savvas key-concept excerpt for that lesson. OneDrive

@@ -101,8 +101,8 @@ def render_day_cell(day):
     if day["type"] == "Instruction":
         css.append(KIND_CLASS.get(day["kind"], "day--lesson"))
         body += f'<div class="day__lesson">{esc(day["lesson_text"])}</div>'
-        if day["homework"]:
-            body += f'<div class="day__homework">HW: {esc(day["homework"])}</div>'
+        for hw in (day["homework"] or []):
+            body += f'<div class="day__homework">HW: {esc(hw)}</div>'
         if day["note"]:
             body += f'<div class="day__note">{esc(day["note"])}</div>'
         if day["link"]:
@@ -136,8 +136,8 @@ def render_agenda_row(day):
     if day["type"] == "Instruction":
         css.append(KIND_CLASS.get(day["kind"], "day--lesson"))
         body += f'<div class="day__lesson">{esc(day["lesson_text"])}</div>'
-        if day["homework"]:
-            body += f'<div class="day__homework">HW: {esc(day["homework"])}</div>'
+        for hw in (day["homework"] or []):
+            body += f'<div class="day__homework">HW: {esc(hw)}</div>'
         if day["note"]:
             body += f'<div class="day__note">{esc(day["note"])}</div>'
         if day["link"]:
@@ -371,6 +371,7 @@ def build_page(course, calendar):
   .detail__target, .detail__classwork, .detail__homework, .detail__note {{
     font-size: 0.9rem; margin-top: 6px;
   }}
+  .detail__homework div + div {{ margin-top: 4px; }}
   .detail__note {{ font-style: italic; color: var(--muted); }}
   .detail__link {{
     display: inline-block; margin-top: 10px; padding: 8px 14px; border-radius: 6px;
@@ -426,8 +427,13 @@ def build_page(course, calendar):
     classwork.textContent = d.classwork || '';
     classwork.hidden = !d.classwork;
     const hw = document.getElementById('detail-homework');
-    hw.textContent = d.homework ? 'HW: ' + d.homework : '';
-    hw.hidden = !d.homework;
+    hw.replaceChildren();
+    for (const item of (d.homework || [])) {{
+      const line = document.createElement('div');
+      line.textContent = 'HW: ' + item;
+      hw.appendChild(line);
+    }}
+    hw.hidden = !(d.homework && d.homework.length);
     const note = document.getElementById('detail-note');
     note.textContent = d.note || '';
     note.hidden = !d.note;

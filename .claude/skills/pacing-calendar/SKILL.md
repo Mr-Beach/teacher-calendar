@@ -36,16 +36,22 @@ never a note to self (SPEC.md).
   "lesson_code": "2.6",
   "district_title": "Find Distances on the Coordinate Plane",
   "kind": "Lesson",
-  "target": "I can use absolute value to find distances, including with decimal and fraction coordinates.",
-  "classwork": "Warm up: what do negative values mean on each axis?",
-  "homework": "Workbook pp. 103–104, problems 10–21",
-  "link": null
+  "homework": [
+    "Topic 2 study guide, due Tue 9/29",
+    "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+  ],
+  "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
+  "target": "I can use absolute value to find the distance between two points that share an x- or y-coordinate.",
+  "classwork": "Explore and Share (textbook p. 95); workbook pp. 100–102, problems 9–11, 18–21, 23, 29."
 }
 ```
 `kind` is one of `Lesson` / `Opener` / `Quiz` / `Test` / `3-Act` — but never
-hand-insert `Quiz` (see below). `link` is an optional URL to a student
-resource (Drive link shared "anyone with the link", or a path under `docs/`),
-rendered as a button on that day's detail popup.
+hand-insert `Quiz` (see below). `homework` is a list — one entry per open
+assignment, `null` (not `[]`) when nothing's open; see "Input format" below
+for how overlapping assignments and "(continued)" work. `link` is an
+optional URL to a student resource (Drive/OneDrive link shared "anyone with
+the link", or a path under `docs/`), rendered as a button on that day's
+detail popup.
 
 **The tile/detail title is always `lesson_code` + `district_title` — never
 `target` or `classwork`.** `target` (the day's I-can statement) and
@@ -122,12 +128,23 @@ A week as a plain-text block, one entry per school day: date, lesson name, a
 `target` and `Class work` (plus any `Extension`/`Warm up`) → `classwork`,
 terse and matching the file's existing style, not transcribed in full —
 both are detail-only, never the tile title (see above). `Homework` →
-`homework`, close to verbatim. At most one homework assignment per lesson —
-it's listed on every day it's open: in full with its due date on the day
-it's assigned, then repeated on later days with a "(continued)" prefix,
-same text and same due date. Keep "(continued)" in the `homework` field as
-written. "Finish the class work if not done" is not homework — leave
-`homework` `null` for that day. Worked example, verbatim, from the
+`homework`, a **list** of strings — one entry per open assignment. Aaron
+gives each open assignment its own `Homework:` line; collect every
+`Homework:` line in a day's block into the list, one item per line, in the
+order given. If a single `Homework:` line itself contains a semicolon,
+split that line into separate list entries too — a fallback for when a
+day's assignments land on one line instead of several, not the expected
+form. Multiple open assignments in a day is normal, not an edge case — an
+assignment given earlier in the week (due Friday) commonly overlaps with a
+new one given Thursday/Friday (due the following Wednesday). Each lesson
+still has at most one homework assignment, listed on every day it's open:
+in full with its due date on the day it's assigned, then repeated on later
+days as its own list entry with a "(continued)" prefix, same text and same
+due date. Keep "(continued)" in the field as written. Finishing class work
+that wasn't done in class counts as homework like anything else — give it
+a due date the way any other assignment gets one. `homework` is `null`
+(not an empty list) for a day with nothing open. Worked example, verbatim,
+from the
 week-of-9/21/2026 update:
 
 ```
@@ -199,7 +216,30 @@ or its output. Ever — true at every version, not a v1-only cut (SPEC.md).
   `lesson_code` (`2.7`) from the topic's existing numbering gap (2.5, 2.6 →
   next is 2.7) rather than leaving it null — but flagged it explicitly as an
   inference, not something sourced from the input. Don't silently guess a
-  code without saying so.
+  code without saying so. **This inference turned out wrong**: Aaron's own
+  "Topic 2 Lesson N" numbering doesn't reliably track Savvas's `lesson_code`
+  (it was off by one), so the inferred `2.7` became a standalone "Draw
+  Polygons" entry that had to be cut later — the actual polygon/perimeter
+  content folded into the existing 2.6 Distances Day 2 instead. Ask rather
+  than infer a `lesson_code` from a numbering gap.
+- **`homework` is a list, not a string.** A day having more than one open
+  assignment at once (one from earlier in the week, due Friday, overlapping
+  a new one given Thursday/Friday) turned out to be the normal case, not an
+  edge case — `homework` is now `list[str] | None` throughout
+  `courses/math6.json`, and `render.py` renders each entry on its own line.
+  Also: "finish the class work if not done" was ruled out as not-homework
+  earlier this session, then reversed later the same session once it came
+  with a real due date — a due date is what makes something count as a
+  real assignment, not the phrasing used to describe it.
+- **Quiz days can't carry content yet, and the suppression mechanism is
+  fragile.** `QUIZ_ITEM` in `engine.py` is hardcoded with no
+  target/classwork/homework — there's currently no way to store any of
+  those for an auto-placed quiz day. The closest option is the school-day
+  `note`, but a note is also how the Wednesday-quiz rule gets suppressed
+  (any note containing "quiz", case-insensitive) — so a note describing
+  quiz content has to avoid that word, or it silently cancels the quiz.
+  Recorded as a known limitation in SPEC.md's Later section — don't work
+  around it with more note-text tricks.
 - **"Push everything back" still needs measuring.** Accepting a net
   day-budget spend instead of cutting to offset it doesn't make the
   downstream effects go away — still ran `diff_impact`/`run_all_checks` and

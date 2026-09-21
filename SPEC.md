@@ -54,6 +54,8 @@ User accounts & authentication; hosted multi-tenant SaaS; manual-entry UI; iCal 
 
 **Planning aid**: a view comparing the live (edited) calendar against the original district scope-and-sequence, showing how far ahead/behind each topic is. The point is to help decide where to condense or where slack exists *before* making a pacing edit, rather than figuring it out from scratch each time. Would need the original district sequence preserved as a separate reference (it currently only exists in the archived, untracked workbook) so there's something fixed to compare the live sequence against.
 
+**Quiz-day content**: quiz days are currently hardcoded to a bare "Quiz" tile with no `target`/`classwork`/`homework` (`QUIZ_ITEM` in `engine.py`), and auto-placement is suppressed by matching the word "quiz" (case-insensitive) in a school-day `note` — a coincidental, fragile mechanism that also means a note describing what's on the quiz can accidentally cancel the quiz if it uses that word. Later: let a quiz day carry real `target`/`classwork`/`homework` like any other Instruction day, and replace the note-text-matching suppression with an explicit flag on the school-day entry.
+
 ## Definition of done
 
 I publish a real two-week calendar for one course through this tool and stop maintaining that calendar by hand.
