@@ -196,11 +196,14 @@ def insert_lesson(course, index, lesson):
     with its point value if any) are detail-only -- shown when a student
     clicks the day, never in the tile. Both are optional.
 
-    `link` is an optional URL to a student-facing resource for that day (a
-    worksheet, a slide deck) -- either a link to a Drive file shared as
-    "anyone with the link", or a relative path to a file committed under
-    docs/. Rendered as a button on the day's detail popup; omit it for a
-    day with nothing to attach."""
+    `link` is an optional URL to a student-facing resource for that day.
+    When the lesson has a slide deck (built with the lesson-builder skill),
+    this is the deck exported to PDF and shared from OneDrive -- Aaron's
+    students already use Outlook accounts, so a OneDrive share link needs no
+    extra setup on their end. A relative path to a file committed under
+    docs/ also works for anything simple enough to keep in this repo.
+    Rendered as a button on the day's detail popup; omit it for a day with
+    nothing to attach."""
     kind = lesson.get("kind", "Lesson")
     if kind not in VALID_LESSON_KINDS:
         raise ValueError(f"not a valid lesson kind: {kind!r} (want one of {sorted(VALID_LESSON_KINDS)})")

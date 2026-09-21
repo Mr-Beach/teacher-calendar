@@ -53,10 +53,15 @@ sequence.
      day's I-can statement) and `classwork` (the activity, with its point
      value) are detail-only — shown only when a student clicks the day.
    - `link` (on `insert_lesson`/`edit_lesson`) is an optional URL to a
-     student-facing resource for that day — a Drive link shared as "anyone
-     with the link", or a relative path to a file committed under `docs/`.
-     Renders as a button on the day's detail popup. Leave it unset/`None`
-     for a day with nothing to attach.
+     student-facing resource for that day. When a lesson has a deck (built
+     with the lesson-builder skill), the convention is: Aaron exports it to
+     PDF, saves/shares it from OneDrive (his students are already on
+     Outlook accounts, so no extra access setup), and hands you that share
+     link to set with `engine.edit_lesson(course, index, link=...)`. A
+     relative path to a file committed under `docs/` also works for
+     anything simple enough to keep in this repo. Renders as a button on
+     the day's detail popup. Leave it unset/`None` for a day with nothing
+     to attach.
    - Never hand-insert a `"Quiz"`-kind entry — quizzes are computed by
      `render()`, never stored (`insert_lesson` rejects this; see `engine.py`'s
      module docstring for why).
