@@ -421,7 +421,7 @@ def build_page(course, calendar):
     document.getElementById('detail-date').textContent = d.date;
     document.getElementById('detail-title').textContent = d.title || '';
     const target = document.getElementById('detail-target');
-    target.textContent = d.target ? 'I can: ' + d.target : '';
+    target.textContent = d.target ? 'Target: ' + d.target : '';
     target.hidden = !d.target;
     const classwork = document.getElementById('detail-classwork');
     classwork.textContent = d.classwork || '';
