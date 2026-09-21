@@ -122,7 +122,12 @@ A week as a plain-text block, one entry per school day: date, lesson name, a
 `target` and `Class work` (plus any `Extension`/`Warm up`) → `classwork`,
 terse and matching the file's existing style, not transcribed in full —
 both are detail-only, never the tile title (see above). `Homework` →
-`homework`, close to verbatim. Worked example, verbatim, from the
+`homework`, close to verbatim. At most one homework assignment per lesson —
+it's listed on every day it's open: in full with its due date on the day
+it's assigned, then repeated on later days with a "(continued)" prefix,
+same text and same due date. Keep "(continued)" in the `homework` field as
+written. "Finish the class work if not done" is not homework — leave
+`homework` `null` for that day. Worked example, verbatim, from the
 week-of-9/21/2026 update:
 
 ```
@@ -166,12 +171,12 @@ Fri 9/25 - Topic 2 Lesson 6: Polygons on the Coordinate Plane
 
 Mon 9/28 - Topic 2 Review
   Target: I can apply everything in Topic 2 to unfamiliar problems.
-  Retrieval practice, not reteach. Includes one context-graph item
+  Note: Retrieval practice, not reteach. Includes one context-graph item
     requiring written explanations.
   Homework: study guide
 
 Tue 9/29 - Topic 2 Summative Assessment
-  Covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3
+  Note: Covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3
   Homework: none
 ```
 
