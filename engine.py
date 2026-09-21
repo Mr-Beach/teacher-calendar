@@ -19,7 +19,7 @@ from pathlib import Path
 QUIZ_ITEM = {
     "topic": None, "lesson_code": None, "district_title": "Quiz",
     "kind": "Quiz", "target": None, "classwork": None, "homework": None,
-    "link": None,
+    "link": None, "extra_materials": None,
 }
 
 # The closed sets from SPEC.md's data model. Edit functions below validate
@@ -143,6 +143,7 @@ def render(course):
                 "target": lesson.get("target") if lesson else None,
                 "classwork": lesson.get("classwork") if lesson else None,
                 "link": lesson.get("link") if lesson else None,
+                "extra_materials": lesson.get("extra_materials") if lesson else None,
             })
         else:
             # A non-instructional day has no lesson to show alongside, so the
@@ -151,7 +152,7 @@ def render(course):
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": note or day["type"], "lesson_text": None, "kind": None,
                 "homework": None, "note": note, "target": None, "classwork": None,
-                "link": None,
+                "link": None, "extra_materials": None,
             })
     return calendar, leftover
 
@@ -178,6 +179,15 @@ def set_day(course, date_str, type=_UNSET, note=_UNSET):
                 day["note"] = note
             return day
     raise ValueError(f"no school day dated {date_str}")
+
+
+def set_daily_materials(course, items):
+    """Replace the course-wide baseline materials list (course['daily_materials'])
+    -- what a student needs every school day, regardless of lesson (a
+    Chromebook, a pencil), as opposed to a specific lesson's
+    `extra_materials`. Rare to change; rewrites the whole list rather than
+    adding/removing one item at a time."""
+    course["daily_materials"] = list(items)
 
 
 def insert_lesson(course, index, lesson):
@@ -208,7 +218,12 @@ def insert_lesson(course, index, lesson):
     share links work well since his students are already on Outlook
     accounts; a relative path to a file committed under docs/ also works
     for anything simple enough to keep in this repo. Rendered as a button
-    on the day's detail popup; omit it for a day with nothing to attach."""
+    on the day's detail popup; omit it for a day with nothing to attach.
+
+    `extra_materials` is an optional list of strings -- items needed for
+    this lesson specifically (scissors, glue stick for a cut-and-paste
+    activity), on top of the daily baseline in `course["daily_materials"]`.
+    Omit it for a lesson that needs nothing beyond the daily baseline."""
     kind = lesson.get("kind", "Lesson")
     if kind not in VALID_LESSON_KINDS:
         raise ValueError(f"not a valid lesson kind: {kind!r} (want one of {sorted(VALID_LESSON_KINDS)})")
@@ -223,6 +238,7 @@ def insert_lesson(course, index, lesson):
         "classwork": lesson.get("classwork"),
         "homework": lesson.get("homework"),
         "link": lesson.get("link"),
+        "extra_materials": lesson.get("extra_materials"),
     }
     seq = course["sequence"]
     if not 0 <= index <= len(seq):

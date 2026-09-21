@@ -73,7 +73,7 @@
       "date": "2026-09-16",
       "weekday": "Wed",
       "type": "Instruction",
-      "note": "Bring your computer."
+      "note": null
     },
     {
       "date": "2026-09-17",
@@ -91,7 +91,7 @@
       "date": "2026-09-21",
       "weekday": "Mon",
       "type": "Instruction",
-      "note": "Quiz Wednesday 9/23. Topic 2 Test Tuesday 9/29."
+      "note": null
     },
     {
       "date": "2026-09-22",
@@ -1327,7 +1327,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "0",
@@ -1337,7 +1338,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "0",
@@ -1347,7 +1349,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1357,7 +1360,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067893",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1367,7 +1371,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067893",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1377,7 +1382,8 @@
       "homework": null,
       "link": null,
       "target": "I can convert a fraction to a decimal by writing an equivalent fraction with a power of 10 in the denominator, and using place value.",
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1389,7 +1395,8 @@
       ],
       "link": null,
       "target": "I can convert a decimal to a fraction by using place value.",
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1399,7 +1406,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067894",
       "target": "I can build a number line with positive and negative fractions and decimals.",
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1409,7 +1417,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067894",
       "target": "I can order numbers least to greatest; compare with <, >, =",
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1419,7 +1428,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067895",
       "target": "I can find and interpret absolute value",
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1429,7 +1439,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067895",
       "target": "I can differentiate between location on a number line and distance from zero",
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1441,7 +1452,8 @@
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067897",
       "target": "I can name the parts of the coordinate plane and plot ordered pairs with negative coordinates.",
-      "classwork": "Sailboat graphing (50 pts)."
+      "classwork": "Sailboat graphing (50 pts).",
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1453,7 +1465,8 @@
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067897",
       "target": "I can name a point's coordinates, including half units, and explain how points with matching numbers but different signs reflect across the axes.",
-      "classwork": "Owl graphing (96 pts). Early finishers: Desmos graphing activity."
+      "classwork": "Owl graphing (96 pts). Early finishers: Desmos graphing activity.",
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1466,7 +1479,8 @@
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
       "target": "I can use absolute value to find the distance between two points that share an x- or y-coordinate.",
-      "classwork": "Explore and Share (textbook p. 95); workbook pp. 100\u2013102, problems 9\u201311, 18\u201321, 23, 29."
+      "classwork": "Explore and Share (textbook p. 95); workbook pp. 100\u2013102, problems 9\u201311, 18\u201321, 23, 29.",
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1479,7 +1493,8 @@
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
       "target": "I can plot a polygon from its vertices' coordinates and use absolute value to find its side lengths and perimeter.",
-      "classwork": "Workbook pp. 100\u2013102, problems 12\u201317, 22, 24\u201326. Extension: problems 27\u201328."
+      "classwork": "Workbook pp. 100\u2013102, problems 12\u201317, 22, 24\u201326. Extension: problems 27\u201328.",
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1491,7 +1506,8 @@
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067902",
       "target": "I can apply everything in Topic 2 to problems I have not seen before.",
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "2",
@@ -1501,7 +1517,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": "Covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3"
+      "classwork": "Covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3",
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1511,7 +1528,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1521,7 +1539,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070544",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1531,7 +1550,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070544",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1541,7 +1561,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070545",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1551,7 +1572,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070545",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1561,7 +1583,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070546",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1571,7 +1594,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070546",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1581,7 +1605,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070548",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1591,7 +1616,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070548",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1601,7 +1627,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070549",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1611,7 +1638,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070549",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1621,7 +1649,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070550",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1631,7 +1660,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070550",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1641,7 +1671,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070551",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1651,7 +1682,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070551",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1661,7 +1693,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070552",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1671,7 +1704,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070552",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1681,7 +1715,8 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070555",
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "1",
@@ -1691,7 +1726,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1701,7 +1737,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1711,7 +1748,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1721,7 +1759,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1731,7 +1770,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1741,7 +1781,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1751,7 +1792,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1761,7 +1803,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1771,7 +1814,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1781,7 +1825,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1791,7 +1836,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1801,7 +1847,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1811,7 +1858,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1821,7 +1869,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1831,7 +1880,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1841,7 +1891,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1851,7 +1902,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1861,7 +1913,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1871,7 +1924,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "3",
@@ -1881,7 +1935,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1891,7 +1946,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1901,7 +1957,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1911,7 +1968,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1921,7 +1979,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1931,7 +1990,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1941,7 +2001,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1951,7 +2012,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1961,7 +2023,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1971,7 +2034,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1981,7 +2045,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -1991,7 +2056,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2001,7 +2067,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2011,7 +2078,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2021,7 +2089,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2031,7 +2100,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2041,7 +2111,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2051,7 +2122,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2061,7 +2133,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2071,7 +2144,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "4",
@@ -2081,7 +2155,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2091,7 +2166,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2101,7 +2177,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2111,7 +2188,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2121,7 +2199,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2131,7 +2210,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2141,7 +2221,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2151,7 +2232,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2161,7 +2243,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2171,7 +2254,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2181,7 +2265,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2191,7 +2276,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2201,7 +2287,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2211,7 +2298,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2221,7 +2309,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2231,7 +2320,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2241,7 +2331,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2251,7 +2342,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2261,7 +2353,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2271,7 +2364,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2281,7 +2375,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2291,7 +2386,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2301,7 +2397,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "5",
@@ -2311,7 +2408,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2321,7 +2419,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2331,7 +2430,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2341,7 +2441,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2351,7 +2452,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2361,7 +2463,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2371,7 +2474,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2381,7 +2485,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2391,7 +2496,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2401,7 +2507,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2411,7 +2518,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2421,7 +2529,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2431,7 +2540,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "6",
@@ -2441,7 +2551,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2451,7 +2562,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2461,7 +2573,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2471,7 +2584,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2481,7 +2595,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2491,7 +2606,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2501,7 +2617,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2511,7 +2628,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2521,7 +2639,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2531,7 +2650,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2541,7 +2661,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2551,7 +2672,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2561,7 +2683,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2571,7 +2694,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2581,7 +2705,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2591,7 +2716,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2601,7 +2727,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2611,7 +2738,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2621,7 +2749,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "7",
@@ -2631,7 +2760,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2641,7 +2771,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2651,7 +2782,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2661,7 +2793,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2671,7 +2804,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2681,7 +2815,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2691,7 +2826,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2701,7 +2837,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2711,7 +2848,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2721,7 +2859,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2731,7 +2870,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2741,7 +2881,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2751,7 +2892,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2761,7 +2903,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2771,7 +2914,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2781,7 +2925,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2791,7 +2936,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2801,7 +2947,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2811,7 +2958,8 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     },
     {
       "topic": "8",
@@ -2821,7 +2969,16 @@
       "homework": null,
       "link": null,
       "target": null,
-      "classwork": null
+      "classwork": null,
+      "extra_materials": null
     }
+  ],
+  "daily_materials": [
+    "School work folder",
+    "Laptop",
+    "Pencil",
+    "Calculator",
+    "Glue stick",
+    "Ruler"
   ]
 }

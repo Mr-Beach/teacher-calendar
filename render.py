@@ -41,6 +41,18 @@ KIND_CLASS = {
     "3-Act": "day--threeact",
     "Lesson": "day--lesson",
 }
+# Icon per material name, for the hero card's "bring today" row. Presentation
+# only -- course["daily_materials"] and a lesson's extra_materials are plain
+# strings; unrecognized text just falls back to a generic bullet.
+MATERIAL_ICONS = {
+    "School work folder": "\U0001f4c1",  # folder
+    "Laptop": "\U0001f4bb",  # laptop
+    "Pencil": "✏️",  # pencil
+    "Calculator": "\U0001f9ee",  # abacus, used loosely for "math tool"
+    "Glue stick": "\U0001f9f4",  # closest available shape match
+    "Ruler": "\U0001f4cf",  # straight ruler
+}
+DEFAULT_MATERIAL_ICON = "•"
 
 
 def esc(s):
@@ -204,6 +216,7 @@ def build_details_map(calendar):
             "homework": day["homework"],
             "note": day["note"] if day["type"] == "Instruction" else None,
             "link": day["link"],
+            "extra_materials": day["extra_materials"],
         }
     return details
 
@@ -222,6 +235,10 @@ def build_page(course, calendar):
     year_label = esc(course.get("school_year") or "")
     # </script> can't appear literally inside a script body.
     details_json = json.dumps(build_details_map(calendar)).replace("</", "<\\/")
+    daily_materials_json = json.dumps([
+        {"label": m, "icon": MATERIAL_ICONS.get(m, DEFAULT_MATERIAL_ICON)}
+        for m in course.get("daily_materials") or []
+    ]).replace("</", "<\\/")
 
     return f"""<!doctype html>
 <html lang="en">
@@ -280,6 +297,15 @@ def build_page(course, calendar):
     color: var(--muted); margin-bottom: 4px;
   }}
   .hero__date {{ font-size: 0.95rem; color: var(--muted); margin-bottom: 6px; }}
+  .hero__materials {{ display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }}
+  .hero__material-chip {{
+    display: inline-flex; align-items: center; gap: 5px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 999px; padding: 3px 11px;
+    font-size: 0.8rem; color: var(--text);
+  }}
+  .hero__material-chip--extra {{
+    background: var(--lesson); border-color: var(--lesson-border); font-weight: 600;
+  }}
   .hero__title {{ font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; line-height: 1.25; }}
   .hero__row {{ font-size: 0.95rem; margin-top: 10px; }}
   .hero__row--note {{ font-style: italic; color: var(--muted); }}
@@ -288,12 +314,12 @@ def build_page(course, calendar):
     display: inline-block; margin-top: 16px; padding: 10px 18px; border-radius: 8px;
     background: var(--lesson-border); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem;
   }}
-  .hero__next {{
+  .hero__footer {{
     margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border);
-    font-size: 0.9rem; color: var(--muted);
+    font-size: 0.9rem; color: var(--muted); display: flex; flex-direction: column; gap: 6px;
   }}
-  .hero__next a {{ color: var(--text); font-weight: 600; text-decoration: none; cursor: pointer; }}
-  .hero__next a:hover {{ text-decoration: underline; }}
+  .hero__footer a {{ color: var(--text); font-weight: 600; text-decoration: none; cursor: pointer; }}
+  .hero__footer a:hover {{ text-decoration: underline; }}
   @media (max-width: 480px) {{
     .hero {{ padding: 16px; }}
     .hero__title {{ font-size: 1.2rem; }}
@@ -455,6 +481,7 @@ def build_page(course, calendar):
 </dialog>
 <script>
   const DETAILS = {details_json};
+  const DAILY_MATERIALS = {daily_materials_json};
   function showDetail(dateStr) {{
     const d = DETAILS[dateStr];
     if (!d) return;
@@ -505,6 +532,40 @@ def build_page(course, calendar):
     if (text != null) node.textContent = text;
     return node;
   }}
+  // First DETAILS entry of this `kind` strictly after `afterDate` -- used to
+  // keep "upcoming quiz"/"upcoming test" always current, rather than relying
+  // on a note someone remembered to write on one particular day.
+  function nextByKind(kind, afterDate) {{
+    for (const k of Object.keys(DETAILS)) {{ // ascending, same order as the calendar
+      if (k > afterDate && DETAILS[k].kind === kind) return k;
+    }}
+    return null;
+  }}
+  function appendMaterialsRow(hero, entry) {{
+    if (!DAILY_MATERIALS.length && !(entry.extra_materials || []).length) return;
+    const row = heroEl('div', 'hero__materials');
+    for (const m of DAILY_MATERIALS) {{
+      const chip = heroEl('span', 'hero__material-chip');
+      chip.textContent = m.icon + ' ' + m.label;
+      row.appendChild(chip);
+    }}
+    for (const extra of (entry.extra_materials || [])) {{
+      const chip = heroEl('span', 'hero__material-chip hero__material-chip--extra');
+      chip.textContent = '+ ' + extra;
+      row.appendChild(chip);
+    }}
+    hero.appendChild(row);
+  }}
+  function heroFooterRow(label, key) {{
+    const row = heroEl('div', 'hero__footer-row');
+    row.appendChild(document.createTextNode(label + ': '));
+    const a = document.createElement('a');
+    a.href = '#';
+    a.textContent = DETAILS[key].date + ' — ' + (DETAILS[key].title || '');
+    a.addEventListener('click', (e) => {{ e.preventDefault(); showDetail(key); }});
+    row.appendChild(a);
+    return row;
+  }}
   function renderTodayHero() {{
     const hero = document.getElementById('today-hero');
     if (!hero) return;
@@ -520,6 +581,7 @@ def build_page(course, calendar):
       hero.className = 'hero ' + cls;
       hero.appendChild(heroEl('div', 'hero__eyebrow', 'Today'));
       hero.appendChild(heroEl('div', 'hero__date', entry.date));
+      if (entry.type !== 'No School') appendMaterialsRow(hero, entry);
       hero.appendChild(heroEl('div', 'hero__title', entry.title || ''));
       if (entry.target) hero.appendChild(heroEl('div', 'hero__row', 'Target: ' + entry.target));
       if (entry.classwork) hero.appendChild(heroEl('div', 'hero__row', entry.classwork));
@@ -537,19 +599,25 @@ def build_page(course, calendar):
       const todayLabel = new Date().toLocaleDateString('en-US', {{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }});
       hero.appendChild(heroEl('div', 'hero__date', todayLabel));
       hero.appendChild(heroEl('div', 'hero__title', 'No class today'));
+    }}
+
+    // Footer: "next up" only when today has no class of its own, plus the
+    // next quiz/test -- always, computed fresh, so it's never one day stale
+    // the way a hand-written note on a single tile would be.
+    const footerRows = [];
+    if (!entry) {{
       const keys = Object.keys(DETAILS); // ascending, same order as the calendar
       const nextKey = keys.find((k) => k > todayStr) || keys[keys.length - 1];
-      if (nextKey) {{
-        const next = DETAILS[nextKey];
-        const wrap = heroEl('div', 'hero__next');
-        wrap.appendChild(document.createTextNode('Next up: '));
-        const a = document.createElement('a');
-        a.href = '#';
-        a.textContent = next.date + ' — ' + (next.title || '');
-        a.addEventListener('click', (e) => {{ e.preventDefault(); showDetail(nextKey); }});
-        wrap.appendChild(a);
-        hero.appendChild(wrap);
-      }}
+      if (nextKey) footerRows.push(heroFooterRow('Next up', nextKey));
+    }}
+    const quizKey = nextByKind('Quiz', todayStr);
+    if (quizKey) footerRows.push(heroFooterRow('Upcoming quiz', quizKey));
+    const testKey = nextByKind('Test', todayStr);
+    if (testKey) footerRows.push(heroFooterRow('Upcoming test', testKey));
+    if (footerRows.length) {{
+      const footer = heroEl('div', 'hero__footer');
+      footerRows.forEach((row) => footer.appendChild(row));
+      hero.appendChild(footer);
     }}
   }}
   function markToday() {{
