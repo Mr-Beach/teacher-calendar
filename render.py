@@ -377,6 +377,7 @@ def build_page(course, calendar):
     background: var(--lesson-border); color: #fff; text-decoration: none;
     font-size: 0.9rem; font-weight: 600;
   }}
+  .detail__link[hidden] {{ display: none; }}
   .detail__close {{
     position: absolute; top: 10px; right: 12px; border: none; background: none;
     font-size: 1.3rem; line-height: 1; cursor: pointer; color: var(--muted); padding: 4px;
