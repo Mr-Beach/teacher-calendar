@@ -85,6 +85,47 @@ sequence.
    calendar his students read from, so confirm the impact with him first,
    every time.
 
+## Open issue: district firewall blocks github.io (delete this section once resolved)
+
+As of 2026-09-22, the district's Fortinet web filter blocks `*.github.io`
+at the network level for staff and students alike (IT, verbatim: "we block
+GitHub at the firewall level for all staff for security reasons" — not
+specific to this site, the whole domain/category). The `git push` → Pages
+pipeline above still works exactly as documented; the problem is that the
+published URL is unreachable from the school network, so the link posted
+in Schoology is dead for anyone on that WiFi.
+
+Ruled out:
+- **Paste the rendered HTML into a Schoology Page / SharePoint page.**
+  `docs/index.html` is JS-driven — the detail popup (`<dialog>` +
+  `showModal()`), the "today" hero card, and all click handling run from
+  the `<script>` block at the end of the file. Rich-text page editors strip
+  `<script>` on save as standard XSS hygiene, which would silently kill the
+  popups and the today-highlight, leaving a static grid. Not confirmed
+  against this specific Schoology instance, but not worth building around
+  without testing first.
+- **Upload the file to SharePoint/OneDrive and link to it.** Both serve an
+  uploaded `.html` file as a forced download rather than rendering it
+  inline with script execution — standard behavior for those services, not
+  a misconfiguration to request a fix for.
+
+Leading candidate, not yet actioned — needs Aaron:
+- **Give GitHub Pages a custom domain.** `docs/` currently has no `CNAME`
+  file; the site is on the bare `github.io` domain. Pointing a domain Aaron
+  owns at GitHub Pages (a `docs/CNAME` file + a DNS record + enabling it in
+  the repo's Pages settings) changes zero code and keeps full JS
+  interactivity — it just stops being hostnamed `github.io`, which likely
+  sidesteps a hostname/category block that matches IT's own description.
+  Needs Aaron to pick/buy a domain and set DNS. Untested — would still fail
+  if the filter blocks GitHub's IP ranges rather than the hostname, but
+  hostname/category blocking is the far more common implementation and
+  matches what IT described.
+
+Fallback if the custom domain is also blocked: host the identical static
+file on a different static host (Cloudflare Pages, Netlify, Firebase
+Hosting) and have Aaron test reachability from the school network before
+committing to one.
+
 ## Hard constraints (from SPEC.md — true at every version, not just v1)
 
 - No student names, grades, or student-identifying data. Ever.
