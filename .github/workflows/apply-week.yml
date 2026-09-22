@@ -1,0 +1,85 @@
+name: Apply planned week
+
+# The weekly content update, with no AI in the loop. A planning session
+# pushes inbox/<week>.json to a branch named week/<something>; this applies
+# it with scripts/apply_week.py and opens a pull request whose description
+# is the plain-language impact summary. Merging the PR is the go-ahead
+# CLAUDE.md asks for -- and the merge (a push to main touching
+# courses/*.json) is what fires render.yml to republish the page.
+#
+# One-time repo setting this needs: Settings -> Actions -> General ->
+# Workflow permissions -> "Allow GitHub Actions to create and approve pull
+# requests".
+on:
+  push:
+    branches: ["week/**"]
+    paths: ["inbox/*.json"]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Tests
+        run: python3 -m unittest discover -s tests
+
+      - name: Apply week file(s)
+        id: apply
+        run: |
+          shopt -s nullglob
+          files=(inbox/*.json)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No week files in inbox/ -- nothing to do." >> "$GITHUB_STEP_SUMMARY"
+            echo "applied=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          : > summary.md
+          mkdir -p weeks/applied
+          for f in "${files[@]}"; do
+            if ! python3 scripts/apply_week.py "$f" --summary part.md; then
+              # Rejected: show why on the run page and fail, changing nothing.
+              cat part.md >> "$GITHUB_STEP_SUMMARY"
+              exit 1
+            fi
+            cat part.md >> summary.md
+            git mv "$f" "weeks/applied/$(basename "$f")"
+          done
+          rm -f part.md
+          cat summary.md >> "$GITHUB_STEP_SUMMARY"
+          echo "applied=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and open pull request
+        if: steps.apply.outputs.applied == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add courses/ weeks/ inbox/
+          # No [skip ci] here: a GITHUB_TOKEN push never re-triggers workflows
+          # anyway, and the marker could ride along into a squash-merge
+          # message and stop render.yml from publishing.
+          git commit -m "Apply ${BRANCH#week/} to the calendar"
+          git push
+          {
+            echo "Applied by \`scripts/apply_week.py\` -- content only, no AI in the loop."
+            echo "**Merge = publish.** Merging republishes the student calendar."
+            echo
+            cat summary.md
+          } > body.md
+          if gh pr view "$BRANCH" --json state -q .state 2>/dev/null | grep -q OPEN; then
+            gh pr edit "$BRANCH" --body-file body.md
+          else
+            gh pr create --base main --head "$BRANCH" \
+              --title "Calendar: ${BRANCH#week/}" --body-file body.md
+          fi

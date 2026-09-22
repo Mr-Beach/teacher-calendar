@@ -32,6 +32,17 @@ cut-order preference (Topic Openers, then 3-Act tasks, then second days on
 lessons students already have) rather than asking him to pick from the raw
 sequence.
 
+## Fast path: routine weekly content (no Claude Code needed)
+
+A week that only fills in content — target, class work, homework, link,
+materials, student-facing notes — doesn't need this session at all. It goes
+in as `inbox/<week>.json` on a `week/<label>` branch; a GitHub Action
+applies it with `scripts/apply_week.py` and opens a PR for Aaron to merge.
+Format and rules: `inbox/README.md`. Anything that moves dates still comes
+here and follows the steps below. If Aaron hands a week block to this
+session anyway, writing it as a week file and running
+`python3 scripts/apply_week.py <file> --dry-run` is a fine way to apply it.
+
 ## How to make an edit
 
 1. Read `courses/math6.json` (currently the only course).
