@@ -513,7 +513,7 @@ def build_page(course, calendar):
     if (e.target.id === 'detail') e.target.close();
   }});
 
-  // Mark today's cell and scroll to it. Computed in the visitor's browser,
+  // Mark today's cell. Computed in the visitor's browser,
   // not baked in at render time -- the page is only rebuilt when the
   // calendar data changes, not daily, so a server-side "today" would go
   // stale the very next day.
@@ -634,9 +634,9 @@ def build_page(course, calendar):
       if (!target) return;
       matches = document.querySelectorAll(`[data-date="${{target}}"]`);
     }}
+    // Highlight only -- the page opens at the top, on the today card, not
+    // scrolled down to this cell.
     matches.forEach((el) => el.classList.add('day--today'));
-    const visible = Array.from(matches).find((el) => el.offsetParent !== null);
-    (visible || matches[0])?.scrollIntoView({{ block: 'center' }});
   }}
   renderTodayHero();
   markToday();
