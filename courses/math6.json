@@ -109,7 +109,7 @@
       "date": "2026-09-24",
       "weekday": "Thu",
       "type": "Instruction",
-      "note": null
+      "note": "Topic 2 study guide handed out today. Quiz review, then start your quiz redo."
     },
     {
       "date": "2026-09-25",
@@ -1475,6 +1475,7 @@
       "kind": "Lesson",
       "homework": [
         "Topic 2 study guide, due Tue 9/29",
+        "Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
         "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
@@ -1489,6 +1490,7 @@
       "kind": "Lesson",
       "homework": [
         "(continued) Topic 2 study guide, due Tue 9/29",
+        "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
         "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
@@ -1502,7 +1504,8 @@
       "district_title": "Topic 2 Review",
       "kind": "Lesson",
       "homework": [
-        "(continued) Topic 2 study guide, due Tue 9/29"
+        "(continued) Topic 2 study guide, due Tue 9/29",
+        "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30"
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067902",
       "target": "I can apply everything in Topic 2 to problems I have not seen before.",

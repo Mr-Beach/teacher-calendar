@@ -109,7 +109,7 @@
       "date": "2026-09-24",
       "weekday": "Thu",
       "type": "Instruction",
-      "note": "Topic 1 Study Guide handed out today."
+      "note": "Topic 1 Study Guide handed out today. Quiz review, then start your quiz redo."
     },
     {
       "date": "2026-09-25",
@@ -1481,6 +1481,7 @@
       "kind": "Lesson",
       "homework": [
         "Topic 1 Study Guide, due Tue 9/29",
+        "Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
         "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
       ],
       "link": null,
@@ -1495,6 +1496,7 @@
       "kind": "Lesson",
       "homework": [
         "(continued) Topic 1 Study Guide, due Tue 9/29",
+        "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
         "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
       ],
       "link": null,
@@ -1507,7 +1509,10 @@
       "lesson_code": null,
       "district_title": "Topic 1 Review",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        "(continued) Topic 1 Study Guide, due Tue 9/29",
+        "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30"
+      ],
       "link": null,
       "target": null,
       "classwork": null,
