@@ -6,8 +6,9 @@ Aaron teaches from district pacing guides. Each course has one file that
 is the single source of truth for its calendar: `courses/math6.json` (Math
 6) and `courses/math78.json` (Math 7/8 Compacted). The published pages
 students read from Schoology are **beach-math.com/math6** and
-**beach-math.com/math78** (the bare beach-math.com also serves Math 6, for
-links already posted), hosted on Cloudflare Workers, auto-built from
+**beach-math.com/math78**; the bare beach-math.com is a front page with a
+button per course (for Aaron and anyone he shares it with — the course
+pages don't link to each other or back to it), hosted on Cloudflare Workers, auto-built from
 `courses/*.json` on every push to `main` (see "Hosting" below) — it is not `docs/index.html`, which is a static redirect
 stub kept only for old bookmarks pointing at the original `github.io` URL.
 Losing a day
@@ -126,8 +127,9 @@ Confirmed 2026-09-23 via direct DNS/header check: `beach-math.com` and
   (run in Cloudflare's own ephemeral checkout — this never gets committed
   back to git), then `npx wrangler deploy`. `build_site.py` renders every
   `courses/<slug>.json` to `docs/<slug>/index.html` (served at
-  `beach-math.com/<slug>`) and also writes Math 6 to `docs/index.html` for
-  the bare domain, so a new course needs no build change. No
+  `beach-math.com/<slug>`) and writes the front page (one button per
+  course) to `docs/index.html` for the bare domain, so a new course needs
+  no build change. No
   `wrangler.jsonc` is committed to this repo; wrangler auto-detects `docs/`
   as the assets directory, and Cloudflare's dashboard manages the build/
   deploy commands directly.
