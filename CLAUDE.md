@@ -3,8 +3,12 @@
 ## What this repo is for
 
 Aaron teaches from district pacing guides. `courses/math6.json` is the
-single source of truth for one course's calendar; `docs/index.html` is a
-generated, published page students read from Schoology. Losing a day
+single source of truth for one course's calendar. The published page
+students read from Schoology is **beach-math.com**, hosted on Cloudflare
+Workers, auto-built from `courses/math6.json` on every push to `main` (see
+"Hosting" below) — it is not `docs/index.html`, which is a static redirect
+stub kept only for old bookmarks pointing at the original `github.io` URL.
+Losing a day
 (assembly, snow day, a lesson running long) re-flows every lesson after it —
 the whole point of this tool is that Aaron never re-derives that by hand.
 Background: `SPEC.md` (v1 scope and hard constraints), `PLANNING.md` (the
@@ -69,8 +73,10 @@ sequence.
      the raw JSON — don't guess offsets.
 4. Write the course dict back with `json.dump(course, f, indent=2)` plus a
    trailing newline, matching the file's existing style.
-5. Render locally so you can see the result before committing:
-   `python3 render.py courses/math6.json > docs/index.html`
+5. Render locally so you can see the result before committing — write to a
+   scratch path, **not** `docs/index.html` (that file is a fixed redirect
+   stub now; see "Hosting" below, do not overwrite or commit over it):
+   `python3 render.py courses/math6.json > /tmp/preview.html`
 6. Run `engine.run_all_checks(course)` (test placement, unexplained
    closures, lesson shortfall) and report any warning as an editorial
    question — these are deliberately not auto-fixed (see each check's
@@ -79,54 +85,50 @@ sequence.
    before_leftover)` in Aaron's terms — what date things start shifting
    from, whether the leftover/shortfall count changed — not a raw diff.
 8. Show Aaron the summary and get a go-ahead before committing. Once
-   confirmed, commit `courses/math6.json` and the re-rendered
-   `docs/index.html`, and push to `main`. This repo is single-user and the
-   whole point is removing friction from this step — but it's a live
-   calendar his students read from, so confirm the impact with him first,
-   every time.
+   confirmed, commit `courses/math6.json` (only — leave `docs/index.html`
+   alone) and push to `main`. This repo is single-user and the whole point
+   is removing friction from this step — but it's a live calendar his
+   students read from, so confirm the impact with him first, every time.
+   The push alone republishes the site — see "Hosting" below.
 
-## Open issue: district firewall blocks github.io (delete this section once resolved)
+## Hosting
 
-As of 2026-09-22, the district's Fortinet web filter blocks `*.github.io`
-at the network level for staff and students alike (IT, verbatim: "we block
-GitHub at the firewall level for all staff for security reasons" — not
-specific to this site, the whole domain/category). The `git push` → Pages
-pipeline above still works exactly as documented; the problem is that the
-published URL is unreachable from the school network, so the link posted
-in Schoology is dead for anyone on that WiFi.
+The published site is **beach-math.com**, served by a Cloudflare Worker
+(static assets), not GitHub Pages. This exists because the district's
+Fortinet web filter blocks `*.github.io` at the network level for staff and
+students (IT, verbatim: "we block GitHub at the firewall level for all
+staff for security reasons"); moving the actual serving off GitHub's
+infrastructure entirely (not just the hostname) removes any risk that the
+filter is blocking GitHub's IP ranges rather than just the hostname.
+Confirmed 2026-09-23 via direct DNS/header check: `beach-math.com` and
+`www.beach-math.com` resolve to Cloudflare IPs and respond with
+`server: cloudflare` — nothing in the serving path touches GitHub anymore.
 
-Ruled out:
-- **Paste the rendered HTML into a Schoology Page / SharePoint page.**
-  `docs/index.html` is JS-driven — the detail popup (`<dialog>` +
-  `showModal()`), the "today" hero card, and all click handling run from
-  the `<script>` block at the end of the file. Rich-text page editors strip
-  `<script>` on save as standard XSS hygiene, which would silently kill the
-  popups and the today-highlight, leaving a static grid. **Confirmed
-  2026-09-22**: Aaron pasted a probe snippet (a `<div>` plus a `<script>`
-  that rewrites its text) into a real Schoology page — after save/reload
-  the div still showed its unmodified placeholder text, i.e. the `<script>`
-  tag was stripped, exactly as predicted.
-- **Upload the file to SharePoint/OneDrive and link to it.** Both serve an
-  uploaded `.html` file as a forced download rather than rendering it
-  inline with script execution — standard behavior for those services, not
-  a misconfiguration to request a fix for.
-
-Leading candidate, not yet actioned — needs Aaron:
-- **Give GitHub Pages a custom domain.** `docs/` currently has no `CNAME`
-  file; the site is on the bare `github.io` domain. Pointing a domain Aaron
-  owns at GitHub Pages (a `docs/CNAME` file + a DNS record + enabling it in
-  the repo's Pages settings) changes zero code and keeps full JS
-  interactivity — it just stops being hostnamed `github.io`, which likely
-  sidesteps a hostname/category block that matches IT's own description.
-  Needs Aaron to pick/buy a domain and set DNS. Untested — would still fail
-  if the filter blocks GitHub's IP ranges rather than the hostname, but
-  hostname/category blocking is the far more common implementation and
-  matches what IT described.
-
-Fallback if the custom domain is also blocked: host the identical static
-file on a different static host (Cloudflare Pages, Netlify, Firebase
-Hosting) and have Aaron test reachability from the school network before
-committing to one.
+- **Auto-deploy**: a Cloudflare Workers Builds project (`teacher-calendar`,
+  in Aaron's Cloudflare account) is connected via the Cloudflare GitHub App
+  to `Mr-Beach/teacher-calendar`, scoped to that repo only. Every push to
+  `main` triggers: build command `python3 render.py courses/math6.json >
+  docs/index.html` (run in Cloudflare's own ephemeral checkout — this
+  never gets committed back to git), then `npx wrangler deploy`. No
+  `wrangler.jsonc` is committed to this repo; Cloudflare's dashboard
+  manages the Worker's build/deploy config directly.
+- **Domain**: `beach-math.com` was registered through Cloudflare Registrar
+  and its DNS zone lives on Cloudflare. `beach-math.com` and
+  `www.beach-math.com` are attached to the Worker as Custom Domains
+  (Worker's **Domains** tab), which is what makes Cloudflare own and manage
+  their DNS records and TLS certs — there are no manually-managed DNS
+  records for this site.
+- **`docs/index.html` in this repo** is now a small static redirect stub
+  (meta-refresh + link to `beach-math.com`) so `mr-beach.github.io` — the
+  original address, still enabled via GitHub Pages — keeps working for
+  anyone with it bookmarked, instead of going dead or serving a stale
+  calendar. It is committed once and should never be overwritten by the
+  normal edit workflow (see step 5 above). `docs/CNAME` was removed since
+  GitHub Pages no longer owns the custom domain.
+- **If this ever needs rebuilding from scratch**: Cloudflare dashboard →
+  Workers & Pages → `teacher-calendar` → Settings → Builds, for build/
+  deploy commands and the GitHub connection; → Domains tab, for the custom
+  domain attachments.
 
 ## Hard constraints (from SPEC.md — true at every version, not just v1)
 
