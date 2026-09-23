@@ -101,9 +101,11 @@ Ruled out:
   `showModal()`), the "today" hero card, and all click handling run from
   the `<script>` block at the end of the file. Rich-text page editors strip
   `<script>` on save as standard XSS hygiene, which would silently kill the
-  popups and the today-highlight, leaving a static grid. Not confirmed
-  against this specific Schoology instance, but not worth building around
-  without testing first.
+  popups and the today-highlight, leaving a static grid. **Confirmed
+  2026-09-22**: Aaron pasted a probe snippet (a `<div>` plus a `<script>`
+  that rewrites its text) into a real Schoology page — after save/reload
+  the div still showed its unmodified placeholder text, i.e. the `<script>`
+  tag was stripped, exactly as predicted.
 - **Upload the file to SharePoint/OneDrive and link to it.** Both serve an
   uploaded `.html` file as a forced download rather than rendering it
   inline with script execution — standard behavior for those services, not
