@@ -1,13 +1,12 @@
 """Render a course's data file into a single static HTML calendar page.
 
 Usage:
-    python3 render.py courses/math6.json > docs/index.html
+    python3 render.py courses/math6.json > /tmp/preview.html
 
-docs/ is what GitHub Pages serves. A GitHub Action (.github/workflows/
-render.yml) runs this automatically and commits the result whenever
-courses/*.json (or this file) changes on main -- so pushing a data edit is
-enough; you don't have to run this locally first. Still useful to run by
-hand to preview a change before committing.
+Cloudflare Workers Builds runs this on every push to main and deploys the
+result to beach-math.com (CLAUDE.md, "Hosting"); the output is never
+committed. Run it by hand only to preview, and never into docs/index.html
+-- that file is the redirect stub for old github.io bookmarks.
 """
 import calendar as calendar_module
 import json

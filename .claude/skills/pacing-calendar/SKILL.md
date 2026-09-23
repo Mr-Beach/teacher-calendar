@@ -1,6 +1,6 @@
 ---
 name: pacing-calendar
-description: Update Aaron's Math 6 pacing calendar (courses/math6.json) and republish docs/index.html. Use whenever he's updating the pacing calendar, moving a test or quiz, adding or splitting a lesson, adding/losing a week or a day, re-flowing lessons after a lost day, or hands over a week of lesson entries (date, lesson, target, class work, homework, notes) to enter.
+description: Update Aaron's Math 6 pacing calendar (courses/math6.json) and republish beach-math.com. Use whenever he's updating the pacing calendar, moving a test or quiz, adding or splitting a lesson, adding/losing a week or a day, re-flowing lessons after a lost day, or hands over a week of lesson entries (date, lesson, target, class work, homework, notes) to enter.
 ---
 
 # Pacing calendar updates
@@ -69,11 +69,11 @@ conversation — it changes underneath you.
 
 ## Generated — never hand-edit
 
-`docs/index.html`, produced by `render.py`. `.github/workflows/render.yml`
-regenerates and commits it automatically on any push to `main` touching
-`courses/**.json`, `render.py`, or `engine.py` — so it's self-healing even
-if you forget to render locally, but render locally anyway to preview
-before committing.
+The published page, produced by `render.py`. It is rendered by Cloudflare
+Workers Builds in its own checkout on every push to `main` and served at
+beach-math.com — never committed to git (CLAUDE.md, "Hosting").
+**`docs/index.html` is not the calendar**: it's a fixed redirect stub for
+old github.io bookmarks. Never render into it, overwrite it, or commit it.
 
 ## Repo vs. the district workbook — who wins
 
@@ -109,16 +109,16 @@ they disagree, the repo is right and the workbook is stale.
 
 ## Build & publish
 
-1. `python3 render.py courses/math6.json > docs/index.html` — render and
-   look it over before showing Aaron anything.
+1. `python3 render.py courses/math6.json > /tmp/preview.html` — render to
+   a scratch path (never `docs/index.html`) and look it over before
+   showing Aaron anything.
 2. `engine.run_all_checks(course)` — report any warning.
 3. Get Aaron's go-ahead on the content — every time, live calendar, no
    exceptions — before committing.
-4. Commit `courses/math6.json` + the re-rendered `docs/index.html` directly
-   on `main`, then push to `origin/main` — that's the actual publish step
-   (the Action re-renders, GitHub Pages serves `docs/`, live in about a
-   minute). Confirm that push explicitly, separately from the content
-   go-ahead in step 3.
+4. Commit `courses/math6.json` only, directly on `main`, then push to
+   `origin/main` — that's the actual publish step (Cloudflare Workers
+   Builds renders and deploys to beach-math.com). Confirm that push
+   explicitly, separately from the content go-ahead in step 3.
 
 ## Input format Aaron hands over
 
