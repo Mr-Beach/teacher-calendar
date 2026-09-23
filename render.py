@@ -3,8 +3,9 @@
 Usage:
     python3 render.py courses/math6.json > /tmp/preview.html
 
-Cloudflare Workers Builds runs this on every push to main and deploys the
-result to beach-math.com (CLAUDE.md, "Hosting"); the output is never
+Cloudflare Workers Builds renders every course with this on each push to
+main, via scripts/build_site.py, and deploys the result to
+beach-math.com/<course> (CLAUDE.md, "Hosting"); the output is never
 committed. Run it by hand only to preview, and never into docs/index.html
 -- that file is the redirect stub for old github.io bookmarks.
 """

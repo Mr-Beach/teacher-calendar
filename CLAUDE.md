@@ -2,11 +2,13 @@
 
 ## What this repo is for
 
-Aaron teaches from district pacing guides. `courses/math6.json` is the
-single source of truth for one course's calendar. The published page
-students read from Schoology is **beach-math.com**, hosted on Cloudflare
-Workers, auto-built from `courses/math6.json` on every push to `main` (see
-"Hosting" below) — it is not `docs/index.html`, which is a static redirect
+Aaron teaches from district pacing guides. Each course has one file that
+is the single source of truth for its calendar: `courses/math6.json` (Math
+6) and `courses/math78.json` (Math 7/8 Compacted). The published pages
+students read from Schoology are **beach-math.com/math6** and
+**beach-math.com/math78** (the bare beach-math.com also serves Math 6, for
+links already posted), hosted on Cloudflare Workers, auto-built from
+`courses/*.json` on every push to `main` (see "Hosting" below) — it is not `docs/index.html`, which is a static redirect
 stub kept only for old bookmarks pointing at the original `github.io` URL.
 Losing a day
 (assembly, snow day, a lesson running long) re-flows every lesson after it —
@@ -45,7 +47,9 @@ session anyway, writing it as a week file and running
 
 ## How to make an edit
 
-1. Read `courses/math6.json` (currently the only course).
+1. Read the course file — `courses/math6.json` or `courses/math78.json`.
+   If Aaron doesn't say which class, and it isn't obvious from the lesson
+   (Math 7/8 lesson codes and topics differ from Math 6's), ask.
 2. Before editing, capture `engine.render(course)` — you'll diff against it
    after, via `engine.diff_impact`.
 3. Use `engine.py`'s edit functions. Don't hand-write JSON mutations:
@@ -87,7 +91,7 @@ session anyway, writing it as a week file and running
 5. Render locally so you can see the result before committing — write to a
    scratch path, **not** `docs/index.html` (that file is a fixed redirect
    stub now; see "Hosting" below, do not overwrite or commit over it):
-   `python3 render.py courses/math6.json > /tmp/preview.html`
+   `python3 render.py courses/<course>.json > /tmp/preview.html`
 6. Run `engine.run_all_checks(course)` (test placement, unexplained
    closures, lesson shortfall) and report any warning as an editorial
    question — these are deliberately not auto-fixed (see each check's
@@ -96,7 +100,7 @@ session anyway, writing it as a week file and running
    before_leftover)` in Aaron's terms — what date things start shifting
    from, whether the leftover/shortfall count changed — not a raw diff.
 8. Show Aaron the summary and get a go-ahead before committing. Once
-   confirmed, commit `courses/math6.json` (only — leave `docs/index.html`
+   confirmed, commit the edited course file (only — leave `docs/index.html`
    alone) and push to `main`. This repo is single-user and the whole point
    is removing friction from this step — but it's a live calendar his
    students read from, so confirm the impact with him first, every time.
@@ -118,11 +122,15 @@ Confirmed 2026-09-23 via direct DNS/header check: `beach-math.com` and
 - **Auto-deploy**: a Cloudflare Workers Builds project (`teacher-calendar`,
   in Aaron's Cloudflare account) is connected via the Cloudflare GitHub App
   to `Mr-Beach/teacher-calendar`, scoped to that repo only. Every push to
-  `main` triggers: build command `python3 render.py courses/math6.json >
-  docs/index.html` (run in Cloudflare's own ephemeral checkout — this
-  never gets committed back to git), then `npx wrangler deploy`. No
-  `wrangler.jsonc` is committed to this repo; Cloudflare's dashboard
-  manages the Worker's build/deploy config directly.
+  `main` triggers: build command `python3 scripts/build_site.py docs`
+  (run in Cloudflare's own ephemeral checkout — this never gets committed
+  back to git), then `npx wrangler deploy`. `build_site.py` renders every
+  `courses/<slug>.json` to `docs/<slug>/index.html` (served at
+  `beach-math.com/<slug>`) and also writes Math 6 to `docs/index.html` for
+  the bare domain, so a new course needs no build change. No
+  `wrangler.jsonc` is committed to this repo; wrangler auto-detects `docs/`
+  as the assets directory, and Cloudflare's dashboard manages the build/
+  deploy commands directly.
 - **Domain**: `beach-math.com` was registered through Cloudflare Registrar
   and its DNS zone lives on Cloudflare. `beach-math.com` and
   `www.beach-math.com` are attached to the Worker as Custom Domains
@@ -145,4 +153,5 @@ Confirmed 2026-09-23 via direct DNS/header check: `beach-math.com` and
 
 - No student names, grades, or student-identifying data. Ever.
 - No accounts, no database — `courses/*.json` is the only state.
-- Single course, single teacher, single user (Aaron).
+- Single teacher, single user (Aaron). One file per course; a second course
+  is another `courses/<slug>.json`, not a schema change.

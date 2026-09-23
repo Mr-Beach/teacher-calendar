@@ -1,6 +1,6 @@
 ---
 name: pacing-calendar
-description: Update Aaron's Math 6 pacing calendar (courses/math6.json) and republish beach-math.com. Use whenever he's updating the pacing calendar, moving a test or quiz, adding or splitting a lesson, adding/losing a week or a day, re-flowing lessons after a lost day, or hands over a week of lesson entries (date, lesson, target, class work, homework, notes) to enter.
+description: Update Aaron's Math 6 or Math 7/8 Compacted pacing calendar (courses/math6.json, courses/math78.json) and republish beach-math.com. Use whenever he's updating the pacing calendar, moving a test or quiz, adding or splitting a lesson, adding/losing a week or a day, re-flowing lessons after a lost day, or hands over a week of lesson entries (date, lesson, target, class work, homework, notes) to enter.
 ---
 
 # Pacing calendar updates
@@ -14,7 +14,9 @@ restate all of it.
 
 ## Source of truth
 
-`courses/math6.json` — the only course file, and the only state. Two arrays:
+One file per course, and the only state: `courses/math6.json` (Math 6,
+beach-math.com/math6) and `courses/math78.json` (Math 7/8 Compacted,
+beach-math.com/math78). If Aaron doesn't say which class, ask. Two arrays:
 
 `school_days` — one entry per calendar day, pinned to that date:
 ```json
@@ -77,7 +79,7 @@ old github.io bookmarks. Never render into it, overwrite it, or commit it.
 
 ## Repo vs. the district workbook — who wins
 
-`courses/math6.json`, always. SPEC.md: after the one-time import, the
+The course file, always. SPEC.md: after the one-time import, the
 workbook is archived, not a live input, and re-running the conversion is
 not an expected workflow. Never reconcile the repo toward the workbook; if
 they disagree, the repo is right and the workbook is stale.
@@ -109,15 +111,15 @@ they disagree, the repo is right and the workbook is stale.
 
 ## Build & publish
 
-1. `python3 render.py courses/math6.json > /tmp/preview.html` — render to
+1. `python3 render.py courses/<course>.json > /tmp/preview.html` — render to
    a scratch path (never `docs/index.html`) and look it over before
    showing Aaron anything.
 2. `engine.run_all_checks(course)` — report any warning.
 3. Get Aaron's go-ahead on the content — every time, live calendar, no
    exceptions — before committing.
-4. Commit `courses/math6.json` only, directly on `main`, then push to
+4. Commit the edited course file only, directly on `main`, then push to
    `origin/main` — that's the actual publish step (Cloudflare Workers
-   Builds renders and deploys to beach-math.com). Confirm that push
+   Builds renders every course and deploys to beach-math.com/<course>). Confirm that push
    explicitly, separately from the content go-ahead in step 3.
 
 ## Input format Aaron hands over

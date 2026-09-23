@@ -1,0 +1,2980 @@
+{
+  "course": "Math 7/8 Compacted",
+  "school_year": "2026-27",
+  "quiz_rhythm_start": "2026-09-16",
+  "school_days": [
+    {
+      "date": "2026-09-01",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-09-02",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-03",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-04",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-07",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-09-08",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-09",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-10",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-11",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-14",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-15",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-16",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-17",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-18",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-21",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-22",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-23",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-24",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": "Topic 1 Study Guide handed out today."
+    },
+    {
+      "date": "2026-09-25",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-28",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-29",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-30",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-01",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-02",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-05",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-06",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-07",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-08",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-09",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": "No School State In-Service Day"
+    },
+    {
+      "date": "2026-10-12",
+      "weekday": "Mon",
+      "type": "Testing",
+      "note": "MAP Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2026-10-13",
+      "weekday": "Tue",
+      "type": "Testing",
+      "note": "MAP Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2026-10-14",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-15",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-16",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-19",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-20",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-21",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-22",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-23",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-26",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-27",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-28",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-29",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-30",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-02",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-03",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-04",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-05",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-06",
+      "weekday": "Fri",
+      "type": "Flex",
+      "note": "Flex Day"
+    },
+    {
+      "date": "2026-11-09",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-10",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-11",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-11-12",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-13",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-16",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-17",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-18",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-19",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-20",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-23",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-24",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-25",
+      "weekday": "Wed",
+      "type": "Flex",
+      "note": null
+    },
+    {
+      "date": "2026-11-26",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-11-27",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-11-30",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-01",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-02",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-03",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-04",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-07",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-08",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-09",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-10",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-11",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-14",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-15",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-16",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-17",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-18",
+      "weekday": "Fri",
+      "type": "Flex",
+      "note": "Early Dismissal"
+    },
+    {
+      "date": "2026-12-21",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-22",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-23",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-12-24",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-25",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-28",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-29",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-12-30",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-12-31",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-01-01",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-01-04",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-05",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-06",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-07",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-08",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-11",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-12",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-13",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-14",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-15",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-18",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-01-19",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-20",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-21",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-22",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-25",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-26",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-27",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-28",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": "No School (Day between semesters)"
+    },
+    {
+      "date": "2027-01-29",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-01",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-02",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-03",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-04",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-05",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-08",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-09",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-10",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-11",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-12",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-15",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-02-16",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-02-17",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-02-18",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-02-19",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-02-22",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-23",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-24",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-25",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-26",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-01",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-02",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-03",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-04",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-05",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-08",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-09",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-10",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-11",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-12",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-15",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-16",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-17",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-18",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-19",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-22",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-23",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-24",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-25",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-26",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-29",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-30",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-31",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-01",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-02",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-05",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-06",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-07",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-08",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-09",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-12",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-04-13",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-04-14",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-04-15",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-04-16",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-04-19",
+      "weekday": "Mon",
+      "type": "Testing",
+      "note": "MAP Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2027-04-20",
+      "weekday": "Tue",
+      "type": "Testing",
+      "note": "MAP Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2027-04-21",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-22",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-23",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-26",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-27",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-28",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-29",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-30",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-03",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-04",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-05",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-06",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-07",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-10",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-11",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-12",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-13",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-14",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-17",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-18",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-19",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-20",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-21",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-24",
+      "weekday": "Mon",
+      "type": "Testing",
+      "note": "SBA Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2027-05-25",
+      "weekday": "Tue",
+      "type": "Testing",
+      "note": "SBA Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2027-05-26",
+      "weekday": "Wed",
+      "type": "Testing",
+      "note": "SBA Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2027-05-27",
+      "weekday": "Thu",
+      "type": "Testing",
+      "note": "SBA Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2027-05-28",
+      "weekday": "Fri",
+      "type": "Testing",
+      "note": "SBA Testing (exact dates vary by school)"
+    },
+    {
+      "date": "2027-05-31",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-06-01",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-02",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-03",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-04",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-07",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-08",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-09",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-10",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-11",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-14",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-15",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-16",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-17",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-18",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-06-21",
+      "weekday": "Mon",
+      "type": "Other",
+      "note": "Last Day Early Dismissal"
+    },
+    {
+      "date": "2027-06-22",
+      "weekday": "Tue",
+      "type": "Other",
+      "note": "Snow make up if needed"
+    },
+    {
+      "date": "2027-06-23",
+      "weekday": "Wed",
+      "type": "Other",
+      "note": "Snow make up if needed"
+    },
+    {
+      "date": "2027-06-24",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-06-25",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-06-28",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-06-29",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-06-30",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-07-01",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-07-02",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    }
+  ],
+  "sequence": [
+    {
+      "topic": "0",
+      "lesson_code": null,
+      "district_title": "Topic 0 Day 1: Welcome and Syllabus",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": "Name tags, Sharing and Listening, Mathematician Puzzle Piece, intro to Math 7/8, syllabus.",
+      "extra_materials": null
+    },
+    {
+      "topic": "0",
+      "lesson_code": null,
+      "district_title": "Topic 0 Day 2: Working Together",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": "Class rules, Math Truths Puzzle Piece with a partner.",
+      "extra_materials": null
+    },
+    {
+      "topic": "0",
+      "lesson_code": null,
+      "district_title": "Topic 0 Day 3: Connecting Ideas",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": "Finish the puzzle piece, get and explore workbooks, preview Schoology.",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.2",
+      "district_title": "Add Integers",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": "I can use a number line to add positive and negative numbers.",
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.2",
+      "district_title": "Add Integers",
+      "kind": "Lesson",
+      "homework": [
+        "Workbook p. 14 #1-6, plus extension worksheet (Tim's odd jobs)"
+      ],
+      "link": null,
+      "target": "I can use a number line to add positive and negative numbers.",
+      "classwork": "Writing addition expressions for rises and drops.",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.3",
+      "district_title": "Subtract Integers",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": "I can use a number line to subtract positive and negative numbers. I can explain the relationship between addition and subtraction of rational numbers.",
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.3",
+      "district_title": "Subtract Integers",
+      "kind": "Lesson",
+      "homework": [
+        "Workbook p. 20 #1-6"
+      ],
+      "link": null,
+      "target": "I can use a number line to subtract positive and negative numbers. I can explain the relationship between addition and subtraction of rational numbers.",
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.4",
+      "district_title": "Multiply and Divide Integers",
+      "kind": "Lesson",
+      "homework": [
+        "Workbook p. 27 #1-8, due Wed 9/16"
+      ],
+      "link": null,
+      "target": null,
+      "classwork": "Position, speed, and direction.",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.4",
+      "district_title": "Multiply and Divide Integers",
+      "kind": "Lesson",
+      "homework": [
+        "(continued) Workbook p. 27 #1-8, due Wed 9/16"
+      ],
+      "link": null,
+      "target": null,
+      "classwork": "Multiplying rational numbers.",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Quiz 1 Corrections and Retake: Integer Expressions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": "Two moves: rewrite subtraction as adding the opposite, then multiply first.",
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Quiz 1 Review Day 2: Showing Your Work",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": "One change per line; Narrator and Scribe; redo the practice sheet in that format.",
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.6",
+      "district_title": "Understand Rational Numbers",
+      "kind": "Lesson",
+      "homework": [
+        "Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
+      ],
+      "link": null,
+      "target": "I can tell whether a fraction is a terminating or repeating decimal without dividing, explain why every fraction does one or the other, and write a repeating decimal as a fraction.",
+      "classwork": "Topic 1 Lesson 6 Worksheet",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.7",
+      "district_title": "Add and Subtract Rational Numbers",
+      "kind": "Lesson",
+      "homework": [
+        "Topic 1 Lesson 7 Practice, workbook pages 45-46, problems 7, 9, 10, 11, 13, 14, 16, 18, 20, due Fri 9/25",
+        "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
+      ],
+      "link": null,
+      "target": "I can add and subtract rational numbers and find the distance between two rational numbers on a number line.",
+      "classwork": "Castle Trail, workbook Try Its pages 42-43, Do You Know How page 44",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.8",
+      "district_title": "Multiply and Divide Rational Numbers",
+      "kind": "Lesson",
+      "homework": [
+        "Topic 1 Study Guide, due Tue 9/29",
+        "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25",
+        "(continued) Topic 1 Lesson 7 Practice, workbook pages 45-46, problems 7, 9, 10, 11, 13, 14, 16, 18, 20, due Fri 9/25"
+      ],
+      "link": null,
+      "target": "I can multiply and divide rational numbers, including dividing by a fraction and simplifying complex fractions.",
+      "classwork": "workbook Try Its pages 48-50, practice pages 52-54",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": "1.9",
+      "district_title": "Solve Problems with Rational Numbers",
+      "kind": "Lesson",
+      "homework": [
+        "(continued) Topic 1 Study Guide, due Tue 9/29",
+        "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25",
+        "(continued) Topic 1 Lesson 7 Practice, workbook pages 45-46, problems 7, 9, 10, 11, 13, 14, 16, 18, 20, due Fri 9/25"
+      ],
+      "link": null,
+      "target": "I can decide which operations to use and solve multi-step problems with rational numbers.",
+      "classwork": "Topic 1 Lesson 9 Worksheet, workbook pages 59-60",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Topic 1 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Topic 1 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.1",
+      "district_title": "Write and Evaluate Algebraic Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.2",
+      "district_title": "Recognize Equivalent Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.3",
+      "district_title": "Simplify Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.3 & 5.6",
+      "district_title": "Simplify Expressions & Add Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.6",
+      "district_title": "Add Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.4",
+      "district_title": "Expand Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.4 & 5.7",
+      "district_title": "Expand Expressions & Subtract Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.7",
+      "district_title": "Subtract Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.5",
+      "district_title": "Factor Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.5",
+      "district_title": "Factor Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.8",
+      "district_title": "Analyze Equivalent Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": "5.8",
+      "district_title": "Analyze Equivalent Expressions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Topic 5 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Topic 5 Test (CEA)",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.1",
+      "district_title": "Understand Equations that Involve Two Operations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.2",
+      "district_title": "Write Two-Step Equations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.2 & 6.3",
+      "district_title": "Write Two-Step Equations & Solve Two-Step Equations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.3",
+      "district_title": "Solve Two-Step Equations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.4",
+      "district_title": "Solve Equations Using the Distributive Property",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.4",
+      "district_title": "Solve Equations Using the Distributive Property",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.5",
+      "district_title": "Connecting Equations and Inequalities",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.5",
+      "district_title": "Connecting Equations and Inequalities",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.6",
+      "district_title": "Solve Inequalities Using Addition or Subtraction",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.7",
+      "district_title": "Solve Inequalities Using Multiplication or Division",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.7",
+      "district_title": "Solve Inequalities Using Multiplication or Division",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.8",
+      "district_title": "Solve Two-Step Inequalities",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.8 & 6.9",
+      "district_title": "Solve Two-Step Inequalities & Solve Multi-Step Inequalities",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": "6.9",
+      "district_title": "Solve Multi-Step Inequalities",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Topic 6 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Topic 6 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.1",
+      "district_title": "Combine Like Terms to Solve Equations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.2",
+      "district_title": "Solve Equations with Variables on Both Sides",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.2",
+      "district_title": "Solve Equations with Variables on Both Sides",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.3",
+      "district_title": "Solve More Equations with Variables on Both Sides",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.4",
+      "district_title": "Solve Multistep Equations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.4",
+      "district_title": "Solve Multistep Equations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.5",
+      "district_title": "Equations with No Solutions or Infinitely Many Solutions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.5",
+      "district_title": "Equations with No Solutions or Infinitely Many Solutions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Topic 7 Part 1 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.1",
+      "district_title": "Connect Ratios, Rates, and Unit Rates",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.2",
+      "district_title": "Determine Unit Rates with Ratios of Fractions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.2",
+      "district_title": "Determine Unit Rates with Ratios of Fractions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.3",
+      "district_title": "Understand Proportional Relationships: Equivalent Ratios",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.8",
+      "district_title": "Solve Problems Involving Scale Drawings",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.4",
+      "district_title": "Describe Proportional Relationships: Constant of Proportionality",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.4",
+      "district_title": "Describe Proportional Relationships: Constant of Proportionality",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.5",
+      "district_title": "Graph Proportional Relationships",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.5",
+      "district_title": "Graph Proportional Relationships",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": "3.6",
+      "district_title": "Apply Proportional Reasoning to Solve Problems",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Topic 3 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Topic 3 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.8",
+      "district_title": "Proportional Relationships and Slope",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.8 & 7.9",
+      "district_title": "Proportional Relationships and Slope & Analyze Linear Equations: y = mx",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.9",
+      "district_title": "Analyze Linear Equations: y = mx",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.10",
+      "district_title": "Understand the y-Intercept of a Line",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.11",
+      "district_title": "Analyze Linear Equations: y = mx + b",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.11",
+      "district_title": "Analyze Linear Equations: y = mx + b",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Topic 7 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Topic 7 Test (CEA)",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": "4.1",
+      "district_title": "Understand Percent as a Proportion",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": "4.2",
+      "district_title": "Connect Percent and Proportion",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": "4.3",
+      "district_title": "Represent and Use the Percent Equation",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": "4.5",
+      "district_title": "Solve Percent Change and Percent Error Problems",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": "4.6",
+      "district_title": "Solve Markup and Markdown Problems",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": "4.7",
+      "district_title": "Solve Simple Interest Problems",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Topic 4 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Topic 4 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.1",
+      "district_title": "Draw Geometric Figures",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.2",
+      "district_title": "Draw Triangles with Given Conditions",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.3",
+      "district_title": "Solve Problems Using Angle Relationships",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.4",
+      "district_title": "Analyzing Circles",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.4",
+      "district_title": "Analyzing Circles",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.5",
+      "district_title": "Solve Problems Involving Area of a Circle",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.5",
+      "district_title": "Solve Problems Involving Area of a Circle",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.7",
+      "district_title": "Analyzing Solids",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.8",
+      "district_title": "Solve Problems Involving Surface Area",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.8",
+      "district_title": "Solve Problems Involving Surface Area",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "13",
+      "lesson_code": "13.1",
+      "district_title": "Find Surface Area of Three-Dimensional Figures",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "13",
+      "lesson_code": "13.1",
+      "district_title": "Find Surface Area of Three-Dimensional Figures",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.9",
+      "district_title": "Solve Problems Involving Volume",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": "10.9",
+      "district_title": "Solve Problems Involving Volume",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "13",
+      "lesson_code": "13.2",
+      "district_title": "Understand the Volume of Cylinders",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "13",
+      "lesson_code": "13.3",
+      "district_title": "Find the Volume of Cylinders",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "13",
+      "lesson_code": "13.4",
+      "district_title": "Find the Volume of Cones",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "13",
+      "lesson_code": "13.5",
+      "district_title": "Find the Volume of Spheres",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": null,
+      "district_title": "Topic 10 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "10",
+      "lesson_code": null,
+      "district_title": "Topic 10 Test (CEA)",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": "8.1",
+      "district_title": "Understanding Sampling",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": "8.2",
+      "district_title": "Populations and Samples",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": "8.3",
+      "district_title": "Draw Inferences from Data",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": "8.5",
+      "district_title": "Make Comparative Inferences about Populations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": "8.6",
+      "district_title": "Make More Comparative Inferences about Populations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Topic 8 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": "9.1",
+      "district_title": "Understanding Probability",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": "9.2",
+      "district_title": "Understand Theoretical Probability",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": "9.3",
+      "district_title": "Understand Experimental Probability",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": "9.4",
+      "district_title": "Use Probability Models",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": "9.6",
+      "district_title": "Recognize Compound Events",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": "9.7",
+      "district_title": "Determine Outcomes",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": "9.8",
+      "district_title": "Find Probabilities of Compound Events",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": "9.9",
+      "district_title": "Simulate Compound Events",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": null,
+      "district_title": "Topic 9 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "M8-5",
+      "lesson_code": "M8 5.1",
+      "district_title": "Estimate Solutions by Inspection (Math 8)",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "M8-5",
+      "lesson_code": "M8 5.2",
+      "district_title": "Solve Systems by Graphing (Math 8)",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "M8-5",
+      "lesson_code": "M8 5.3",
+      "district_title": "Solve Systems by Substitution (Math 8)",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "M8-5",
+      "lesson_code": "M8 5.3",
+      "district_title": "Solve Systems by Substitution (Math 8)",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "M8-5",
+      "lesson_code": null,
+      "district_title": "Math 8 Topic 5 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.1",
+      "district_title": "Write Rational Numbers as Decimals",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.2",
+      "district_title": "Understand Irrational Numbers",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.3",
+      "district_title": "Compare and Order Real Numbers",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.3",
+      "district_title": "Compare and Order Real Numbers",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.4",
+      "district_title": "Evaluate Square Roots and Cube Roots",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.5",
+      "district_title": "Solve Equations Using Square Roots and Cube Roots",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.6",
+      "district_title": "Use Properties of Integer Exponents",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.6",
+      "district_title": "Use Properties of Integer Exponents",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.7",
+      "district_title": "More Properties of Integer Exponents",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.8",
+      "district_title": "Use Powers of Ten to Estimate Quantities",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.9",
+      "district_title": "Understand Scientific Notation",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Topic 2 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Topic 2 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "12",
+      "lesson_code": "12.2",
+      "district_title": "Understand the Pythagorean Theorem",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "12",
+      "lesson_code": "12.3",
+      "district_title": "Understand the Converse of the Pythagorean Theorem",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.1",
+      "district_title": "Understand Congruent Figures",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.2",
+      "district_title": "Analyze Translations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.3",
+      "district_title": "Analyze Reflections",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.4",
+      "district_title": "Analyze Rotations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.5",
+      "district_title": "Compose Transformations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.7",
+      "district_title": "Understand Similar Figures",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.8",
+      "district_title": "Describe Dilations",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "12",
+      "lesson_code": null,
+      "district_title": "Topic 12 and 11 Review",
+      "kind": "Lesson",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "12",
+      "lesson_code": null,
+      "district_title": "Topic 12 and 11 Test",
+      "kind": "Test",
+      "homework": null,
+      "link": null,
+      "target": null,
+      "classwork": null,
+      "extra_materials": null
+    }
+  ],
+  "daily_materials": [
+    "School work folder",
+    "Laptop",
+    "Pencil",
+    "Calculator",
+    "Glue stick",
+    "Ruler"
+  ]
+}
