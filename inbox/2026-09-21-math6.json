@@ -1,0 +1,24 @@
+{
+  "course": "math6",
+  "week_of": "2026-09-21",
+  "days": [
+    {"date": "2026-09-24", "expect": "2.6",
+     "homework": [
+       "Topic 2 study guide, due Tue 9/29",
+       "Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
+       "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+     ],
+     "note": "Topic 2 study guide handed out today. Quiz review, then start your quiz redo."},
+    {"date": "2026-09-25", "expect": "2.6",
+     "homework": [
+       "(continued) Topic 2 study guide, due Tue 9/29",
+       "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
+       "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+     ]},
+    {"date": "2026-09-28", "expect": "Topic 2 Review",
+     "homework": [
+       "(continued) Topic 2 study guide, due Tue 9/29",
+       "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30"
+     ]}
+  ]
+}

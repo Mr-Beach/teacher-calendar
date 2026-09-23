@@ -1,0 +1,24 @@
+{
+  "course": "math78",
+  "week_of": "2026-09-21",
+  "days": [
+    {"date": "2026-09-24", "expect": "1.8",
+     "homework": [
+       "Topic 1 Study Guide, due Tue 9/29",
+       "Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
+       "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
+     ],
+     "note": "Topic 1 Study Guide handed out today. Quiz review, then start your quiz redo."},
+    {"date": "2026-09-25", "expect": "1.9",
+     "homework": [
+       "(continued) Topic 1 Study Guide, due Tue 9/29",
+       "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
+       "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
+     ]},
+    {"date": "2026-09-28", "expect": "Topic 1 Review",
+     "homework": [
+       "(continued) Topic 1 Study Guide, due Tue 9/29",
+       "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30"
+     ]}
+  ]
+}
