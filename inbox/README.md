@@ -5,7 +5,8 @@ chat) writes one JSON file per week here, on a branch named `week/<label>`
 (e.g. `week/2026-10-05`), and pushes. `.github/workflows/apply-week.yml`
 then runs `scripts/apply_week.py` on it (plain Python, no AI) and opens a
 pull request whose description is the plain-language summary. **Merging the
-PR is the go-ahead**; the merge republishes the page via `render.yml`.
+PR is the go-ahead**; the merge is a push to `main`, which Cloudflare
+Workers Builds deploys to beach-math.com like any other.
 Applied files move to `weeks/applied/`.
 
 Content only. Anything that moves dates — losing a day, cutting or inserting

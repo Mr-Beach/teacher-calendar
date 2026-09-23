@@ -4,8 +4,8 @@ name: Apply planned week
 # pushes inbox/<week>.json to a branch named week/<something>; this applies
 # it with scripts/apply_week.py and opens a pull request whose description
 # is the plain-language impact summary. Merging the PR is the go-ahead
-# CLAUDE.md asks for -- and the merge (a push to main touching
-# courses/*.json) is what fires render.yml to republish the page.
+# CLAUDE.md asks for -- and the merge, as a push to main, is what
+# Cloudflare Workers Builds deploys to beach-math.com (CLAUDE.md, Hosting).
 #
 # One-time repo setting this needs: Settings -> Actions -> General ->
 # Workflow permissions -> "Allow GitHub Actions to create and approve pull
@@ -68,12 +68,12 @@ jobs:
           git add courses/ weeks/ inbox/
           # No [skip ci] here: a GITHUB_TOKEN push never re-triggers workflows
           # anyway, and the marker could ride along into a squash-merge
-          # message and stop render.yml from publishing.
+          # message and stop the deploy on main.
           git commit -m "Apply ${BRANCH#week/} to the calendar"
           git push
           {
             echo "Applied by \`scripts/apply_week.py\` -- content only, no AI in the loop."
-            echo "**Merge = publish.** Merging republishes the student calendar."
+            echo "**Merge = publish.** Merging publishes it to beach-math.com."
             echo
             cat summary.md
           } > body.md
