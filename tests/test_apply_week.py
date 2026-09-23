@@ -49,11 +49,11 @@ class ApplyWeekTests(unittest.TestCase):
         self.plan_apply([{
             "date": self.day2["date"], "expect": self.code,
             "target": "I can do the thing.", "classwork": "Workbook p. 1",
-            "homework": ["p. 2, due Fri", "(continued) p. 1"], "link": "https://example.org/x",
+            "homework": [{"text": "p. 2", "due": "2027-06-01"}, "p. 1"], "link": "https://example.org/x",
         }])
         self.assertEqual(lesson_on(self.course, self.day2["date"])["target"], "I can do the thing.")
         self.assertEqual(lesson_on(self.course, self.day2["date"])["homework"],
-                         ["p. 2, due Fri", "(continued) p. 1"])
+                         [{"text": "p. 2", "due": "2027-06-01"}, {"text": "p. 1", "due": None}])
         self.assertEqual(lesson_on(self.course, self.day1["date"]),
                          lesson_on(COURSE, self.day1["date"]),
                          "Day 1 of the same lesson must be untouched")
@@ -120,6 +120,25 @@ class ApplyWeekTests(unittest.TestCase):
         self.plan_apply([{"date": self.day1["date"], "expect": self.code, "homework": ["a"]}])
         self.plan_apply([{"date": self.day1["date"], "expect": self.code, "homework": []}])
         self.assertIsNone(lesson_on(self.course, self.day1["date"])["homework"])
+
+    def test_bad_due_date_rejected(self):
+        with self.assertRaises(aw.WeekError) as cm:
+            aw.plan_changes(self.course, {"days": [{"date": self.day1["date"], "expect": self.code,
+                                                    "homework": [{"text": "p. 2", "due": "Fri 10/9"}]}]})
+        self.assertIn("YYYY-MM-DD", str(cm.exception))
+
+    def test_homework_shows_on_its_due_date_and_stays_put_when_lessons_shift(self):
+        due = self.day2["date"]
+        self.plan_apply([{"date": self.day1["date"], "expect": self.code,
+                          "homework": [{"text": "p. 2", "due": due}]}])
+        cal = {d["date"]: d for d in engine.render(self.course)[0]}
+        self.assertEqual(cal[due]["due"], [{"text": "p. 2", "assigned": self.day1["date"]}])
+        # Lose the assigned day: the lesson (and its homework) slides later,
+        # but the due date doesn't move -- and now it's flagged.
+        engine.set_day(self.course, self.day1["date"], type="Other", note="Assembly")
+        cal = {d["date"]: d for d in engine.render(self.course)[0]}
+        self.assertEqual([h["text"] for h in cal[due]["due"]], ["p. 2"])
+        self.assertTrue(engine.check_homework_due_dates(self.course))
 
     def test_reapplying_is_a_no_op(self):
         week = [{"date": self.day1["date"], "expect": self.code, "target": "T", "note": "N"}]

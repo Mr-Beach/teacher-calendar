@@ -89,13 +89,41 @@ def fill_weekends(calendar):
                 filled.append({
                     "date": cursor.isoformat(), "weekday": cursor.strftime("%a"),
                     "type": "Weekend", "display": "", "lesson_text": None,
-                    "kind": None, "homework": None, "note": None,
+                    "kind": None, "homework": None, "due": None, "note": None,
                     "target": None, "classwork": None, "link": None,
+                    "extra_materials": None,
                 })
                 cursor += timedelta(days=1)
         filled.append(day)
         prev_date = d
     return filled
+
+
+def short_date(iso):
+    """'2026-09-29' -> 'Tue 9/29', the way due dates read to students."""
+    d = date.fromisoformat(iso)
+    return f"{d.strftime('%a')} {d.month}/{d.day}"
+
+
+def render_day_body(day):
+    """Tile/agenda body, shared by the month grid and the portrait agenda.
+    Homework shows on the day it's assigned; its due date gets its own badge
+    so "due today" never reads like new homework."""
+    body = ""
+    if day["type"] == "Instruction":
+        body += f'<div class="day__lesson">{esc(day["lesson_text"])}</div>'
+    elif day["display"]:
+        body += f'<div class="day__note">{esc(day["display"])}</div>'
+    for due in (day.get("due") or []):
+        body += f'<div class="day__due">Due: {esc(due["text"])}</div>'
+    if day["type"] == "Instruction":
+        for hw in (day["homework"] or []):
+            body += f'<div class="day__homework">HW: {esc(hw["text"])}</div>'
+        if day["note"]:
+            body += f'<div class="day__note">{esc(day["note"])}</div>'
+        if day["link"]:
+            body += '<div class="day__link">\U0001f517 Resource</div>'
+    return body
 
 
 def render_day_cell(day):
@@ -109,20 +137,11 @@ def render_day_cell(day):
             f'<div class="day__num">{day_num}</div></div>'
         )
     css = ["day"]
-    body = ""
     if day["type"] == "Instruction":
         css.append(KIND_CLASS.get(day["kind"], "day--lesson"))
-        body += f'<div class="day__lesson">{esc(day["lesson_text"])}</div>'
-        for hw in (day["homework"] or []):
-            body += f'<div class="day__homework">HW: {esc(hw)}</div>'
-        if day["note"]:
-            body += f'<div class="day__note">{esc(day["note"])}</div>'
-        if day["link"]:
-            body += '<div class="day__link">\U0001f517 Resource</div>'
     else:
         css.append(TYPE_CLASS.get(day["type"], "day--other"))
-        if day["display"]:
-            body += f'<div class="day__note">{esc(day["display"])}</div>'
+    body = render_day_body(day)
     # Fixed-size cell with clamped text, not size-to-content: guarantees the
     # cell can never overhang regardless of title length or device font
     # metrics. Tap/click opens the full, untruncated detail.
@@ -144,20 +163,11 @@ def render_agenda_row(day):
             f'<div class="agenda-body"></div></div>'
         )
     css = ["agenda-row"]
-    body = ""
     if day["type"] == "Instruction":
         css.append(KIND_CLASS.get(day["kind"], "day--lesson"))
-        body += f'<div class="day__lesson">{esc(day["lesson_text"])}</div>'
-        for hw in (day["homework"] or []):
-            body += f'<div class="day__homework">HW: {esc(hw)}</div>'
-        if day["note"]:
-            body += f'<div class="day__note">{esc(day["note"])}</div>'
-        if day["link"]:
-            body += '<div class="day__link">\U0001f517 Resource</div>'
     else:
         css.append(TYPE_CLASS.get(day["type"], "day--other"))
-        if day["display"]:
-            body += f'<div class="day__note">{esc(day["display"])}</div>'
+    body = render_day_body(day)
     return (
         f'<div class="{" ".join(css)}" data-date="{day["date"]}">'
         f'<div class="agenda-date">{day["weekday"]}<br>{d.month}/{d.day}</div>'
@@ -213,7 +223,15 @@ def build_details_map(calendar):
             "title": day["lesson_text"] if day["type"] == "Instruction" else day["display"],
             "target": day["target"],
             "classwork": day["classwork"],
-            "homework": day["homework"],
+            "homework": [
+                {"text": hw["text"], "due": hw["due"],
+                 "due_label": short_date(hw["due"]) if hw["due"] else None}
+                for hw in (day["homework"] or [])
+            ],
+            "due": [
+                {"text": due["text"], "assigned_label": short_date(due["assigned"])}
+                for due in (day["due"] or [])
+            ],
             "note": day["note"] if day["type"] == "Instruction" else None,
             "link": day["link"],
             "extra_materials": day["extra_materials"],
@@ -267,6 +285,12 @@ def build_page(course, calendar):
     --noschool: #f3f4f6;
     --testing: #fff7ed;
     --flex: #f5f3ff;
+    /* Homework due: a filled chip, deliberately unlike any lesson-kind color,
+       so "due" never reads as another kind of day. */
+    --due: #334155;
+    --due-text: #ffffff;
+    --due-today: #dc2626;
+    --due-soon: #f59e0b;
   }}
   * {{ box-sizing: border-box; }}
   body {{
@@ -310,6 +334,26 @@ def build_page(course, calendar):
   .hero__row {{ font-size: 0.95rem; margin-top: 10px; }}
   .hero__row--note {{ font-style: italic; color: var(--muted); }}
   .hero__hw {{ margin-top: 4px; }}
+  .hero__due {{
+    margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border);
+    display: flex; flex-direction: column; gap: 8px;
+  }}
+  .hero__due-heading {{
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
+    color: var(--muted);
+  }}
+  .hero__due-item {{
+    display: flex; align-items: baseline; gap: 8px; font-size: 0.95rem;
+    color: var(--text); text-decoration: none; cursor: pointer;
+  }}
+  .hero__due-item:hover .hero__due-text {{ text-decoration: underline; }}
+  .due-pill {{
+    flex: none; font-size: 0.75rem; font-weight: 700; padding: 2px 9px; border-radius: 999px;
+    background: var(--card); border: 1px solid var(--border); color: var(--text); white-space: nowrap;
+  }}
+  .due-pill--today {{ background: var(--due-today); border-color: var(--due-today); color: #fff; }}
+  .due-pill--soon {{ background: var(--due-soon); border-color: var(--due-soon); color: #1f2328; }}
+  .hero__due-item--today .hero__due-text {{ font-weight: 700; }}
   .hero__link {{
     display: inline-block; margin-top: 16px; padding: 10px 18px; border-radius: 8px;
     background: var(--lesson-border); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem;
@@ -391,6 +435,12 @@ def build_page(course, calendar):
     -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;
   }}
   .day__note {{ font-style: italic; }}
+  .day__due {{
+    background: var(--due); color: var(--due-text); font-weight: 600; border-radius: 4px;
+    padding: 0 4px; margin-top: 2px; display: -webkit-box;
+    -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;
+  }}
+  .agenda-row .day__due {{ width: fit-content; max-width: 100%; padding: 1px 6px; }}
   .day__link {{ font-weight: 600; }}
   .day--lesson {{ background: var(--lesson); border-left: 3px solid var(--lesson-border); }}
   .day--opener {{ background: var(--opener); border-left: 3px solid var(--opener-border); }}
@@ -437,6 +487,13 @@ def build_page(course, calendar):
     font-size: 0.9rem; margin-top: 6px;
   }}
   .detail__homework div + div {{ margin-top: 4px; }}
+  .detail__due {{ margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }}
+  .detail__due[hidden] {{ display: none; }}
+  .detail__due div {{
+    background: var(--due); color: var(--due-text); border-radius: 6px;
+    padding: 6px 10px; font-size: 0.9rem;
+  }}
+  .detail__due small {{ opacity: 0.8; }}
   .detail__note {{ font-style: italic; color: var(--muted); }}
   .detail__link {{
     display: inline-block; margin-top: 10px; padding: 8px 14px; border-radius: 6px;
@@ -463,6 +520,7 @@ def build_page(course, calendar):
   <span><i style="background:var(--quiz-border)"></i>Quiz (formative)</span>
   <span><i style="background:var(--test-border)"></i>Test (summative)</span>
   <span><i style="background:var(--threeact-border)"></i>3-Act</span>
+  <span><i style="background:var(--due)"></i>Homework due</span>
   <span>&#128279; Has a linked resource</span>
 </div>
 <nav class="months">{"".join(nav_links)}</nav>
@@ -472,6 +530,7 @@ def build_page(course, calendar):
     <button class="detail__close" onclick="document.getElementById('detail').close()" aria-label="Close">&times;</button>
     <div class="detail__date" id="detail-date"></div>
     <div class="detail__title" id="detail-title"></div>
+    <div class="detail__due" id="detail-due" hidden></div>
     <div class="detail__target" id="detail-target" hidden></div>
     <div class="detail__classwork" id="detail-classwork" hidden></div>
     <div class="detail__homework" id="detail-homework" hidden></div>
@@ -493,14 +552,25 @@ def build_page(course, calendar):
     const classwork = document.getElementById('detail-classwork');
     classwork.textContent = d.classwork ? 'Classwork: ' + d.classwork : '';
     classwork.hidden = !d.classwork;
+    const due = document.getElementById('detail-due');
+    due.replaceChildren();
+    for (const item of d.due) {{
+      const line = document.createElement('div');
+      line.appendChild(document.createTextNode('Due: ' + item.text + ' '));
+      const when = document.createElement('small');
+      when.textContent = '(assigned ' + item.assigned_label + ')';
+      line.appendChild(when);
+      due.appendChild(line);
+    }}
+    due.hidden = !d.due.length;
     const hw = document.getElementById('detail-homework');
     hw.replaceChildren();
-    for (const item of (d.homework || [])) {{
+    for (const item of d.homework) {{
       const line = document.createElement('div');
-      line.textContent = 'HW: ' + item;
+      line.textContent = 'HW: ' + item.text + (item.due_label ? ' (due ' + item.due_label + ')' : '');
       hw.appendChild(line);
     }}
-    hw.hidden = !(d.homework && d.homework.length);
+    hw.hidden = !d.homework.length;
     const note = document.getElementById('detail-note');
     note.textContent = d.note || '';
     note.hidden = !d.note;
@@ -566,6 +636,50 @@ def build_page(course, calendar):
     row.appendChild(a);
     return row;
   }}
+  // How urgent a due date is, counted in class days rather than calendar
+  // days: on a Friday, Monday's homework is "due next class".
+  function nextClassDay(afterDate) {{
+    return Object.keys(DETAILS).find((k) => k > afterDate && DETAILS[k].type === 'Instruction') || null;
+  }}
+  function tomorrowISO(todayStr) {{
+    const d = new Date(todayStr + 'T12:00:00');
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
+  }}
+  function dueUrgency(dueDate, dueLabel, todayStr) {{
+    if (dueDate === todayStr) return {{ pill: 'Due today', level: 'today' }};
+    if (dueDate === nextClassDay(todayStr)) {{
+      return dueDate === tomorrowISO(todayStr)
+        ? {{ pill: 'Due tomorrow', level: 'soon' }}
+        : {{ pill: 'Due next class · ' + dueLabel, level: 'soon' }};
+    }}
+    return {{ pill: 'Due ' + dueLabel, level: 'later' }};
+  }}
+  // Every assignment not yet due, soonest first. Homework assigned today is
+  // already listed in today's block above, so it's left out here.
+  function appendDueList(hero, todayStr, skipAssignedOn) {{
+    const items = [];
+    for (const [k, d] of Object.entries(DETAILS)) {{
+      if (k === skipAssignedOn) continue;
+      for (const hw of d.homework) {{
+        if (hw.due && hw.due >= todayStr) items.push(hw);
+      }}
+    }}
+    if (!items.length) return;
+    items.sort((a, b) => (a.due < b.due ? -1 : a.due > b.due ? 1 : 0));
+    const section = heroEl('div', 'hero__due');
+    section.appendChild(heroEl('div', 'hero__due-heading', 'Homework coming due'));
+    for (const hw of items) {{
+      const u = dueUrgency(hw.due, hw.due_label, todayStr);
+      const a = heroEl('a', 'hero__due-item hero__due-item--' + u.level);
+      a.href = '#';
+      a.appendChild(heroEl('span', 'due-pill due-pill--' + u.level, u.pill));
+      a.appendChild(heroEl('span', 'hero__due-text', hw.text));
+      if (DETAILS[hw.due]) a.addEventListener('click', (e) => {{ e.preventDefault(); showDetail(hw.due); }});
+      section.appendChild(a);
+    }}
+    hero.appendChild(section);
+  }}
   function renderTodayHero() {{
     const hero = document.getElementById('today-hero');
     if (!hero) return;
@@ -585,7 +699,14 @@ def build_page(course, calendar):
       hero.appendChild(heroEl('div', 'hero__title', entry.title || ''));
       if (entry.target) hero.appendChild(heroEl('div', 'hero__row', 'Target: ' + entry.target));
       if (entry.classwork) hero.appendChild(heroEl('div', 'hero__row', 'Classwork: ' + entry.classwork));
-      for (const hw of (entry.homework || [])) hero.appendChild(heroEl('div', 'hero__row hero__hw', 'HW: ' + hw));
+      for (const hw of entry.homework) {{
+        const row = heroEl('div', 'hero__row hero__hw', 'HW: ' + hw.text + ' ');
+        if (hw.due) {{
+          const u = dueUrgency(hw.due, hw.due_label, todayStr);
+          row.appendChild(heroEl('span', 'due-pill due-pill--' + u.level, u.pill));
+        }}
+        hero.appendChild(row);
+      }}
       if (entry.note) hero.appendChild(heroEl('div', 'hero__row hero__row--note', entry.note));
       if (entry.link) {{
         const a = document.createElement('a');
@@ -600,6 +721,7 @@ def build_page(course, calendar):
       hero.appendChild(heroEl('div', 'hero__date', todayLabel));
       hero.appendChild(heroEl('div', 'hero__title', 'No class today'));
     }}
+    appendDueList(hero, todayStr, entry ? todayStr : null);
 
     // Footer: "next up" only when today has no class of its own, plus the
     // next quiz/test -- always, computed fresh, so it's never one day stale

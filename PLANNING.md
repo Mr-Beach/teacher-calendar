@@ -123,7 +123,12 @@ The calendar is student-facing. That governs everything on it:
 
 - **Notes are student-facing by definition** — testing-window reminders, holiday
   labels. Never teacher-private annotations.
-- **Homework / DeltaMath assignments render** alongside the lesson.
+- **Homework / DeltaMath assignments render** alongside the lesson on the day
+  they're assigned, and again as a distinct "Due" badge on their due date. The
+  today card lists everything not yet due, with "due today" / "due tomorrow"
+  called out. A due date is a fixed date — it's how much time students have,
+  not tied to content, so a lost day never moves it. Homework is never
+  assigned on a quiz day, but can be due on one.
 - Lesson text is written for a sixth grader, not copied from district titles
   where those are opaque.
 - Quiz and Test days are visually flagged, in **different colors** — formative

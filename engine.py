@@ -27,6 +27,38 @@ QUIZ_ITEM = {
 VALID_DAY_TYPES = {"Instruction", "Flex", "Testing", "No School", "Other"}
 VALID_LESSON_KINDS = {"Lesson", "Opener", "Quiz", "Test", "3-Act"}
 
+
+def normalize_homework(value):
+    """Canonical form of a lesson's `homework`: a list of
+    {"text": ..., "due": "YYYY-MM-DD" or None}, or None for nothing assigned.
+
+    Homework is stored once, on the lesson it's assigned with -- never
+    repeated on later days. `due` is a fixed calendar date: it's how much
+    time students were given, not tied to content, so a lost day that shifts
+    the lesson (and so the day it's assigned) never moves the due date.
+    A plain string is accepted as an assignment with no due date."""
+    if value is None or value == []:
+        return None
+    if not isinstance(value, list):
+        raise ValueError("homework must be a list of assignments, or null")
+    items = []
+    for item in value:
+        if isinstance(item, str):
+            item = {"text": item}
+        if not isinstance(item, dict) or set(item) - {"text", "due"}:
+            raise ValueError(f'each homework item needs "text" and optionally "due", got {item!r}')
+        text = item.get("text")
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError(f"homework text must be a non-empty string, got {text!r}")
+        due = item.get("due")
+        if due is not None:
+            try:
+                date.fromisoformat(due)
+            except (TypeError, ValueError):
+                raise ValueError(f"homework due date must be YYYY-MM-DD, got {due!r}") from None
+        items.append({"text": text.strip(), "due": due})
+    return items
+
 # A note mentioning "quiz" marks a day where a quiz was deliberately paired
 # with a lesson instead of taking a full day (PLANNING.md's "Pairing"). The
 # automatic Wednesday rule must not double up on a day already handled this
@@ -116,6 +148,15 @@ def render(course):
     quiz_dates = _compute_quiz_dates(school_days, sequence, course.get("quiz_rhythm_start"))
     placements, leftover = _place(school_days, sequence, quiz_dates)
 
+    # Homework shows twice: on the day it's assigned (with its lesson) and on
+    # its due date, which is fixed and independent of where lessons land.
+    due_by_date = {}
+    for day, lesson in placements:
+        for hw in normalize_homework(lesson and lesson.get("homework")) or []:
+            if hw["due"]:
+                due_by_date.setdefault(hw["due"], []).append(
+                    {"text": hw["text"], "assigned": day["date"]})
+
     calendar = []
     for day, lesson in placements:
         note = day["note"]
@@ -139,7 +180,8 @@ def render(course):
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": display, "lesson_text": base, "kind": kind,
-                "homework": lesson["homework"] if lesson else None, "note": note,
+                "homework": normalize_homework(lesson["homework"]) if lesson else None,
+                "due": due_by_date.get(day["date"]), "note": note,
                 "target": lesson.get("target") if lesson else None,
                 "classwork": lesson.get("classwork") if lesson else None,
                 "link": lesson.get("link") if lesson else None,
@@ -151,8 +193,8 @@ def render(course):
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": note or day["type"], "lesson_text": None, "kind": None,
-                "homework": None, "note": note, "target": None, "classwork": None,
-                "link": None, "extra_materials": None,
+                "homework": None, "due": due_by_date.get(day["date"]), "note": note,
+                "target": None, "classwork": None, "link": None, "extra_materials": None,
             })
     return calendar, leftover
 
@@ -206,11 +248,11 @@ def insert_lesson(course, index, lesson):
     with its point value if any) are detail-only -- shown when a student
     clicks the day, never in the tile. Both are optional.
 
-    `homework` is a list of strings, one entry per open assignment --
-    plural because it's normal, not an edge case, for an assignment given
-    earlier in the week to still be open when a new one is given later in
-    the same week. Each renders on its own line. Omit or pass `[]`/`None`
-    for a day with nothing open.
+    `homework` is a list of assignments given on this day, each
+    {"text": ..., "due": "YYYY-MM-DD"} (see normalize_homework). Each is
+    stored only here, on the day it's assigned -- render() also shows it on
+    its due date, so never repeat it on later days. Omit or pass `[]`/`None`
+    for a day with nothing assigned.
 
     `link` is an optional URL to a student-facing resource for that day --
     not the lesson-builder deck itself (Aaron isn't sharing those), but
@@ -236,7 +278,7 @@ def insert_lesson(course, index, lesson):
         "kind": kind,
         "target": lesson.get("target"),
         "classwork": lesson.get("classwork"),
-        "homework": lesson.get("homework"),
+        "homework": normalize_homework(lesson.get("homework")),
         "link": lesson.get("link"),
         "extra_materials": lesson.get("extra_materials"),
     }
@@ -269,6 +311,8 @@ def edit_lesson(course, index, **fields):
             raise ValueError(f"not a sequence field: {key!r} (want one of {sorted(entry)})")
         if key == "kind" and value not in VALID_LESSON_KINDS:
             raise ValueError(f"not a valid lesson kind: {value!r} (want one of {sorted(VALID_LESSON_KINDS)})")
+        if key == "homework":
+            value = normalize_homework(value)
         entry[key] = value
     return entry
 
@@ -362,6 +406,28 @@ def check_unexplained_closures(course):
     return warnings
 
 
+def check_homework_due_dates(course):
+    """Flag homework due on a day students aren't in school, or due on or
+    before the day it's assigned. Due dates are fixed while lessons move,
+    so a lost day can push an assignment's lesson up to (or past) its due
+    date. Not auto-fixed -- whether to extend the due date or move the
+    assignment is Aaron's call."""
+    calendar, _ = render(course)
+    by_date = {d["date"]: d for d in calendar}
+    warnings = []
+    for day in calendar:
+        for hw in day["homework"] or []:
+            due = hw["due"]
+            if not due:
+                continue
+            label = f"'{hw['text']}' (assigned {day['date']}, due {due})"
+            if due <= day["date"]:
+                warnings.append(f"{label}: due on or before the day it's assigned")
+            elif due not in by_date or by_date[due]["type"] == "No School":
+                warnings.append(f"{label}: due on a day with no school")
+    return warnings
+
+
 def run_all_checks(course):
     """Every check.yield/render together, as (label, [warnings]) pairs --
     the one place that knows the full checklist, so nothing added here has
@@ -372,6 +438,7 @@ def run_all_checks(course):
         ("test placement", check_test_placement(course)),
         ("unexplained closures", check_unexplained_closures(course)),
         ("lesson shortfall", check_lesson_shortfall(course)),
+        ("homework due dates", check_homework_due_dates(course)),
     ]
 
 

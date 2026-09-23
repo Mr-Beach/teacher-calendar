@@ -1369,7 +1369,10 @@
       "district_title": "Add Integers",
       "kind": "Lesson",
       "homework": [
-        "Workbook p. 14 #1-6, plus extension worksheet (Tim's odd jobs)"
+        {
+          "text": "Workbook p. 14 #1-6, plus extension worksheet (Tim's odd jobs)",
+          "due": null
+        }
       ],
       "link": null,
       "target": "I can use a number line to add positive and negative numbers.",
@@ -1393,7 +1396,10 @@
       "district_title": "Subtract Integers",
       "kind": "Lesson",
       "homework": [
-        "Workbook p. 20 #1-6"
+        {
+          "text": "Workbook p. 20 #1-6",
+          "due": null
+        }
       ],
       "link": null,
       "target": "I can use a number line to subtract positive and negative numbers. I can explain the relationship between addition and subtraction of rational numbers.",
@@ -1406,7 +1412,10 @@
       "district_title": "Multiply and Divide Integers",
       "kind": "Lesson",
       "homework": [
-        "Workbook p. 27 #1-8, due Wed 9/16"
+        {
+          "text": "Workbook p. 27 #1-8",
+          "due": "2026-09-16"
+        }
       ],
       "link": null,
       "target": null,
@@ -1418,9 +1427,7 @@
       "lesson_code": "1.4",
       "district_title": "Multiply and Divide Integers",
       "kind": "Lesson",
-      "homework": [
-        "(continued) Workbook p. 27 #1-8, due Wed 9/16"
-      ],
+      "homework": null,
       "link": null,
       "target": null,
       "classwork": "Multiplying rational numbers.",
@@ -1454,7 +1461,10 @@
       "district_title": "Understand Rational Numbers",
       "kind": "Lesson",
       "homework": [
-        "Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
+        {
+          "text": "Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22",
+          "due": "2026-09-25"
+        }
       ],
       "link": null,
       "target": "I can tell whether a fraction is a terminating or repeating decimal without dividing, explain why every fraction does one or the other, and write a repeating decimal as a fraction.",
@@ -1466,9 +1476,7 @@
       "lesson_code": "1.7",
       "district_title": "Add and Subtract Rational Numbers",
       "kind": "Lesson",
-      "homework": [
-        "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
-      ],
+      "homework": null,
       "link": null,
       "target": "I can add and subtract rational numbers and find the distance between two rational numbers on a number line.",
       "classwork": "Castle Trail, workbook Try Its pages 42-43, Do You Know How page 44",
@@ -1480,9 +1488,14 @@
       "district_title": "Multiply and Divide Rational Numbers",
       "kind": "Lesson",
       "homework": [
-        "Topic 1 Study Guide, due Tue 9/29",
-        "Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
-        "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
+        {
+          "text": "Topic 1 Study Guide",
+          "due": "2026-09-29"
+        },
+        {
+          "text": "Quiz redo on Schoology (up to 3 attempts)",
+          "due": "2026-09-30"
+        }
       ],
       "link": null,
       "target": "I can multiply and divide rational numbers, including dividing by a fraction and simplifying complex fractions.",
@@ -1494,11 +1507,7 @@
       "lesson_code": "1.9",
       "district_title": "Solve Problems with Rational Numbers",
       "kind": "Lesson",
-      "homework": [
-        "(continued) Topic 1 Study Guide, due Tue 9/29",
-        "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
-        "(continued) Topic 1 Lesson 6 Practice, workbook pages 39-40, problems 6-9, 13, 16, 17, 21, 22, due Fri 9/25"
-      ],
+      "homework": null,
       "link": null,
       "target": "I can decide which operations to use and solve multi-step problems with rational numbers.",
       "classwork": "Topic 1 Lesson 9 Worksheet, workbook pages 59-60",
@@ -1509,10 +1518,7 @@
       "lesson_code": null,
       "district_title": "Topic 1 Review",
       "kind": "Lesson",
-      "homework": [
-        "(continued) Topic 1 Study Guide, due Tue 9/29",
-        "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30"
-      ],
+      "homework": null,
       "link": null,
       "target": null,
       "classwork": null,

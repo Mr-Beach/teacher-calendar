@@ -25,7 +25,7 @@ job (CLAUDE.md), because it's an editorial call.
       "expect": "1.2",
       "target": "I can multiply decimals and place the decimal point using estimation.",
       "classwork": "Notes + workbook pp. 12-13 (20 points)",
-      "homework": ["Lesson 1.2 practice 1-12, due Wed 10/7"],
+      "homework": [{"text": "Lesson 1.2 practice 1-12", "due": "2026-10-07"}],
       "link": "https://...",
       "extra_materials": ["calculator"]
     },
@@ -45,9 +45,13 @@ Rules, per day:
   exactly (`"1.2"`), or a piece of its title (`"Topic 2 Review"`). This is
   the guard against a calendar that shifted after the week was planned — a
   mismatch rejects the whole file and changes nothing.
-- Lesson fields: `target`, `classwork`, `homework` (list, one item per open
-  assignment; `(continued)` entries repeat an earlier assignment with the
-  same due date), `link`, `extra_materials` (list).
+- Lesson fields: `target`, `classwork`, `homework`, `link`,
+  `extra_materials` (list).
+- `homework` — a list of the assignments **given that day**, each
+  `{"text": ..., "due": "YYYY-MM-DD"}`. Put it only on the day it's
+  assigned; don't repeat it on later days. The page shows it on its due
+  date and in the "coming due" list on its own. Leave the due date out of
+  `text`. Homework can be due on a quiz day but can't be assigned on one.
 - Day field: `note` — always shown to students; never a note to self.
 - Leave a key out to leave that field alone; set it to `null` to clear it.
   `homework: []` is the same as `null`.

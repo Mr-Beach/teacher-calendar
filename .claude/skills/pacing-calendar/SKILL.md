@@ -39,8 +39,8 @@ never a note to self (SPEC.md).
   "district_title": "Find Distances on the Coordinate Plane",
   "kind": "Lesson",
   "homework": [
-    "Topic 2 study guide, due Tue 9/29",
-    "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+    {"text": "Topic 2 study guide", "due": "2026-09-29"},
+    {"text": "Quiz redo on Schoology (up to 3 attempts)", "due": "2026-09-30"}
   ],
   "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
   "target": "I can use absolute value to find the distance between two points that share an x- or y-coordinate.",
@@ -48,9 +48,9 @@ never a note to self (SPEC.md).
 }
 ```
 `kind` is one of `Lesson` / `Opener` / `Quiz` / `Test` / `3-Act` — but never
-hand-insert `Quiz` (see below). `homework` is a list — one entry per open
-assignment, `null` (not `[]`) when nothing's open; see "Input format" below
-for how overlapping assignments and "(continued)" work. `link` is an
+hand-insert `Quiz` (see below). `homework` is a list of the assignments
+**given that day** — `{"text", "due"}`, `due` a fixed `YYYY-MM-DD` date —
+`null` (not `[]`) when nothing's assigned; see "Input format" below. `link` is an
 optional URL to a student resource (Drive/OneDrive link shared "anyone with
 the link", or a path under `docs/`), rendered as a button on that day's
 detail popup.
@@ -130,22 +130,23 @@ A week as a plain-text block, one entry per school day: date, lesson name, a
 `target` and `Class work` (plus any `Extension`/`Warm up`) → `classwork`,
 terse and matching the file's existing style, not transcribed in full —
 both are detail-only, never the tile title (see above). `Homework` →
-`homework`, a **list** of strings — one entry per open assignment. Aaron
-gives each open assignment its own `Homework:` line; collect every
-`Homework:` line in a day's block into the list, one item per line, in the
-order given. If a single `Homework:` line itself contains a semicolon,
-split that line into separate list entries too — a fallback for when a
-day's assignments land on one line instead of several, not the expected
-form. Multiple open assignments in a day is normal, not an edge case — an
-assignment given earlier in the week (due Friday) commonly overlaps with a
-new one given Thursday/Friday (due the following Wednesday). Each lesson
-still has at most one homework assignment, listed on every day it's open:
-in full with its due date on the day it's assigned, then repeated on later
-days as its own list entry with a "(continued)" prefix, same text and same
-due date. Keep "(continued)" in the field as written. Finishing class work
-that wasn't done in class counts as homework like anything else — give it
-a due date the way any other assignment gets one. `homework` is `null`
-(not an empty list) for a day with nothing open. Worked example, verbatim,
+`homework`, a **list** of `{"text": ..., "due": "YYYY-MM-DD"}` — one item
+per assignment **given that day**, stored only on that day. Never repeat
+it on later days (no "(continued)" entries): the page shows it on the day
+it's assigned, as a separate "Due" badge on its due date, and in the hero
+card's "coming due" list until then. Keep the due date out of `text`.
+Resolve "due Monday" / "due Wed 10/7" to an actual date from the day it's
+assigned, and ask if it's ambiguous. The due date is a fixed calendar date
+(how much time students get, not tied to content) — a lost day that shifts
+lessons never moves it; `run_all_checks` warns if a shift leaves one due on
+or before its assigned day, or on a no-school day. Homework can be *due* on
+a quiz day but never *assigned* on one. Collect every `Homework:` line in a
+day's block into the list, one item per line; if a single line contains a
+semicolon, split it too. A line that only restates an assignment given
+earlier ("study guide" on the review day) isn't a new item — drop it.
+Finishing class work that wasn't done in class counts as homework like
+anything else — give it a due date the way any other assignment gets one.
+`homework` is `null` (not an empty list) for a day with nothing assigned. Worked example, verbatim,
 from the
 week-of-9/21/2026 update:
 
@@ -229,6 +230,9 @@ or its output. Ever — true at every version, not a v1-only cut (SPEC.md).
   a new one given Thursday/Friday) turned out to be the normal case, not an
   edge case — `homework` is now `list[str] | None` throughout
   `courses/math6.json`, and `render.py` renders each entry on its own line.
+  (Later changed again: each item is now `{"text", "due"}`, stored only on
+  the day it's assigned — the "(continued)" repeats are gone, since the
+  page derives "still open" from the due date.)
   Also: "finish the class work if not done" was ruled out as not-homework
   earlier this session, then reversed later the same session once it came
   with a real due date — a due date is what makes something count as a

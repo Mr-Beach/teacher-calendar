@@ -1391,7 +1391,10 @@
       "district_title": "Convert between fractions and decimals, day 2.",
       "kind": "Lesson",
       "homework": [
-        "Convert Between Fractions and Decimals Practice - Worksheet, due Wed 9/16"
+        {
+          "text": "Convert Between Fractions and Decimals Practice - Worksheet",
+          "due": "2026-09-16"
+        }
       ],
       "link": null,
       "target": "I can convert a decimal to a fraction by using place value.",
@@ -1448,7 +1451,10 @@
       "district_title": "Represent Locations on the Coordinate Plane",
       "kind": "Lesson",
       "homework": [
-        "finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+        {
+          "text": "finish Sailboat coordinate graphing if not done in class",
+          "due": "2026-09-25"
+        }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067897",
       "target": "I can name the parts of the coordinate plane and plot ordered pairs with negative coordinates.",
@@ -1460,9 +1466,7 @@
       "lesson_code": "2.5",
       "district_title": "Represent Locations on the Coordinate Plane",
       "kind": "Lesson",
-      "homework": [
-        "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067897",
       "target": "I can name a point's coordinates, including half units, and explain how points with matching numbers but different signs reflect across the axes.",
       "classwork": "Owl graphing (96 pts). Early finishers: Desmos graphing activity.",
@@ -1474,9 +1478,14 @@
       "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
       "homework": [
-        "Topic 2 study guide, due Tue 9/29",
-        "Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
-        "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
+        {
+          "text": "Topic 2 study guide",
+          "due": "2026-09-29"
+        },
+        {
+          "text": "Quiz redo on Schoology (up to 3 attempts)",
+          "due": "2026-09-30"
+        }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
       "target": "I can use absolute value to find the distance between two points that share an x- or y-coordinate.",
@@ -1488,11 +1497,7 @@
       "lesson_code": "2.6",
       "district_title": "Find Distances on the Coordinate Plane",
       "kind": "Lesson",
-      "homework": [
-        "(continued) Topic 2 study guide, due Tue 9/29",
-        "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30",
-        "(continued) finish Sailboat coordinate graphing if not done in class, due Fri 9/25"
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
       "target": "I can plot a polygon from its vertices' coordinates and use absolute value to find its side lengths and perimeter.",
       "classwork": "Workbook pp. 100\u2013102, problems 12\u201317, 22, 24\u201326. Extension: problems 27\u201328.",
@@ -1503,10 +1508,7 @@
       "lesson_code": null,
       "district_title": "Topic 2 Review",
       "kind": "Lesson",
-      "homework": [
-        "(continued) Topic 2 study guide, due Tue 9/29",
-        "(continued) Quiz redo on Schoology (up to 3 attempts), due Wed 9/30"
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067902",
       "target": "I can apply everything in Topic 2 to problems I have not seen before.",
       "classwork": null,

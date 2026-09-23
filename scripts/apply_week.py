@@ -22,7 +22,7 @@ Week file shape (see inbox/README.md for the full contract):
           "expect": "1.2",
           "target": "I can ...",
           "classwork": "...",
-          "homework": ["...", "(continued) ..."],
+          "homework": [{"text": "...", "due": "2026-10-07"}],
           "link": "https://...",
           "extra_materials": ["scissors"],
           "note": "..."
@@ -95,12 +95,11 @@ def _matches(expect, item):
 
 
 def _normalize_homework(value):
-    # The course file uses null, never [], for "nothing open" (SKILL.md).
-    if value is None or value == []:
-        return None
-    if not isinstance(value, list) or not all(isinstance(s, str) and s.strip() for s in value):
-        raise WeekError("homework must be a list of non-empty strings, or null")
-    return [s.strip() for s in value]
+    # The course file uses null, never [], for "nothing assigned" (SKILL.md).
+    try:
+        return engine.normalize_homework(value)
+    except ValueError as e:
+        raise WeekError(str(e)) from None
 
 
 def _normalize_str_list(value, field):
@@ -229,7 +228,10 @@ def _fmt(value):
     if value is None:
         return "_(empty)_"
     if isinstance(value, list):
-        return "; ".join(value)
+        return "; ".join(
+            (f"{v['text']} (due {v['due']})" if v.get("due") else v["text"])
+            if isinstance(v, dict) else v
+            for v in value)
     return value
 
 
