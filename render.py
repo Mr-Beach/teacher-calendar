@@ -491,7 +491,7 @@ def build_page(course, calendar):
     target.textContent = d.target ? 'Target: ' + d.target : '';
     target.hidden = !d.target;
     const classwork = document.getElementById('detail-classwork');
-    classwork.textContent = d.classwork || '';
+    classwork.textContent = d.classwork ? 'Classwork: ' + d.classwork : '';
     classwork.hidden = !d.classwork;
     const hw = document.getElementById('detail-homework');
     hw.replaceChildren();
@@ -584,7 +584,7 @@ def build_page(course, calendar):
       if (entry.type !== 'No School') appendMaterialsRow(hero, entry);
       hero.appendChild(heroEl('div', 'hero__title', entry.title || ''));
       if (entry.target) hero.appendChild(heroEl('div', 'hero__row', 'Target: ' + entry.target));
-      if (entry.classwork) hero.appendChild(heroEl('div', 'hero__row', entry.classwork));
+      if (entry.classwork) hero.appendChild(heroEl('div', 'hero__row', 'Classwork: ' + entry.classwork));
       for (const hw of (entry.homework || [])) hero.appendChild(heroEl('div', 'hero__row hero__hw', 'HW: ' + hw));
       if (entry.note) hero.appendChild(heroEl('div', 'hero__row hero__row--note', entry.note));
       if (entry.link) {{
