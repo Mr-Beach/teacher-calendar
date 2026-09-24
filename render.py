@@ -521,7 +521,7 @@ def build_page(course, calendar):
   dialog#detail::backdrop {{ background: transparent; }}
   #detail-dim {{
     position: fixed; inset: 0; background: rgba(0,0,0,0.4); opacity: 0;
-    pointer-events: none; transition: opacity 0.35s ease;
+    pointer-events: none; transition: opacity 0.42s ease;
   }}
   #detail-dim.is-on {{ opacity: 1; }}
   @media (prefers-reduced-motion: reduce) {{
@@ -656,7 +656,7 @@ def build_page(course, calendar):
       {{ transform: 'none', opacity: 1 }},
     ];
     const anim = dialog.animate(reverse ? frames.slice().reverse() : frames, {{
-      duration: reverse ? 180 : 260, easing: reverse ? 'ease-in' : 'cubic-bezier(0.2, 0.9, 0.3, 1)',
+      duration: reverse ? 240 : 420, easing: reverse ? 'ease-in' : 'cubic-bezier(0.33, 1, 0.68, 1)',
     }});
     if (done) anim.onfinish = done;
   }}
