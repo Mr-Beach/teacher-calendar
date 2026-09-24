@@ -645,6 +645,11 @@ def build_page(course, calendar):
   ['click', 'keydown'].forEach((type) => document.addEventListener(type, (e) => {{
     if (e.target.closest && !e.target.closest('#detail')) openedFrom = e.target.closest('[data-date], a') || e.target;
   }}, true));
+  // One timing for both the popup and the background dim, so the page
+  // darkens exactly in step with the popup growing (and lightens as it
+  // shrinks back).
+  const OPEN_TIMING = {{ duration: 420, easing: 'cubic-bezier(0.33, 1, 0.68, 1)' }};
+  const CLOSE_TIMING = {{ duration: 240, easing: 'ease-in' }};
   function growFrom(dialog, origin, reverse, done) {{
     const from = origin && origin.isConnected ? origin.getBoundingClientRect() : null;
     if (REDUCED_MOTION.matches || !dialog.animate || !from || !from.width) {{
@@ -659,7 +664,7 @@ def build_page(course, calendar):
       {{ transform: 'none', opacity: 1 }},
     ];
     const anim = dialog.animate(reverse ? frames.slice().reverse() : frames, {{
-      duration: reverse ? 240 : 420, easing: reverse ? 'ease-in' : 'cubic-bezier(0.33, 1, 0.68, 1)',
+      ...(reverse ? CLOSE_TIMING : OPEN_TIMING),
     }});
     if (done) anim.onfinish = done;
   }}
@@ -671,9 +676,7 @@ def build_page(course, calendar):
     dim.style.opacity = to;
     if (REDUCED_MOTION.matches || !dim.animate) return;
     dim.animate([{{ opacity: from }}, {{ opacity: to }}], {{
-      // Opening: a slow start that ramps up (ease-in-quart), so the page
-      // darkens mostly as the popup lands rather than the instant it's tapped.
-      duration: on ? 420 : 240, easing: on ? 'cubic-bezier(0.5, 0, 0.75, 0)' : 'ease-in',
+      ...(on ? OPEN_TIMING : CLOSE_TIMING),
     }});
   }}
   function closeDetail() {{
