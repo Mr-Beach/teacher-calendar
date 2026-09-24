@@ -189,8 +189,12 @@ def render_agenda_row(day):
     else:
         css.append(TYPE_CLASS.get(day["type"], "day--other"))
     body, _ = render_day_body(day)
+    # Tappable like a grid tile: opens the same detail popup.
     return (
-        f'<div class="{" ".join(css)}" data-date="{day["date"]}">'
+        f'<div class="{" ".join(css)}" role="button" tabindex="0" '
+        f'data-date="{day["date"]}" aria-label="View details" '
+        f'onclick="showDetail(\'{day["date"]}\')" '
+        f"onkeydown=\"if(event.key==='Enter'||event.key===' '){{event.preventDefault();showDetail('{day['date']}')}}\">"
         f'<div class="agenda-date">{day["weekday"]}<br>{d.month}/{d.day}</div>'
         f'<div class="agenda-body">{body}</div>'
         f"</div>"
@@ -418,8 +422,10 @@ def build_page(course, calendar):
   .agenda-row {{
     display: grid; grid-template-columns: 56px 1fr; gap: 10px;
     border: 1px solid var(--border); border-radius: 6px; background: var(--card);
-    padding: 8px 10px; font-size: 0.85rem;
+    padding: 8px 10px; font-size: 0.85rem; cursor: pointer; -webkit-tap-highlight-color: transparent;
   }}
+  .agenda-row:focus-visible {{ outline: 2px solid var(--lesson-border); outline-offset: 1px; }}
+  .agenda-row.day--weekend {{ cursor: default; }}
   .agenda-date {{
     font-size: 0.72rem; color: var(--muted); line-height: 1.3; text-align: center;
     padding-top: 2px;
