@@ -105,25 +105,46 @@ def short_date(iso):
     return f"{d.strftime('%a')} {d.month}/{d.day}"
 
 
-def render_day_body(day):
+def render_day_body(day, compact=False):
     """Tile/agenda body, shared by the month grid and the portrait agenda.
+
     Homework shows on the day it's assigned; its due date gets its own badge
-    so "due today" never reads like new homework."""
+    so "due today" never reads like new homework. A lesson day's note is
+    left off both views -- it's shown on the today card and in the day's
+    popup -- so it never crowds out the lesson or a due date. (A closed
+    day's note stays: it *is* that day's label, e.g. "No School (Holiday)".)
+
+    `compact` is the fixed-height grid tile: homework text and the resource
+    link collapse into a strip, returned separately so render_day_cell can
+    pin it to the tile's bottom edge, outside the clipped body -- nothing
+    can push it out of view. The agenda rows grow with their content, so
+    they keep the full homework text. Returns (body, strip)."""
     body = ""
     if day["type"] == "Instruction":
         body += f'<div class="day__lesson">{esc(day["lesson_text"])}</div>'
     elif day["display"]:
         body += f'<div class="day__note">{esc(day["display"])}</div>'
-    for due in (day.get("due") or []):
-        body += f'<div class="day__due">Due: {esc(due["text"])}</div>'
-    if day["type"] == "Instruction":
-        for hw in (day["homework"] or []):
-            body += f'<div class="day__homework">HW: {esc(hw["text"])}</div>'
-        if day["note"]:
-            body += f'<div class="day__note">{esc(day["note"])}</div>'
+    dues = day.get("due") or []
+    if compact and len(dues) > 1:
+        body += f'<div class="day__due">Due: {len(dues)} assignments</div>'
+    else:
+        for due in dues:
+            body += f'<div class="day__due">Due: {esc(due["text"])}</div>'
+    if day["type"] != "Instruction":
+        return body, ""
+    homework = day["homework"] or []
+    if compact:
+        strip = []
+        if homework:
+            strip.append("\U0001f4dd " + (f"{len(homework)} HW" if len(homework) > 1 else "HW"))
         if day["link"]:
-            body += '<div class="day__link">\U0001f517 Resource</div>'
-    return body
+            strip.append("\U0001f517")
+        return body, (f'<div class="day__strip">{" · ".join(strip)}</div>' if strip else "")
+    for hw in homework:
+        body += f'<div class="day__homework">HW: {esc(hw["text"])}</div>'
+    if day["link"]:
+        body += '<div class="day__link">\U0001f517 Resource</div>'
+    return body, ""
 
 
 def render_day_cell(day):
@@ -141,7 +162,7 @@ def render_day_cell(day):
         css.append(KIND_CLASS.get(day["kind"], "day--lesson"))
     else:
         css.append(TYPE_CLASS.get(day["type"], "day--other"))
-    body = render_day_body(day)
+    body, strip = render_day_body(day, compact=True)
     # Fixed-size cell with clamped text, not size-to-content: guarantees the
     # cell can never overhang regardless of title length or device font
     # metrics. Tap/click opens the full, untruncated detail.
@@ -150,7 +171,7 @@ def render_day_cell(day):
         f'data-date="{day["date"]}" aria-label="View details" '
         f'onclick="showDetail(\'{day["date"]}\')" '
         f"onkeydown=\"if(event.key==='Enter'||event.key===' '){{event.preventDefault();showDetail('{day['date']}')}}\">"
-        f'<div class="day__num">{day_num}</div><div class="day__body">{body}</div></div>'
+        f'<div class="day__num">{day_num}</div><div class="day__body">{body}</div>{strip}</div>'
     )
 
 
@@ -167,7 +188,7 @@ def render_agenda_row(day):
         css.append(KIND_CLASS.get(day["kind"], "day--lesson"))
     else:
         css.append(TYPE_CLASS.get(day["type"], "day--other"))
-    body = render_day_body(day)
+    body, _ = render_day_body(day)
     return (
         f'<div class="{" ".join(css)}" data-date="{day["date"]}">'
         f'<div class="agenda-date">{day["weekday"]}<br>{d.month}/{d.day}</div>'
@@ -423,7 +444,15 @@ def build_page(course, calendar):
   .day--weekend:hover {{ box-shadow: none; }}
   .agenda-row.day--weekend {{ background: transparent; border-style: dashed; padding: 4px 10px; }}
   .day__num {{ font-size: 0.68rem; color: var(--muted); margin-bottom: 2px; }}
-  .day__body {{ overflow: hidden; }}
+  /* Column layout so the strip sits on the bottom edge no matter how long
+     the lesson title is: the body takes the leftover height and clips, the
+     strip never does. */
+  .day {{ display: flex; flex-direction: column; }}
+  .day__body {{ overflow: hidden; flex: 1; min-height: 0; }}
+  .day__strip {{
+    flex: none; padding-top: 2px; color: var(--muted); font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }}
   /* Line-clamp, not auto-height: the cell's size never depends on content
      length or how a given device/browser measures the font. */
   .day__lesson {{
@@ -521,6 +550,7 @@ def build_page(course, calendar):
   <span><i style="background:var(--test-border)"></i>Test (summative)</span>
   <span><i style="background:var(--threeact-border)"></i>3-Act</span>
   <span><i style="background:var(--due)"></i>Homework due</span>
+  <span>&#128221; Homework assigned</span>
   <span>&#128279; Has a linked resource</span>
 </div>
 <nav class="months">{"".join(nav_links)}</nav>

@@ -123,6 +123,11 @@ The calendar is student-facing. That governs everything on it:
 
 - **Notes are student-facing by definition** — testing-window reminders, holiday
   labels. Never teacher-private annotations.
+- **Where things show.** A calendar tile carries only the lesson title, a "Due"
+  badge, and (in the grid) a small strip marking homework assigned and a linked
+  resource. A lesson day's note is not on the tile; it shows on the today card
+  and in the day's popup. A closed day's note (e.g. "No School (Holiday)")
+  stays on its tile, since it's that day's label.
 - **Homework / DeltaMath assignments render** alongside the lesson on the day
   they're assigned, and again as a distinct "Due" badge on their due date. The
   today card lists everything not yet due, with "due today" / "due tomorrow"
