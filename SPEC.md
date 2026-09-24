@@ -13,7 +13,7 @@ Changing one day's type re-flows everything after it. v1 must preserve this logi
 
 ## V1 scope — exactly this, nothing else
 
-1. One-time import of the existing Excel workbook (per course) into a plain data file.
+1. One-time import of the existing Excel workbook (per course) into a plain data file. *(Done; the import script and workbook have since been removed — see "Import" below.)*
 2. A render/re-flow engine that reads that data file and computes, for each instructional day, which lesson lands on it — driven purely by day type + ordered lesson list.
 3. A rendered calendar web page for **one course**.
 4. Deployed somewhere with a stable URL.
@@ -29,11 +29,11 @@ No accounts. No manual-entry UI. No iCal. No imports beyond the one-time Excel c
 - Because a course sequence is just an ordered list feeding the same engine, **authoring a brand-new sequence from scratch is simply hand-writing that input file** — no separate manual-entry feature, ever.
 - "Course" is its own named entity wrapping (school-day calendar, sequence), so a second course — and later a second teacher — means adding another instance of that pair, not a schema change. Don't build multi-course or multi-teacher machinery now (no accounts, no per-teacher namespacing) — just don't paint the data model into a single-course-only corner.
 
-## Import (one-time, not runtime)
+## Import (one-time, done — no longer part of the tool)
 
-- A conversion step reads the existing `.xlsx` workbook and writes out the plain data file(s) described above (school-day calendar + ordered lesson list).
-- Everything downstream — engine, rendering, deploy — reads only the plain data file, never `.xlsx`, at runtime.
-- After the one-time import, **the plain data file is the source of truth**. The workbook becomes an archive, not a live input. I edit the data file directly going forward and do not maintain both in parallel. Re-running the conversion is not an expected workflow — it's a one-way migration.
+- A one-time conversion step read the `.xlsx` workbook and wrote out the plain data file(s) described above (school-day calendar + ordered lesson list). That migration is finished.
+- **`courses/*.json` is the source of truth.** Everything — engine, rendering, deploy — reads only those files. I edit them going forward; there is no second copy to keep in sync.
+- The workbook turned out to be unreliable (it caused bad data at the start of the year) and has been discarded, along with the import script (`scripts/import_workbook.py`, removed 2026-09-23). Do not recreate either or reconcile toward a spreadsheet. When a fact needs checking against an outside reference, use the district's own documents (the at-a-Glance guide, sample calendars, and the SPS school-year calendar kept locally in `data/`).
 
 ## Publishing
 
@@ -52,7 +52,7 @@ No accounts. No manual-entry UI. No iCal. No imports beyond the one-time Excel c
 
 User accounts & authentication; hosted multi-tenant SaaS; manual-entry UI; iCal feed; a general recurrence engine; draft-vs-published workflow; third-party imports (Google Classroom/Sheets/Canvas); embed widget; PDF export.
 
-**Planning aid**: a view comparing the live (edited) calendar against the original district scope-and-sequence, showing how far ahead/behind each topic is. The point is to help decide where to condense or where slack exists *before* making a pacing edit, rather than figuring it out from scratch each time. Would need the original district sequence preserved as a separate reference (it currently only exists in the archived, untracked workbook) so there's something fixed to compare the live sequence against.
+**Planning aid**: a view comparing the live (edited) calendar against the original district scope-and-sequence, showing how far ahead/behind each topic is. The point is to help decide where to condense or where slack exists *before* making a pacing edit, rather than figuring it out from scratch each time. Would need the original district sequence preserved as a separate reference (the district's own at-a-Glance guide and sample calendars in `data/` are the starting point — not the discarded workbook) so there's something fixed to compare the live sequence against.
 
 **Quiz-day content**: quiz days are currently hardcoded to a bare "Quiz" tile with no `target`/`classwork`/`homework` (`QUIZ_ITEM` in `engine.py`), and auto-placement is suppressed by matching the word "quiz" (case-insensitive) in a school-day `note` — a coincidental, fragile mechanism that also means a note describing what's on the quiz can accidentally cancel the quiz if it uses that word. Later: let a quiz day carry real `target`/`classwork` like any other Instruction day (not assigned `homework` — Aaron doesn't assign homework on quiz days, though homework can be *due* on one), and replace the note-text-matching suppression with an explicit flag on the school-day entry.
 

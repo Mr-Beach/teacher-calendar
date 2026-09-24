@@ -77,12 +77,13 @@ beach-math.com — never committed to git (CLAUDE.md, "Hosting").
 **`docs/index.html` is not the calendar**: it's a fixed redirect stub for
 old github.io bookmarks. Never render into it, overwrite it, or commit it.
 
-## Repo vs. the district workbook — who wins
+## Repo vs. any spreadsheet — who wins
 
-The course file, always. SPEC.md: after the one-time import, the
-workbook is archived, not a live input, and re-running the conversion is
-not an expected workflow. Never reconcile the repo toward the workbook; if
-they disagree, the repo is right and the workbook is stale.
+The course file, always. The original Excel workbook was imported once,
+proved unreliable, and has been discarded along with its import script
+(see SPEC.md, "Import"). Never recreate it or reconcile the repo toward a
+spreadsheet. To check a fact against an outside source, use the district's
+own documents (at-a-Glance guide, sample calendars, SPS school calendar).
 
 ## How re-flow actually works
 

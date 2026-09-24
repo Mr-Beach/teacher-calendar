@@ -162,8 +162,7 @@ The calendar is student-facing. That governs everything on it:
   knowing about rather than discovering it in June.
 
 `engine.run_all_checks()` runs the full checklist above (everything except
-the two lesson-count arithmetic lines) in one call, and is what
-`scripts/import_workbook.py` runs automatically at import — so a fresh
-course starts from a known-checked state instead of these surfacing months
-into the school year. Adding a new check means adding it to this list, not
-separately wiring it into the CLI and the import script by hand.
+the two lesson-count arithmetic lines) in one call — run it when setting
+up a new course file, so it starts from a known-checked state instead of
+these surfacing months into the school year. Adding a new check means
+adding it to this list, not separately wiring it into each caller by hand.

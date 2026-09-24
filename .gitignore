@@ -13,8 +13,7 @@ venv/
 # Claude Code local settings
 .claude/settings.local.json
 
-# Source material: workbook, district master calendar, scope-and-sequence
-# reference. courses/*.json is the source of truth from here on; these stay
+# Source material: district calendars and scope-and-sequence references. courses/*.json is the source of truth from here on; these stay
 # as local archives/references, not tracked.
 data/*.xlsx
 data/*.pdf
