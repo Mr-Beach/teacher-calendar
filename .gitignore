@@ -18,3 +18,6 @@ venv/
 # as local archives/references, not tracked.
 data/*.xlsx
 data/*.pdf
+
+# Lesson decks/worksheets Cowork saves here; not part of the calendar
+Claude outputs/
