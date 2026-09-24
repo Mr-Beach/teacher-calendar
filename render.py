@@ -514,10 +514,18 @@ def build_page(course, calendar):
     border: none; border-radius: 10px; padding: 0; max-width: 380px; width: calc(100% - 32px);
     color: var(--text); box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   }}
-  dialog#detail::backdrop {{ background: rgba(0,0,0,0.4); animation: backdrop-in 0.26s ease-out; }}
-  @keyframes backdrop-in {{ from {{ background: rgba(0,0,0,0); }} }}
+  /* The dimming is a plain page element, not the dialog's ::backdrop:
+     iOS Safari won't animate ::backdrop, so it snapped dark instantly. A
+     normal element fades smoothly everywhere, both ways. The transparent
+     ::backdrop still catches taps outside the popup. */
+  dialog#detail::backdrop {{ background: transparent; }}
+  #detail-dim {{
+    position: fixed; inset: 0; background: rgba(0,0,0,0.4); opacity: 0;
+    pointer-events: none; transition: opacity 0.35s ease;
+  }}
+  #detail-dim.is-on {{ opacity: 1; }}
   @media (prefers-reduced-motion: reduce) {{
-    dialog#detail::backdrop {{ animation: none; }}
+    #detail-dim {{ transition: none; }}
   }}
   .detail {{ padding: 16px 18px; }}
   .detail__date {{ font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }}
@@ -565,6 +573,7 @@ def build_page(course, calendar):
 </div>
 <nav class="months">{"".join(nav_links)}</nav>
 {"".join(months)}
+<div id="detail-dim"></div>
 <dialog id="detail">
   <div class="detail">
     <button class="detail__close" onclick="closeDetail()" aria-label="Close">&times;</button>
@@ -619,6 +628,7 @@ def build_page(course, calendar):
     link.hidden = !d.link;
     const dialog = document.getElementById('detail');
     dialog.showModal();
+    document.getElementById('detail-dim').classList.add('is-on');
     growFrom(dialog, openedFrom, false);
   }}
 
@@ -654,6 +664,7 @@ def build_page(course, calendar):
     const dialog = document.getElementById('detail');
     if (!dialog.open || dialog.dataset.closing) return;
     dialog.dataset.closing = '1';
+    document.getElementById('detail-dim').classList.remove('is-on');
     growFrom(dialog, openedFrom, true, () => {{
       dialog.close();
       delete dialog.dataset.closing;
