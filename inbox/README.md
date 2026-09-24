@@ -52,6 +52,9 @@ Rules, per day:
   assigned; don't repeat it on later days. The page shows it on its due
   date and in the "coming due" list on its own. Leave the due date out of
   `text`. Homework can be due on a quiz day but can't be assigned on one.
+  An item can also take a `"link"` — where students find that assignment,
+  when it isn't with the day's lesson (e.g. a study guide in the review
+  folder). Without one, the assignment links to the day's `link`, if any.
 - Day field: `note` — always shown to students; never a note to self.
 - Leave a key out to leave that field alone; set it to `null` to clear it.
   `homework: []` is the same as `null`.

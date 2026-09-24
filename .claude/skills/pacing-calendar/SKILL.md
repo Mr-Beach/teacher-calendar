@@ -50,7 +50,11 @@ never a note to self (SPEC.md).
 `kind` is one of `Lesson` / `Opener` / `Quiz` / `Test` / `3-Act` — but never
 hand-insert `Quiz` (see below). `homework` is a list of the assignments
 **given that day** — `{"text", "due"}`, `due` a fixed `YYYY-MM-DD` date —
-`null` (not `[]`) when nothing's assigned; see "Input format" below. `link` is an
+`null` (not `[]`) when nothing's assigned; see "Input format" below. A
+homework item can also carry an optional `"link"` — where students find
+that assignment when it isn't in the day's lesson folder (a study guide in
+the review folder). Without one, the assignment links to the lesson's own
+`link` (usually the same folder), so only set it when it's different. `link` is an
 optional URL to a student resource (Drive/OneDrive link shared "anyone with
 the link", or a path under `docs/`), rendered as a button on that day's
 detail popup.

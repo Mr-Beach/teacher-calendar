@@ -233,7 +233,8 @@ def _fmt(value):
         return "_(empty)_"
     if isinstance(value, list):
         return "; ".join(
-            (f"{v['text']} (due {v['due']})" if v.get("due") else v["text"])
+            (v["text"] + (f" (due {v['due']})" if v.get("due") else "")
+             + (f" [link: {v['link']}]" if v.get("link") else ""))
             if isinstance(v, dict) else v
             for v in value)
     return value

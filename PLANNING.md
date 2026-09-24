@@ -51,6 +51,10 @@ depend on where anything sits in `sequence`.
 the first couple weeks of school (syllabus, routines) aren't quiz weeks even
 though they include Wednesdays.
 
+`course["quiz_link"]` (optional) is where students find the quizzes (the
+course's Weekly Quizzes folder in Schoology). Every quiz day's resource
+button opens it, since a computed quiz has no entry of its own to link from.
+
 **Test placement** (checked, not auto-fixed — see below): avoid a Test
 landing on a Monday, and avoid one landing on the Monday, Tuesday, or
 Wednesday immediately after a break of a week or more. When this happens,

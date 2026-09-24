@@ -39,6 +39,9 @@ def display_code(lesson_code):
 def normalize_homework(value):
     """Canonical form of a lesson's `homework`: a list of
     {"text": ..., "due": "YYYY-MM-DD" or None}, or None for nothing assigned.
+    An item may also carry an optional "link" -- where students find that
+    assignment (e.g. a study guide in a review folder, not the day's lesson
+    folder). It's kept only when set, so unlinked items stay two-key.
 
     Homework is stored once, on the lesson it's assigned with -- never
     repeated on later days. `due` is a fixed calendar date: it's how much
@@ -53,8 +56,8 @@ def normalize_homework(value):
     for item in value:
         if isinstance(item, str):
             item = {"text": item}
-        if not isinstance(item, dict) or set(item) - {"text", "due"}:
-            raise ValueError(f'each homework item needs "text" and optionally "due", got {item!r}')
+        if not isinstance(item, dict) or set(item) - {"text", "due", "link"}:
+            raise ValueError(f'each homework item needs "text" and optionally "due"/"link", got {item!r}')
         text = item.get("text")
         if not isinstance(text, str) or not text.strip():
             raise ValueError(f"homework text must be a non-empty string, got {text!r}")
@@ -64,7 +67,13 @@ def normalize_homework(value):
                 date.fromisoformat(due)
             except (TypeError, ValueError):
                 raise ValueError(f"homework due date must be YYYY-MM-DD, got {due!r}") from None
-        items.append({"text": text.strip(), "due": due})
+        hw = {"text": text.strip(), "due": due}
+        link = item.get("link")
+        if link is not None:
+            if not isinstance(link, str) or not link.strip():
+                raise ValueError(f"homework link must be a non-empty string, got {link!r}")
+            hw["link"] = link.strip()
+        items.append(hw)
     return items
 
 # A note mentioning "quiz" marks a day where a quiz was deliberately paired
@@ -149,6 +158,17 @@ def _compute_quiz_dates(school_days, sequence, quiz_rhythm_start=None):
     return quiz_dates  # converges in practice well within 10 iterations
 
 
+def _homework_with_links(lesson):
+    """A lesson's homework as rendered: each item links to its own `link` if
+    it has one (an assignment kept somewhere else, like a study guide in the
+    review folder), else to the lesson's resource `link` -- usually the same
+    Schoology folder the assignment is in."""
+    if not lesson:
+        return []
+    return [{**hw, "link": hw.get("link") or lesson.get("link")}
+            for hw in normalize_homework(lesson.get("homework")) or []]
+
+
 def render(course):
     school_days = course["school_days"]
     sequence = course["sequence"]
@@ -160,10 +180,10 @@ def render(course):
     # its due date, which is fixed and independent of where lessons land.
     due_by_date = {}
     for day, lesson in placements:
-        for hw in normalize_homework(lesson and lesson.get("homework")) or []:
+        for hw in _homework_with_links(lesson):
             if hw["due"]:
                 due_by_date.setdefault(hw["due"], []).append(
-                    {"text": hw["text"], "assigned": day["date"]})
+                    {"text": hw["text"], "assigned": day["date"], "link": hw["link"]})
 
     calendar = []
     for day, lesson in placements:
@@ -189,11 +209,14 @@ def render(course):
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": display, "lesson_text": base, "kind": kind,
-                "homework": normalize_homework(lesson["homework"]) if lesson else None,
+                "homework": _homework_with_links(lesson) or None,
                 "due": due_by_date.get(day["date"]), "note": note,
                 "target": lesson.get("target") if lesson else None,
                 "classwork": lesson.get("classwork") if lesson else None,
-                "link": lesson.get("link") if lesson else None,
+                # A computed quiz day has no stored entry to carry a link, so
+                # every quiz links to the course's one quiz folder.
+                "link": (course.get("quiz_link") if lesson is QUIZ_ITEM
+                         else lesson.get("link") if lesson else None),
                 "extra_materials": lesson.get("extra_materials") if lesson else None,
             })
         else:

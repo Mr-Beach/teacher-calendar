@@ -2,6 +2,7 @@
   "course": "Math 7/8 Compacted",
   "school_year": "2026-27",
   "quiz_rhythm_start": "2026-09-16",
+  "quiz_link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1042119185",
   "school_days": [
     {
       "date": "2026-09-01",
@@ -1490,11 +1491,13 @@
       "homework": [
         {
           "text": "Topic 1 Study Guide",
-          "due": "2026-09-29"
+          "due": "2026-09-29",
+          "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276139"
         },
         {
           "text": "Quiz redo on Schoology (2 more tries)",
-          "due": "2026-09-30"
+          "due": "2026-09-30",
+          "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1042119185"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038275610",

@@ -249,12 +249,13 @@ def build_details_map(calendar):
             "target": day["target"],
             "classwork": day["classwork"],
             "homework": [
-                {"text": hw["text"], "due": hw["due"],
+                {"text": hw["text"], "due": hw["due"], "link": hw.get("link"),
                  "due_label": short_date(hw["due"]) if hw["due"] else None}
                 for hw in (day["homework"] or [])
             ],
             "due": [
-                {"text": due["text"], "assigned_label": short_date(due["assigned"])}
+                {"text": due["text"], "link": due.get("link"),
+                 "assigned_label": short_date(due["assigned"])}
                 for due in (day["due"] or [])
             ],
             "note": day["note"] if day["type"] == "Instruction" else None,
@@ -551,6 +552,9 @@ def build_page(course, calendar):
     font-size: 0.9rem; font-weight: 600;
   }}
   .detail__link[hidden] {{ display: none; }}
+  /* A homework item with its own link (e.g. a study guide kept in a review
+     folder) -- the assignment text itself becomes the link. */
+  .hw-link {{ color: inherit; font-weight: 600; text-decoration: underline; }}
   .detail__close {{
     position: absolute; top: 10px; right: 12px; border: none; background: none;
     font-size: 1.3rem; line-height: 1; cursor: pointer; color: var(--muted); padding: 4px;
@@ -593,6 +597,14 @@ def build_page(course, calendar):
 <script>
   const DETAILS = {details_json};
   const DAILY_MATERIALS = {daily_materials_json};
+  // An assignment's text, as a link to where it lives when it has one.
+  function hwText(item) {{
+    if (!item.link) return document.createTextNode(item.text);
+    const a = document.createElement('a');
+    a.className = 'hw-link'; a.href = item.link; a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = item.text + ' ↗';
+    return a;
+  }}
   function showDetail(dateStr) {{
     const d = DETAILS[dateStr];
     if (!d) return;
@@ -608,7 +620,9 @@ def build_page(course, calendar):
     due.replaceChildren();
     for (const item of d.due) {{
       const line = document.createElement('div');
-      line.appendChild(document.createTextNode('Due: ' + item.text + ' '));
+      line.appendChild(document.createTextNode('Due: '));
+      line.appendChild(hwText(item));
+      line.appendChild(document.createTextNode(' '));
       const when = document.createElement('small');
       when.textContent = '(assigned ' + item.assigned_label + ')';
       line.appendChild(when);
@@ -619,7 +633,9 @@ def build_page(course, calendar):
     hw.replaceChildren();
     for (const item of d.homework) {{
       const line = document.createElement('div');
-      line.textContent = 'HW: ' + item.text + (item.due_label ? ' (due ' + item.due_label + ')' : '');
+      line.appendChild(document.createTextNode('HW: '));
+      line.appendChild(hwText(item));
+      if (item.due_label) line.appendChild(document.createTextNode(' (due ' + item.due_label + ')'));
       hw.appendChild(line);
     }}
     hw.hidden = !d.homework.length;
@@ -815,7 +831,9 @@ def build_page(course, calendar):
       if (entry.target) hero.appendChild(heroEl('div', 'hero__row', 'Target: ' + entry.target));
       if (entry.classwork) hero.appendChild(heroEl('div', 'hero__row', 'Classwork: ' + entry.classwork));
       for (const hw of entry.homework) {{
-        const row = heroEl('div', 'hero__row hero__hw', 'HW: ' + hw.text + ' ');
+        const row = heroEl('div', 'hero__row hero__hw', 'HW: ');
+        row.appendChild(hwText(hw));
+        row.appendChild(document.createTextNode(' '));
         if (hw.due) {{
           const u = dueUrgency(hw.due, hw.due_label, todayStr);
           row.appendChild(heroEl('span', 'due-pill due-pill--' + u.level, u.pill));
