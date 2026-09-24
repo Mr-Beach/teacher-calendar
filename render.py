@@ -441,6 +441,7 @@ def build_page(course, calendar):
     height: 96px; min-width: 0; border: 1px solid var(--border); border-radius: 6px;
     background: var(--card); padding: 4px 5px; font-size: 0.72rem;
     overflow-wrap: break-word; overflow: hidden; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }}
   .day:hover {{ box-shadow: inset 0 0 0 1px var(--muted); }}
   .day:focus-visible {{ outline: 2px solid var(--lesson-border); outline-offset: 1px; }}
@@ -510,7 +511,10 @@ def build_page(course, calendar):
     .grid, .grid__header {{ gap: 2px; }}
   }}
 
+  /* will-change: give the popup its own GPU layer up front, so Safari doesn't
+     build one mid-animation (a visible hitch on the heavier grid view). */
   dialog#detail {{
+    will-change: transform, opacity;
     border: none; border-radius: 10px; padding: 0; max-width: 380px; width: calc(100% - 32px);
     color: var(--text); box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   }}
@@ -521,7 +525,7 @@ def build_page(course, calendar):
   dialog#detail::backdrop {{ background: transparent; }}
   #detail-dim {{
     position: fixed; inset: 0; background: rgba(0,0,0,0.4); opacity: 0;
-    pointer-events: none; transition: opacity 0.42s ease;
+    pointer-events: none; transition: opacity 0.42s ease; will-change: opacity;
   }}
   #detail-dim.is-on {{ opacity: 1; }}
   @media (prefers-reduced-motion: reduce) {{
