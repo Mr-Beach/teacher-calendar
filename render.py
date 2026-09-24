@@ -520,16 +520,15 @@ def build_page(course, calendar):
   }}
   /* The dimming is a plain page element, not the dialog's ::backdrop:
      iOS Safari won't animate ::backdrop, so it snapped dark instantly. A
-     normal element fades smoothly everywhere, both ways. The transparent
-     ::backdrop still catches taps outside the popup. */
+     normal element fades smoothly everywhere, both ways. It's faded by a
+     script animation (fadeDim), not a CSS transition: on the heavier grid
+     view, iOS started the transition late and it jumped most of the way
+     dark at once. The transparent ::backdrop still catches taps outside
+     the popup. */
   dialog#detail::backdrop {{ background: transparent; }}
   #detail-dim {{
     position: fixed; inset: 0; background: rgba(0,0,0,0.4); opacity: 0;
-    pointer-events: none; transition: opacity 0.42s ease; will-change: opacity;
-  }}
-  #detail-dim.is-on {{ opacity: 1; }}
-  @media (prefers-reduced-motion: reduce) {{
-    #detail-dim {{ transition: none; }}
+    pointer-events: none; will-change: opacity;
   }}
   .detail {{ padding: 16px 18px; }}
   .detail__date {{ font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }}
@@ -632,7 +631,7 @@ def build_page(course, calendar):
     link.hidden = !d.link;
     const dialog = document.getElementById('detail');
     dialog.showModal();
-    document.getElementById('detail-dim').classList.add('is-on');
+    fadeDim(true);
     growFrom(dialog, openedFrom, false);
   }}
 
@@ -664,11 +663,22 @@ def build_page(course, calendar):
     }});
     if (done) anim.onfinish = done;
   }}
+  function fadeDim(on) {{
+    const dim = document.getElementById('detail-dim');
+    const from = getComputedStyle(dim).opacity;  // mid-fade if reopened quickly
+    const to = on ? 1 : 0;
+    dim.getAnimations().forEach((a) => a.cancel());
+    dim.style.opacity = to;
+    if (REDUCED_MOTION.matches || !dim.animate) return;
+    dim.animate([{{ opacity: from }}, {{ opacity: to }}], {{
+      duration: on ? 420 : 240, easing: on ? 'ease-out' : 'ease-in',
+    }});
+  }}
   function closeDetail() {{
     const dialog = document.getElementById('detail');
     if (!dialog.open || dialog.dataset.closing) return;
     dialog.dataset.closing = '1';
-    document.getElementById('detail-dim').classList.remove('is-on');
+    fadeDim(false);
     growFrom(dialog, openedFrom, true, () => {{
       dialog.close();
       delete dialog.dataset.closing;
