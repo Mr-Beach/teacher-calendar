@@ -1476,7 +1476,12 @@
       "lesson_code": "1.7",
       "district_title": "Add and Subtract Rational Numbers",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Topic 1 Lesson 7 Practice, workbook pages 45-46, problems 7, 9, 10, 11, 13, 14, 16, 18, 20",
+          "due": "2026-09-25"
+        }
+      ],
       "link": null,
       "target": "I can add and subtract rational numbers and find the distance between two rational numbers on a number line.",
       "classwork": "Castle Trail, workbook Try Its pages 42-43, Do You Know How page 44",
@@ -1499,7 +1504,7 @@
       ],
       "link": null,
       "target": "I can multiply and divide rational numbers, including dividing by a fraction and simplifying complex fractions.",
-      "classwork": "workbook Try Its pages 48-50, practice pages 52-54",
+      "classwork": "Quiz review and start of quiz redo; dividing signed numbers notes; complex fractions; workbook Try Its pages 48-50.",
       "extra_materials": null
     },
     {
