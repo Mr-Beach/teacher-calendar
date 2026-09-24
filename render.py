@@ -514,7 +514,11 @@ def build_page(course, calendar):
     border: none; border-radius: 10px; padding: 0; max-width: 380px; width: calc(100% - 32px);
     color: var(--text); box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   }}
-  dialog#detail::backdrop {{ background: rgba(0,0,0,0.4); }}
+  dialog#detail::backdrop {{ background: rgba(0,0,0,0.4); animation: backdrop-in 0.26s ease-out; }}
+  @keyframes backdrop-in {{ from {{ background: rgba(0,0,0,0); }} }}
+  @media (prefers-reduced-motion: reduce) {{
+    dialog#detail::backdrop {{ animation: none; }}
+  }}
   .detail {{ padding: 16px 18px; }}
   .detail__date {{ font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }}
   .detail__title {{ font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }}
@@ -563,7 +567,7 @@ def build_page(course, calendar):
 {"".join(months)}
 <dialog id="detail">
   <div class="detail">
-    <button class="detail__close" onclick="document.getElementById('detail').close()" aria-label="Close">&times;</button>
+    <button class="detail__close" onclick="closeDetail()" aria-label="Close">&times;</button>
     <div class="detail__date" id="detail-date"></div>
     <div class="detail__title" id="detail-title"></div>
     <div class="detail__due" id="detail-due" hidden></div>
@@ -613,10 +617,55 @@ def build_page(course, calendar):
     const link = document.getElementById('detail-link');
     link.href = d.link || '#';
     link.hidden = !d.link;
-    document.getElementById('detail').showModal();
+    const dialog = document.getElementById('detail');
+    dialog.showModal();
+    growFrom(dialog, openedFrom, false);
+  }}
+
+  // The popup grows out of whatever was tapped (a tile, a list row, a link on
+  // the today card) and shrinks back into it on close. `openedFrom` is
+  // captured from the click/keypress itself, so showDetail's callers don't
+  // have to pass it along. Skipped under "reduce motion", or when the thing
+  // tapped is no longer on screen -- then the popup just appears.
+  let openedFrom = null;
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
+  ['click', 'keydown'].forEach((type) => document.addEventListener(type, (e) => {{
+    if (e.target.closest && !e.target.closest('#detail')) openedFrom = e.target.closest('[data-date], a') || e.target;
+  }}, true));
+  function growFrom(dialog, origin, reverse, done) {{
+    const from = origin && origin.isConnected ? origin.getBoundingClientRect() : null;
+    if (REDUCED_MOTION.matches || !dialog.animate || !from || !from.width) {{
+      if (done) done();
+      return;
+    }}
+    const to = dialog.getBoundingClientRect();
+    const dx = (from.left + from.width / 2) - (to.left + to.width / 2);
+    const dy = (from.top + from.height / 2) - (to.top + to.height / 2);
+    const frames = [
+      {{ transform: `translate(${{dx}}px, ${{dy}}px) scale(${{from.width / to.width}}, ${{from.height / to.height}})`, opacity: 0 }},
+      {{ transform: 'none', opacity: 1 }},
+    ];
+    const anim = dialog.animate(reverse ? frames.slice().reverse() : frames, {{
+      duration: reverse ? 180 : 260, easing: reverse ? 'ease-in' : 'cubic-bezier(0.2, 0.9, 0.3, 1)',
+    }});
+    if (done) anim.onfinish = done;
+  }}
+  function closeDetail() {{
+    const dialog = document.getElementById('detail');
+    if (!dialog.open || dialog.dataset.closing) return;
+    dialog.dataset.closing = '1';
+    growFrom(dialog, openedFrom, true, () => {{
+      dialog.close();
+      delete dialog.dataset.closing;
+    }});
   }}
   document.getElementById('detail').addEventListener('click', (e) => {{
-    if (e.target.id === 'detail') e.target.close();
+    if (e.target.id === 'detail') closeDetail();
+  }});
+  // Escape: animate the close too, instead of the browser's instant one.
+  document.getElementById('detail').addEventListener('cancel', (e) => {{
+    e.preventDefault();
+    closeDetail();
   }});
 
   // Mark today's cell. Computed in the visitor's browser,
