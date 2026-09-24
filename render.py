@@ -671,7 +671,9 @@ def build_page(course, calendar):
     dim.style.opacity = to;
     if (REDUCED_MOTION.matches || !dim.animate) return;
     dim.animate([{{ opacity: from }}, {{ opacity: to }}], {{
-      duration: on ? 420 : 240, easing: on ? 'ease-out' : 'ease-in',
+      // Opening: a slow start that ramps up (ease-in-quart), so the page
+      // darkens mostly as the popup lands rather than the instant it's tapped.
+      duration: on ? 420 : 240, easing: on ? 'cubic-bezier(0.5, 0, 0.75, 0)' : 'ease-in',
     }});
   }}
   function closeDetail() {{
