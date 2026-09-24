@@ -87,6 +87,10 @@ def _matches(expect, item):
     if item is None:
         return False
     expect = expect.strip()
+    # Schoology's "T1L6" names the same lesson as the stored code "1.6".
+    m = re.fullmatch(r"T(\d+)L(\d+)", expect, re.IGNORECASE)
+    if m:
+        expect = f"{m[1]}.{m[2]}"
     # A code-shaped expect ("1.1") must match the code exactly -- a substring
     # test would let "1.1" match "1.10".
     if re.fullmatch(r"\d+\.\d+", expect):

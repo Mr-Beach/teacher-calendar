@@ -55,7 +55,7 @@ optional URL to a student resource (Drive/OneDrive link shared "anyone with
 the link", or a path under `docs/`), rendered as a button on that day's
 detail popup.
 
-**The tile/detail title is always `lesson_code` + `district_title` — never
+**The tile/detail title is always `lesson_code` + `district_title` (the code stored as `1.6`, shown as `T1L6` to match Schoology) — never
 `target` or `classwork`.** `target` (the day's I-can statement) and
 `classwork` (the activity, with its point value if any) are detail-only:
 shown in the popup when a student clicks the day, never on the tile. If the

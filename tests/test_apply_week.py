@@ -6,6 +6,7 @@ CLI test), so courses/math6.json is never modified.
 """
 import copy
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -32,10 +33,10 @@ class ApplyWeekTests(unittest.TestCase):
         cal = engine.render(self.course)[0]
         # Pick dates from the live data rather than hard-coding them, so the
         # tests keep working as the calendar moves on.
-        coded = [d for d in cal if d["kind"] == "Lesson" and d["lesson_text"][:1].isdigit()]
+        coded = [d for d in cal if d["kind"] == "Lesson" and re.match(r"T\d+L\d+ ", d["lesson_text"] or "")]
         pairs = [(a, b) for a, b in zip(coded, coded[1:]) if a["lesson_text"] == b["lesson_text"]]
         self.day1, self.day2 = pairs[0]
-        self.code = self.day1["lesson_text"].split()[0]
+        self.code = lesson_on(self.course, self.day1["date"])["lesson_code"]
         self.quiz = next(d for d in cal if d["kind"] == "Quiz")
         self.closed = next(d for d in cal if d["type"] == "No School")
 
@@ -82,6 +83,8 @@ class ApplyWeekTests(unittest.TestCase):
         item = {"lesson_code": "1.10", "district_title": "Something"}
         self.assertFalse(aw._matches("1.1", item))
         self.assertTrue(aw._matches("1.10", item))
+        self.assertTrue(aw._matches("T1L10", item))
+        self.assertFalse(aw._matches("T1L1", item))
         self.assertTrue(aw._matches("something", item))
 
     def test_mismatched_expect_rejects_and_changes_nothing(self):

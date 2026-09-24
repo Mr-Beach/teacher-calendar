@@ -42,7 +42,7 @@ Rules, per day:
 - `date` — required, a date in the course calendar.
 - `expect` — required whenever the day sets any lesson field. It must match
   the lesson the calendar *currently* shows on that date: its lesson code
-  exactly (`"1.2"`), or a piece of its title (`"Topic 2 Review"`). This is
+  exactly (`"1.2"`, or Schoology-style `"T1L2"`), or a piece of its title (`"Topic 2 Review"`). This is
   the guard against a calendar that shifted after the week was planned — a
   mismatch rejects the whole file and changes nothing.
 - Lesson fields: `target`, `classwork`, `homework`, `link`,

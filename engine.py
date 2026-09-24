@@ -12,6 +12,7 @@ which weeks count as "test weeks", quiz placement is solved by iterating to
 a fixed point rather than computed in one pass.
 """
 import json
+import re
 import sys
 from datetime import date, timedelta
 from pathlib import Path
@@ -26,6 +27,13 @@ QUIZ_ITEM = {
 # against these instead of accepting free text.
 VALID_DAY_TYPES = {"Instruction", "Flex", "Testing", "No School", "Other"}
 VALID_LESSON_KINDS = {"Lesson", "Opener", "Quiz", "Test", "3-Act"}
+
+
+def display_code(lesson_code):
+    """Show a stored lesson_code the way Schoology and Aaron's files name it:
+    "1.6" -> "T1L6", "5.3 & 5.6" -> "T5L3 & T5L6", "M8 5.1" -> "M8 T5L1".
+    Storage stays "1.6" -- week files and apply_week.py match on that."""
+    return re.sub(r"\b(\d+)\.(\d+)\b", r"T\1L\2", lesson_code)
 
 
 def normalize_homework(value):
@@ -165,12 +173,13 @@ def render(course):
                 base = "(no lesson planned)"
                 kind = None
             else:
-                # The tile/detail title is always lesson_code + district_title --
+                # The tile/detail title is always lesson_code (shown as T1L6)
+                # + district_title --
                 # never overridden by target/classwork, which are detail-only
                 # (PLANNING.md: title text should be readable, not a dumping
                 # ground for the day's full learning target).
                 base = (
-                    f"{lesson['lesson_code']} {lesson['district_title']}".strip()
+                    f"{display_code(lesson['lesson_code'])} {lesson['district_title']}".strip()
                     if lesson["lesson_code"] else lesson["district_title"]
                 )
                 kind = lesson["kind"]

@@ -66,7 +66,7 @@ session anyway, writing it as a week file and running
    - `engine.edit_lesson(course, index, **fields)` — correct content
      (district_title, homework, target, classwork, link) on an existing
      entry. No budget effect.
-   - The tile/detail title is always `lesson_code` + `district_title` —
+   - The tile/detail title is always `lesson_code` + `district_title` (the code stored as `1.6`, shown as `T1L6` to match Schoology) —
      never `target` or `classwork`. If the district's own title is opaque
      (e.g. a generic "Topic N Opener"), write a clearer `district_title`
      rather than relying on `target` to stand in for it. `target` (the
