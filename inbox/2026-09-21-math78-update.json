@@ -1,0 +1,10 @@
+{
+  "course": "math78",
+  "week_of": "2026-09-21",
+  "days": [
+    {"date": "2026-09-22", "expect": "1.7",
+     "homework": [{"text": "Topic 1 Lesson 7 Practice, workbook pages 45-46, problems 7, 9, 10, 11, 13, 14, 16, 18, 20", "due": "2026-09-25"}]},
+    {"date": "2026-09-24", "expect": "1.8",
+     "classwork": "Quiz review and start of quiz redo; dividing signed numbers notes; complex fractions; workbook Try Its pages 48-50."}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "course": "math6",
+  "week_of": "2026-09-21",
+  "days": [
+    {"date": "2026-09-24", "expect": "2.6",
+     "target": "I can reflect a point across one or both axes, and use absolute value to find the distance between two points that share an x- or y-coordinate.",
+     "classwork": "Quiz review and start of quiz redo; reflections notes; Mystery Picture; distance notes."},
+    {"date": "2026-09-25", "expect": "2.6",
+     "classwork": "Missing-coordinate warm-up; polygon notes; perimeter on the coordinate plane; workbook pp. 100-102, problems 9-11, 12-15, 18-21. Early finishers: 16, 17, 22. Challenge: 27-28."}
+  ]
+}
