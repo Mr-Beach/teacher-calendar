@@ -53,19 +53,10 @@ session anyway, writing it as a week file and running
    (Math 7/8 lesson codes and topics differ from Math 6's), ask.
 2. Before editing, capture `engine.render(course)` — you'll diff against it
    after, via `engine.diff_impact`.
-3. Use `engine.py`'s edit functions. Don't hand-write JSON mutations:
-   - `engine.set_day(course, date, type=..., note=...)` — change a school
-     day's type/note. This is how a day is spent (Instruction → No
-     School/Other) or earned back (Flex → Instruction). Omit an argument to
-     leave it unchanged; pass `note=None` explicitly to clear a note.
-   - `engine.cut_lesson(course, index)` — remove a sequence entry (an
-     "earn").
-   - `engine.insert_lesson(course, index, lesson)` — add a sequence entry (a
-     "spend"). `lesson` needs at least `district_title`; `kind` defaults to
-     `"Lesson"`.
-   - `engine.edit_lesson(course, index, **fields)` — correct content
-     (district_title, homework, target, classwork, link) on an existing
-     entry. No budget effect.
+3. Use `engine.py`'s edit functions — `set_day` (spend or earn back a
+   day by changing its type/note), `cut_lesson`, `insert_lesson`,
+   `edit_lesson`; their docstrings have the arguments. Don't hand-write
+   JSON mutations.
    - The tile/detail title is always `lesson_code` + `district_title` (the code stored as `1.6`, shown as `T1L6` to match Schoology) —
      never `target` or `classwork`. If the district's own title is opaque
      (e.g. a generic "Topic N Opener"), write a clearer `district_title`
@@ -109,47 +100,11 @@ session anyway, writing it as a week file and running
 
 ## Hosting
 
-The published site is **beach-math.com**, served by a Cloudflare Worker
-(static assets), not GitHub Pages. This exists because the district's
-Fortinet web filter blocks `*.github.io` at the network level for staff and
-students (IT, verbatim: "we block GitHub at the firewall level for all
-staff for security reasons"); moving the actual serving off GitHub's
-infrastructure entirely (not just the hostname) removes any risk that the
-filter is blocking GitHub's IP ranges rather than just the hostname.
-Confirmed 2026-09-23 via direct DNS/header check: `beach-math.com` and
-`www.beach-math.com` resolve to Cloudflare IPs and respond with
-`server: cloudflare` — nothing in the serving path touches GitHub anymore.
-
-- **Auto-deploy**: a Cloudflare Workers Builds project (`teacher-calendar`,
-  in Aaron's Cloudflare account) is connected via the Cloudflare GitHub App
-  to `Mr-Beach/teacher-calendar`, scoped to that repo only. Every push to
-  `main` triggers: build command `python3 scripts/build_site.py docs`
-  (run in Cloudflare's own ephemeral checkout — this never gets committed
-  back to git), then `npx wrangler deploy`. `build_site.py` renders every
-  `courses/<slug>.json` to `docs/<slug>/index.html` (served at
-  `beach-math.com/<slug>`) and writes the front page (one button per
-  course) to `docs/index.html` for the bare domain, so a new course needs
-  no build change. No
-  `wrangler.jsonc` is committed to this repo; wrangler auto-detects `docs/`
-  as the assets directory, and Cloudflare's dashboard manages the build/
-  deploy commands directly.
-- **Domain**: `beach-math.com` was registered through Cloudflare Registrar
-  and its DNS zone lives on Cloudflare. `beach-math.com` and
-  `www.beach-math.com` are attached to the Worker as Custom Domains
-  (Worker's **Domains** tab), which is what makes Cloudflare own and manage
-  their DNS records and TLS certs — there are no manually-managed DNS
-  records for this site.
-- **`docs/index.html` in this repo** is now a small static redirect stub
-  (meta-refresh + link to `beach-math.com`) so `mr-beach.github.io` — the
-  original address, still enabled via GitHub Pages — keeps working for
-  anyone with it bookmarked, instead of going dead or serving a stale
-  calendar. It is committed once and should never be overwritten by the
-  normal edit workflow (see step 5 above). `docs/CNAME` was removed since
-  GitHub Pages no longer owns the custom domain.
-- **If this ever needs rebuilding from scratch**: Cloudflare dashboard →
-  Workers & Pages → `teacher-calendar` → Settings → Builds, for build/
-  deploy commands and the GitHub connection; → Domains tab, for the custom
-  domain attachments.
+Pushing to `main` republishes beach-math.com (Cloudflare Workers Builds
+runs `scripts/build_site.py`). `docs/index.html` in this repo is a fixed
+redirect stub for old github.io bookmarks — never render into it,
+overwrite it, or commit over it. Setup details, the reason it isn't
+GitHub Pages, and rebuild steps: the `site-hosting` skill.
 
 ## Hard constraints (from SPEC.md — true at every version, not just v1)
 
