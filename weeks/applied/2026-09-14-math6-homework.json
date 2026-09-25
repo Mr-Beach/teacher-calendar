@@ -1,0 +1,16 @@
+{
+  "course": "math6",
+  "week_of": "2026-09-14",
+  "days": [
+    {
+      "date": "2026-09-15",
+      "expect": "2.2",
+      "homework": [{"text": "Workbook page 77, problems 15 to 23", "due": "2026-09-18"}]
+    },
+    {
+      "date": "2026-09-17",
+      "expect": "2.3",
+      "homework": [{"text": "Workbook page 82, problems 1 to 17", "due": "2026-09-23"}]
+    }
+  ]
+}
