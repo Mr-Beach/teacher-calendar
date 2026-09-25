@@ -128,7 +128,7 @@
       "date": "2026-09-29",
       "weekday": "Tue",
       "type": "Instruction",
-      "note": "Covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3"
+      "note": null
     },
     {
       "date": "2026-09-30",
@@ -140,7 +140,7 @@
       "date": "2026-10-01",
       "weekday": "Thu",
       "type": "Instruction",
-      "note": null
+      "note": "Covers 6.NS.C.5, 6.NS.C.6c, 6.NS.C.7, 6.NS.C.8, 6.G.A.3"
     },
     {
       "date": "2026-10-02",
@@ -1481,11 +1481,11 @@
       "homework": [
         {
           "text": "Topic 2 study guide",
-          "due": "2026-09-29",
+          "due": "2026-10-01",
           "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067902"
         },
         {
-          "text": "Quiz corrections on Schoology (2 more tries)",
+          "text": "Quiz redo on Schoology (2 more tries)",
           "due": "2026-09-30",
           "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1042114128"
         }
@@ -1503,7 +1503,29 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
       "target": "I can find the distance between two points that share an x- or y-coordinate.",
-      "classwork": "Reflections and distance; distance notes; practice; find the missing coordinate; perimeter.",
+      "classwork": "Reflections and distance; distance notes.",
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.6",
+      "district_title": "Find Distances on the Coordinate Plane",
+      "kind": "Lesson",
+      "target": "I can find distances on the coordinate plane using the absolute values of the coordinates.",
+      "classwork": "Distance practice; find the missing coordinate; perimeter; first Practice Log.",
+      "homework": null,
+      "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": "2.6",
+      "district_title": "Find Distances on the Coordinate Plane",
+      "kind": "Lesson",
+      "target": "I can use the coordinate plane to solve problems about real situations.",
+      "classwork": "The coordinate plane in context.",
+      "homework": null,
+      "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067898",
       "extra_materials": null
     },
     {
