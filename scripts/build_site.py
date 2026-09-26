@@ -8,11 +8,15 @@ beach-math.com/<slug>. The site root is a small front page linking to each
 course. The course pages don't link to each other or back to it -- students
 go straight to their own class's page from Schoology.
 
+Each apps/<name>/ folder (student apps like Tech Quest) is copied as-is to
+<out>/<name>/, served at beach-math.com/<name>. Apps aren't on the front page.
+
 Runs in Cloudflare's ephemeral checkout; the output is never committed. To
 preview locally, build into a scratch directory, never into docs/ -- the
 committed docs/index.html is the redirect stub for old github.io bookmarks.
 """
 import json
+import shutil
 import sys
 from html import escape
 from pathlib import Path
@@ -111,6 +115,13 @@ def main(argv):
     out.mkdir(parents=True, exist_ok=True)
     (out / "index.html").write_text(build_front_page(courses))
     print("built / (front page)", file=sys.stderr)
+    slugs = {slug for slug, _ in courses}
+    for app in sorted(p for p in (ROOT / "apps").glob("*") if p.is_dir()):
+        if app.name in slugs:
+            print(f"error: apps/{app.name} has the same name as a course", file=sys.stderr)
+            return 1
+        shutil.copytree(app, out / app.name, dirs_exist_ok=True)
+        print(f"built /{app.name}/ (app)", file=sys.stderr)
     return 0
 
 

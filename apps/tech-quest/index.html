@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math 6 Tech Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#D9F2EE; --paper:#FFFFFF; --ink:#1F2555; --soft:#4A5080;
+  --clever:#6C4DF5; --school:#0E8F7E; --tomato:#FF5A4E; --sun:#FFC93C;
+  --line:#1F2555; --shadow:#1F2555;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151936; --paper:#232852; --ink:#F2F3FF; --soft:#B9BCE0;
+    --clever:#9B85FF; --school:#2CC3AE; --tomato:#FF7A70; --sun:#FFD460;
+    --line:#8A90C8; --shadow:#05071A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151936; --paper:#232852; --ink:#F2F3FF; --soft:#B9BCE0;
+  --clever:#9B85FF; --school:#2CC3AE; --tomato:#FF7A70; --sun:#FFD460;
+  --line:#8A90C8; --shadow:#05071A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:400 1.125rem/1.55 "Atkinson Hyperlegible",Verdana,sans-serif;}
+h1,h2,h3,.token,.pct{font-family:"Bricolage Grotesque","Arial Black",sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px 80px}
+
+/* hero */
+header{padding:48px 0 24px}
+h1{font-size:clamp(3.4rem,11vw,7.5rem);line-height:.88;font-weight:800;margin:0;
+  letter-spacing:-.03em;transform:rotate(-2deg);transform-origin:left;
+  text-shadow:5px 5px 0 var(--sun)}
+.intro{max-width:56ch;color:var(--soft);margin:18px 0 0}
+
+/* progress */
+.meter{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;
+  display:flex;align-items:center;gap:14px}
+.bar{flex:1;height:22px;border:3px solid var(--line);border-radius:999px;background:var(--paper);overflow:hidden}
+.fill{height:100%;width:0;background:repeating-linear-gradient(45deg,var(--sun) 0 12px,#FFB400 12px 24px);
+  transition:width .4s ease}
+.pct{font-weight:800;font-size:1.25rem;min-width:4.5ch;text-align:right}
+
+/* zones */
+h2{font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:800;margin:44px 0 4px;line-height:1}
+.zone-note{color:var(--soft);margin:0 0 8px;max-width:60ch}
+.z-clever h2{color:var(--clever)} .z-school h2{color:var(--school)}
+
+/* the trail */
+.trail{position:relative;list-style:none;margin:0;padding:12px 0}
+.trail::before{content:"";position:absolute;top:0;bottom:0;left:50%;
+  border-left:5px dashed var(--line);opacity:.45;transform:translateX(-50%)}
+.stop{position:relative;display:grid;grid-template-columns:1fr 84px 1fr;align-items:center;margin:22px 0}
+.token{grid-column:2;justify-self:center;width:68px;height:68px;border-radius:50%;
+  display:grid;place-items:center;font-size:2rem;font-weight:800;
+  background:var(--paper);border:4px solid var(--c);color:var(--c);z-index:1;
+  box-shadow:3px 3px 0 var(--shadow)}
+.card{background:var(--paper);border:3px solid var(--line);border-radius:18px;
+  padding:18px 20px;box-shadow:6px 6px 0 var(--c)}
+.stop:nth-child(odd) .card{grid-column:1;grid-row:1}
+.stop:nth-child(even) .card{grid-column:3;grid-row:1}
+.stop .token{grid-row:1}
+.z-clever{--c:var(--clever)} .z-school{--c:var(--school)}
+h3{margin:0 0 6px;font-size:1.5rem;font-weight:800;line-height:1.1}
+.card p{margin:0 0 8px}
+.card ul{margin:4px 0 10px;padding-left:1.2em}
+.look{background:color-mix(in srgb,var(--sun) 35%,transparent);border-radius:8px;padding:6px 10px;display:block}
+.path{font-weight:700}
+label.done{display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:700;cursor:pointer;user-select:none}
+label.done input{width:26px;height:26px;accent-color:var(--c);cursor:pointer}
+.stop.checked .token{background:var(--c);color:var(--paper)}
+.stop.checked .card{opacity:.72}
+@media (prefers-reduced-motion:no-preference){
+  .stop.checked .token{animation:pop .35s ease}
+  @keyframes pop{50%{transform:scale(1.25) rotate(-8deg)}}
+}
+:focus-visible{outline:3px solid var(--tomato);outline-offset:3px}
+
+/* final + help */
+.finish{margin-top:40px;text-align:center;border:4px dashed var(--line);border-radius:24px;padding:28px 20px;background:var(--paper)}
+.finish h2{margin:0 0 6px;color:var(--ink)}
+.finish.won{border-style:solid;background:var(--sun);color:#1F2555}
+.finish.won h2{color:#1F2555}
+.help{margin-top:28px;background:var(--paper);border-left:10px solid var(--tomato);border-radius:12px;padding:16px 20px}
+.help h3{color:var(--tomato)}
+.reset{margin-top:18px;background:none;border:2px solid var(--soft);color:var(--soft);border-radius:10px;padding:6px 12px;font:inherit;font-size:.95rem;cursor:pointer}
+
+@media (max-width:700px){
+  .trail::before{left:30px}
+  .stop{grid-template-columns:60px 1fr;gap:12px}
+  .token{grid-column:1 !important;width:54px;height:54px;font-size:1.6rem;align-self:start}
+  .stop:nth-child(odd) .card,.stop:nth-child(even) .card{grid-column:2}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Tech<br>Quest</h1>
+  <p class="intro">Seven stops. Do them in order. Check each one off as you finish.</p>
+</header>
+
+<div class="meter" aria-live="polite">
+  <div class="bar"><div class="fill" id="fill"></div></div>
+  <div class="pct" id="pct">0/7</div>
+</div>
+
+<section class="z-clever">
+  <h2>Clever</h2>
+  <p class="zone-note">You only do these once. After setup, you'll open Savvas and MagicSchool from Schoology.</p>
+  <ol class="trail">
+    <li class="stop" data-id="1">
+      <div class="token">1</div>
+      <div class="card">
+        <h3>Heart your apps</h3>
+        <p>Open Clever. Find <b>Savvas Realize</b> and <b>MagicSchool</b>. Click the heart on each one.</p>
+        <span class="look">Check: both apps now show up in your favorites.</span>
+        <label class="done"><input type="checkbox"> Done</label>
+      </div>
+    </li>
+    <li class="stop" data-id="2">
+      <div class="token">2</div>
+      <div class="card">
+        <h3>Set up Savvas Realize</h3>
+        <p>In Clever, click <b>Savvas Realize</b>. Sign in and finish any setup screens.</p>
+        <span class="look">Check: you can see the Savvas home page.</span>
+        <label class="done"><input type="checkbox"> Done</label>
+      </div>
+    </li>
+    <li class="stop" data-id="3">
+      <div class="token">3</div>
+      <div class="card">
+        <h3>Ask MagicSchool</h3>
+        <p>Go back to Clever. Click <b>MagicSchool</b>. Ask it a math question, like something from class you want explained another way.</p>
+        <span class="look">Check: read its answer. Did it help?</span>
+        <label class="done"><input type="checkbox"> Done</label>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<section class="z-school">
+  <h2>Schoology</h2>
+  <p class="zone-note">This is where you'll find everything for math, every day.</p>
+  <ol class="trail">
+    <li class="stop" data-id="4">
+      <div class="token">4</div>
+      <div class="card">
+        <h3>Open the calendar</h3>
+        <p class="path">Math course → calendar link at the top of the page</p>
+        <span class="look">Find: what is the next lesson?</span>
+        <label class="done"><input type="checkbox"> Done</label>
+      </div>
+    </li>
+    <li class="stop" data-id="5">
+      <div class="token">5</div>
+      <div class="card">
+        <h3>Explore a topic folder</h3>
+        <p class="path">Math course → a Topic folder (try the one we're on now)</p>
+        <p>Open each folder below and look for:</p>
+        <ul>
+          <li><b>Launch</b>: the Math Walk video that starts the topic, and a readiness assessment</li>
+          <li><b>Review</b>: review problems for the topic</li>
+          <li><b>A lesson folder</b>: the <b>Key Concept PDF</b> and <b>Practice and Problem Solving</b> (sometimes homework, sometimes extra)</li>
+        </ul>
+        <span class="look">Note: what else did you find in Launch and Review?</span>
+        <span class="look" style="margin-top:6px">Bonus: peek inside the Topic 1 folder.</span>
+        <label class="done"><input type="checkbox"> Done</label>
+      </div>
+    </li>
+    <li class="stop" data-id="6">
+      <div class="token">6</div>
+      <div class="card">
+        <h3>Find your textbook</h3>
+        <p class="path">Math course → Whole Year Materials</p>
+        <p>Open the <b>Interactive Student Edition: Grade 6</b>. That's your math book, online.</p>
+        <span class="look">Check: flip to any page.</span>
+        <label class="done"><input type="checkbox"> Done</label>
+      </div>
+    </li>
+    <li class="stop" data-id="7">
+      <div class="token">7</div>
+      <div class="card">
+        <h3>Play a game</h3>
+        <p class="path">Whole Year Materials → Savvas games link</p>
+        <p>Try the <b>Topic 2 game</b>. You earned it.</p>
+        <label class="done"><input type="checkbox"> Done</label>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<div class="finish" id="finish">
+  <h2 id="finishTitle">Finish line</h2>
+  <p id="finishText">Check off all seven stops to cross it.</p>
+</div>
+
+<div class="help">
+  <h3>Stuck?</h3>
+  <p>Write down the stop number and what the screen says. Skip that stop and keep going. Show Mr. Beach what you wrote.</p>
+</div>
+
+<button class="reset" id="reset" type="button">Clear my checkmarks</button>
+</div>
+
+<script>
+(function(){
+  var KEY="techQuestDone";
+  var stops=[].slice.call(document.querySelectorAll(".stop"));
+  var saved={};
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ saved={}; }
+
+  function render(){
+    var n=0;
+    stops.forEach(function(s){
+      var on=!!saved[s.dataset.id];
+      s.classList.toggle("checked",on);
+      s.querySelector("input").checked=on;
+      if(on) n++;
+    });
+    document.getElementById("fill").style.width=(n/stops.length*100)+"%";
+    document.getElementById("pct").textContent=n+"/"+stops.length;
+    var won=n===stops.length, f=document.getElementById("finish");
+    f.classList.toggle("won",won);
+    document.getElementById("finishTitle").textContent=won?"Quest complete":"Finish line";
+    document.getElementById("finishText").textContent=won
+      ?"You're set up for the year. Keep playing until class ends."
+      :"Check off all seven stops to cross it.";
+  }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(saved)); }catch(e){} }
+
+  stops.forEach(function(s){
+    s.querySelector("input").addEventListener("change",function(e){
+      saved[s.dataset.id]=e.target.checked; save(); render();
+    });
+  });
+  document.getElementById("reset").addEventListener("click",function(){
+    saved={}; save(); render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

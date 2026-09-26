@@ -25,7 +25,9 @@ Confirmed 2026-09-23 via direct DNS/header check: `beach-math.com` and
   `courses/<slug>.json` to `docs/<slug>/index.html` (served at
   `beach-math.com/<slug>`) and writes the front page (one button per
   course) to `docs/index.html` for the bare domain, so a new course needs
-  no build change. No
+  no build change. It also copies each `apps/<name>/` folder as-is to
+  `docs/<name>/` (served at `beach-math.com/<name>`), so a new student app
+  needs no build change either. No
   `wrangler.jsonc` is committed to this repo; wrangler auto-detects `docs/`
   as the assets directory, and Cloudflare's dashboard manages the build/
   deploy commands directly.

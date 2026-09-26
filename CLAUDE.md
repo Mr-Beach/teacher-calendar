@@ -98,6 +98,17 @@ session anyway, writing it as a week file and running
    students read from, so confirm the impact with him first, every time.
    The push alone republishes the site — see "Hosting" below.
 
+## Student apps
+
+`apps/<name>/index.html` is published as-is at **beach-math.com/<name>**
+(e.g. `apps/tech-quest/` → beach-math.com/tech-quest). Each app is one
+self-contained HTML file with no build step. Students reach them from
+links in Schoology; they are not on the front page. To add an app, add a
+folder; to edit one, edit its file and push to `main`. An app folder can't
+share a name with a `courses/*.json` slug (the build fails if it does).
+Apps are separate from the calendar workflow above: the confirm-the-impact
+step is for course files, not apps.
+
 ## Hosting
 
 Pushing to `main` republishes beach-math.com (Cloudflare Workers Builds
