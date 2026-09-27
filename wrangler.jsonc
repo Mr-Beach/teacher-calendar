@@ -1,0 +1,20 @@
+// Deploy settings for beach-math.com (Cloudflare Workers Builds runs
+// `python3 scripts/build_site.py docs` then `npx wrangler deploy` on every
+// push to main -- see the site-hosting skill). This matches what wrangler
+// auto-detected before this file existed, plus workers_dev: false.
+{
+  "name": "teacher-calendar",
+  "compatibility_date": "2026-09-25",
+  "assets": {
+    "directory": "./docs"
+  },
+  // The site is served only at beach-math.com and www.beach-math.com.
+  // The spare teacher-calendar.teacher-calendar.workers.dev address would
+  // serve beach-math.com/teacher without the Cloudflare Access sign-in (Access
+  // there can't be limited to one hostname -- it locks the custom domains too),
+  // so it stays off. Omitting this would let each deploy turn it back on.
+  "workers_dev": false,
+  "observability": {
+    "enabled": true
+  }
+}
