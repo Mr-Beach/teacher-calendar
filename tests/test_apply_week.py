@@ -135,7 +135,10 @@ class ApplyWeekTests(unittest.TestCase):
         self.plan_apply([{"date": self.day1["date"], "expect": self.code,
                           "homework": [{"text": "p. 2", "due": due}]}])
         cal = {d["date"]: d for d in engine.render(self.course)[0]}
-        self.assertEqual(cal[due]["due"], [{"text": "p. 2", "assigned": self.day1["date"]}])
+        # No link of its own, so it links to the lesson's resource link.
+        lesson_link = lesson_on(self.course, self.day1["date"])["link"]
+        self.assertEqual(cal[due]["due"], [{"text": "p. 2", "assigned": self.day1["date"],
+                                            "link": lesson_link}])
         # Lose the assigned day: the lesson (and its homework) slides later,
         # but the due date doesn't move -- and now it's flagged.
         engine.set_day(self.course, self.day1["date"], type="Other", note="Assembly")
