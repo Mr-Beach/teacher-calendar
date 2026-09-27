@@ -8,6 +8,10 @@ beach-math.com/<slug>. The site root is a small front page linking to each
 course. The course pages don't link to each other or back to it -- students
 go straight to their own class's page from Schoology.
 
+The teacher-only look-ahead (scripts/lookahead_page.py) is written to
+<out>/teacher/index.html, served at beach-math.com/teacher. Access to it is
+restricted at the Cloudflare edge -- see the site-hosting skill.
+
 Each apps/<name>/ folder (student apps like Tech Quest) is copied as-is to
 <out>/<name>/, served at beach-math.com/<name>. Apps aren't on the front page.
 
@@ -26,6 +30,9 @@ sys.path.insert(0, str(ROOT))
 
 from engine import render, run_all_checks  # noqa: E402
 from render import build_page, fill_weekends  # noqa: E402
+import lookahead_page  # noqa: E402
+
+TEACHER_PATH = "teacher"  # beach-math.com/teacher; no course or app may use it
 
 
 def build_course(path, course):
@@ -116,9 +123,16 @@ def main(argv):
     (out / "index.html").write_text(build_front_page(courses))
     print("built / (front page)", file=sys.stderr)
     slugs = {slug for slug, _ in courses}
+    if TEACHER_PATH in slugs:
+        print(f"error: courses/{TEACHER_PATH}.json collides with the teacher page", file=sys.stderr)
+        return 1
+    (out / TEACHER_PATH).mkdir(parents=True, exist_ok=True)
+    (out / TEACHER_PATH / "index.html").write_text(lookahead_page.build_page(courses))
+    print(f"built /{TEACHER_PATH}/ (teacher look-ahead)", file=sys.stderr)
+    slugs.add(TEACHER_PATH)
     for app in sorted(p for p in (ROOT / "apps").glob("*") if p.is_dir()):
         if app.name in slugs:
-            print(f"error: apps/{app.name} has the same name as a course", file=sys.stderr)
+            print(f"error: apps/{app.name} has the same name as a course or the teacher page", file=sys.stderr)
             return 1
         shutil.copytree(app, out / app.name, dirs_exist_ok=True)
         print(f"built /{app.name}/ (app)", file=sys.stderr)

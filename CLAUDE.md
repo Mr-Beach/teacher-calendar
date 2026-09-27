@@ -109,6 +109,15 @@ share a name with a `courses/*.json` slug (the build fails if it does).
 Apps are separate from the calendar workflow above: the confirm-the-impact
 step is for course files, not apps.
 
+## Teacher look-ahead
+
+**beach-math.com/teacher** shows Aaron the next 10 school days for both
+courses, with days still missing a target or class work flagged. It's
+rebuilt on every push by `scripts/lookahead_page.py` and sits behind a
+Google sign-in for Aaron only (see the `site-hosting` skill). It's not
+linked from any student page. `python3 scripts/lookahead.py` prints the
+same look-ahead in the terminal.
+
 ## Hosting
 
 Pushing to `main` republishes beach-math.com (Cloudflare Workers Builds

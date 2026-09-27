@@ -1,9 +1,10 @@
 """Teacher-only look-ahead: the next N instructional days, per course.
 
 Reads courses/*.json through engine.render(), so it can never disagree with
-the published calendar. Nothing here is written anywhere or published -- it
-prints to the terminal for Aaron (or a session answering "what's coming up?"),
-and its output can be pasted into Cowork to build the decks for those days.
+the published calendar. This prints to the terminal for Aaron (or a session
+answering "what's coming up?"), and its output can be pasted into Cowork to
+build the decks for those days. The same look-ahead is published as a web
+page, behind a sign-in, by scripts/lookahead_page.py (beach-math.com/teacher).
 
 Non-instructional days in the window are shown so the gaps are visible, but
 only Instruction days count toward N. A lesson day with no target or class
