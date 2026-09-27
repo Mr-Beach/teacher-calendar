@@ -120,6 +120,12 @@ GitHub Pages, and rebuild steps: the `site-hosting` skill.
 ## Hard constraints (from SPEC.md — true at every version, not just v1)
 
 - No student names, grades, or student-identifying data. Ever.
-- No accounts, no database — `courses/*.json` is the only state.
 - Single teacher, single user (Aaron). One file per course; a second course
   is another `courses/<slug>.json`, not a schema change.
+
+## Current defaults (not rules — Aaron can change these)
+
+- No accounts or login, and no database: `courses/*.json` is the only
+  state. That was v1's scope, not a permanent rule. If a feature needs
+  a login or stored state (e.g. a teacher-only page behind a sign-in), it's
+  fair to propose it; say plainly what it adds and let Aaron decide.
