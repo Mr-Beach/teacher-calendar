@@ -1,0 +1,22 @@
+{
+ "course": "math6",
+ "week_of": "2026-09-28",
+ "days": [
+  {
+   "date": "2026-09-29",
+   "expect": "2.6",
+   "classwork": "Escape route; perimeter of any polygon; reading a balance graph. Workbook pp. 100–102 #16, 17, 22, 24."
+  },
+  {
+   "date": "2026-09-30",
+   "expect": "Topic 2 Review",
+   "classwork": "Practice Log turn-in; skill stations; study guide check."
+  },
+  {
+   "date": "2026-10-02",
+   "expect": "Positive Rational Numbers",
+   "target": "I can show what I already know about decimals and fractions.",
+   "classwork": "Topic 1 readiness check (not graded); estimating with decimals."
+  }
+ ]
+}

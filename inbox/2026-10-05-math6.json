@@ -1,0 +1,30 @@
+{
+ "course": "math6",
+ "week_of": "2026-10-05",
+ "days": [
+  {
+   "date": "2026-10-05",
+   "expect": "1.1",
+   "target": "I can use whole-number estimates to check decimal sums, differences, and products.",
+   "classwork": "Costume budget: estimate, then compute exactly."
+  },
+  {
+   "date": "2026-10-06",
+   "expect": "1.1",
+   "target": "I can explain where the decimal point goes in a product of decimals.",
+   "classwork": "Choose a Problem; decimal products as fractions.",
+   "homework": [
+    {
+     "text": "Topic 1 Lesson 1 Practice: workbook pp. 9–10 #5–18",
+     "due": "2026-10-08"
+    }
+   ]
+  },
+  {
+   "date": "2026-10-08",
+   "expect": "1.2",
+   "target": "I can add, subtract, and multiply decimals and place the decimal point.",
+   "classwork": "Line up place values; count decimal places. Workbook p. 14 #5–18."
+  }
+ ]
+}
