@@ -1,0 +1,30 @@
+{
+ "course": "math78",
+ "week_of": "2026-10-05",
+ "days": [
+  {
+   "date": "2026-10-05",
+   "expect": "5.3 & 5.6",
+   "target": "I can combine like terms with fraction and decimal coefficients, and add expressions.",
+   "classwork": "Rational coefficients; road trip; add expressions. Workbook p. 288."
+  },
+  {
+   "date": "2026-10-06",
+   "expect": "5.6",
+   "target": "I can add expressions that represent real situations.",
+   "classwork": "Expressions with two variables. Workbook pp. 289–290 #13, 15, 16, 18.",
+   "homework": [
+    {
+     "text": "Topic 5 Lessons 3 and 6 Practice: workbook pp. 271–272 #7–12 and p. 289 #8–12",
+     "due": "2026-10-08"
+    }
+   ]
+  },
+  {
+   "date": "2026-10-08",
+   "expect": "5.4",
+   "target": "I can expand expressions using the Distributive Property.",
+   "classwork": "Area models; expand with negative and rational factors. Workbook p. 277 #7–14."
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "course": "math78",
+ "week_of": "2026-09-28",
+ "days": [
+  {
+   "date": "2026-09-28",
+   "expect": "Topic 1 Review",
+   "target": "I can apply everything in Topic 1 to problems I have not seen before.",
+   "classwork": "Card sort; study guide questions; first Practice Log."
+  },
+  {
+   "date": "2026-09-30",
+   "expect": "5.1",
+   "target": "I can write and evaluate algebraic expressions.",
+   "classwork": "Sticky-note sort; parts of an expression. Workbook pp. 258–259."
+  },
+  {
+   "date": "2026-10-01",
+   "expect": "5.2",
+   "target": "I can use properties of operations to recognize equivalent expressions.",
+   "classwork": "Birthday trick; equivalent expressions; matching cards.",
+   "homework": [
+    {
+     "text": "Topic 5 Lessons 1–2 Practice: workbook pp. 259–260 #15–18 and pp. 265–266 #5–13",
+     "due": "2026-10-07"
+    }
+   ]
+  },
+  {
+   "date": "2026-10-02",
+   "expect": "5.3",
+   "target": "I can combine like terms to simplify expressions.",
+   "classwork": "Algebra tiles; combine like terms. Workbook pp. 270–271."
+  }
+ ]
+}
