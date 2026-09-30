@@ -41,7 +41,8 @@ A week that only fills in content — target, class work, homework, link,
 materials, student-facing notes — doesn't need this session at all. It goes
 in as `inbox/<week>.json` on a `week/<label>` branch; a GitHub Action
 applies it with `scripts/apply_week.py` and opens a PR for Aaron to merge.
-Format and rules: `inbox/README.md`. Anything that moves dates still comes
+Format and rules: `inbox/README.md`; the days still to plan:
+`python3 scripts/lookahead.py --needs`. Anything that moves dates still comes
 here and follows the steps below. If Aaron hands a week block to this
 session anyway, writing it as a week file and running
 `python3 scripts/apply_week.py <file> --dry-run` is a fine way to apply it.
@@ -112,7 +113,7 @@ step is for course files, not apps.
 ## Teacher look-ahead
 
 **beach-math.com/teacher** shows Aaron the next 10 school days for both
-courses, with days still missing a target or class work flagged. It's
+courses, with days still missing a target, class work, or link flagged. It's
 rebuilt on every push by `scripts/lookahead_page.py` and sits behind a
 Google sign-in for Aaron only (see the `site-hosting` skill). It's not
 linked from any student page. `python3 scripts/lookahead.py` prints the

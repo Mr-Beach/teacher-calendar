@@ -50,6 +50,23 @@ class LookaheadTests(unittest.TestCase):
             if day["kind"] in ("Quiz", "Test"):
                 self.assertEqual(la.missing_content(day), [])
 
+    def test_lesson_days_need_a_link(self):
+        day = next(d for d in CALENDAR if d["kind"] == "Lesson")
+        self.assertIn("link", la.missing_content({**day, "link": None}))
+        self.assertNotIn("link", la.missing_content({**day, "link": "https://example.com"}))
+
+    def test_needs_lists_only_gap_days(self):
+        window = la.lookahead(COURSE, FIRST_DATE, 20)
+        lines = la.format_needs(COURSE, window)
+        gaps = [d for d in window if la.missing_content(d)]
+        self.assertEqual(len(lines), 1 + len(gaps))
+        for day, line in zip(gaps, lines[1:]):
+            self.assertIn(day["lesson_text"], line)
+
+    def test_needs_with_no_gaps(self):
+        window = [d for d in la.lookahead(COURSE, FIRST_DATE, 5) if not la.missing_content(d)]
+        self.assertIn("every lesson day has its content", la.format_needs(COURSE, window)[0])
+
     def test_cli_prints_every_course(self):
         out = io.StringIO()
         with redirect_stdout(out):

@@ -13,6 +13,21 @@ Content only. Anything that moves dates — losing a day, cutting or inserting
 a lesson, changing a day's type — is rejected here and stays a Claude Code
 job (CLAUDE.md), because it's an editorial call.
 
+## Start here: what still needs planning
+
+Before planning, pull and list the days still missing content:
+
+```
+git pull
+python3 scripts/lookahead.py --needs --days 15
+```
+
+It prints, per course, each upcoming lesson day with no target, class work,
+or link, e.g. `Mon 10/12  T1L2 Fluently Add, ... -- needs target, class work`.
+Those are the days to ask Aaron about; the lesson code on each line is the
+`expect` value for that day. Quizzes and tests are never listed. Raise
+`--days` to look further ahead.
+
 ## Format
 
 ```json

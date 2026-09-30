@@ -7,8 +7,13 @@ build the decks for those days. The same look-ahead is published as a web
 page, behind a sign-in, by scripts/lookahead_page.py (beach-math.com/teacher).
 
 Non-instructional days in the window are shown so the gaps are visible, but
-only Instruction days count toward N. A lesson day with no target or class
-work yet is flagged "needs: ..." -- that's the content the weekly inbox fills.
+only Instruction days count toward N. A lesson day with no target, class
+work, or link yet is flagged "needs: ..." -- that's the content the weekly
+inbox fills.
+
+--needs prints only those gap days, grouped by course. It's the planning
+session's (Cowork's) starting point: it says which days to fill and gives the
+lesson each one must `expect` (inbox/README.md).
 
 Deck status is not shown yet: the decks live in OneDrive/Cowork, which this
 repo can't see. That waits on deciding how deck existence gets tracked.
@@ -17,6 +22,7 @@ Usage:
     python3 scripts/lookahead.py                    # all courses, 10 days from today
     python3 scripts/lookahead.py math6 --days 5
     python3 scripts/lookahead.py --from 2026-10-05
+    python3 scripts/lookahead.py --needs --days 15  # just the days still to plan
 """
 import argparse
 import json
@@ -31,8 +37,11 @@ import engine  # noqa: E402
 # Kinds that get a tag; a plain "Lesson" doesn't need one.
 TAGGED_KINDS = {"Quiz", "Test", "Opener", "3-Act"}
 # Quizzes and tests carry no target/classwork of their own, so they're never
-# flagged as missing content.
+# flagged as missing content. Quizzes link to the course's quiz folder, and a
+# test has nothing for students to open, so neither needs a link either.
 CONTENT_EXEMPT_KINDS = {"Quiz", "Test"}
+CONTENT_FIELDS = ("target", "classwork", "link")
+FIELD_LABELS = {"target": "target", "classwork": "class work", "link": "link"}
 
 
 def lookahead(course, start, days):
@@ -60,10 +69,14 @@ def lookahead(course, start, days):
 
 
 def missing_content(day):
-    """Content fields a lesson day still needs, e.g. ["target", "classwork"]."""
+    """Content fields a lesson day still needs, e.g. ["target", "link"]."""
     if day["type"] != "Instruction" or day["kind"] is None or day["kind"] in CONTENT_EXEMPT_KINDS:
         return []
-    return [f for f in ("target", "classwork") if not day[f]]
+    return [f for f in CONTENT_FIELDS if not day[f]]
+
+
+def when_label(day):
+    return f"{day['weekday']} {day['date'][5:7]}/{day['date'][8:10]}"
 
 
 def format_course(course, window):
@@ -71,7 +84,7 @@ def format_course(course, window):
     if not window:
         return lines + ["  (no instructional days left in the calendar)"]
     for day in window:
-        when = f"{day['weekday']} {day['date'][5:7]}/{day['date'][8:10]}"
+        when = when_label(day)
         if day["type"] != "Instruction":
             lines.append(f"  {when}  -- {day['display']} --")
             continue
@@ -84,7 +97,24 @@ def format_course(course, window):
             lines.append(f"{indent}note: {day['note']}")
         needs = missing_content(day)
         if needs:
-            lines.append(f"{indent}needs: {', '.join(needs)}")
+            lines.append(f"{indent}needs: {', '.join(FIELD_LABELS[f] for f in needs)}")
+    return lines
+
+
+def format_needs(course, window):
+    """Only the days in `window` still missing content, one line each."""
+    gaps = [(day, missing_content(day)) for day in window]
+    gaps = [(day, needs) for day, needs in gaps if needs]
+    if not window:
+        return [f"{course['course']}: no instructional days left in the calendar"]
+    through = f"through {when_label(window[-1])}"
+    if not gaps:
+        return [f"{course['course']}: every lesson day has its content ({through})"]
+    count = "1 day needs" if len(gaps) == 1 else f"{len(gaps)} days need"
+    lines = [f"{course['course']}: {count} content ({through})"]
+    for day, needs in gaps:
+        lines.append(f"  {when_label(day)}  {day['lesson_text']}"
+                     f" -- needs {', '.join(FIELD_LABELS[f] for f in needs)}")
     return lines
 
 
@@ -96,6 +126,8 @@ def main(argv=None):
                         help="instructional days to show (default 10)")
     parser.add_argument("--from", dest="start", default=date.today().isoformat(),
                         help="first date, YYYY-MM-DD (default today)")
+    parser.add_argument("--needs", action="store_true",
+                        help="list only the days still missing target, class work, or link")
     args = parser.parse_args(argv)
 
     try:
@@ -112,7 +144,8 @@ def main(argv=None):
         if not path.exists():
             parser.error(f"no course file {path.relative_to(ROOT)}")
         course = json.loads(path.read_text())
-        blocks.append("\n".join(format_course(course, lookahead(course, args.start, args.days))))
+        fmt = format_needs if args.needs else format_course
+        blocks.append("\n".join(fmt(course, lookahead(course, args.start, args.days))))
     print("\n\n".join(blocks))
 
 

@@ -9,7 +9,7 @@ small script hides days before the viewer's today and shows the next 10
 instructional days, with a button for 10 more. Without JavaScript it shows
 everything from the build date on, which is still correct, just longer.
 
-Not for students: it shows the content gaps ("needs target, class work").
+Not for students: it shows the content gaps ("needs target & link").
 Access to /teacher is restricted at the Cloudflare edge, not in this page --
 see the site-hosting skill. Nothing links to it from the student pages.
 """
@@ -17,12 +17,11 @@ from datetime import date, timedelta
 from html import escape
 
 import engine
-from lookahead import TAGGED_KINDS, missing_content
+from lookahead import FIELD_LABELS, TAGGED_KINDS, missing_content
 
 WINDOW = 10  # instructional days shown before "Show more"
 
 KIND_CLASS = {"Quiz": "quiz", "Test": "test", "Opener": "opener", "3-Act": "threeact"}
-FIELD_LABELS = {"target": "target", "classwork": "class work"}
 
 
 def esc(s):
