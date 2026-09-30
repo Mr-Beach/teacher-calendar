@@ -772,28 +772,32 @@ def build_page(course, calendar):
   function nextClassDay(afterDate) {{
     return Object.keys(DETAILS).find((k) => k > afterDate && DETAILS[k].type === 'Instruction') || null;
   }}
-  function tomorrowISO(todayStr) {{
+  function addDaysISO(todayStr, n) {{
     const d = new Date(todayStr + 'T12:00:00');
-    d.setDate(d.getDate() + 1);
+    d.setDate(d.getDate() + n);
     return d.toISOString().slice(0, 10);
   }}
   function dueUrgency(dueDate, dueLabel, todayStr) {{
     if (dueDate === todayStr) return {{ pill: 'Due today', level: 'today' }};
     if (dueDate === nextClassDay(todayStr)) {{
-      return dueDate === tomorrowISO(todayStr)
+      return dueDate === addDaysISO(todayStr, 1)
         ? {{ pill: 'Due tomorrow', level: 'soon' }}
         : {{ pill: 'Due next class · ' + dueLabel, level: 'soon' }};
     }}
     return {{ pill: 'Due ' + dueLabel, level: 'later' }};
   }}
-  // Every assignment not yet due, soonest first. Homework assigned today is
-  // already listed in today's block above, so it's left out here.
+  // Every assignment due in the next week, soonest first; anything further out
+  // is left to the calendar so the hero stays about this week. Homework
+  // assigned today is already listed in today's block above, so it's left
+  // out here.
+  const DUE_LIST_DAYS = 7;
   function appendDueList(hero, todayStr, skipAssignedOn) {{
+    const lastDue = addDaysISO(todayStr, DUE_LIST_DAYS);
     const items = [];
     for (const [k, d] of Object.entries(DETAILS)) {{
       if (k === skipAssignedOn) continue;
       for (const hw of d.homework) {{
-        if (hw.due && hw.due >= todayStr) items.push(hw);
+        if (hw.due && hw.due >= todayStr && hw.due <= lastDue) items.push(hw);
       }}
     }}
     if (!items.length) return;
