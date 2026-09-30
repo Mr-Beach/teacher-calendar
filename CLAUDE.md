@@ -42,7 +42,9 @@ materials, student-facing notes — doesn't need this session at all. It goes
 in as `inbox/<week>.json` on a `week/<label>` branch; a GitHub Action
 applies it with `scripts/apply_week.py` and opens a PR for Aaron to merge.
 Format and rules: `inbox/README.md`; the days still to plan:
-`python3 scripts/lookahead.py --needs`. Anything that moves dates still comes
+`python3 scripts/lookahead.py --needs`. The planning project's instructions
+are kept in `inbox/COWORK_INSTRUCTIONS.md`; if you change this workflow,
+update that file and tell Aaron to re-paste it. Anything that moves dates still comes
 here and follows the steps below. If Aaron hands a week block to this
 session anyway, writing it as a week file and running
 `python3 scripts/apply_week.py <file> --dry-run` is a fine way to apply it.
