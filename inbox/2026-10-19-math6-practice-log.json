@@ -3,12 +3,12 @@
   "week_of": "2026-10-19",
   "days": [
     {
-      "date": "2026-10-22",
-      "expect": "1.6",
+      "date": "2026-10-19",
+      "expect": "1.5",
       "homework": [
         {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
-          "due": "2026-10-28"
+          "text": "Practice Log: add each assignment when it's due; we check it with the keys in class",
+          "due": "2026-10-23"
         }
       ]
     }
