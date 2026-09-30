@@ -1614,10 +1614,15 @@
       "lesson_code": "1.2",
       "district_title": "Fluently Add, Subtract, and Multiply Decimals",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Topic 1 Lesson 2 Practice: workbook pp. 15\u201316 #19\u201333",
+          "due": "2026-10-16"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070545",
-      "target": null,
-      "classwork": null,
+      "target": "I can add, subtract, and multiply decimals and check my answer with an estimate.",
+      "classwork": "Multiply decimals; check with area diagrams. Playground area problem.",
       "extra_materials": null
     },
     {
@@ -1627,8 +1632,8 @@
       "kind": "Lesson",
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070546",
-      "target": null,
-      "classwork": null,
+      "target": "I can divide multi-digit whole numbers using the standard algorithm.",
+      "classwork": "Long division; keep dividing past the decimal point.",
       "extra_materials": null
     },
     {
@@ -1636,10 +1641,15 @@
       "lesson_code": "1.3",
       "district_title": "Fluently Divide Whole Numbers and Decimals",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Topic 1 Lesson 3 Practice: workbook pp. 21\u201322 #16\u201331",
+          "due": "2026-10-21"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070546",
-      "target": null,
-      "classwork": null,
+      "target": "I can divide decimals by changing the divisor to a whole number.",
+      "classwork": "Divide by a decimal: make the divisor a whole number. Bracelet string problem.",
       "extra_materials": null
     },
     {
@@ -1649,8 +1659,8 @@
       "kind": "Lesson",
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070548",
-      "target": null,
-      "classwork": null,
+      "target": "I can multiply a fraction by a fraction and show it with an area model.",
+      "classwork": "Find fraction products from area diagrams.",
       "extra_materials": null
     },
     {
@@ -1658,11 +1668,18 @@
       "lesson_code": "1.5",
       "district_title": "Multiply Fractions",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Topic 1 Lesson 5 Practice: workbook pp. 31\u201332 #19\u201336",
+          "due": "2026-10-23"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070548",
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
+      "target": "I can multiply mixed numbers.",
+      "classwork": "Areas of rectangles with mixed-number sides.",
+      "extra_materials": [
+        "graph paper"
+      ]
     },
     {
       "topic": "1",
@@ -1671,19 +1688,26 @@
       "kind": "Lesson",
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070549",
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
+      "target": "I can use a model to explain what dividing by a fraction means.",
+      "classwork": "Pattern blocks: how many groups of a fraction fit?",
+      "extra_materials": [
+        "pattern blocks"
+      ]
     },
     {
       "topic": "1",
       "lesson_code": "1.6",
       "district_title": "Understand Division with Fractions",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Topic 1 Lesson 6 Practice: workbook pp. 37\u201338 #5\u201325",
+          "due": "2026-10-28"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070549",
-      "target": null,
-      "classwork": null,
+      "target": "I can find how many groups of a fraction fit into a number.",
+      "classwork": "Tape diagrams: divide a whole number by a fraction.",
       "extra_materials": null
     },
     {
