@@ -1,0 +1,21 @@
+{
+  "course": "math78",
+  "week_of": "2026-10-05",
+  "days": [
+    {
+      "date": "2026-10-05",
+      "expect": "5.3 & 5.6",
+      "homework": [
+        {
+          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
+          "due": "2026-10-16"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "expect": "5.4",
+      "homework": null
+    }
+  ]
+}
