@@ -1,0 +1,16 @@
+{
+  "course": "math6",
+  "week_of": "2026-10-05",
+  "days": [
+    {
+      "date": "2026-10-05",
+      "expect": "1.1",
+      "homework": [
+        {
+          "text": "Practice Log: add each assignment when it's due; we check it with the keys in class",
+          "due": "2026-10-16"
+        }
+      ]
+    }
+  ]
+}
