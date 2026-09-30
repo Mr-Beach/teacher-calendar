@@ -1581,7 +1581,12 @@
       "lesson_code": "5.3 & 5.6",
       "district_title": "Simplify Expressions & Add Expressions",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
+          "due": "2026-10-16"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276277",
       "target": "I can combine like terms with fraction and decimal coefficients, and add expressions.",
       "classwork": "Rational coefficients; road trip; add expressions. Workbook p. 288.",
@@ -1608,12 +1613,7 @@
       "lesson_code": "5.4",
       "district_title": "Expand Expressions",
       "kind": "Lesson",
-      "homework": [
-        {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
-          "due": "2026-10-14"
-        }
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276275",
       "target": "I can expand expressions using the Distributive Property.",
       "classwork": "Area models; expand with negative and rational factors. Workbook p. 277 #7\u201314.",
@@ -1624,12 +1624,7 @@
       "lesson_code": "5.4 & 5.7",
       "district_title": "Expand Expressions & Subtract Expressions",
       "kind": "Lesson",
-      "homework": [
-        {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
-          "due": "2026-10-21"
-        }
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276278",
       "target": "I can subtract expressions by adding the opposite of each term.",
       "classwork": "Subtracting is adding the opposite; distribute a negative with area diagrams.",
@@ -1656,7 +1651,12 @@
       "lesson_code": "5.5",
       "district_title": "Factor Expressions",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
+          "due": "2026-10-23"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276276",
       "target": "I can factor an expression using the greatest common factor.",
       "classwork": "Factor and expand with negative numbers using area diagrams.",
@@ -1683,12 +1683,7 @@
       "lesson_code": "5.8",
       "district_title": "Analyze Equivalent Expressions",
       "kind": "Lesson",
-      "homework": [
-        {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
-          "due": "2026-10-28"
-        }
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276280",
       "target": "I can write equivalent expressions to show how quantities are related.",
       "classwork": "Two ways to calculate: temperature, tips, and unit conversions.",
@@ -1715,7 +1710,12 @@
       "lesson_code": null,
       "district_title": "Topic 5 Review",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
+          "due": "2026-10-30"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276288",
       "target": null,
       "classwork": null,
