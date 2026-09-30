@@ -1,0 +1,24 @@
+{
+  "course": "math78",
+  "week_of": "2026-10-12",
+  "days": [
+    {
+      "date": "2026-10-15",
+      "expect": "5.4 & 5.7",
+      "target": "I can subtract expressions by adding the opposite of each term.",
+      "classwork": "Subtracting is adding the opposite; distribute a negative with area diagrams."
+    },
+    {
+      "date": "2026-10-16",
+      "expect": "5.7",
+      "target": "I can subtract expressions and combine like terms.",
+      "classwork": "Match equivalent expressions with subtraction and parentheses.",
+      "homework": [
+        {
+          "text": "Topic 5 Lessons 4 and 7 Practice: workbook pp. 277–278 #7–14 and pp. 295–296 #7–15",
+          "due": "2026-10-21"
+        }
+      ]
+    }
+  ]
+}

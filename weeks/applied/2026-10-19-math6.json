@@ -1,0 +1,48 @@
+{
+  "course": "math6",
+  "week_of": "2026-10-19",
+  "days": [
+    {
+      "date": "2026-10-19",
+      "expect": "1.5",
+      "target": "I can multiply a fraction by a fraction and show it with an area model.",
+      "classwork": "Find fraction products from area diagrams."
+    },
+    {
+      "date": "2026-10-20",
+      "expect": "1.5",
+      "target": "I can multiply mixed numbers.",
+      "classwork": "Areas of rectangles with mixed-number sides.",
+      "homework": [
+        {
+          "text": "Topic 1 Lesson 5 Practice: workbook pp. 31–32 #19–36",
+          "due": "2026-10-23"
+        }
+      ],
+      "extra_materials": [
+        "graph paper"
+      ]
+    },
+    {
+      "date": "2026-10-22",
+      "expect": "1.6",
+      "target": "I can use a model to explain what dividing by a fraction means.",
+      "classwork": "Pattern blocks: how many groups of a fraction fit?",
+      "extra_materials": [
+        "pattern blocks"
+      ]
+    },
+    {
+      "date": "2026-10-23",
+      "expect": "1.6",
+      "target": "I can find how many groups of a fraction fit into a number.",
+      "classwork": "Tape diagrams: divide a whole number by a fraction.",
+      "homework": [
+        {
+          "text": "Topic 1 Lesson 6 Practice: workbook pp. 37–38 #5–25",
+          "due": "2026-10-28"
+        }
+      ]
+    }
+  ]
+}

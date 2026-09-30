@@ -1,0 +1,42 @@
+{
+  "course": "math78",
+  "week_of": "2026-10-19",
+  "days": [
+    {
+      "date": "2026-10-19",
+      "expect": "5.5",
+      "target": "I can factor an expression using the greatest common factor.",
+      "classwork": "Factor and expand with negative numbers using area diagrams."
+    },
+    {
+      "date": "2026-10-20",
+      "expect": "5.5",
+      "target": "I can factor expressions, including with a negative factor.",
+      "classwork": "Rewrite expressions with fewer terms using a common factor.",
+      "homework": [
+        {
+          "text": "Topic 5 Lesson 5 Practice: workbook pp. 283–284 #6–17",
+          "due": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-22",
+      "expect": "5.8",
+      "target": "I can write equivalent expressions to show how quantities are related.",
+      "classwork": "Two ways to calculate: temperature, tips, and unit conversions."
+    },
+    {
+      "date": "2026-10-23",
+      "expect": "5.8",
+      "target": "I can use equivalent expressions to compare discounts and increases.",
+      "classwork": "Which way? 20% off and $30 off, in either order.",
+      "homework": [
+        {
+          "text": "Topic 5 Lesson 8 Practice: workbook pp. 301–302 #7–15",
+          "due": "2026-10-26"
+        }
+      ]
+    }
+  ]
+}
