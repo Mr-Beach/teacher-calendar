@@ -786,16 +786,17 @@ def build_page(course, calendar):
     }}
     return {{ pill: 'Due ' + dueLabel, level: 'later' }};
   }}
-  // Every assignment due in the next week, soonest first; anything further out
-  // is left to the calendar so the hero stays about this week. Homework
-  // assigned today is already listed in today's block above, so it's left
-  // out here.
+  // Every assignment already given and due in the next week, soonest first;
+  // anything further out is left to the calendar so the hero stays about
+  // this week. Homework planned for a later day stays hidden until that day.
+  // Homework assigned today is already listed in today's block above, so
+  // it's left out here.
   const DUE_LIST_DAYS = 7;
   function appendDueList(hero, todayStr, skipAssignedOn) {{
     const lastDue = addDaysISO(todayStr, DUE_LIST_DAYS);
     const items = [];
     for (const [k, d] of Object.entries(DETAILS)) {{
-      if (k === skipAssignedOn) continue;
+      if (k === skipAssignedOn || k > todayStr) continue;
       for (const hw of d.homework) {{
         if (hw.due && hw.due >= todayStr && hw.due <= lastDue) items.push(hw);
       }}
