@@ -1576,7 +1576,12 @@
       "lesson_code": "1.1",
       "district_title": "Operate with Decimals",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Practice Log: add each assignment when it's due; we check it with the keys in class",
+          "due": "2026-10-16"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070544",
       "target": "I can use whole-number estimates to check decimal sums, differences, and products.",
       "classwork": "Costume budget: estimate, then compute exactly.",
@@ -1633,7 +1638,7 @@
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070546",
       "target": "I can divide multi-digit whole numbers using the standard algorithm.",
-      "classwork": "Long division; keep dividing past the decimal point.",
+      "classwork": "Partial quotients and long division; keep dividing past the decimal point.",
       "extra_materials": null
     },
     {
@@ -1657,7 +1662,12 @@
       "lesson_code": "1.5",
       "district_title": "Multiply Fractions",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Practice Log: add each assignment when it's due; we check it with the keys in class",
+          "due": "2026-10-23"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070548",
       "target": "I can multiply a fraction by a fraction and show it with an area model.",
       "classwork": "Find fraction products from area diagrams.",
@@ -1715,7 +1725,12 @@
       "lesson_code": "1.7",
       "district_title": "Divide Fractions",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Practice Log: add each assignment when it's due; we check it with the keys in class",
+          "due": "2026-10-30"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070550",
       "target": null,
       "classwork": null,
