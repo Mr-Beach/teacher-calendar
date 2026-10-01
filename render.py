@@ -267,7 +267,7 @@ def build_details_map(calendar):
             "due": [
                 {"text": due["text"], "link": due.get("link"),
                  "assigned_label": short_date(due["assigned"]),
-                 "quiz_redo": "quiz redo" in due["text"].lower(),
+                 "quiz_redo": "quiz" in due["text"].lower() and "redo" in due["text"].lower(),
                  "includes": log_includes(due)}
                 for due in (day["due"] or [])
             ],
