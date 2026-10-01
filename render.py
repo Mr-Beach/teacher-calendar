@@ -295,6 +295,9 @@ def build_page(course, calendar):
         {"label": m, "icon": MATERIAL_ICONS.get(m, DEFAULT_MATERIAL_ICON)}
         for m in course.get("daily_materials") or []
     ]).replace("</", "<\\/")
+    # The course's answer-key folder, linked beside each assignment on its
+    # due date (the popup's "Due" section). None hides the link.
+    answer_key_json = json.dumps(course.get("answer_key_link")).replace("</", "<\\/")
 
     return f"""<!doctype html>
 <html lang="en">
@@ -557,6 +560,7 @@ def build_page(course, calendar):
     padding: 6px 10px; font-size: 0.9rem;
   }}
   .detail__due small {{ opacity: 0.8; }}
+  .answer-key {{ display: block; width: fit-content; margin-top: 2px; font-size: 0.85rem; }}
   .detail__note {{ font-style: italic; color: var(--muted); }}
   .detail__link {{
     display: inline-block; margin-top: 10px; padding: 8px 14px; border-radius: 6px;
@@ -613,6 +617,7 @@ def build_page(course, calendar):
 <script>
   const DETAILS = {details_json};
   const DAILY_MATERIALS = {daily_materials_json};
+  const ANSWER_KEY_LINK = {answer_key_json};
   // An assignment's text, as a link to where it lives when it has one.
   function hwText(item) {{
     if (!item.link) return document.createTextNode(item.text);
@@ -664,6 +669,13 @@ def build_page(course, calendar):
       const when = document.createElement('small');
       when.textContent = '(assigned ' + item.assigned_label + ')';
       line.appendChild(when);
+      if (ANSWER_KEY_LINK) {{
+        const key = document.createElement('a');
+        key.className = 'hw-link answer-key'; key.href = ANSWER_KEY_LINK;
+        key.target = '_blank'; key.rel = 'noopener';
+        key.textContent = 'Answer key ↗';
+        line.appendChild(key);
+      }}
       appendLogList(line, item);
       due.appendChild(line);
     }}
