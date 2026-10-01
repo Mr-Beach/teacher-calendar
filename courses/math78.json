@@ -1575,6 +1575,17 @@
     },
     {
       "topic": "5",
+      "lesson_code": "5.1",
+      "district_title": "Write and Evaluate Algebraic Expressions",
+      "kind": "Lesson",
+      "target": "I can evaluate expressions when the variable is negative or a fraction.",
+      "classwork": "What's new in 7th grade; Before and After 1 p.m. Workbook p. 259 #8\u201314.",
+      "homework": null,
+      "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276271",
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
       "lesson_code": "5.2",
       "district_title": "Recognize Equivalent Expressions",
       "kind": "Lesson",
@@ -1594,7 +1605,12 @@
       "lesson_code": "5.3",
       "district_title": "Simplify Expressions",
       "kind": "Lesson",
-      "homework": null,
+      "homework": [
+        {
+          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
+          "due": "2026-10-16"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276274",
       "target": "I can combine like terms to simplify expressions.",
       "classwork": "Algebra tiles; combine like terms. Workbook pp. 270\u2013271.",
@@ -1607,29 +1623,13 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
-          "due": "2026-10-16"
-        }
-      ],
-      "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276277",
-      "target": "I can combine like terms with fraction and decimal coefficients, and add expressions.",
-      "classwork": "Rational coefficients; road trip; add expressions. Workbook p. 288.",
-      "extra_materials": null
-    },
-    {
-      "topic": "5",
-      "lesson_code": "5.6",
-      "district_title": "Add Expressions",
-      "kind": "Lesson",
-      "homework": [
-        {
           "text": "Topic 5 Lessons 3 and 6 Practice: workbook pp. 271\u2013272 #7\u201312 and p. 289 #8\u201312",
           "due": "2026-10-08"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276277",
-      "target": "I can add expressions that represent real situations.",
-      "classwork": "Expressions with two variables. Workbook pp. 289\u2013290 #13, 15, 16, 18.",
+      "target": "I can combine like terms with fraction and decimal coefficients, and add expressions.",
+      "classwork": "Rational coefficients; road trip; add expressions. Workbook p. 288.",
       "extra_materials": null
     },
     {
