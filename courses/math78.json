@@ -1370,15 +1370,10 @@
       "lesson_code": "1.2",
       "district_title": "Add Integers",
       "kind": "Lesson",
-      "homework": [
-        {
-          "text": "Workbook p. 14 #1-6, plus extension worksheet (Tim's odd jobs)",
-          "due": null
-        }
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038275304",
       "target": "I can use a number line to add positive and negative numbers.",
-      "classwork": "Writing addition expressions for rises and drops.",
+      "classwork": "Writing addition expressions for rises and drops. Workbook p. 14 #1-6, plus extension worksheet (Tim's odd jobs).",
       "extra_materials": null
     },
     {
@@ -1397,15 +1392,10 @@
       "lesson_code": "1.3",
       "district_title": "Subtract Integers",
       "kind": "Lesson",
-      "homework": [
-        {
-          "text": "Workbook p. 20 #1-6",
-          "due": null
-        }
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038275538",
       "target": "I can use a number line to subtract positive and negative numbers. I can explain the relationship between addition and subtraction of rational numbers.",
-      "classwork": null,
+      "classwork": "Workbook p. 20 #1-6.",
       "extra_materials": null
     },
     {

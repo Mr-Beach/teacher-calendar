@@ -267,6 +267,7 @@ def build_details_map(calendar):
             "due": [
                 {"text": due["text"], "link": due.get("link"),
                  "assigned_label": short_date(due["assigned"]),
+                 "quiz_redo": "quiz redo" in due["text"].lower(),
                  "includes": log_includes(due)}
                 for due in (day["due"] or [])
             ],
@@ -296,8 +297,10 @@ def build_page(course, calendar):
         for m in course.get("daily_materials") or []
     ]).replace("</", "<\\/")
     # The course's answer-key folder, linked beside each assignment on its
-    # due date (the popup's "Due" section). None hides the link.
+    # due date (the popup's "Due" section). A quiz redo has no key; it links
+    # to the weekly quizzes folder instead. None hides the link.
     answer_key_json = json.dumps(course.get("answer_key_link")).replace("</", "<\\/")
+    quiz_folder_json = json.dumps(course.get("quiz_link")).replace("</", "<\\/")
 
     return f"""<!doctype html>
 <html lang="en">
@@ -618,6 +621,7 @@ def build_page(course, calendar):
   const DETAILS = {details_json};
   const DAILY_MATERIALS = {daily_materials_json};
   const ANSWER_KEY_LINK = {answer_key_json};
+  const QUIZ_FOLDER_LINK = {quiz_folder_json};
   // An assignment's text, as a link to where it lives when it has one.
   function hwText(item) {{
     if (!item.link) return document.createTextNode(item.text);
@@ -669,11 +673,12 @@ def build_page(course, calendar):
       const when = document.createElement('small');
       when.textContent = '(assigned ' + item.assigned_label + ')';
       line.appendChild(when);
-      if (ANSWER_KEY_LINK) {{
+      const keyHref = item.quiz_redo ? QUIZ_FOLDER_LINK : ANSWER_KEY_LINK;
+      if (keyHref) {{
         const key = document.createElement('a');
-        key.className = 'hw-link answer-key'; key.href = ANSWER_KEY_LINK;
+        key.className = 'hw-link answer-key'; key.href = keyHref;
         key.target = '_blank'; key.rel = 'noopener';
-        key.textContent = 'Answer key ↗';
+        key.textContent = item.quiz_redo ? 'Weekly quizzes ↗' : 'Answer key ↗';
         line.appendChild(key);
       }}
       appendLogList(line, item);
