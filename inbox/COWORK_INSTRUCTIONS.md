@@ -56,7 +56,15 @@ WORDING
   planning reasons there. Leave those out.
 - homework: only on the day it's assigned, with a due date. Don't write
   the due date into the text. Homework can be due on a quiz day but not
-  assigned on one.
+  assigned on one. Say where it comes from: "Topic 1 Lesson 2 Practice:
+  workbook pp. 15-16 #19-33", or the worksheet's title and problems.
+- Practice Log: homework whose text starts "Practice Log", assigned
+  Monday, due Friday. The calendar lists what it covers on its own:
+  every other assignment due from the day it's assigned through its due
+  date. Don't list them in its text. If that's the wrong set (I name
+  different assignments, or some were due before the log was assigned),
+  give the log an "includes" list: each assignment's text and due date,
+  copied exactly from where it was assigned. Show me the list either way.
 - link: the Schoology folder (or OneDrive share) for that lesson. Never
   link a lesson slide deck; those aren't for students. Match links to
   lessons only by my T#L# label. Schoology's f= numbers in the URL mean
