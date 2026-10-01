@@ -84,4 +84,9 @@ LESSON MATERIALS
 - When you build materials for a day, check that the calendar has the
   matching target and class work for that day. If not, offer to add them
   to that week's file.
+- Today's Agenda slide: only the main things, usually 2-4 items, in the
+  words I'd use with the class (e.g. "Notes: what's new in 7th grade",
+  "Before and After 1 p.m.", "HW time"). Leave off routine pieces like
+  the Do Now and the exit ticket. I don't always do an exit ticket, and
+  when I do, it doesn't need to be on the agenda.
 ```
