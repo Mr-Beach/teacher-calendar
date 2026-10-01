@@ -222,14 +222,29 @@ def render(course):
 
     # Homework shows twice: on the day it's assigned (with its lesson) and on
     # its due date, which is fixed and independent of where lessons land.
-    # A Practice Log also lists the assignments it covers, in both places.
+    # A Practice Log carries the assignments it covers ("includes"; the page
+    # shows them as a checklist on the log's due date), and each assignment
+    # it covers carries that log's due date ("log_due"; the page tags the
+    # assignment with it). An assignment in two logs gets the earlier one.
     log_contents = _practice_log_contents(placements)
+    log_due_of = {}
+    for day, lesson in placements:
+        for log in _homework_with_links(lesson):
+            covered = log_contents.get((day["date"], log["text"]))
+            if not covered or not log["due"]:
+                continue
+            for c in covered:
+                key = (c["text"], c["due"])
+                if key not in log_due_of or log["due"] < log_due_of[key]:
+                    log_due_of[key] = log["due"]
 
     def homework_for(day, lesson):
         items = _homework_with_links(lesson)
         for hw in items:
             if (day["date"], hw["text"]) in log_contents:
                 hw["includes"] = log_contents[(day["date"], hw["text"])]
+            elif (hw["text"], hw["due"]) in log_due_of:
+                hw["log_due"] = log_due_of[(hw["text"], hw["due"])]
         return items
 
     due_by_date = {}

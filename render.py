@@ -260,7 +260,8 @@ def build_details_map(calendar):
             "homework": [
                 {"text": hw["text"], "due": hw["due"], "link": hw.get("link"),
                  "due_label": short_date(hw["due"]) if hw["due"] else None,
-                 "includes": log_includes(hw)}
+                 "includes": log_includes(hw),
+                 "log_label": short_date(hw["log_due"]) if hw.get("log_due") else None}
                 for hw in (day["homework"] or [])
             ],
             "due": [
@@ -567,7 +568,8 @@ def build_page(course, calendar):
      folder) -- the assignment text itself becomes the link. */
   .hw-link {{ color: inherit; font-weight: 600; text-decoration: underline; }}
   /* The assignments a Practice Log covers, listed under it. */
-  .log-list {{ margin: 4px 0 0; padding-left: 20px; font-size: 0.85rem; }}
+  .log-list {{ margin: 6px 0 0; padding-left: 22px; font-size: 0.85rem; list-style-type: "☐  "; }}
+  .log-tag {{ display: block; font-size: 0.8rem; opacity: 0.75; margin-top: 1px; }}
   .log-list li + li {{ margin-top: 2px; }}
   .detail__close {{
     position: absolute; top: 10px; right: 12px; border: none; background: none;
@@ -619,7 +621,16 @@ def build_page(course, calendar):
     a.textContent = item.text + ' ↗';
     return a;
   }}
-  // Under a Practice Log: each assignment it covers, with its due date.
+  // Under an assignment: which Practice Log it goes in. Shown where the
+  // assignment is given; the log's own checklist waits for its due date.
+  function appendLogTag(parent, item) {{
+    if (!item.log_label) return;
+    const tag = document.createElement('span');
+    tag.className = 'log-tag';
+    tag.textContent = 'Goes in the Practice Log due ' + item.log_label;
+    parent.appendChild(tag);
+  }}
+  // Under a Practice Log on its due date: a checklist of what goes in it.
   function appendLogList(parent, item) {{
     if (!item.includes || !item.includes.length) return;
     const ul = document.createElement('ul');
@@ -664,7 +675,7 @@ def build_page(course, calendar):
       line.appendChild(document.createTextNode('HW: '));
       line.appendChild(hwText(item));
       if (item.due_label) line.appendChild(document.createTextNode(' (due ' + item.due_label + ')'));
-      appendLogList(line, item);
+      appendLogTag(line, item);
       hw.appendChild(line);
     }}
     hw.hidden = !d.homework.length;
@@ -838,6 +849,7 @@ def build_page(course, calendar):
       a.appendChild(heroEl('span', 'hero__due-text', hw.text));
       if (DETAILS[hw.due]) a.addEventListener('click', (e) => {{ e.preventDefault(); showDetail(hw.due); }});
       section.appendChild(a);
+      if (hw.due === todayStr) appendLogList(section, hw);
     }}
     hero.appendChild(section);
   }}
@@ -868,7 +880,7 @@ def build_page(course, calendar):
           const u = dueUrgency(hw.due, hw.due_label, todayStr);
           row.appendChild(heroEl('span', 'due-pill due-pill--' + u.level, u.pill));
         }}
-        appendLogList(row, hw);
+        appendLogTag(row, hw);
         hero.appendChild(row);
       }}
       if (entry.note) hero.appendChild(heroEl('div', 'hero__row hero__row--note', entry.note));
