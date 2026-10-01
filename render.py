@@ -105,6 +105,13 @@ def short_date(iso):
     return f"{d.strftime('%a')} {d.month}/{d.day}"
 
 
+def log_includes(hw):
+    """A Practice Log's covered assignments, for the popup and today card."""
+    return [{"text": item["text"], "link": item["link"],
+             "due_label": short_date(item["due"]) if item["due"] else None}
+            for item in hw.get("includes") or []]
+
+
 def render_day_body(day, compact=False):
     """Tile/agenda body, shared by the month grid and the portrait agenda.
 
@@ -250,12 +257,14 @@ def build_details_map(calendar):
             "classwork": day["classwork"],
             "homework": [
                 {"text": hw["text"], "due": hw["due"], "link": hw.get("link"),
-                 "due_label": short_date(hw["due"]) if hw["due"] else None}
+                 "due_label": short_date(hw["due"]) if hw["due"] else None,
+                 "includes": log_includes(hw)}
                 for hw in (day["homework"] or [])
             ],
             "due": [
                 {"text": due["text"], "link": due.get("link"),
-                 "assigned_label": short_date(due["assigned"])}
+                 "assigned_label": short_date(due["assigned"]),
+                 "includes": log_includes(due)}
                 for due in (day["due"] or [])
             ],
             "note": day["note"] if day["type"] == "Instruction" else None,
@@ -555,6 +564,9 @@ def build_page(course, calendar):
   /* A homework item with its own link (e.g. a study guide kept in a review
      folder) -- the assignment text itself becomes the link. */
   .hw-link {{ color: inherit; font-weight: 600; text-decoration: underline; }}
+  /* The assignments a Practice Log covers, listed under it. */
+  .log-list {{ margin: 4px 0 0; padding-left: 20px; font-size: 0.85rem; }}
+  .log-list li + li {{ margin-top: 2px; }}
   .detail__close {{
     position: absolute; top: 10px; right: 12px; border: none; background: none;
     font-size: 1.3rem; line-height: 1; cursor: pointer; color: var(--muted); padding: 4px;
@@ -605,6 +617,19 @@ def build_page(course, calendar):
     a.textContent = item.text + ' ↗';
     return a;
   }}
+  // Under a Practice Log: each assignment it covers, with its due date.
+  function appendLogList(parent, item) {{
+    if (!item.includes || !item.includes.length) return;
+    const ul = document.createElement('ul');
+    ul.className = 'log-list';
+    for (const inc of item.includes) {{
+      const li = document.createElement('li');
+      li.appendChild(hwText(inc));
+      if (inc.due_label) li.appendChild(document.createTextNode(' (due ' + inc.due_label + ')'));
+      ul.appendChild(li);
+    }}
+    parent.appendChild(ul);
+  }}
   function showDetail(dateStr) {{
     const d = DETAILS[dateStr];
     if (!d) return;
@@ -626,6 +651,7 @@ def build_page(course, calendar):
       const when = document.createElement('small');
       when.textContent = '(assigned ' + item.assigned_label + ')';
       line.appendChild(when);
+      appendLogList(line, item);
       due.appendChild(line);
     }}
     due.hidden = !d.due.length;
@@ -636,6 +662,7 @@ def build_page(course, calendar):
       line.appendChild(document.createTextNode('HW: '));
       line.appendChild(hwText(item));
       if (item.due_label) line.appendChild(document.createTextNode(' (due ' + item.due_label + ')'));
+      appendLogList(line, item);
       hw.appendChild(line);
     }}
     hw.hidden = !d.homework.length;
@@ -839,6 +866,7 @@ def build_page(course, calendar):
           const u = dueUrgency(hw.due, hw.due_label, todayStr);
           row.appendChild(heroEl('span', 'due-pill due-pill--' + u.level, u.pill));
         }}
+        appendLogList(row, hw);
         hero.appendChild(row);
       }}
       if (entry.note) hero.appendChild(heroEl('div', 'hero__row hero__row--note', entry.note));

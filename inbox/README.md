@@ -70,6 +70,10 @@ Rules, per day:
   An item can also take a `"link"` — where students find that assignment,
   when it isn't with the day's lesson (e.g. a study guide in the review
   folder). Without one, the assignment links to the day's `link`, if any.
+  A Practice Log (text starting "Practice Log") automatically lists every
+  other assignment due from the day it's assigned through its due date.
+  When that window is wrong, give it `"includes"`: the assignments it
+  covers, each `{"text", "due"}` copied exactly from where it was assigned.
 - Day field: `note` — always shown to students; never a note to self.
 - Leave a key out to leave that field alone; set it to `null` to clear it.
   `homework: []` is the same as `null`.

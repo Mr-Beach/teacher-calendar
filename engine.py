@@ -42,6 +42,10 @@ def normalize_homework(value):
     An item may also carry an optional "link" -- where students find that
     assignment (e.g. a study guide in a review folder, not the day's lesson
     folder). It's kept only when set, so unlinked items stay two-key.
+    A Practice Log item may carry "includes" -- the assignments it covers,
+    each {"text", "due"}, copied from the homework they name -- for a log
+    the automatic due-date window would get wrong (see
+    _practice_log_contents). Kept only when set.
 
     Homework is stored once, on the lesson it's assigned with -- never
     repeated on later days. `due` is a fixed calendar date: it's how much
@@ -56,8 +60,8 @@ def normalize_homework(value):
     for item in value:
         if isinstance(item, str):
             item = {"text": item}
-        if not isinstance(item, dict) or set(item) - {"text", "due", "link"}:
-            raise ValueError(f'each homework item needs "text" and optionally "due"/"link", got {item!r}')
+        if not isinstance(item, dict) or set(item) - {"text", "due", "link", "includes"}:
+            raise ValueError(f'each homework item needs "text" and optionally "due"/"link"/"includes", got {item!r}')
         text = item.get("text")
         if not isinstance(text, str) or not text.strip():
             raise ValueError(f"homework text must be a non-empty string, got {text!r}")
@@ -73,6 +77,12 @@ def normalize_homework(value):
             if not isinstance(link, str) or not link.strip():
                 raise ValueError(f"homework link must be a non-empty string, got {link!r}")
             hw["link"] = link.strip()
+        includes = item.get("includes")
+        if includes is not None:
+            covered = normalize_homework(includes)
+            if not covered or any(set(c) - {"text", "due"} for c in covered):
+                raise ValueError(f'"includes" must be a non-empty list of {{"text", "due"}}, got {includes!r}')
+            hw["includes"] = covered
         items.append(hw)
     return items
 
@@ -169,6 +179,40 @@ def _homework_with_links(lesson):
             for hw in normalize_homework(lesson.get("homework")) or []]
 
 
+def is_practice_log(hw):
+    """A Practice Log is the weekly container students record their practice
+    in -- recognized by its text, since it's entered like any other homework."""
+    return hw["text"].lower().startswith("practice log")
+
+
+def _practice_log_contents(placements):
+    """What each Practice Log covers: every other assignment due from the day
+    the log is assigned through the day it's due, soonest first. Derived, not
+    stored, so the list follows the homework as it's planned and never needs
+    re-entering -- unless the log lists its own "includes" (a log whose
+    window doesn't match its contents), whose items pick up the link of the
+    assignment they name. Keyed by (assigned date, log text)."""
+    assigned = [(day["date"], hw) for day, lesson in placements
+                for hw in _homework_with_links(lesson)]
+    links = {(hw["text"], hw["due"]): hw["link"] for _, hw in assigned}
+    contents = {}
+    for start, log in assigned:
+        if not is_practice_log(log):
+            continue
+        if log.get("includes"):
+            contents[(start, log["text"])] = [
+                {**c, "link": links.get((c["text"], c["due"]))} for c in log["includes"]]
+            continue
+        if not log["due"]:
+            continue
+        contents[(start, log["text"])] = sorted(
+            ({"text": hw["text"], "due": hw["due"], "link": hw["link"]}
+             for _, hw in assigned
+             if hw["due"] and not is_practice_log(hw) and start <= hw["due"] <= log["due"]),
+            key=lambda hw: hw["due"])
+    return contents
+
+
 def render(course):
     school_days = course["school_days"]
     sequence = course["sequence"]
@@ -178,12 +222,24 @@ def render(course):
 
     # Homework shows twice: on the day it's assigned (with its lesson) and on
     # its due date, which is fixed and independent of where lessons land.
+    # A Practice Log also lists the assignments it covers, in both places.
+    log_contents = _practice_log_contents(placements)
+
+    def homework_for(day, lesson):
+        items = _homework_with_links(lesson)
+        for hw in items:
+            if (day["date"], hw["text"]) in log_contents:
+                hw["includes"] = log_contents[(day["date"], hw["text"])]
+        return items
+
     due_by_date = {}
     for day, lesson in placements:
-        for hw in _homework_with_links(lesson):
+        for hw in homework_for(day, lesson):
             if hw["due"]:
-                due_by_date.setdefault(hw["due"], []).append(
-                    {"text": hw["text"], "assigned": day["date"], "link": hw["link"]})
+                entry = {"text": hw["text"], "assigned": day["date"], "link": hw["link"]}
+                if "includes" in hw:
+                    entry["includes"] = hw["includes"]
+                due_by_date.setdefault(hw["due"], []).append(entry)
 
     calendar = []
     for day, lesson in placements:
@@ -209,7 +265,7 @@ def render(course):
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": display, "lesson_text": base, "kind": kind,
-                "homework": _homework_with_links(lesson) or None,
+                "homework": homework_for(day, lesson) or None,
                 "due": due_by_date.get(day["date"]), "note": note,
                 "target": lesson.get("target") if lesson else None,
                 "classwork": lesson.get("classwork") if lesson else None,
