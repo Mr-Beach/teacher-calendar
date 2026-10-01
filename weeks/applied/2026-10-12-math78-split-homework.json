@@ -1,0 +1,13 @@
+{
+  "course": "math78",
+  "week_of": "2026-10-12",
+  "days": [
+    {
+      "date": "2026-10-16",
+      "expect": "5.7",
+      "homework": [
+        {"text": "Topic 5 Lesson 7 Practice: workbook pp. 295–296 #7–15", "due": "2026-10-21"}
+      ]
+    }
+  ]
+}
