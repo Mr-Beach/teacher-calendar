@@ -132,13 +132,14 @@ def render_day_body(day, compact=False):
     elif day["display"]:
         body += f'<div class="day__note">{esc(day["display"])}</div>'
     dues = day.get("due") or []
-    if compact and len(dues) > 1:
-        body += f'<div class="day__due">Due: {len(dues)} assignments</div>'
-    else:
-        for due in dues:
-            body += f'<div class="day__due">Due: {esc(due["text"])}</div>'
+    due_html = "".join(f'<div class="day__due">Due: {esc(due["text"])}</div>' for due in dues)
+    if compact:
+        # The grid tile is fixed-height: due badges sit under the title,
+        # where they can't be clipped; homework is the strip at the bottom.
+        body += (f'<div class="day__due">Due: {len(dues)} assignments</div>'
+                 if len(dues) > 1 else due_html)
     if day["type"] != "Instruction":
-        return body, ""
+        return (body if compact else body + due_html), ""
     homework = day["homework"] or []
     if compact:
         strip = []
@@ -151,7 +152,8 @@ def render_day_body(day, compact=False):
         body += f'<div class="day__homework">HW: {esc(hw["text"])}</div>'
     if day["link"]:
         body += '<div class="day__link">\U0001f517 Resource</div>'
-    return body, ""
+    # Agenda rows: what's due comes last, after the day's own homework.
+    return body + due_html, ""
 
 
 def render_day_cell(day):
@@ -547,7 +549,7 @@ def build_page(course, calendar):
     font-size: 0.9rem; margin-top: 6px;
   }}
   .detail__homework div + div {{ margin-top: 4px; }}
-  .detail__due {{ margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }}
+  .detail__due {{ margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }}
   .detail__due[hidden] {{ display: none; }}
   .detail__due div {{
     background: var(--due); color: var(--due-text); border-radius: 6px;
@@ -598,11 +600,11 @@ def build_page(course, calendar):
     <button class="detail__close" onclick="closeDetail()" aria-label="Close">&times;</button>
     <div class="detail__date" id="detail-date"></div>
     <div class="detail__title" id="detail-title"></div>
-    <div class="detail__due" id="detail-due" hidden></div>
     <div class="detail__target" id="detail-target" hidden></div>
     <div class="detail__classwork" id="detail-classwork" hidden></div>
     <div class="detail__homework" id="detail-homework" hidden></div>
     <div class="detail__note" id="detail-note" hidden></div>
+    <div class="detail__due" id="detail-due" hidden></div>
     <a class="detail__link" id="detail-link" target="_blank" rel="noopener" hidden>Open resource &#8599;</a>
   </div>
 </dialog>
