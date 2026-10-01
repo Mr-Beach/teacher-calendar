@@ -65,6 +65,12 @@ WORDING
   different assignments, or some were due before the log was assigned),
   give the log an "includes" list: each assignment's text and due date,
   copied exactly from where it was assigned. Show me the list either way.
+- Quiz redo: name the quiz it's for, e.g. "Topic 2 Quiz 1 redo on
+  Schoology (2 more tries)". Keep both words "Quiz" and "redo" in the
+  text; that's how the calendar links it to the weekly quizzes folder
+  instead of the answer keys.
+- Work with no due date is class work, not homework. Put it in
+  classwork.
 - link: the Schoology folder (or OneDrive share) for that lesson. Never
   link a lesson slide deck; those aren't for students. Match links to
   lessons only by my T#L# label. Schoology's f= numbers in the URL mean
