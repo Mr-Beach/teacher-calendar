@@ -3,7 +3,6 @@
   "school_year": "2026-27",
   "quiz_rhythm_start": "2026-09-16",
   "quiz_link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1042114128",
-  "answer_key_link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1044820510",
   "school_days": [
     {
       "date": "2026-09-01",
@@ -1395,7 +1394,8 @@
       "homework": [
         {
           "text": "Convert Between Fractions and Decimals Practice - Worksheet",
-          "due": "2026-09-16"
+          "due": "2026-09-16",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8585919131"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8585919131",
@@ -1422,7 +1422,8 @@
       "homework": [
         {
           "text": "Workbook page 77, problems 15 to 23",
-          "due": "2026-09-18"
+          "due": "2026-09-18",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8582683284"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067894",
@@ -1438,7 +1439,8 @@
       "homework": [
         {
           "text": "Workbook page 82, problems 1 to 17",
-          "due": "2026-09-23"
+          "due": "2026-09-23",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8582683550"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067895",
@@ -1465,7 +1467,8 @@
       "homework": [
         {
           "text": "finish Sailboat coordinate graphing if not done in class",
-          "due": "2026-09-25"
+          "due": "2026-09-25",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8583032678"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067897",
@@ -1493,7 +1496,7 @@
         {
           "text": "Topic 2 study guide",
           "due": "2026-10-01",
-          "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039067902"
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8582685943"
         },
         {
           "text": "Topic 2 Quiz 2 redo on Schoology (2 more tries)",
@@ -1619,7 +1622,8 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 1 Practice: workbook pp. 9\u201310 #5\u201318",
-          "due": "2026-10-08"
+          "due": "2026-10-08",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587036507"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070544",
@@ -1646,7 +1650,8 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 2 Practice: workbook pp. 15\u201316 #19\u201333",
-          "due": "2026-10-16"
+          "due": "2026-10-16",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587036251"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070545",
@@ -1673,7 +1678,8 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 3 Practice: workbook pp. 21\u201322 #16\u201331",
-          "due": "2026-10-21"
+          "due": "2026-10-21",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587036924"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070546",
@@ -1705,7 +1711,8 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 5 Practice: workbook pp. 31\u201332 #19\u201336",
-          "due": "2026-10-23"
+          "due": "2026-10-23",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587037306"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070548",
@@ -1736,7 +1743,8 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 6 Practice: workbook pp. 37\u201338 #5\u201325",
-          "due": "2026-10-28"
+          "due": "2026-10-28",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587037603"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070549",

@@ -135,16 +135,24 @@ class ApplyWeekTests(unittest.TestCase):
         self.plan_apply([{"date": self.day1["date"], "expect": self.code,
                           "homework": [{"text": "p. 2", "due": due}]}])
         cal = {d["date"]: d for d in engine.render(self.course)[0]}
-        # No link of its own, so it links to the lesson's resource link.
-        lesson_link = lesson_on(self.course, self.day1["date"])["link"]
+        # No link of its own: it doesn't borrow the lesson folder's link, and
+        # it's flagged as needing one.
         self.assertEqual(cal[due]["due"], [{"text": "p. 2", "assigned": self.day1["date"],
-                                            "link": lesson_link}])
+                                            "link": None}])
+        self.assertTrue(any("'p. 2'" in w for w in engine.check_homework_links(self.course)))
         # Lose the assigned day: the lesson (and its homework) slides later,
         # but the due date doesn't move -- and now it's flagged.
         engine.set_day(self.course, self.day1["date"], type="Other", note="Assembly")
         cal = {d["date"]: d for d in engine.render(self.course)[0]}
         self.assertEqual([h["text"] for h in cal[due]["due"]], ["p. 2"])
         self.assertTrue(engine.check_homework_due_dates(self.course))
+
+    def test_linked_assignments_and_practice_logs_are_not_flagged(self):
+        due = self.day2["date"]
+        self.plan_apply([{"date": self.day1["date"], "expect": self.code, "homework": [
+            {"text": "p. 2", "due": due, "link": "https://example.org/p2"},
+            {"text": "Practice Log", "due": due}]}])
+        self.assertEqual(engine.check_homework_links(self.course), [])
 
     def test_reapplying_is_a_no_op(self):
         week = [{"date": self.day1["date"], "expect": self.code, "target": "T", "note": "N"}]

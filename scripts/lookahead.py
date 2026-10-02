@@ -41,7 +41,8 @@ TAGGED_KINDS = {"Quiz", "Test", "Opener", "3-Act"}
 # test has nothing for students to open, so neither needs a link either.
 CONTENT_EXEMPT_KINDS = {"Quiz", "Test"}
 CONTENT_FIELDS = ("target", "classwork", "link")
-FIELD_LABELS = {"target": "target", "classwork": "class work", "link": "link"}
+FIELD_LABELS = {"target": "target", "classwork": "class work", "link": "link",
+                "homework_link": "assignment link"}
 
 
 def lookahead(course, start, days):
@@ -69,10 +70,15 @@ def lookahead(course, start, days):
 
 
 def missing_content(day):
-    """Content fields a lesson day still needs, e.g. ["target", "link"]."""
-    if day["type"] != "Instruction" or day["kind"] is None or day["kind"] in CONTENT_EXEMPT_KINDS:
+    """Content fields a lesson day still needs, e.g. ["target", "link"].
+    "homework_link" means an assignment given that day has no link of its
+    own (a Practice Log needs none)."""
+    if day["type"] != "Instruction" or day["kind"] is None:
         return []
-    return [f for f in CONTENT_FIELDS if not day[f]]
+    needs = [] if day["kind"] in CONTENT_EXEMPT_KINDS else [f for f in CONTENT_FIELDS if not day[f]]
+    if any(not hw["link"] and not engine.is_practice_log(hw) for hw in day["homework"] or []):
+        needs.append("homework_link")
+    return needs
 
 
 def when_label(day):
@@ -127,7 +133,7 @@ def main(argv=None):
     parser.add_argument("--from", dest="start", default=date.today().isoformat(),
                         help="first date, YYYY-MM-DD (default today)")
     parser.add_argument("--needs", action="store_true",
-                        help="list only the days still missing target, class work, or link")
+                        help="list only the days still missing target, class work, link, or an assignment link")
     args = parser.parse_args(argv)
 
     try:

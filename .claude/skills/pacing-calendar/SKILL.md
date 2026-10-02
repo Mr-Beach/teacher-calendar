@@ -51,10 +51,12 @@ never a note to self (SPEC.md).
 hand-insert `Quiz` (see below). `homework` is a list of the assignments
 **given that day** — `{"text", "due"}`, `due` a fixed `YYYY-MM-DD` date —
 `null` (not `[]`) when nothing's assigned; see "Input format" below. A
-homework item can also carry an optional `"link"` — where students find
-that assignment when it isn't in the day's lesson folder (a study guide in
-the review folder). Without one, the assignment links to the lesson's own
-`link` (usually the same folder), so only set it when it's different. `link` is an
+homework item carries a `"link"`: the assignment's own page in Schoology.
+The lesson's `link` is the lesson folder, and an assignment never falls back
+to it. An assignment without a link is flagged by `run_all_checks` ("homework
+links") and on the teacher look-ahead; tell Aaron whenever one is added
+without a link. A Practice Log takes no link (the assignments it lists carry
+their own). `link` is an
 optional URL to a student resource (Drive/OneDrive link shared "anyone with
 the link", or a path under `docs/`), rendered as a button on that day's
 detail popup.

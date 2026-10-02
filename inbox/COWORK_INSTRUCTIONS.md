@@ -19,7 +19,7 @@ PLANNING A WEEK
 1. In the teacher-calendar folder, run `git pull`, then
    `python3 scripts/lookahead.py --needs --days 15`.
    This lists the upcoming lesson days still missing a target, class work,
-   or link. Start from that list: tell me which days are open and ask me
+   link, or an assignment's link. Start from that list: tell me which days are open and ask me
    about them, one course at a time. Don't plan from memory of the
    calendar; dates shift when days are lost.
 2. Read inbox/README.md for the week-file format and rules.
@@ -69,6 +69,9 @@ WORDING
   Schoology (2 more tries)". Keep both words "Quiz" and "redo" in the
   text; that's how the calendar links it to the weekly quizzes folder
   instead of the answer keys.
+- Each homework item gets a "link": that assignment's own page in
+  Schoology, not the lesson folder. If I haven't given you one, ask. A
+  Practice Log has no link.
 - Work with no due date is class work, not homework. Put it in
   classwork.
 - link: the Schoology folder (or OneDrive share) for that lesson. Never

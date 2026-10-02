@@ -67,9 +67,10 @@ Rules, per day:
   assigned; don't repeat it on later days. The page shows it on its due
   date and in the "coming due" list on its own. Leave the due date out of
   `text`. Homework can be due on a quiz day but can't be assigned on one.
-  An item can also take a `"link"` — where students find that assignment,
-  when it isn't with the day's lesson (e.g. a study guide in the review
-  folder). Without one, the assignment links to the day's `link`, if any.
+  Each item also takes a `"link"`: the assignment's own page in Schoology
+  (the day's `link` is the lesson folder; an assignment doesn't fall back
+  to it). An assignment with no link shows as plain text and gets flagged
+  ("needs assignment link"). A Practice Log takes no link.
   A Practice Log (text starting "Practice Log") automatically lists every
   other assignment due from the day it's assigned through its due date.
   When that window is wrong, give it `"includes"`: the assignments it

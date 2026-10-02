@@ -169,13 +169,14 @@ def _compute_quiz_dates(school_days, sequence, quiz_rhythm_start=None):
 
 
 def _homework_with_links(lesson):
-    """A lesson's homework as rendered: each item links to its own `link` if
-    it has one (an assignment kept somewhere else, like a study guide in the
-    review folder), else to the lesson's resource `link` -- usually the same
-    Schoology folder the assignment is in."""
+    """A lesson's homework as rendered, each item with a "link" key: its own
+    `link` (the assignment's page in Schoology), or None. It deliberately
+    doesn't fall back to the lesson's `link` -- that's the lesson folder, and
+    an assignment should open the assignment itself. An unlinked assignment
+    is flagged by check_homework_links instead."""
     if not lesson:
         return []
-    return [{**hw, "link": hw.get("link") or lesson.get("link")}
+    return [{**hw, "link": hw.get("link")}
             for hw in normalize_homework(lesson.get("homework")) or []]
 
 
@@ -531,6 +532,17 @@ def check_homework_due_dates(course):
     return warnings
 
 
+def check_homework_links(course):
+    """Flag assignments with no link of their own. Each assignment should open
+    its own page in Schoology; without a link it shows as plain text. A
+    Practice Log is exempt -- it has no page; the assignments it lists carry
+    their own links."""
+    calendar, _ = render(course)
+    return [f"'{hw['text']}' (assigned {day['date']}, due {hw['due']}): no link"
+            for day in calendar for hw in day["homework"] or []
+            if not hw["link"] and not is_practice_log(hw)]
+
+
 def run_all_checks(course):
     """Every check.yield/render together, as (label, [warnings]) pairs --
     the one place that knows the full checklist, so nothing added here has
@@ -542,6 +554,7 @@ def run_all_checks(course):
         ("unexplained closures", check_unexplained_closures(course)),
         ("lesson shortfall", check_lesson_shortfall(course)),
         ("homework due dates", check_homework_due_dates(course)),
+        ("homework links", check_homework_links(course)),
     ]
 
 
