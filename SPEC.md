@@ -54,7 +54,7 @@ User accounts & authentication; hosted multi-tenant SaaS; manual-entry UI; iCal 
 
 **Planning aid**: a view comparing the live (edited) calendar against the original district scope-and-sequence, showing how far ahead/behind each topic is. The point is to help decide where to condense or where slack exists *before* making a pacing edit, rather than figuring it out from scratch each time. Would need the original district sequence preserved as a separate reference (the district's own at-a-Glance guide and sample calendars in `data/` are the starting point — not the discarded workbook) so there's something fixed to compare the live sequence against.
 
-**Quiz-day content**: quiz days are hardcoded to a bare "Quiz" tile with no `target`/`classwork`/`homework` (`QUIZ_ITEM` in `engine.py`). Later: let a quiz day carry real `target`/`classwork` like any other Instruction day (not assigned `homework` — Aaron doesn't assign homework on quiz days, though homework can be *due* on one). (The other half of this item — replacing the "quiz"-in-a-note suppression with an explicit flag — is done: a school day's `quiz` override, PLANNING.md.)
+**Quiz-day content**: quiz days are hardcoded to a bare "Quiz" day with no `target`/`classwork`/`homework` (`QUIZ_ITEM` in `engine.py`). Later: let a quiz day carry real `target`/`classwork` like any other Instruction day (not assigned `homework` — Aaron doesn't assign homework on quiz days, though homework can be *due* on one). (The other half of this item — replacing the "quiz"-in-a-note suppression with an explicit flag — is done: a school day's `quiz` override, PLANNING.md.)
 
 ## Definition of done
 

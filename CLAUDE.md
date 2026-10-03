@@ -74,8 +74,8 @@ session anyway, writing it as a week file and running
      students are already on Outlook accounts, so no extra access setup);
      hand the share link to `engine.edit_lesson(course, index, link=...)`.
      A relative path to a file committed under `docs/` also works for
-     anything simple enough to keep in this repo. Renders as a button on
-     the day's detail popup. Leave it unset/`None` for a day with nothing
+     anything simple enough to keep in this repo. Renders as the "Open the
+     lesson" button in the day's details. Leave it unset/`None` for a day with nothing
      to attach.
    - Never hand-insert a `"Quiz"`-kind entry — quizzes are computed by
      `render()`, never stored (`insert_lesson` rejects this; see `engine.py`'s

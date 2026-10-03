@@ -58,13 +58,14 @@ links") and on the teacher look-ahead; tell Aaron whenever one is added
 without a link. A Practice Log takes no link (the assignments it lists carry
 their own). `link` is an
 optional URL to a student resource (Drive/OneDrive link shared "anyone with
-the link", or a path under `docs/`), rendered as a button on that day's
-detail popup.
+the link", or a path under `docs/`), rendered as the "Open the lesson" button in
+that day's details.
 
 **The tile/detail title is always `lesson_code` + `district_title` (the code stored as `1.6`, shown as `T1L6` to match Schoology) — never
 `target` or `classwork`.** `target` (the day's I-can statement) and
 `classwork` (the activity, with its point value if any) are detail-only:
-shown in the popup when a student clicks the day, never on the tile. If the
+shown in the day's details when a student taps it, never on the row or
+month square. If the
 district's own title is opaque (a generic "Topic N Opener", "Topic N
 Assessment"), write a clearer `district_title` instead of relying on
 `target` to stand in for it — that's what got this wrong for the week of
@@ -166,8 +167,8 @@ both are detail-only, never the tile title (see above). `Homework` →
 `homework`, a **list** of `{"text": ..., "due": "YYYY-MM-DD"}` — one item
 per assignment **given that day**, stored only on that day. Never repeat
 it on later days (no "(continued)" entries): the page shows it on the day
-it's assigned, as a separate "Due" badge on its due date, and in the hero
-card's "coming due" list until then. Keep the due date out of `text`.
+it's assigned, under "Due this day" (and a "Due" tag in the month view) on
+its due date, and in the Homework list until then. Keep the due date out of `text`.
 Resolve "due Monday" / "due Wed 10/7" to an actual date from the day it's
 assigned, and ask if it's ambiguous. The due date is a fixed calendar date
 (how much time students get, not tied to content) — a lost day that shifts

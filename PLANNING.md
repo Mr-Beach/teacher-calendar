@@ -140,15 +140,19 @@ The calendar is student-facing. That governs everything on it:
 
 - **Notes are student-facing by definition** — testing-window reminders, holiday
   labels. Never teacher-private annotations.
-- **Where things show.** A calendar tile carries only the lesson title, a "Due"
-  badge, and (in the grid) a small strip marking homework assigned and a linked
-  resource. A lesson day's note is not on the tile; it shows on the today card
-  and in the day's popup. A closed day's note (e.g. "No School (Holiday)")
-  stays on its tile, since it's that day's label.
+- **Where things show.** The page opens on Upcoming: a today card, the
+  homework still open, the next quiz and test, then the school days as a list,
+  week by week. Each day's row shows only its title and a one-line summary
+  (what's due, what's given); tapping it opens the day's details in place —
+  target, class work, homework, what's due, a lesson day's note, and the
+  lesson button. Whole year shows Monday–Friday month grids (two months on a
+  laptop, one on a phone); a day square carries its title (or just its lesson
+  code on a phone) and a "Due" tag when something's due. A closed day's note
+  (e.g. "No School (Holiday)") is its label in both views.
 - **Homework / DeltaMath assignments render** alongside the lesson on the day
-  they're assigned, and again as a distinct "Due" badge on their due date. The
-  today card lists everything not yet due, with "due today" / "due tomorrow"
-  called out. A due date is a fixed date — it's how much time students have,
+  they're assigned, and again under "Due this day" on their due date. The
+  Homework list on Upcoming shows everything given and not yet due, with "due
+  today" / "due tomorrow" called out. A due date is a fixed date — it's how much time students have,
   not tied to content, so a lost day never moves it. Homework is never
   assigned on a quiz day, but can be due on one.
 - Lesson text is written for a sixth grader, not copied from district titles

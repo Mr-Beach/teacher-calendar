@@ -390,7 +390,7 @@ def insert_lesson(course, index, lesson):
 
     `target` (the day's I-can statement) and `classwork` (the activity,
     with its point value if any) are detail-only -- shown when a student
-    clicks the day, never in the tile. Both are optional.
+    taps the day, never on its row or month square. Both are optional.
 
     `homework` is a list of assignments given on this day, each
     {"text": ..., "due": "YYYY-MM-DD"} (see normalize_homework). Each is
@@ -403,8 +403,8 @@ def insert_lesson(course, index, lesson):
     something like a Savvas key-concept excerpt for that lesson. OneDrive
     share links work well since his students are already on Outlook
     accounts; a relative path to a file committed under docs/ also works
-    for anything simple enough to keep in this repo. Rendered as a button
-    on the day's detail popup; omit it for a day with nothing to attach.
+    for anything simple enough to keep in this repo. Rendered as the "Open the
+    lesson" button in the day's details; omit it for a day with nothing to attach.
 
     `extra_materials` is an optional list of strings -- items needed for
     this lesson specifically (scissors, glue stick for a cut-and-paste

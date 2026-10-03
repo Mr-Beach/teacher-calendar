@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from engine import render, run_all_checks  # noqa: E402
-from render import build_page, fill_weekends  # noqa: E402
+from render import build_page  # noqa: E402
 import lookahead_page  # noqa: E402
 
 TEACHER_PATH = "teacher"  # beach-math.com/teacher; no course or app may use it
@@ -46,7 +46,7 @@ def build_course(path, course):
     for label, warnings in run_all_checks(course):
         for w in warnings:
             print(f"warning ({path.stem}, {label}): {w}", file=sys.stderr)
-    return build_page(course, fill_weekends(calendar)) + "\n"  # same bytes as render.py's print()
+    return build_page(course, calendar) + "\n"  # same bytes as render.py's print()
 
 
 def build_front_page(courses):
@@ -64,38 +64,29 @@ def build_front_page(courses):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mr. Beach's Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {{
-    color-scheme: light;
-    --bg: #f7f7f5;
-    --card: #ffffff;
-    --text: #1f2328;
-    --muted: #6b7280;
-    --border: #e3e3e0;
-    --lesson: #eef2ff;
-    --lesson-border: #6366f1;
-  }}
+  /* Same look as the course pages (render.py). */
+  :root {{ color-scheme: light; --bg: #EEF5F3; --card: #FFFFFF; --ink: #1F2555; --muted: #4A5080; }}
   * {{ box-sizing: border-box; }}
   body {{
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    margin: 0;
-    padding: 16px;
+    background: var(--bg); color: var(--ink); margin: 0; padding: 16px;
+    font: 16px/1.45 'Atkinson Hyperlegible', Verdana, sans-serif;
   }}
   main {{ max-width: 480px; margin: 12vh auto 0; }}
-  h1 {{ font-size: 1.6rem; margin: 0 0 4px; }}
+  h1 {{ font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 2rem; margin: 0 0 4px; }}
   .subtitle {{ color: var(--muted); font-size: 0.95rem; margin: 0 0 24px; }}
-  .courses {{ display: flex; flex-direction: column; gap: 12px; }}
+  .courses {{ display: flex; flex-direction: column; gap: 14px; }}
   .course {{
     display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 20px; border-radius: 14px; text-decoration: none;
-    color: var(--text); font-size: 1.15rem; font-weight: 600;
-    background: var(--lesson); border: 1px solid var(--border);
-    border-left: 5px solid var(--lesson-border);
+    padding: 18px 20px; border-radius: 16px; text-decoration: none; color: var(--ink);
+    font-size: 1.2rem; font-weight: 700; background: var(--card);
+    border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
   }}
-  .course:hover, .course:focus-visible {{ background: var(--card); }}
-  .course__arrow {{ color: var(--lesson-border); font-size: 1.6rem; line-height: 1; }}
+  .course:hover, .course:focus-visible {{ background: #FFF6C9; }}
+  .course__arrow {{ font-size: 1.6rem; line-height: 1; }}
 </style>
 </head>
 <body>
