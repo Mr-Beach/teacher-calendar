@@ -118,6 +118,29 @@ own documents (at-a-Glance guide, sample calendars, SPS school calendar).
   downstream effects (a later test landing on a Monday, a shortfall/leftover
   at year's end) not worth reporting.
 
+## Applying curriculum-audit findings
+
+Cowork's curriculum audit (`audit/README.md`) writes
+`audit/findings/<course>.md`: a numbered list of changes in calendar
+terms. Aaron picks which to apply ("apply items 1-3 for Math 6"). Read the
+file, then do the picked items together and report the combined impact once.
+Each change type maps to an edit:
+
+- **"Combine T5L3 + T5L4 into one day"**: one entry, coded and titled with
+  both, the way Math 7/8's existing combined lessons are (`"5.3 & 5.6"`,
+  `"Simplify Expressions & Add Expressions"`). `edit_lesson` the first
+  entry's `lesson_code` and `district_title`, then `cut_lesson` the second.
+  If either lesson ran two days, the item says how many days the combined
+  one keeps.
+- **"Cut the second day of T#L#"**: `cut_lesson` one of its two entries.
+  Before cutting, move any homework, target, or link it carries onto the
+  day that stays, so nothing already planned is lost.
+- **"Cut the Topic N Opener"** / **"Cut T#L#"**: `cut_lesson`.
+
+Find each entry in the live file by code and title, never by an index from
+the findings or an earlier read. Commit the findings file along with the
+course file, so what was applied stays on record.
+
 ## Build & publish
 
 1. `python3 render.py courses/<course>.json > /tmp/preview.html` — render to
