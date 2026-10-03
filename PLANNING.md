@@ -47,6 +47,18 @@ editing lesson content (adding a day, cutting a day) must never be able to
 knock a quiz off Wednesday, and it can't, because quiz placement doesn't
 depend on where anything sits in `sequence`.
 
+**Overriding the rule on one day** is a school day's `quiz` field, set with
+`engine.set_day(course, date, quiz=...)`:
+
+- `"none"` — no quiz that Wednesday (a week that needs none for a reason
+  outside the exceptions above).
+- `"paired"` — the quiz shares the period with that day's lesson (see
+  Pairing). The lesson still takes the day; the page shows "+ Quiz" on it.
+- `"full"` — a full-period quiz day where the rule wouldn't put one.
+  Moving a quiz is `"none"` on its Wednesday plus `"full"` on the new day.
+
+A day's note never affects quiz placement — it's only text.
+
 `course["quiz_rhythm_start"]` is the first date this rule applies from —
 the first couple weeks of school (syllabus, routines) aren't quiz weeks even
 though they include Wednesdays.
@@ -114,7 +126,8 @@ from where tests were before the edit.
 
 When a day is tight, a quiz can share a day with a lesson — the quiz takes part
 of the period rather than all of it. Worth doing when it saves the only spare
-day left. Not worth doing routinely, since it compresses both.
+day left. Not worth doing routinely, since it compresses both. Set it with
+the day's `quiz: "paired"` override (above).
 
 ## Update rhythm
 

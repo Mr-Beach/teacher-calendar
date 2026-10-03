@@ -10,6 +10,10 @@ lessons only ever shifts lesson placement, never the quiz rhythm.
 Because inserting a quiz can shift where a Test lands, which can change
 which weeks count as "test weeks", quiz placement is solved by iterating to
 a fixed point rather than computed in one pass.
+
+A school day's optional `quiz` overrides the rule for that one day (see
+QUIZ_OVERRIDES). It's the only override: a day's note is plain
+student-facing text and never changes placement.
 """
 import json
 import re
@@ -27,6 +31,17 @@ QUIZ_ITEM = {
 # against these instead of accepting free text.
 VALID_DAY_TYPES = {"Instruction", "Flex", "Testing", "No School", "Other"}
 VALID_LESSON_KINDS = {"Lesson", "Opener", "Quiz", "Test", "3-Act"}
+
+# A school day's optional "quiz" field -- the one way to override the
+# Wednesday rule on a given day. Absent means the rule decides.
+#   "none":   no quiz here (a week that needs none for a reason outside the
+#             rule's exceptions, or the Wednesday half of moving a quiz).
+#   "paired": the quiz shares the period with that day's lesson
+#             (PLANNING.md's "Pairing") -- the lesson still takes the day,
+#             and the page shows the quiz alongside it.
+#   "full":   a full-period quiz day here even where the rule wouldn't put
+#             one (the other half of moving a quiz, e.g. to Thursday).
+QUIZ_OVERRIDES = {"none", "paired", "full"}
 
 
 def display_code(lesson_code):
@@ -85,13 +100,6 @@ def normalize_homework(value):
             hw["includes"] = covered
         items.append(hw)
     return items
-
-# A note mentioning "quiz" marks a day where a quiz was deliberately paired
-# with a lesson instead of taking a full day (PLANNING.md's "Pairing"). The
-# automatic Wednesday rule must not double up on a day already handled this
-# way.
-PAIRED_MARKER = "quiz"
-
 
 def _week_monday(d):
     return d - timedelta(days=d.weekday())
@@ -162,10 +170,9 @@ def _compute_quiz_dates(school_days, sequence, quiz_rhythm_start=None):
         and (quiz_rhythm_start is None or d["date"] >= quiz_rhythm_start)
     ]
     break_return = _break_return_wednesdays(school_days)
-    already_paired = {
-        d["date"] for d in school_days
-        if d["note"] and PAIRED_MARKER in d["note"].lower()
-    }
+    overridden = {d["date"] for d in school_days if d.get("quiz")}
+    forced = {d["date"] for d in school_days
+              if d.get("quiz") == "full" and d["type"] == "Instruction"}
 
     quiz_dates = set()
     for _ in range(10):
@@ -174,9 +181,9 @@ def _compute_quiz_dates(school_days, sequence, quiz_rhythm_start=None):
             _week_monday(date.fromisoformat(day["date"]))
             for day, item in placements if item and item["kind"] == "Test"
         }
-        new_quiz_dates = {
+        new_quiz_dates = forced | {
             wd for wd in wednesdays
-            if wd not in already_paired
+            if wd not in overridden
             and wd not in break_return
             and wd != _day_before_thanksgiving(int(wd[:4]))
             and _week_monday(date.fromisoformat(wd)) not in test_weeks
@@ -297,6 +304,8 @@ def render(course):
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": display, "lesson_text": base, "kind": kind,
+                # A quiz sharing the period with this lesson (QUIZ_OVERRIDES).
+                "quiz_paired": day.get("quiz") == "paired" and lesson not in (None, QUIZ_ITEM),
                 "homework": homework_for(day, lesson) or None,
                 "due": due_by_date.get(day["date"]), "note": note,
                 "target": lesson.get("target") if lesson else None,
@@ -313,6 +322,7 @@ def render(course):
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": note or day["type"], "lesson_text": None, "kind": None,
+                "quiz_paired": False,
                 "homework": None, "due": due_by_date.get(day["date"]), "note": note,
                 "target": None, "classwork": None, "link": None, "extra_materials": None,
             })
@@ -322,23 +332,37 @@ def render(course):
 _UNSET = object()
 
 
-def set_day(course, date_str, type=_UNSET, note=_UNSET):
-    """Change an existing school day's type and/or note in place. This is
-    how a day is spent (Instruction -> No School/Other, an assembly or snow
-    day) or earned back (Flex -> Instruction). Quizzes are never touched
-    here -- they're computed by render(), never stored (see module
-    docstring) -- so this only ever affects the five school-day types.
+def set_day(course, date_str, type=_UNSET, note=_UNSET, quiz=_UNSET):
+    """Change an existing school day's type, note, and/or quiz override in
+    place. Changing the type is how a day is spent (Instruction -> No
+    School/Other, an assembly or snow day) or earned back (Flex ->
+    Instruction).
 
-    Omit `type`/`note` to leave it unchanged; pass `note=None` explicitly
+    `quiz` overrides the Wednesday rule on this one day -- "none",
+    "paired", or "full" (see QUIZ_OVERRIDES) -- and `quiz=None` removes
+    the override so the rule decides again. Quizzes themselves are still
+    never stored; render() computes them, honoring this. Moving a quiz is
+    two calls: quiz="none" on its Wednesday, quiz="full" on the new day.
+
+    Omit an argument to leave it unchanged; pass `note=None` explicitly
     to clear an existing note (e.g. undoing an assembly note)."""
     if type is not _UNSET and type not in VALID_DAY_TYPES:
         raise ValueError(f"not a valid day type: {type!r} (want one of {sorted(VALID_DAY_TYPES)})")
+    if quiz is not _UNSET and quiz is not None and quiz not in QUIZ_OVERRIDES:
+        raise ValueError(f"not a valid quiz override: {quiz!r} (want one of {sorted(QUIZ_OVERRIDES)}, or None)")
     for day in course["school_days"]:
         if day["date"] == date_str:
-            if type is not _UNSET:
-                day["type"] = type
+            new_type = day["type"] if type is _UNSET else type
+            new_quiz = day.get("quiz") if quiz is _UNSET else quiz
+            if new_quiz in ("paired", "full") and new_type != "Instruction":
+                raise ValueError(f"{date_str} would be a '{new_type}' day -- a quiz needs an Instruction day")
+            day["type"] = new_type
             if note is not _UNSET:
                 day["note"] = note
+            if new_quiz is None:
+                day.pop("quiz", None)
+            else:
+                day["quiz"] = new_quiz
             return day
     raise ValueError(f"no school day dated {date_str}")
 

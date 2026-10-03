@@ -45,6 +45,8 @@ def render_day(day):
     if needs:
         css.append("gap")
     badge = f'<span class="badge">{esc(kind)}</span>' if kind in TAGGED_KINDS else ""
+    if day["quiz_paired"]:
+        badge += '<span class="badge paired">+ Quiz</span>'
     parts = [f'<div class="title">{badge}{esc(day["lesson_text"])}</div>']
     if day["target"]:
         parts.append(f'<div class="line">{esc(day["target"])}</div>')
@@ -166,7 +168,7 @@ def build_page(courses, today=None):
             letter-spacing: .04em; color: #fff; background: var(--lesson); border-radius: 4px;
             padding: 1px 6px; margin-right: 6px; vertical-align: 1px; }}
   .opener .badge {{ background: var(--opener); }}
-  .quiz .badge {{ background: var(--quiz); }}
+  .quiz .badge, .badge.paired {{ background: var(--quiz); }}
   .test .badge {{ background: var(--test); }}
   .threeact .badge {{ background: var(--threeact); }}
   .line {{ color: var(--muted); font-size: .9rem; margin-top: 2px; }}

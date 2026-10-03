@@ -57,7 +57,8 @@ session anyway, writing it as a week file and running
 2. Before editing, capture `engine.render(course)` — you'll diff against it
    after, via `engine.diff_impact`.
 3. Use `engine.py`'s edit functions — `set_day` (spend or earn back a
-   day by changing its type/note), `cut_lesson`, `insert_lesson`,
+   day by changing its type/note, or skip, pair, or move a quiz with its
+   `quiz` override), `cut_lesson`, `insert_lesson`,
    `edit_lesson`; their docstrings have the arguments. Don't hand-write
    JSON mutations.
    - The tile/detail title is always `lesson_code` + `district_title` (the code stored as `1.6`, shown as `T1L6` to match Schoology) —

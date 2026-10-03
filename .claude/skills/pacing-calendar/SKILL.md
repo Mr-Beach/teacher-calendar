@@ -101,12 +101,14 @@ own documents (at-a-Glance guide, sample calendars, SPS school calendar).
   (`set_day`), not touching the sequence.
 - Quizzes are never stored — computed fresh every render from the Wednesday
   rule plus its exceptions (a test lands that week, first week back from a
-  break of 5+ days, the day before Thanksgiving). **A school-day `note`
-  containing the word "quiz" (any case) is a manual override that suppresses
-  that Wednesday's auto-quiz.** This is the same mechanism PLANNING.md calls
-  "pairing" — use it deliberately whenever a week needs no quiz for a reason
-  outside the three documented exceptions (e.g. a summative four days out),
-  not just for literal pairing.
+  break of 5+ days, the day before Thanksgiving). **To override the rule on one
+  day, use `set_day(course, date, quiz=...)`**: `"none"` (no quiz that
+  Wednesday — e.g. a summative four days out), `"paired"` (the quiz shares
+  the period with that day's lesson, PLANNING.md's Pairing), or `"full"` (a
+  full-period quiz where the rule wouldn't put one). Moving a quiz is
+  `"none"` on its Wednesday plus `"full"` on the new day; `quiz=None`
+  removes an override. A note is only text — it never changes where a
+  quiz goes, whatever it says.
 - Before anything is committed, show Aaron: `engine.diff_impact()` (first
   date that starts differing, leftover-lesson count before/after) and every
   `engine.run_all_checks()` warning (the list is PLANNING.md's "Sanity

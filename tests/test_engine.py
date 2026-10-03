@@ -113,6 +113,57 @@ class QuizRuleTests(unittest.TestCase):
             engine.insert_lesson(course, 0, {"district_title": "Quiz", "kind": "Quiz"})
 
 
+class QuizOverrideTests(unittest.TestCase):
+    """A school day's `quiz` field (engine.QUIZ_OVERRIDES)."""
+
+    def setUp(self):
+        self.course = make_course("2026-10-05", "2026-10-16")
+
+    def test_note_mentioning_quiz_changes_nothing(self):
+        engine.set_day(self.course, "2026-10-07", note="Quiz corrections due today")
+        self.assertIn("2026-10-07", quiz_dates(self.course))
+
+    def test_none(self):
+        engine.set_day(self.course, "2026-10-07", quiz="none")
+        self.assertEqual(quiz_dates(self.course), ["2026-10-14"])
+        self.assertEqual(by_date(self.course)["2026-10-07"]["kind"], "Lesson")
+
+    def test_paired(self):
+        engine.set_day(self.course, "2026-10-07", quiz="paired")
+        day = by_date(self.course)["2026-10-07"]
+        self.assertEqual((day["kind"], day["quiz_paired"]), ("Lesson", True))
+        self.assertEqual(quiz_dates(self.course), ["2026-10-14"])
+
+    def test_move_a_quiz_to_thursday(self):
+        engine.set_day(self.course, "2026-10-07", quiz="none")
+        engine.set_day(self.course, "2026-10-08", quiz="full")
+        self.assertEqual(quiz_dates(self.course), ["2026-10-08", "2026-10-14"])
+
+    def test_full_quiz_overrides_test_week(self):
+        # Mon A, Tue review, Wed test: a test week, so no quiz -- until a
+        # full quiz is set on Tuesday (the test slides to Thursday, same week).
+        lessons = [("A", "Lesson"), ("Topic 1 Review", "Lesson"), ("Topic 1 Test", "Test")]
+        course = make_course("2026-10-05", "2026-10-09", lessons=lessons)
+        self.assertEqual(quiz_dates(course), [])
+        engine.set_day(course, "2026-10-06", quiz="full")
+        self.assertEqual(quiz_dates(course), ["2026-10-06"])
+        self.assertEqual(by_date(course)["2026-10-08"]["kind"], "Test")
+
+    def test_clearing_the_override(self):
+        engine.set_day(self.course, "2026-10-07", quiz="none")
+        engine.set_day(self.course, "2026-10-07", quiz=None)
+        self.assertNotIn("quiz", self.course["school_days"][2])
+        self.assertIn("2026-10-07", quiz_dates(self.course))
+
+    def test_rejected_without_changing_the_day(self):
+        with self.assertRaises(ValueError):
+            engine.set_day(self.course, "2026-10-08", type="No School", quiz="full")
+        self.assertEqual(self.course["school_days"][3]["type"], "Instruction")
+        self.assertNotIn("quiz", self.course["school_days"][3])
+        with self.assertRaises(ValueError):
+            engine.set_day(self.course, "2026-10-08", quiz="maybe")
+
+
 class CheckTests(unittest.TestCase):
     def test_leftover_lessons(self):
         course = make_course("2026-10-05", "2026-10-09", lessons=6)

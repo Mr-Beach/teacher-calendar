@@ -89,7 +89,8 @@ def fill_weekends(calendar):
                 filled.append({
                     "date": cursor.isoformat(), "weekday": cursor.strftime("%a"),
                     "type": "Weekend", "display": "", "lesson_text": None,
-                    "kind": None, "homework": None, "due": None, "note": None,
+                    "kind": None, "quiz_paired": False,
+                    "homework": None, "due": None, "note": None,
                     "target": None, "classwork": None, "link": None,
                     "extra_materials": None,
                 })
@@ -129,6 +130,8 @@ def render_day_body(day, compact=False):
     body = ""
     if day["type"] == "Instruction":
         body += f'<div class="day__lesson">{esc(day["lesson_text"])}</div>'
+        if day["quiz_paired"]:
+            body += '<div class="day__quiz">+ Quiz</div>'
     elif day["display"]:
         body += f'<div class="day__note">{esc(day["display"])}</div>'
     dues = day.get("due") or []
@@ -263,6 +266,7 @@ def build_details_map(calendar):
             "weekday": day["weekday"],
             "type": day["type"],
             "kind": day["kind"],
+            "quiz_paired": day["quiz_paired"],
             "title": day["lesson_text"] if day["type"] == "Instruction" else day["display"],
             "target": day["target"],
             "classwork": day["classwork"],
@@ -387,6 +391,7 @@ def build_page(course, calendar):
   .hero__row {{ font-size: 0.95rem; margin-top: 10px; }}
   .hero__row--note {{ font-style: italic; color: var(--muted); }}
   .hero__hw {{ margin-top: 4px; }}
+  .hero__quiz {{ font-weight: 700; color: var(--quiz-border); }}
   .hero__due {{
     margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border);
     display: flex; flex-direction: column; gap: 8px;
@@ -499,6 +504,8 @@ def build_page(course, calendar):
     -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;
   }}
   .day__note {{ font-style: italic; }}
+  /* A quiz sharing the period with the lesson: the quiz color, on a lesson tile. */
+  .day__quiz {{ color: var(--quiz-border); font-weight: 700; margin-top: 2px; }}
   .day__due {{
     background: var(--due); color: var(--due-text); font-weight: 600; border-radius: 4px;
     padding: 0 4px; margin-top: 2px; display: -webkit-box;
@@ -574,6 +581,8 @@ def build_page(course, calendar):
   .detail__due small {{ opacity: 0.8; }}
   .answer-key {{ display: block; width: fit-content; margin-top: 2px; font-size: 0.85rem; }}
   .detail__note {{ font-style: italic; color: var(--muted); }}
+  .detail__quiz {{ font-size: 0.9rem; font-weight: 600; color: var(--quiz-border); margin-bottom: 4px; }}
+  .detail__quiz[hidden] {{ display: none; }}
   .detail__link {{
     display: inline-block; margin-top: 10px; padding: 8px 14px; border-radius: 6px;
     background: var(--lesson-border); color: #fff; text-decoration: none;
@@ -618,6 +627,7 @@ def build_page(course, calendar):
     <button class="detail__close" onclick="closeDetail()" aria-label="Close">&times;</button>
     <div class="detail__date" id="detail-date"></div>
     <div class="detail__title" id="detail-title"></div>
+    <div class="detail__quiz" id="detail-quiz" hidden>+ Quiz, sharing the period with this lesson</div>
     <div class="detail__target" id="detail-target" hidden></div>
     <div class="detail__classwork" id="detail-classwork" hidden></div>
     <div class="detail__homework" id="detail-homework" hidden></div>
@@ -666,6 +676,7 @@ def build_page(course, calendar):
     if (!d) return;
     document.getElementById('detail-date').textContent = d.date;
     document.getElementById('detail-title').textContent = d.title || '';
+    document.getElementById('detail-quiz').hidden = !d.quiz_paired;
     const target = document.getElementById('detail-target');
     target.textContent = d.target ? 'Target: ' + d.target : '';
     target.hidden = !d.target;
@@ -804,7 +815,8 @@ def build_page(course, calendar):
   // on a note someone remembered to write on one particular day.
   function nextByKind(kind, afterDate) {{
     for (const k of Object.keys(DETAILS)) {{ // ascending, same order as the calendar
-      if (k > afterDate && DETAILS[k].kind === kind) return k;
+      // A quiz sharing a lesson's period is still the upcoming quiz.
+      if (k > afterDate && (DETAILS[k].kind === kind || (kind === 'Quiz' && DETAILS[k].quiz_paired))) return k;
     }}
     return null;
   }}
@@ -896,6 +908,7 @@ def build_page(course, calendar):
       hero.appendChild(heroEl('div', 'hero__date', entry.date));
       if (entry.type !== 'No School') appendMaterialsRow(hero, entry);
       hero.appendChild(heroEl('div', 'hero__title', entry.title || ''));
+      if (entry.quiz_paired) hero.appendChild(heroEl('div', 'hero__row hero__quiz', '+ Quiz today, sharing the period with the lesson'));
       if (entry.target) hero.appendChild(heroEl('div', 'hero__row', 'Target: ' + entry.target));
       if (entry.classwork) hero.appendChild(heroEl('div', 'hero__row', 'Classwork: ' + entry.classwork));
       for (const hw of entry.homework) {{
