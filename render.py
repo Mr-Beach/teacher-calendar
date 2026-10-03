@@ -721,12 +721,28 @@ PAGE = """<!doctype html>
     if (row.dataset.date === TODAY) row.classList.add('day-today');
     else if (row.dataset.date < TODAY) row.classList.add('day-past');
   });
+  // A day's details slide open under its row, and slide shut again, in the
+  // Whole-year view's motion. Tapping again partway through turns it
+  // around from wherever it got to.
+  function togglePanel(btn) {
+    const panel = document.getElementById(btn.getAttribute('aria-controls'));
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    if (REDUCED || !panel.animate) { panel.hidden = open; return; }
+    const pick = (cs) => ({ height: cs.height, paddingTop: cs.paddingTop,
+                            paddingBottom: cs.paddingBottom, opacity: cs.opacity });
+    const shut = { height: '0px', paddingTop: '0px', paddingBottom: '0px', opacity: 0 };
+    const now = panel.hidden ? shut : pick(getComputedStyle(panel));
+    panel.getAnimations().forEach((a) => a.cancel());
+    panel.hidden = false;
+    const full = pick(getComputedStyle(panel));
+    panel.style.overflow = 'hidden';
+    const anim = panel.animate([now, open ? shut : full],
+                               { duration: MOTION_MS, easing: 'cubic-bezier(' + MOTION_CURVE.join(', ') + ')' });
+    anim.onfinish = () => { panel.style.overflow = ''; if (open) panel.hidden = true; };
+  }
   document.querySelectorAll('.row[aria-controls]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const open = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!open));
-      document.getElementById(btn.getAttribute('aria-controls')).hidden = open;
-    });
+    btn.addEventListener('click', () => togglePanel(btn));
   });
   // Open a day's row in the list and bring it into view.
   function openDay(date) {
