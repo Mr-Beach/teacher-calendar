@@ -39,7 +39,7 @@ Those are the days to ask Aaron about; the lesson code on each line is the
       "date": "2026-10-05",
       "expect": "1.2",
       "target": "I can multiply decimals and place the decimal point using estimation.",
-      "classwork": "Notes + workbook pp. 12-13 (20 points)",
+      "classwork": "Notes + workbook pg 12-13 (20 points)",
       "homework": [{"text": "Lesson 1.2 practice 1-12", "due": "2026-10-07"}],
       "link": "https://...",
       "extra_materials": ["calculator"]
@@ -67,6 +67,7 @@ Rules, per day:
   assigned; don't repeat it on later days. The page shows it on its due
   date and in the "coming due" list on its own. Leave the due date out of
   `text`. Homework can be due on a quiz day but can't be assigned on one.
+  Pages are written "pg" (`pg 27`, `pg 15-16`), never "p."/"pp."/"page".
   Each item also takes a `"link"`: the assignment's own page in Schoology
   (the day's `link` is the lesson folder; an assignment doesn't fall back
   to it). An assignment with no link shows as plain text and gets flagged

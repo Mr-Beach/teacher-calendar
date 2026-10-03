@@ -135,7 +135,8 @@ A week as a plain-text block, one entry per school day: date, lesson name, a
 `Target` (I-can statement), `Class work` (activity + point value),
 `Homework`, and sometimes `Note` / `Extension` / `Warm up`. Map `Target` →
 `target` and `Class work` (plus any `Extension`/`Warm up`) → `classwork`,
-terse and matching the file's existing style, not transcribed in full —
+terse and matching the file's existing style, not transcribed in full
+(pages always "pg 27" / "pg 15–16", never "p.", "pp.", or "page") —
 both are detail-only, never the tile title (see above). `Homework` →
 `homework`, a **list** of `{"text": ..., "due": "YYYY-MM-DD"}` — one item
 per assignment **given that day**, stored only on that day. Never repeat

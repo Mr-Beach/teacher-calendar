@@ -57,7 +57,9 @@ WORDING
 - homework: only on the day it's assigned, with a due date. Don't write
   the due date into the text. Homework can be due on a quiz day but not
   assigned on one. Say where it comes from: "Topic 1 Lesson 2 Practice:
-  workbook pp. 15-16 #19-33", or the worksheet's title and problems.
+  workbook pg 15-16 #19-33", or the worksheet's title and problems.
+- Pages are always "pg" (pg 27, pg 15-16), never "p.", "pp.", or
+  "page(s)", in homework and class work.
 - Practice Log: homework whose text starts "Practice Log", assigned
   Monday, due Friday. The calendar lists what it covers on its own:
   every other assignment due from the day it's assigned through its due
