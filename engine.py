@@ -30,7 +30,7 @@ QUIZ_ITEM = {
 # The closed sets from SPEC.md's data model. Edit functions below validate
 # against these instead of accepting free text.
 VALID_DAY_TYPES = {"Instruction", "Flex", "Testing", "No School", "Other"}
-VALID_LESSON_KINDS = {"Lesson", "Opener", "Quiz", "Test", "3-Act"}
+VALID_LESSON_KINDS = {"Lesson", "Opener", "Quiz", "Test", "3-Act", "Project"}
 
 # A school day's optional "quiz" field -- the one way to override the
 # Wednesday rule on a given day. Absent means the rule decides.

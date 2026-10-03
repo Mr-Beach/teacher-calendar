@@ -103,10 +103,11 @@ def week_range(first_iso, last_iso):
 
 
 def day_kind(day):
-    """The style a day gets: lesson, opener, threeact, quiz, test, or closed."""
+    """The style a day gets: lesson, opener, threeact, quiz, test, project, or closed."""
     if day["type"] != "Instruction":
         return "closed"
-    return {"Quiz": "quiz", "Test": "test", "Opener": "opener", "3-Act": "threeact"}.get(
+    return {"Quiz": "quiz", "Test": "test", "Opener": "opener", "3-Act": "threeact",
+            "Project": "project"}.get(
         day["kind"], "lesson")
 
 
@@ -218,7 +219,7 @@ def render_row(day, course):
             f'<span class="when-num">{d.day}</span></span>')
     if kind == "quiz":
         title = '<span class="tag tag-quiz">Quiz</span>'
-    elif kind == "test":
+    elif kind in ("test", "project"):  # a project is summative too: test colors
         title = f'<span class="tag tag-test">{esc(day["lesson_text"])}</span>'
     else:
         title = esc(day_title(day))
@@ -266,6 +267,8 @@ def cell_labels(day):
         return "Quiz", "Quiz", ""
     if kind == "test":
         return "Test", "", day["lesson_text"]
+    if kind == "project":
+        return "Project", "", day["lesson_text"]
     code, rest = split_code(day["lesson_text"])
     if code:
         return code, code, rest
@@ -537,8 +540,9 @@ PAGE = """<!doctype html>
   .cell-code, .cell-title { display: none; }
   .cell-quiz { background: var(--quiz-bg); }
   .cell-quiz .cell-short, .cell-quiz .cell-code { font-weight: 700; color: var(--quiz-ink); }
-  .cell-test { background: var(--test-bg); }
-  .cell-test .cell-short, .cell-test .cell-title { font-weight: 700; color: var(--test-ink); }
+  .cell-test, .cell-project { background: var(--test-bg); }
+  .cell-test .cell-short, .cell-test .cell-title,
+  .cell-project .cell-short, .cell-project .cell-title { font-weight: 700; color: var(--test-ink); }
   .cell-closed { background: none; border: 1.5px dashed var(--dash); color: var(--closed-ink); }
   .cell-closed .cell-title { font-style: italic; }
   .cell-today { background: var(--today); box-shadow: inset 0 0 0 2px var(--ink); }

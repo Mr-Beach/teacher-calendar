@@ -21,7 +21,7 @@ from lookahead import FIELD_LABELS, TAGGED_KINDS, missing_content
 
 WINDOW = 10  # instructional days shown before "Show more"
 
-KIND_CLASS = {"Quiz": "quiz", "Test": "test", "Opener": "opener", "3-Act": "threeact"}
+KIND_CLASS = {"Quiz": "quiz", "Test": "test", "Opener": "opener", "3-Act": "threeact", "Project": "test"}
 
 
 def esc(s):

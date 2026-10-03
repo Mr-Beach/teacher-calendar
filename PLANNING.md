@@ -29,6 +29,10 @@ lesson after it by one position.
 - `Quiz` — formative, graded, visually distinct from a Test
 - `Test` — summative, the second of a district topic-test's two days
 - `3-Act` — 3-Act Math task
+- `Project` — a project work day. Summative, so it's shown in the Test
+  colors, but it isn't a Test: it doesn't need a review day, and it
+  doesn't stop that week's quiz (turn one off with the day's `quiz`
+  override)
 
 ## Assessments
 

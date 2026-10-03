@@ -62,7 +62,7 @@ def export(course, today):
     out += [f"  - {w}" for w in missing_review]
     out.append(f"- Lessons not yet taught that take more than one day: **{len(multi)}** "
                f"({sum(r[3] - 1 for r in multi)} extra days in all)")
-    out += ["", "Kinds: Lesson, Opener (Topic Opener), 3-Act, Test. Quizzes are placed "
+    out += ["", "Kinds: Lesson, Opener (Topic Opener), 3-Act, Project, Test. Quizzes are placed "
             "automatically every Wednesday and aren't listed. A review day is a Lesson.", ""]
 
     for topic, topic_runs in groupby(runs, key=lambda r: r[0]):
