@@ -97,6 +97,24 @@ def _week_monday(d):
     return d - timedelta(days=d.weekday())
 
 
+def _day_before_thanksgiving(year):
+    """The Wednesday before US Thanksgiving (the fourth Thursday of
+    November), as an ISO date -- PLANNING.md's third no-quiz exception."""
+    nov1 = date(year, 11, 1)
+    first_thursday = nov1 + timedelta(days=(3 - nov1.weekday()) % 7)
+    return (first_thursday + timedelta(weeks=3, days=-1)).isoformat()
+
+
+def lesson_title(item):
+    """A sequence entry's tile/detail title: lesson_code (shown as T1L6) +
+    district_title -- never target/classwork, which are detail-only
+    (PLANNING.md: title text should be readable, not a dumping ground for
+    the day's full learning target)."""
+    if item["lesson_code"]:
+        return f"{display_code(item['lesson_code'])} {item['district_title']}".strip()
+    return item["district_title"]
+
+
 def _break_return_wednesdays(school_days):
     """Wednesdays of any week that starts with the first school day back
     after a break of 5+ consecutive 'No School' school-calendar days."""
@@ -160,6 +178,7 @@ def _compute_quiz_dates(school_days, sequence, quiz_rhythm_start=None):
             wd for wd in wednesdays
             if wd not in already_paired
             and wd not in break_return
+            and wd != _day_before_thanksgiving(int(wd[:4]))
             and _week_monday(date.fromisoformat(wd)) not in test_weeks
         }
         if new_quiz_dates == quiz_dates:
@@ -214,12 +233,17 @@ def _practice_log_contents(placements):
     return contents
 
 
-def render(course):
-    school_days = course["school_days"]
-    sequence = course["sequence"]
-
+def place(course):
+    """(placements, leftover): each school day paired with the sequence
+    entry, QUIZ_ITEM, or None that lands on it -- the one placement every
+    caller shares, so nothing can disagree with render()."""
+    school_days, sequence = course["school_days"], course["sequence"]
     quiz_dates = _compute_quiz_dates(school_days, sequence, course.get("quiz_rhythm_start"))
-    placements, leftover = _place(school_days, sequence, quiz_dates)
+    return _place(school_days, sequence, quiz_dates)
+
+
+def render(course):
+    placements, leftover = place(course)
 
     # Homework shows twice: on the day it's assigned (with its lesson) and on
     # its due date, which is fixed and independent of where lessons land.
@@ -265,15 +289,7 @@ def render(course):
                 base = "(no lesson planned)"
                 kind = None
             else:
-                # The tile/detail title is always lesson_code (shown as T1L6)
-                # + district_title --
-                # never overridden by target/classwork, which are detail-only
-                # (PLANNING.md: title text should be readable, not a dumping
-                # ground for the day's full learning target).
-                base = (
-                    f"{display_code(lesson['lesson_code'])} {lesson['district_title']}".strip()
-                    if lesson["lesson_code"] else lesson["district_title"]
-                )
+                base = lesson_title(lesson)
                 kind = lesson["kind"]
             # A note on an instructional day is a reminder alongside the lesson
             # (a testing window, a snow-make-up flag), not a replacement for it.
@@ -445,17 +461,13 @@ def check_test_placement(course):
     """Flag Tests landing somewhere PLANNING.md says to avoid. These aren't
     auto-fixed -- resolving one is an editorial call (what moves, and to
     where), so this just surfaces them for a human to decide."""
-    school_days = course["school_days"]
-    sequence = course["sequence"]
-    quiz_dates = _compute_quiz_dates(school_days, sequence, course.get("quiz_rhythm_start"))
-    placements, _ = _place(school_days, sequence, quiz_dates)
     return_weeks = {
         _week_monday(date.fromisoformat(d))
-        for d in _break_return_wednesdays(school_days)
+        for d in _break_return_wednesdays(course["school_days"])
     }
 
     warnings = []
-    for day, item in placements:
+    for day, item in place(course)[0]:
         if not item or item["kind"] != "Test":
             continue
         d = date.fromisoformat(day["date"])
@@ -464,6 +476,39 @@ def check_test_placement(course):
         elif _week_monday(d) in return_weeks and d.weekday() in (0, 1, 2):
             warnings.append(f"{day['date']}: Test lands in the first Mon-Wed back from a break")
     return warnings
+
+
+def check_review_before_test(course):
+    """Flag a Test whose class day just before it isn't its review day
+    (PLANNING.md: a topic test is a review day plus a test day). Closed
+    days in between are fine; a quiz or a lesson in between is not. A
+    review is recognized by "Review" in its title. Not auto-fixed --
+    whether to insert a review day or cut something to make room is
+    Aaron's call."""
+    warnings, prev = [], None
+    for day, item in place(course)[0]:
+        if item is None:
+            continue
+        if item["kind"] == "Test" and not (
+                prev and prev is not QUIZ_ITEM and "review" in prev["district_title"].lower()):
+            before = "a quiz" if prev is QUIZ_ITEM else f"'{lesson_title(prev)}'" if prev else "nothing"
+            warnings.append(f"{day['date']}: '{lesson_title(item)}' has no review day "
+                            f"right before it (the class before is {before})")
+        prev = item
+    return warnings
+
+
+def check_leftover_lessons(course):
+    """Flag lessons that run past the last instructional day -- the
+    sequence is longer than the year, so the last ones never get a date
+    and silently drop off the published calendar. Not auto-fixed: what to
+    cut (PLANNING.md's cut order) or which Flex day to spend is Aaron's
+    call."""
+    _, leftover = place(course)
+    if not leftover:
+        return []
+    names = ", ".join(lesson_title(item) for item in course["sequence"][-leftover:])
+    return [f"{leftover} lesson(s) have no day left before the year ends: {names}"]
 
 
 def check_lesson_shortfall(course):
@@ -544,13 +589,15 @@ def check_homework_links(course):
 
 
 def run_all_checks(course):
-    """Every check.yield/render together, as (label, [warnings]) pairs --
+    """Every check together, as (label, [warnings]) pairs --
     the one place that knows the full checklist, so nothing added here has
     to be separately wired into the CLI, the import script, and anywhere
     else that wants "is this course file okay?" See PLANNING.md's Sanity
     checks section, which this is meant to mirror."""
     return [
         ("test placement", check_test_placement(course)),
+        ("review before test", check_review_before_test(course)),
+        ("leftover lessons", check_leftover_lessons(course)),
         ("unexplained closures", check_unexplained_closures(course)),
         ("lesson shortfall", check_lesson_shortfall(course)),
         ("homework due dates", check_homework_due_dates(course)),
@@ -561,8 +608,7 @@ def run_all_checks(course):
 if __name__ == "__main__":
     path = Path(sys.argv[1] if len(sys.argv) > 1 else "courses/math6.json")
     course = json.loads(path.read_text())
-    calendar, leftover = render(course)
-    print(f"leftover lessons with no day left: {leftover}", file=sys.stderr)
+    calendar, _ = render(course)
     for label, warnings in run_all_checks(course):
         for w in warnings:
             print(f"warning ({label}): {w}", file=sys.stderr)

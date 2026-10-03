@@ -156,6 +156,15 @@ def render_day_body(day, compact=False):
     return body + due_html, ""
 
 
+def day_label(day):
+    """What a screen reader announces for a tappable day: its date and
+    title ("Tuesday, September 29: T1L6 Divide Fractions"), not just the
+    day-of-month number the tile shows."""
+    d = date.fromisoformat(day["date"])
+    title = day["lesson_text"] if day["type"] == "Instruction" else day["display"]
+    return f"{d.strftime('%A')}, {MONTH_NAMES[d.month - 1]} {d.day}: {title}"
+
+
 def render_day_cell(day):
     d = date.fromisoformat(day["date"])
     day_num = d.day
@@ -177,7 +186,7 @@ def render_day_cell(day):
     # metrics. Tap/click opens the full, untruncated detail.
     return (
         f'<div class="{" ".join(css)}" role="button" tabindex="0" '
-        f'data-date="{day["date"]}" aria-label="View details" '
+        f'data-date="{day["date"]}" aria-label="{esc(day_label(day))}" '
         f'onclick="showDetail(\'{day["date"]}\')" '
         f"onkeydown=\"if(event.key==='Enter'||event.key===' '){{event.preventDefault();showDetail('{day['date']}')}}\">"
         f'<div class="day__num">{day_num}</div><div class="day__body">{body}</div>{strip}</div>'
@@ -201,7 +210,7 @@ def render_agenda_row(day):
     # Tappable like a grid tile: opens the same detail popup.
     return (
         f'<div class="{" ".join(css)}" role="button" tabindex="0" '
-        f'data-date="{day["date"]}" aria-label="View details" '
+        f'data-date="{day["date"]}" aria-label="{esc(day_label(day))}" '
         f'onclick="showDetail(\'{day["date"]}\')" '
         f"onkeydown=\"if(event.key==='Enter'||event.key===' '){{event.preventDefault();showDetail('{day['date']}')}}\">"
         f'<div class="agenda-date">{day["weekday"]}<br>{d.month}/{d.day}</div>'
@@ -964,10 +973,7 @@ def build_page(course, calendar):
 if __name__ == "__main__":
     path = Path(sys.argv[1] if len(sys.argv) > 1 else "courses/math6.json")
     course = json.loads(path.read_text())
-    calendar, leftover = render(course)
-    calendar = fill_weekends(calendar)
-    if leftover:
-        print(f"warning: {leftover} lessons have no day left", file=sys.stderr)
+    calendar = fill_weekends(render(course)[0])
     for label, warnings in run_all_checks(course):
         for w in warnings:
             print(f"warning ({label}): {w}", file=sys.stderr)

@@ -36,9 +36,7 @@ TEACHER_PATH = "teacher"  # beach-math.com/teacher; no course or app may use it
 
 
 def build_course(path, course):
-    calendar, leftover = render(course)
-    if leftover:
-        print(f"warning ({path.stem}): {leftover} lessons have no day left", file=sys.stderr)
+    calendar, _ = render(course)
     for label, warnings in run_all_checks(course):
         for w in warnings:
             print(f"warning ({path.stem}, {label}): {w}", file=sys.stderr)

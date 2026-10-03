@@ -61,6 +61,15 @@ def render_day(day):
             f'{when}<div class="what">{"".join(parts)}</div></li>')
 
 
+def render_checks(course):
+    """engine.run_all_checks' warnings for the whole year, above the
+    look-ahead -- a cut to make, a missing review day -- so they reach Aaron
+    without a Claude session or a build log. Nothing when every check is
+    clean."""
+    items = "".join(f"<li>{esc(w)}</li>" for _, ws in engine.run_all_checks(course) for w in ws)
+    return f'<div class="checks"><b>Needs a decision</b><ul>{items}</ul></div>' if items else ""
+
+
 def render_course(slug, course, start):
     days = [d for d in engine.render(course)[0] if d["date"] >= start]
     weeks = []
@@ -76,7 +85,7 @@ def render_course(slug, course, start):
     ) or '<p class="empty">No school days left in the calendar.</p>'
     return (f'<article class="course" data-course="{esc(slug)}">'
             f'<header><h2>{esc(course["course"])}</h2><p class="summary"></p></header>'
-            f'{body}<button class="more" type="button">Show 10 more days</button></article>')
+            f'{render_checks(course)}{body}<button class="more" type="button">Show 10 more days</button></article>')
 
 
 def build_page(courses, today=None):
@@ -169,6 +178,10 @@ def build_page(courses, today=None):
            background: var(--card); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; }}
   .more[hidden], .day[hidden], .week[hidden] {{ display: none; }}
   .empty {{ color: var(--muted); }}
+  .checks {{ margin-top: 10px; padding: 10px 12px; border-radius: 10px; font-size: .9rem;
+             background: var(--gap-bg); color: var(--gap-text); }}
+  .checks ul {{ margin: 4px 0 0; padding-left: 18px; }}
+  .checks li + li {{ margin-top: 2px; }}
 </style>
 </head>
 <body>

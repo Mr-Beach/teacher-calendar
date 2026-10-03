@@ -87,8 +87,8 @@ session anyway, writing it as a week file and running
    scratch path, **not** `docs/index.html` (that file is a fixed redirect
    stub now; see "Hosting" below, do not overwrite or commit over it):
    `python3 render.py courses/<course>.json > /tmp/preview.html`
-6. Run `engine.run_all_checks(course)` (test placement, unexplained
-   closures, lesson shortfall) and report any warning as an editorial
+6. Run `engine.run_all_checks(course)` (the full list is PLANNING.md's
+   "Sanity checks") and report any warning as an editorial
    question — these are deliberately not auto-fixed (see each check's
    docstring for why).
 7. Report the impact using `engine.diff_impact(course, before_calendar,

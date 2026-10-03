@@ -66,9 +66,7 @@ class WeekError(Exception):
 def _placements_by_date(course):
     """date -> (school_day, sequence index or None, rendered item or None).
     Uses engine's own placement so this can never disagree with render()."""
-    quiz_dates = engine._compute_quiz_dates(
-        course["school_days"], course["sequence"], course.get("quiz_rhythm_start"))
-    placements, _ = engine._place(course["school_days"], course["sequence"], quiz_dates)
+    placements, _ = engine.place(course)
     index_of = {id(item): i for i, item in enumerate(course["sequence"])}
     return {
         day["date"]: (day, index_of.get(id(item)) if item is not None else None, item)
@@ -283,7 +281,11 @@ def main(argv=None):
     except (OSError, json.JSONDecodeError) as e:
         print(f"could not read {week_path}: {e}", file=sys.stderr)
         return 1
-    course_path = ROOT / "courses" / f"{week.get('course', 'math6')}.json"
+    if not isinstance(week, dict) or not week.get("course"):
+        print(f"{week_path.name} has no \"course\" (e.g. \"math6\" or \"math78\") -- "
+              f"nothing was changed", file=sys.stderr)
+        return 1
+    course_path = ROOT / "courses" / f"{week['course']}.json"
     if not course_path.exists():
         print(f"no course file {course_path.relative_to(ROOT)}", file=sys.stderr)
         return 1

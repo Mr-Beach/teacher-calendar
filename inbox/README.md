@@ -52,6 +52,8 @@ Those are the days to ask Aaron about; the lesson code on each line is the
 }
 ```
 
+`course` is required: `math6` or `math78`. A file without it is rejected.
+
 Rules, per day:
 
 - `date` — required, a date in the course calendar.

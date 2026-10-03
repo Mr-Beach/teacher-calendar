@@ -146,27 +146,39 @@ The calendar is student-facing. That governs everything on it:
 
 ## Sanity checks after any edit
 
-- Does the last lesson still land on or before the last instructional day?
-- Do lessons run out before days do, or the reverse? Report the count either way.
-- Did any **quiz** move off a Wednesday? (Should be structurally impossible
-  now that quizzes are computed, not stored — if this ever fires, something's
-  actually broken, not just unbalanced.)
-- Did a review day end up separated from its test?
-- Does `engine.check_test_placement()` report any Monday tests or
-  post-break Mon-Wed tests? (Not auto-fixed — flag for a decision.)
-- Does `engine.check_unexplained_closures()` report anything? Every real
-  closure in this data has a note explaining it — an isolated `No School`
-  (or other non-Instruction) day with no note, sandwiched by Instruction
-  days, has twice turned out to be a data-entry mistake in the source
-  workbook rather than a real day off.
-- Does `engine.check_lesson_shortfall()` report anything? The mirror image
-  of the leftover-lessons count above — instructional days at the end of
-  the year with nothing planned, because the sequence ran out first. Not
-  itself a problem (could just be intentional wrap-up time), but worth
-  knowing about rather than discovering it in June.
+`engine.run_all_checks()` runs every one of these in one call. None are
+auto-fixed — each is an editorial call, surfaced as a warning. They also
+show on beach-math.com/teacher under "Needs a decision", and in the
+weekly-update PR as standing warnings.
 
-`engine.run_all_checks()` runs the full checklist above (everything except
-the two lesson-count arithmetic lines) in one call — run it when setting
-up a new course file, so it starts from a known-checked state instead of
-these surfacing months into the school year. Adding a new check means
-adding it to this list, not separately wiring it into each caller by hand.
+- **Leftover lessons** (`check_leftover_lessons`): does the last lesson still
+  land on or before the last instructional day? Lessons past it silently
+  drop off the published calendar.
+- **Lesson shortfall** (`check_lesson_shortfall`): the mirror image —
+  instructional days at the end of the year with nothing planned, because
+  the sequence ran out first. Not itself a problem (could be intentional
+  wrap-up time), but worth knowing about rather than discovering in June.
+- **Review before test** (`check_review_before_test`): every Test has its
+  review day as the class right before it (closed days in between are
+  fine; a quiz or lesson is not). A review is recognized by "Review" in its
+  title.
+- **Test placement** (`check_test_placement`): no Monday tests, and none in
+  the first Mon-Wed back from a break of a week or more.
+- **Unexplained closures** (`check_unexplained_closures`): every real closure
+  in this data has a note explaining it — an isolated `No School` (or other
+  non-Instruction) day with no note, sandwiched by Instruction days, has
+  twice turned out to be a data-entry mistake in the source workbook rather
+  than a real day off.
+- **Homework due dates** (`check_homework_due_dates`): due dates are fixed
+  while lessons move, so a lost day can leave an assignment due on a day
+  with no school, or on/before the day it's assigned.
+- **Homework links** (`check_homework_links`): every assignment except a
+  Practice Log links to its own page in Schoology.
+
+Did any **quiz** move off a Wednesday? That should be structurally
+impossible — quizzes are computed, not stored — so if it ever happens,
+something's actually broken, not just unbalanced.
+
+Run the checks when setting up a new course file, so it starts from a
+known-checked state. Adding a new check means adding it to
+`run_all_checks()` and this list, not wiring it into each caller by hand.

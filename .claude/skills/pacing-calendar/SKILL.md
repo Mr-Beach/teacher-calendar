@@ -109,8 +109,8 @@ own documents (at-a-Glance guide, sample calendars, SPS school calendar).
   not just for literal pairing.
 - Before anything is committed, show Aaron: `engine.diff_impact()` (first
   date that starts differing, leftover-lesson count before/after) and every
-  `engine.run_all_checks()` warning (test placement, unexplained closures,
-  lesson shortfall). None of these are auto-fixed — surface them as
+  `engine.run_all_checks()` warning (the list is PLANNING.md's "Sanity
+  checks"). None of these are auto-fixed — surface them as
   editorial questions even when "push everything back" was already the
   instruction. A day-budget shift being intentional doesn't make its
   downstream effects (a later test landing on a Monday, a shortfall/leftover
