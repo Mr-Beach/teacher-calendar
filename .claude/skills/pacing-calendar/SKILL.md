@@ -247,15 +247,12 @@ or its output. Ever — true at every version, not a v1-only cut (SPEC.md).
   earlier this session, then reversed later the same session once it came
   with a real due date — a due date is what makes something count as a
   real assignment, not the phrasing used to describe it.
-- **Quiz days can't carry content yet, and the suppression mechanism is
-  fragile.** `QUIZ_ITEM` in `engine.py` is hardcoded with no
-  target/classwork/homework — there's currently no way to store any of
-  those for an auto-placed quiz day. The closest option is the school-day
-  `note`, but a note is also how the Wednesday-quiz rule gets suppressed
-  (any note containing "quiz", case-insensitive) — so a note describing
-  quiz content has to avoid that word, or it silently cancels the quiz.
-  Recorded as a known limitation in SPEC.md's Later section — don't work
-  around it with more note-text tricks.
+- **Quiz days can't carry content yet.** `QUIZ_ITEM` in `engine.py` is
+  hardcoded with no target/classwork/homework — there's currently no way to
+  store any of those for an auto-placed quiz day (SPEC.md's Later section).
+  The old workaround's trap is gone: a note used to cancel a Wednesday quiz
+  if it contained the word "quiz"; now only the day's `quiz` override does
+  (above), so a note can say anything.
 - **"Push everything back" still needs measuring.** Accepting a net
   day-budget spend instead of cutting to offset it doesn't make the
   downstream effects go away — still ran `diff_impact`/`run_all_checks` and
