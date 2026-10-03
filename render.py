@@ -377,6 +377,9 @@ PAGE = """<!doctype html>
   body {
     margin: 0; background: var(--bg); color: var(--ink);
     font: 16px/1.45 'Atkinson Hyperlegible', Verdana, sans-serif;
+    /* No dark box flashing over whatever a phone taps -- the slide is the
+       feedback. Keyboard focus still gets its outline. */
+    -webkit-tap-highlight-color: transparent;
   }
   a { color: var(--ink); }
   button { font: inherit; color: inherit; }
