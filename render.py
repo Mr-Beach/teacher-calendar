@@ -225,7 +225,9 @@ def render_row(day, course):
         title = esc(day_title(day))
     summary = row_summary(day)
     sub = f'<span class="row-sub">{esc(summary)}</span>' if summary else ""
-    main = f'<span class="row-main"><span class="row-title">{title}</span>{sub}</span>'
+    # The same "Due" tag a Whole-year square gets, after the title.
+    due = f" {DUE_TAG}" if day["due"] else ""
+    main = f'<span class="row-main"><span class="row-title">{title}{due}</span>{sub}</span>'
     # A closed day with nothing due has nothing more to show: no button.
     if kind == "closed" and not day["due"]:
         return (f'<div class="day day-closed" data-date="{day["date"]}">'
@@ -535,6 +537,7 @@ PAGE = """<!doctype html>
   .cell-num { font-weight: 700; font-size: 15px; }
   .due-tag, .quiz-tag { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 0 4px; line-height: 16px; }
   .due-tag { background: var(--ink); color: #FFFFFF; }
+  .row-title .due-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; }
   .quiz-tag { background: var(--quiz-bg); color: var(--quiz-ink); }
   .cell-short { margin-top: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cell-code, .cell-title { display: none; }
