@@ -1,0 +1,21 @@
+name: Tests
+
+# Every push to main is a deploy (Cloudflare Workers Builds). The Cloudflare
+# build runs these same tests and refuses to publish if they fail
+# (scripts/build_site.py), so a failure keeps the old site up -- this run is
+# what tells Aaron, by GitHub's failed-run email, that a push didn't go live.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Tests
+        run: python3 -m unittest discover -s tests

@@ -21,7 +21,10 @@ Confirmed 2026-09-23 via direct DNS/header check: `beach-math.com` and
   to `Mr-Beach/teacher-calendar`, scoped to that repo only. Every push to
   `main` triggers: build command `python3 scripts/build_site.py docs`
   (run in Cloudflare's own ephemeral checkout — this never gets committed
-  back to git), then `npx wrangler deploy`. `build_site.py` renders every
+  back to git), then `npx wrangler deploy`. `build_site.py` runs the tests
+  first and builds nothing if any fail, so **a push that doesn't show up on
+  the site most likely failed a test**: the "Tests" run on GitHub (Actions
+  tab, or its failure email) says which. Fix the test failure, push, and it deploys. `build_site.py` renders every
   `courses/<slug>.json` to `docs/<slug>/index.html` (served at
   `beach-math.com/<slug>`) and writes the front page (one button per
   course) to `docs/index.html` for the bare domain, so a new course needs

@@ -15,12 +15,18 @@ restricted at the Cloudflare edge -- see the site-hosting skill.
 Each apps/<name>/ folder (student apps like Tech Quest) is copied as-is to
 <out>/<name>/, served at beach-math.com/<name>. Apps aren't on the front page.
 
+Runs the tests first (tests/): if any fail, nothing is built and the build
+fails, so Cloudflare keeps serving the last good site rather than publishing
+a broken one. The same tests run in GitHub Actions on every push to main
+(.github/workflows/tests.yml), which is where a failure gets emailed.
+
 Runs in Cloudflare's ephemeral checkout; the output is never committed. To
 preview locally, build into a scratch directory, never into docs/ -- the
 committed docs/index.html is the redirect stub for old github.io bookmarks.
 """
 import json
 import shutil
+import subprocess
 import sys
 from html import escape
 from pathlib import Path
@@ -137,5 +143,14 @@ def main(argv):
     return 0
 
 
+def tests_pass():
+    return subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-q"],
+                          cwd=ROOT).returncode == 0
+
+
 if __name__ == "__main__":
+    # Only as a script: the tests themselves call main(), and must not recurse.
+    if not tests_pass():
+        print("error: tests failed -- not building; the live site stays as it was", file=sys.stderr)
+        sys.exit(1)
     sys.exit(main(sys.argv))
