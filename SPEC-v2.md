@@ -33,16 +33,25 @@ Two teachers to start, and they need different things:
 Each phase ships and gets used before the next one starts.
 
 **Phase 1: class calendar with a web editor** (the colleague)
-- She signs in and fills in a week at a time on a form, one row per day:
-  lesson name, class work, homework (text, due date, link), a lesson link,
-  and the day's kind (lesson, quiz, test, project, or no school).
-- "Copy last week's layout" and "next week" buttons. Saving publishes
-  right away, with no build step.
+- She signs in and fills in a week at a time on a form, one row per class
+  day: lesson name, class work, homework (text, due date, link), a lesson
+  link, and the lesson's kind (lesson, test, or project). The form looks
+  dated, but it's a view onto her sequence (see "Data model"): typing into
+  an empty row adds the next lesson. Marking a day "no school" or a quiz
+  isn't a lesson; it's a change to the day, as in v1.
+- "Copy last week's layout" (adds last week's lessons again as the next
+  ones, to edit) and "next week" buttons. Saving publishes right away, with
+  no build step.
 - Her students' page uses the same design as mine (Upcoming plus Whole
   year), with her name and class on it.
 - Her own rules are settings, not code: which weekday quizzes go on (or
-  none), and whether a test needs a review day the class before.
+  none), and whether a test needs a review day the class before. Quizzes
+  are computed from the weekday setting, as in v1, never typed in; she can
+  turn one off or move it on a given day.
 - She can start from a copy of my Math 6 sequence instead of a blank year.
+  The copy keeps the lesson codes, titles, kinds, and I-can targets. It
+  drops my links (they point at my OneDrive and my Schoology), class work,
+  and homework, so nothing on her page depends on my accounts.
 
 **Phase 1b: preschool calendar** (my wife)
 - The same sign-in and the same kind of editor, with different fields: a
@@ -54,8 +63,9 @@ Each phase ships and gets used before the next one starts.
   month view can wait until she asks for it.
 
 **Phase 2: planning buttons, no AI**
-- "Lost this day": every lesson from that day on moves one class day later
-  (re-flow, as in v1). It shows what moves before it applies.
+- "Lost this day": the day stops being a class day for that calendar, and
+  every lesson from it on moves one class day later (re-flow, as in v1).
+  Pinned entries stay put. It shows what moves before it applies.
 - "Add a day" and "remove a day" on a lesson.
 - v1's checks as gentle notices in the editor: a test on a Monday, a test
   with no review day, homework due on a day off.
@@ -80,13 +90,33 @@ Each phase ships and gets used before the next one starts.
   `preschool`. The type decides which fields the editor shows and which
   page families see. A teacher can have more than one calendar (my Math 6
   and Math 7/8).
-- **Day entry**: one per calendar per date. Phase 1 stores entries by date,
-  since that's how a teacher fills in a week. Phase 2's re-flow is an
-  operation on those dated entries: it moves them forward along the
-  school's class days.
+- **Class days** per calendar: the school's calendar plus this calendar's
+  own changes (an assembly that only hits one class period, a lost day, a quiz
+  turned off or moved). This is v1's `school_days`.
+- **A `class` calendar stores a sequence, not dates.** It keeps v1's model:
+  an ordered list of lessons, each placed on the next class day when the
+  page is built. That's what makes re-flow free. Losing a day is one change
+  to the class days, and every lesson after it moves on its own, with
+  nothing to rewrite. Two things don't flow:
+  - **Pinned entries.** A lesson can be pinned to a date (a common test, a
+    project due date, a field trip). It stays put, and the lessons around
+    it flow past it. Pinning is opt-in. A test flows by default, as in v1.
+  - **Homework due dates** are fixed dates, as in v1. A lost day can leave
+    something due on a day off, which is a notice, not an auto-fix.
+  Quizzes aren't stored at all; they're computed from the quiz weekday
+  setting, as in v1.
+- **A `preschool` calendar stores dated entries.** The daily log records
+  what already happened, so nothing re-flows. Units are date ranges and
+  events are dates.
 - **Settings** per calendar: quiz weekday or none, review day before a
-  test, and the kinds of day it uses. For `preschool`, the labels it uses
-  (e.g. "Circle", "Practical life").
+  test, and the kinds of lesson it uses. For `preschool`, the labels it
+  uses (e.g. "Circle", "Practical life").
+
+The editor and the family page both render a class calendar the same way
+v1 does: sequence plus class days in, dated days out. Porting `engine.py`'s
+`render()` to the Worker is the core of Phase 1, not of Phase 2. Phase 2's
+buttons are then small edits to the sequence or the class days, the same
+ones `set_day`, `insert_lesson`, and `cut_lesson` make today.
 
 ## Hosting and sign-in
 
@@ -97,11 +127,22 @@ Each phase ships and gets used before the next one starts.
   beach-math.com/teacher), with each teacher's Google account, not a
   district Outlook account. It's free for up to 50 people. Only I can add a
   teacher.
+- **Access only decides who reaches the editor, not which calendars they
+  can change.** On every editor request and every save, the Worker checks
+  the Access sign-in token (`Cf-Access-Jwt-Assertion`: its signature and
+  audience), takes the email from it, and checks that the email owns the
+  calendar being read or written. It never trusts an email or calendar ID
+  sent by the page. Admin rights are a fixed email checked the same way.
 - Family pages stay public and read-only, with no login, as in v1.
 - **My calendars stay on the current git workflow** until the colleague's
   trial has run a few weeks. Then my courses move to the new system, and
   the git workflow and `render.py` retire. My students' pages are never
   part of the experiment.
+- **During the trial, our shared school calendar exists twice**: in
+  `courses/*.json` for me and in D1 for her. Her school record is loaded
+  once from my `school_days`. Until my courses move, a school-wide change
+  (a snow day, a new early dismissal) gets entered in both, and I'm the one
+  who does it. That ends when my courses move to D1.
 
 ## Addresses
 
@@ -143,10 +184,9 @@ the old addresses there.
 2. **My wife's school calendar.** Waiting on her: I need her school's
    calendar, and to hear whether she wants a week or month view or just
    the daily log and current unit.
-3. **Re-flow for dated entries.** v1 stores lessons as a sequence without
-   dates, so they re-flow naturally. v2 stores entries by date. Phase 2 has
-   to define exactly which entries move when a day is lost: everything
-   after it, or only lessons (not projects and tests with fixed dates)?
+3. **Phase 3's API key and cost.** The "describe the change" box calls a
+   model from the Worker with my key. That needs a per-teacher daily limit
+   and a monthly spending cap before anyone but me can reach it.
 4. **The teacher look-ahead** (beach-math.com/teacher): does it become a
    per-teacher page in the editor in Phase 1, or wait?
 

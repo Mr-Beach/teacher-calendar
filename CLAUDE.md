@@ -131,11 +131,15 @@ redirect stub for old github.io bookmarks — never render into it,
 overwrite it, or commit over it. Setup details, the reason it isn't
 GitHub Pages, and rebuild steps: the `site-hosting` skill.
 
-## Hard constraints (from SPEC.md — true at every version, not just v1)
+## Hard constraints
 
-- No student names, grades, or student-identifying data. Ever.
-- Single teacher, single user (Aaron). One file per course; a second course
-  is another `courses/<slug>.json`, not a schema change.
+- No student names, grades, or student-identifying data. Ever. (True at
+  every version.)
+- This repo's git workflow is single teacher, single user (Aaron). One
+  file per course; a second course is another `courses/<slug>.json`, not a
+  schema change. `SPEC-v2.md` (a draft, not yet being built) proposes a
+  separate multi-teacher system on D1. Aaron's courses stay here until he
+  says they move.
 
 ## Current defaults (not rules — Aaron can change these)
 
