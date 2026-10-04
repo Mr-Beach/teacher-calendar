@@ -1851,17 +1851,6 @@
     },
     {
       "topic": "6",
-      "lesson_code": "6.5",
-      "district_title": "Connecting Equations and Inequalities",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "6",
       "lesson_code": "6.6",
       "district_title": "Solve Inequalities Using Addition or Subtraction",
       "kind": "Lesson",
@@ -1887,10 +1876,10 @@
       "lesson_code": "6.7",
       "district_title": "Solve Inequalities Using Multiplication or Division",
       "kind": "Lesson",
-      "homework": null,
-      "link": null,
       "target": null,
       "classwork": null,
+      "homework": null,
+      "link": null,
       "extra_materials": null
     },
     {
@@ -1908,17 +1897,6 @@
       "topic": "6",
       "lesson_code": "6.8 & 6.9",
       "district_title": "Solve Two-Step Inequalities & Solve Multi-Step Inequalities",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "6",
-      "lesson_code": "6.9",
-      "district_title": "Solve Multi-Step Inequalities",
       "kind": "Lesson",
       "homework": null,
       "link": null,
@@ -2005,17 +1983,6 @@
     },
     {
       "topic": "7",
-      "lesson_code": "7.4",
-      "district_title": "Solve Multistep Equations",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "7",
       "lesson_code": "7.5",
       "district_title": "Equations with No Solutions or Infinitely Many Solutions",
       "kind": "Lesson",
@@ -2039,6 +2006,17 @@
     {
       "topic": "7",
       "lesson_code": null,
+      "district_title": "Topic 7 Part 1 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
       "district_title": "Topic 7 Part 1 Test",
       "kind": "Test",
       "homework": null,
@@ -2051,17 +2029,6 @@
       "topic": "3",
       "lesson_code": "3.1",
       "district_title": "Connect Ratios, Rates, and Unit Rates",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "3",
-      "lesson_code": "3.2",
-      "district_title": "Determine Unit Rates with Ratios of Fractions",
       "kind": "Lesson",
       "homework": null,
       "link": null,
@@ -2177,6 +2144,17 @@
       "link": null,
       "target": null,
       "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": "7.7",
+      "district_title": "Compare Proportional Relationships",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
       "extra_materials": null
     },
     {
@@ -2481,10 +2459,10 @@
       "lesson_code": "13.1",
       "district_title": "Find Surface Area of Three-Dimensional Figures",
       "kind": "Lesson",
-      "homework": null,
-      "link": null,
       "target": null,
       "classwork": null,
+      "homework": null,
+      "link": null,
       "extra_materials": null
     },
     {
@@ -2633,6 +2611,17 @@
     {
       "topic": "8",
       "lesson_code": null,
+      "district_title": "Topic 8 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
       "district_title": "Topic 8 Test",
       "kind": "Test",
       "homework": null,
@@ -2643,8 +2632,8 @@
     },
     {
       "topic": "9",
-      "lesson_code": "9.1",
-      "district_title": "Understanding Probability",
+      "lesson_code": "9.1 & 9.2",
+      "district_title": "Understanding Probability & Understand Theoretical Probability",
       "kind": "Lesson",
       "homework": null,
       "link": null,
@@ -2654,8 +2643,8 @@
     },
     {
       "topic": "9",
-      "lesson_code": "9.2",
-      "district_title": "Understand Theoretical Probability",
+      "lesson_code": "9.3 & 9.4",
+      "district_title": "Understand Experimental Probability & Use Probability Models",
       "kind": "Lesson",
       "homework": null,
       "link": null,
@@ -2665,41 +2654,8 @@
     },
     {
       "topic": "9",
-      "lesson_code": "9.3",
-      "district_title": "Understand Experimental Probability",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "9",
-      "lesson_code": "9.4",
-      "district_title": "Use Probability Models",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "9",
-      "lesson_code": "9.6",
-      "district_title": "Recognize Compound Events",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "9",
-      "lesson_code": "9.7",
-      "district_title": "Determine Outcomes",
+      "lesson_code": "9.6 & 9.7",
+      "district_title": "Recognize Compound Events & Determine Outcomes",
       "kind": "Lesson",
       "homework": null,
       "link": null,
@@ -2727,6 +2683,17 @@
       "link": null,
       "target": null,
       "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "9",
+      "lesson_code": null,
+      "district_title": "Topic 9 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
       "extra_materials": null
     },
     {
@@ -2787,6 +2754,17 @@
     {
       "topic": "M8-5",
       "lesson_code": null,
+      "district_title": "Math 8 Topic 5 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "M8-5",
+      "lesson_code": null,
       "district_title": "Math 8 Topic 5 Test",
       "kind": "Test",
       "homework": null,
@@ -2830,30 +2808,8 @@
     },
     {
       "topic": "2",
-      "lesson_code": "2.3",
-      "district_title": "Compare and Order Real Numbers",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "2",
-      "lesson_code": "2.4",
-      "district_title": "Evaluate Square Roots and Cube Roots",
-      "kind": "Lesson",
-      "homework": null,
-      "link": null,
-      "target": null,
-      "classwork": null,
-      "extra_materials": null
-    },
-    {
-      "topic": "2",
-      "lesson_code": "2.5",
-      "district_title": "Solve Equations Using Square Roots and Cube Roots",
+      "lesson_code": "2.4 & 2.5",
+      "district_title": "Evaluate Square Roots and Cube Roots & Solve Equations Using Square Roots and Cube Roots",
       "kind": "Lesson",
       "homework": null,
       "link": null,
@@ -2918,6 +2874,17 @@
     },
     {
       "topic": "2",
+      "lesson_code": "2.10",
+      "district_title": "Operations with Numbers in Scientific Notation",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
       "lesson_code": null,
       "district_title": "Topic 2 Review",
       "kind": "Lesson",
@@ -2951,13 +2918,24 @@
     },
     {
       "topic": "12",
-      "lesson_code": "12.3",
-      "district_title": "Understand the Converse of the Pythagorean Theorem",
+      "lesson_code": "12.3 & 12.4",
+      "district_title": "Understand the Converse of the Pythagorean Theorem & Apply the Pythagorean Theorem",
       "kind": "Lesson",
       "homework": null,
       "link": null,
       "target": null,
       "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "12",
+      "lesson_code": "12.5",
+      "district_title": "Find Distance in the Coordinate Plane",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
       "extra_materials": null
     },
     {
@@ -3035,6 +3013,39 @@
       "link": null,
       "target": null,
       "classwork": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.9",
+      "district_title": "Angles, Lines, and Transversals",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.10",
+      "district_title": "Interior and Exterior Angles of Triangles",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "11",
+      "lesson_code": "11.11",
+      "district_title": "Angle-Angle Triangle Similarity",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
       "extra_materials": null
     },
     {
