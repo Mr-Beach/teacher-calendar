@@ -15,7 +15,9 @@ The design rule: **build everything the rules can do as ordinary software**
 (forms, buttons, the re-flow, the checks). An LLM comes in only where rules
 can't reach, such as a change described in plain words, and then it's built
 into the editor so seamlessly that nobody has to think about whether
-they're using it. No chat window, no separate account, nothing to set up.
+they're using it. No open-ended chatbot, no separate account, nothing to
+set up. A short back-and-forth about a proposed edit is fine; it always
+ends in an edit the teacher accepts or dismisses.
 
 Two teachers to start, and they need different things:
 
@@ -24,24 +26,44 @@ Two teachers to start, and they need different things:
    dates, links, quizzes, tests, days off. She sets up a week or two at a
    time.
 2. **My wife, a preschool Montessori teacher.** The page is for parents
-   only, and it mostly looks back: what the class did today (circle time,
-   activities, songs, visitors), plus the unit for the month or season, and
-   events coming up. There's no homework, no quizzes, and no tests.
+   only: what the class is doing this week and what it did (circle time,
+   activities, songs, books, visitors), the unit for the month or season,
+   and events coming up. There's no homework, no quizzes, and no tests.
+   She plans weekly today, in a table she fills in for the week ahead.
+
+## The editor: a week grid (both calendar types)
+
+Both teachers plan the same way, a week or two at a time, in a table. So
+the editor is one grid for both, and only the rows differ:
+
+- **Columns are class days; rows are fields.** A class calendar's rows are
+  lesson, class work, homework, and link. A preschool calendar's rows are
+  hers (e.g. circle, practical life, song, book), set from the table she
+  already uses.
+- **How far ahead is a choice**: show and plan 1, 2, or 4 weeks at once.
+- **Click a cell to fill it.** Type, or pick from a list: what that row
+  has held before, the teacher's own saved lists (her songs, her books),
+  and, for a class calendar, the next lesson in the sequence.
+- **Fill a whole week at once**, with no AI: copy last week, copy a saved
+  template week, or paste a table straight from Word or Google Sheets (the
+  pasted columns map onto the rows). "Same week last year" joins these
+  once there is a last year.
+- **AI fills are Phase 3** (below), and land the same way: as highlighted,
+  unsaved cells she keeps or clears.
 
 ## Phases
 
 Each phase ships and gets used before the next one starts.
 
 **Phase 1: class calendar with a web editor** (the colleague)
-- She signs in and fills in a week at a time on a form, one row per class
-  day: lesson name, class work, homework (text, due date, link), a lesson
-  link, and the lesson's kind (lesson, test, or project). The form looks
-  dated, but it's a view onto her sequence (see "Data model"): typing into
-  an empty row adds the next lesson. Marking a day "no school" or a quiz
-  isn't a lesson; it's a change to the day, as in v1.
-- "Copy last week's layout" (adds last week's lessons again as the next
-  ones, to edit) and "next week" buttons. Saving publishes right away, with
-  no build step.
+- She signs in and plans in the week grid: lesson name, class work,
+  homework (text, due date, link), a lesson link, and the lesson's kind
+  (lesson, test, or project). The grid looks dated, but it's a view onto
+  her sequence (see "Data model"): filling an empty day adds the next
+  lesson, and copying last week adds last week's lessons again as the next
+  ones. Marking a day "no school" or a quiz isn't a lesson; it's a change
+  to the day, as in v1.
+- Saving publishes right away, with no build step.
 - Her students' page uses the same design as mine (Upcoming plus Whole
   year), with her name and class on it.
 - Her own rules are settings, not code: which weekday quizzes go on (or
@@ -54,13 +76,14 @@ Each phase ships and gets used before the next one starts.
   and homework, so nothing on her page depends on my accounts.
 
 **Phase 1b: preschool calendar** (my wife)
-- The same sign-in and the same kind of editor, with different fields: a
-  short "what we did today" entry (circle, activities, a song or book), the
-  current unit (a month or season, with a short description), and events
-  (field trips, picture day, closures).
-- A different parent page: the current unit at the top, then a recent-days
-  log that reads like a short daily note home, then upcoming events. A
-  month view can wait until she asks for it.
+- The same sign-in and the same week grid, with her table's rows. She
+  plans a week or more ahead, and after a day she can change a cell to
+  what actually happened. Alongside the grid: the current unit (a month or
+  season, with a short description) and events (field trips, picture day,
+  closures).
+- A different parent page: the current unit at the top, then this week's
+  plan, then a recent-days log that reads like a short daily note home,
+  then upcoming events. A month view can wait until she asks for it.
 
 **Phase 2: planning buttons, no AI**
 - "Lost this day": the day stops being a class day for that calendar, and
@@ -70,14 +93,19 @@ Each phase ships and gets used before the next one starts.
 - v1's checks as gentle notices in the editor: a test on a Monday, a test
   with no review day, homework due on a day off.
 
-**Phase 3: describe a change** (the LLM's one job)
-- One box in the editor, "Describe the change", for requests the buttons
+**Phase 3: AI where the rules can't reach**
+- **Describe a change.** One box in the editor for requests the buttons
   don't cover ("we lost Tuesday and I want to cut the second review day").
-  It proposes an edit as a before and after, and the teacher accepts or
-  dismisses it. Nothing is saved without that click.
-- It's one more box in the editor. The teacher never picks a model, sees
-  a chat, or sets anything up, and every result is the same kind of edit
-  the buttons make, previewed the same way.
+  It proposes an edit as a before and after. The teacher can reply to
+  adjust it ("keep the review day, cut the opener instead"), then accepts
+  or dismisses. Nothing is saved without that click.
+- **Fill from a source.** Upload a photo or PDF of a paper plan, or a unit
+  plan document, and it fills the grid's cells from it.
+- **Draft a week.** "Fill next week for the apple unit" drafts cells from
+  the unit, her saved lists, and past weeks.
+- Every result is the same kind of edit the buttons make: highlighted,
+  unsaved cells, kept or cleared one at a time or all at once. The teacher
+  never picks a model or sets anything up.
 
 ## Data model
 
@@ -105,9 +133,13 @@ Each phase ships and gets used before the next one starts.
     something due on a day off, which is a notice, not an auto-fix.
   Quizzes aren't stored at all; they're computed from the quiz weekday
   setting, as in v1.
-- **A `preschool` calendar stores dated entries.** The daily log records
-  what already happened, so nothing re-flows. Units are date ranges and
+- **A `preschool` calendar stores dated entries**, one per day per row,
+  planned ahead and edited after the day to what happened. Nothing
+  re-flows: a lost day's plan is moved or dropped by hand ("move this
+  day's plan to Monday" is a Phase 2 button). Units are date ranges and
   events are dates.
+- **Saved lists** per calendar and row: the songs, books, or activities a
+  teacher picks from when filling a cell.
 - **Settings** per calendar: quiz weekday or none, review day before a
   test, and the kinds of lesson it uses. For `preschool`, the labels it
   uses (e.g. "Circle", "Practical life").
@@ -161,6 +193,10 @@ the old addresses there.
   that identify a child.** "We celebrated a birthday today" is fine; a
   child's name in the entry is not. The editor shows this rule next to the
   entry box.
+- **Uploads for an AI fill go to the model provider.** The upload screen
+  says so and repeats the no-names rule, since a teacher's own planning
+  table can carry children's names (who has a job, who's absent). Uploads
+  are read once and not kept.
 - Each teacher sees and edits only their own calendars. I can see all of
   them as the admin, and every teacher is told that.
 - No grades, attendance, messaging with families, comments, or photo
@@ -181,9 +217,9 @@ the old addresses there.
    entered is visible right away. If my colleague finds herself holding
    back entries because students would see a rough plan, add a "visible
    from" date per week then, with her actual use as the guide.
-2. **My wife's school calendar.** Waiting on her: I need her school's
-   calendar, and to hear whether she wants a week or month view or just
-   the daily log and current unit.
+2. **My wife's school calendar and table.** Waiting on her: I need her
+   school's calendar and a copy of the weekly table she uses now, since
+   its rows become her grid's rows.
 3. **Phase 3's API key and cost.** The "describe the change" box calls a
    model from the Worker with my key. That needs a per-teacher daily limit
    and a monthly spending cap before anyone but me can reach it.
