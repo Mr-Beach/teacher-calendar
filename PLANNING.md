@@ -159,13 +159,15 @@ The calendar is student-facing. That governs everything on it:
   today" / "due tomorrow" called out. A due date is a fixed date — it's how much time students have,
   not tied to content, so a lost day never moves it. Homework is never
   assigned on a quiz day, but can be due on one.
-- **Only the current unit shows** (`"show_through_unit_test": true` in
-  each course file): every day through the next unit test, and no lesson
-  after it, with one line saying the next unit's plan shows up after that
-  test. The day after the test, the next unit appears on its own. Days off
-  and breaks stay visible in Whole year. The near week is set, the week
-  after can still change, and the rest of the unit can change before the
-  test.
+- **The current unit is in focus** (`"focus_current_unit": true` in each
+  course file). The unit runs from the day after the last unit test
+  through the next one. Its days show everything: homework, due dates,
+  Due tags, links, details. Class days outside it, past units and future
+  ones, show their lesson name, quiz, or test, faded, and nothing else: no
+  homework, due dates, or links, and they don't open. One line after the
+  test's week says so. The day after the test, the next unit comes into
+  focus on its own. The near week is set, the week after can still
+  change, and the rest of the unit can change before the test.
 - **Class work is off** for both courses (`"show_classwork": false` in
   each course file). Any stored class work stays in the file but isn't
   shown, flagged as missing, or tracked as a change; turning the setting

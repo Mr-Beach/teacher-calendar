@@ -368,7 +368,7 @@ def build_page(course, calendar):
             f"const HOMEWORK = {to_json(homework_data(calendar))};\n"
             f"const DAILY_MATERIALS = {to_json(course.get('daily_materials') or [])};\n"
             f"const CHANGES = {to_json(course.get('changes') or [])};\n"
-            f"const THROUGH_UNIT_TEST = {to_json(bool(course.get('show_through_unit_test')))};\n")
+            f"const FOCUS_UNIT = {to_json(bool(course.get('focus_current_unit')))};\n")
     # Placeholders filled one at a time: the page itself is a plain string,
     # so its CSS and JS braces need no escaping.
     page = PAGE
@@ -557,12 +557,15 @@ PAGE = """<!doctype html>
   .dow { font-size: 13px; font-weight: 700; color: var(--muted); padding-left: 4px; }
   .cell { height: 64px; border-radius: 10px; padding: 5px 6px; border: 0; background: var(--closed-bg); display: flex; flex-direction: column; gap: 1px; text-align: left; font-size: 13px; line-height: 1.25; overflow: hidden; cursor: pointer; min-width: 0; }
   .cell-none { background: none; cursor: default; }
-  /* After the current unit's test (THROUGH_UNIT_TEST): just the faded date. */
-  .cell.cell-later { background: none; box-shadow: none; cursor: default; }
-  .cell-later .cell-num { color: var(--muted); font-weight: 400; }
-  .cell-later .cell-short, .cell-later .cell-code, .cell-later .cell-title,
-  .cell-later .due-tag, .cell-later .quiz-tag, .cell-later .chg-dot { display: none; }
-  .horizon-note { margin: 4px 0 18px; padding: 12px 14px; border: 2px dashed var(--dash); border-radius: 14px; color: var(--muted); font-weight: 700; }
+  /* Outside the current unit (FOCUS_UNIT): lesson names only, drawing no
+     attention -- no Due tags, no details. */
+  .cell.cell-outside { opacity: .45; }
+  .cell-outside .due-tag { display: none; }
+  .day-outside .row { cursor: default; }
+  .day-outside .row-title { font-weight: 400; color: var(--muted); }
+  .day-outside .row-sub, .day-outside .row-title .due-tag, .day-outside .chev { display: none; }
+  .day-outside .tag { opacity: .6; }
+  .unit-note { margin: 4px 0 18px; padding: 12px 14px; border: 2px dashed var(--dash); border-radius: 14px; color: var(--muted); font-weight: 700; }
   .cell-top { display: flex; align-items: center; gap: 4px; }
   .cell-num { font-weight: 700; font-size: 15px; }
   .due-tag, .quiz-tag { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 0 4px; line-height: 16px; }
@@ -715,15 +718,17 @@ PAGE = """<!doctype html>
   const NEXT_MONDAY = addDays(THIS_MONDAY, 7);
   const isClassDay = (d) => d.type === 'Instruction';
   const nextClass = (after) => DAYS.find((d) => d.date > after && isClassDay(d)) || null;
-  // A course can show just the current unit (its "show_through_unit_test"):
-  // every day through the next test, and no lesson after it until the test
-  // is past -- then the next unit appears on its own, no rebuild needed.
-  // Days off stay visible in Whole year; they're school facts, not plans.
-  const unitTest = THROUGH_UNIT_TEST ? DAYS.find((d) => d.date >= TODAY && d.kind === 'Test') : null;
-  const HORIZON = unitTest ? unitTest.date : null;
-  const beyond = (date) => HORIZON !== null && date > HORIZON;
-  const horizonText = unitTest
-    ? 'The plan for the next unit shows up after the ' + unitTest.title + ' on ' + shortDate(HORIZON) + '.' : '';
+  // A course can put the current unit in focus (its "focus_current_unit"):
+  // the unit runs from the day after the last test through the next one.
+  // Its days get everything; class days outside it, past or future, show
+  // their lesson name, quiz, or test and nothing else -- no homework, due
+  // dates, or links. The unit moves on by itself the day after its test.
+  const unitTest = FOCUS_UNIT ? DAYS.find((d) => d.date >= TODAY && d.kind === 'Test') : null;
+  const lastTest = FOCUS_UNIT ? DAYS.filter((d) => d.date < TODAY && d.kind === 'Test').pop() : null;
+  const outside = (date) => FOCUS_UNIT && isClassDay(BY_DATE[date] || {})
+    && ((lastTest && date <= lastTest.date) || (unitTest && date > unitTest.date));
+  const laterText = unitTest
+    ? 'After the ' + unitTest.title + ': lesson names only. Homework, due dates, and links are posted when each unit starts.' : '';
 
   // ---- The view switch (kept in the address as #year, so a refresh stays put) ----
   function showView(name) {
@@ -750,11 +755,15 @@ PAGE = """<!doctype html>
   // the year), or opened earlier weeks and moved away from it -- not just
   // because this week starts below the fold, as it does on a phone, under
   // the today card.
-  if (HORIZON) {
-    document.querySelectorAll('.day').forEach((row) => { if (beyond(row.dataset.date)) row.hidden = true; });
-    weeks.filter((w) => beyond(w.dataset.start)).forEach((w) => { w.hidden = true; });
-    const lastShown = weeks.filter((w) => !beyond(w.dataset.start)).pop();
-    if (lastShown) lastShown.after(el('p', 'horizon-note', horizonText));
+  if (FOCUS_UNIT) {
+    document.querySelectorAll('.day').forEach((row) => {
+      if (!outside(row.dataset.date)) return;
+      row.classList.add('day-outside');
+      const btn = row.querySelector('.row[aria-controls]');
+      if (btn) btn.disabled = true;  // nothing to open: no details outside the unit
+    });
+    const testWeek = unitTest && weeks.find((w) => w.dataset.start <= unitTest.date && unitTest.date <= w.dataset.end);
+    if (testWeek) testWeek.after(el('p', 'unit-note', laterText));
   }
   const past = weeks.filter((w) => w.dataset.end < TODAY);
   const thisWeek = weeks.find((w) => w.dataset.end >= TODAY) || weeks[weeks.length - 1];
@@ -906,7 +915,7 @@ PAGE = """<!doctype html>
       item.appendChild(el('span', 'eyebrow', shortDate(c.logged)));
       item.appendChild(el('p', null, c.summary));
       if (c.reason) item.appendChild(el('p', 'muted', 'Why: ' + c.reason));
-      const dates = [...new Set(c.days.map((d) => d.date))].filter((d) => d >= TODAY && !beyond(d));
+      const dates = [...new Set(c.days.map((d) => d.date))].filter((d) => d >= TODAY);
       if (dates.length) {
         const links = el('div', 'chg-days');
         // The first few days as links; a re-flow can touch a dozen test
@@ -1011,7 +1020,7 @@ PAGE = """<!doctype html>
   }
   function renderComing() {
     const tiles = document.getElementById('coming-tiles');
-    const quiz = DAYS.find((d) => d.date > TODAY && !beyond(d.date) && (d.kind === 'Quiz' || d.paired));
+    const quiz = DAYS.find((d) => d.date > TODAY && !outside(d.date) && (d.kind === 'Quiz' || d.paired));
     const test = DAYS.find((d) => d.date > TODAY && d.kind === 'Test');
     [[quiz, 'quiz', 'Quiz'], [test, 'test', test && test.title]].forEach(([d, kind, label]) => {
       if (!d) return;
@@ -1142,7 +1151,7 @@ PAGE = """<!doctype html>
   function showKeyDates() {
     document.querySelectorAll('.cell-selected').forEach((c) => c.classList.remove('cell-selected'));
     const keys = months.filter((m) => !m.hidden).map((m) => m.dataset.month);
-    const inView = DAYS.filter((d) => keys.includes(d.date.slice(0, 7)) && !(beyond(d.date) && isClassDay(d)));
+    const inView = DAYS.filter((d) => keys.includes(d.date.slice(0, 7)));
     const rows = [];
     const quizzes = inView.filter((d) => d.kind === 'Quiz' || d.paired);
     if (quizzes.length) {
@@ -1182,8 +1191,9 @@ PAGE = """<!doctype html>
     back.type = 'button';
     back.addEventListener('click', () => { showKeyDates(); cell.focus(); });
     head.appendChild(back);
-    if (beyond(date) && isClassDay(d)) {
-      swapDetail(head, el('h3', null, 'Not posted yet'), el('p', 'muted', horizonText));
+    if (outside(date)) {
+      const note = date < TODAY ? 'This unit is finished.' : 'Homework, due dates, and links are posted when this unit starts.';
+      swapDetail(head, el('h3', null, d.kind === 'Quiz' ? 'Quiz' : d.title), el('p', 'muted', note));
       alignDetail();
       return;
     }
@@ -1194,9 +1204,9 @@ PAGE = """<!doctype html>
   }
   document.querySelectorAll('.cell[data-date]').forEach((c) => {
     if (c.dataset.date === TODAY) c.classList.add('cell-today');
-    if (beyond(c.dataset.date) && !c.classList.contains('cell-closed')) {
-      c.classList.add('cell-later');
-      c.setAttribute('aria-label', longDate(c.dataset.date) + ': not posted yet');
+    if (outside(c.dataset.date)) {
+      c.classList.add('cell-outside');
+      c.setAttribute('aria-label', longDate(c.dataset.date) + ': ' + BY_DATE[c.dataset.date].title);
     }
     c.addEventListener('click', () => showDay(c));
   });
