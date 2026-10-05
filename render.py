@@ -790,15 +790,21 @@ PAGE = """<!doctype html>
   // each day it changed is tagged until then -- or until that day is past.
   const CHANGE_DAYS = 7;
   const CHANGE_LINKS = 5;
+  // A tag says what happened to the day, not just that something did.
+  const CHANGE_LABELS = { moved: 'Moved', 'due moved': 'Due date moved', dropped: 'HW dropped', changed: 'Changed' };
   const recentChanges = CHANGES.filter((c) => c.logged <= TODAY && c.logged > addDays(TODAY, -CHANGE_DAYS))
     .sort((a, b) => (a.logged < b.logged ? 1 : a.logged > b.logged ? -1 : 0));
   function changeLine(c, d) {
     const p = el('p', 'pnl-changed');
     p.appendChild(el('b', null, 'Changed ' + shortDate(c.logged) + '. '));
-    const label = d.what === 'class work' ? 'Class work was: ' : 'Was: ';
     const end = (t) => (/[.!?]$/.test(t) ? t : t + '.');
-    let text = end(label + d.was);
-    if (d.what === 'homework') text += d.now ? ' ' + end('Now: ' + d.now) : ' No longer assigned.';
+    let text;
+    if (d.kind === 'moved') text = end(d.was + ' moved to ' + longDate(d.moved_to));
+    else if (d.kind === 'dropped') text = end(d.was) + ' No longer assigned.';
+    else {
+      text = end((d.what === 'class work' ? 'Class work was: ' : 'Was: ') + d.was);
+      if (d.what === 'homework' && d.now) text += ' ' + end('Now: ' + d.now);
+    }
     if (c.reason) text += ' ' + end('Why: ' + c.reason);
     p.appendChild(document.createTextNode(' ' + text));
     return p;
@@ -809,7 +815,10 @@ PAGE = """<!doctype html>
       const row = document.querySelector('.day[data-date="' + d.date + '"]');
       if (row) {
         const title = row.querySelector('.row-title');
-        if (!title.querySelector('.chg-tag')) title.appendChild(el('span', 'chg-tag', 'Changed'));
+        const label = CHANGE_LABELS[d.kind] || 'Changed';
+        if (!Array.from(title.querySelectorAll('.chg-tag')).some((t) => t.textContent === label)) {
+          title.appendChild(el('span', 'chg-tag', label));
+        }
         const panel = document.getElementById('p-' + d.date);
         if (panel) panel.insertBefore(changeLine(c, d), panel.firstChild);
         else row.querySelector('.row-main').appendChild(el('span', 'row-sub', changeLine(c, d).textContent));

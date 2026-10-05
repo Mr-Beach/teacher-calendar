@@ -172,8 +172,11 @@ page says what changed instead of leaving them to spot it. Every confirmed
 edit is logged with `engine.record_change` in the course file's `changes`
 list, and the page builds two things from that log:
 
-- **A "Changed" tag** on each changed day (a dot on its Whole-year square),
-  with the old version at the top of the day's details. The tag shows for 7
+- **A tag on each changed day** that says what happened: "Moved" (its
+  lesson or test is on another day now, and the details say which),
+  "Due date moved", "HW dropped", or "Changed" for anything else. It's a
+  dot on the day's Whole-year square, and the old version sits at the top
+  of the day's details. The tag shows for 7
   days after the change, or until the day itself is past.
 - **Recent changes** on Upcoming: one line per edit, in my words, with the
   reason if I gave one, listed for 7 days.

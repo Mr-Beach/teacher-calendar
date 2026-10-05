@@ -521,6 +521,18 @@ def _is_assessment(day):
     return day["kind"] in ("Quiz", "Test", "Project") or bool(day.get("quiz_paired"))
 
 
+def _moved_to(before_day, after_calendar, date_, today):
+    """Where the lesson that was on `date_` is now, if it's still on the
+    calendar on another day from today on -- the first such day, so a
+    two-day lesson points at its new first day. None for a quiz (every quiz
+    looks alike) or a closed day."""
+    if before_day["type"] != "Instruction" or before_day["kind"] == "Quiz":
+        return None
+    title = before_day["lesson_text"]
+    return next((d["date"] for d in after_calendar
+                 if d["date"] >= today and d["date"] != date_ and d["lesson_text"] == title), None)
+
+
 def _due_changes(before_calendar, after_calendar, today, small_fix=False):
     """Assignments whose due date moved, that were reworded, or that were
     dropped, as change details on the date families were told (or the new
@@ -557,7 +569,7 @@ def _due_changes(before_calendar, after_calendar, today, small_fix=False):
             "date": was_due if was_due >= today else now[1], "what": "homework",
             "was": f"{text} (due {_md(was_due)})",
             "now": f"{now[0]} (due {_md(now[1])})" if now else None,
-            "reworded": bool(now) and now[1] == was_due,
+            "kind": "dropped" if now is None else "changed" if now[1] == was_due else "due moved",
         })
     return changes
 
@@ -579,6 +591,11 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
     typo-level fixes: it skips changed class-work text and reworded
     assignments. It never skips a changed title or a moved or dropped
     assignment.
+
+    Each tagged day's `kind` says what happened, for the page's tag:
+    "moved" (its lesson or test is now on `moved_to`), "due moved" (an
+    assignment's due date), "dropped" (an assignment is gone), or
+    "changed" (anything else).
 
     Which changed days get their own tag (`days`): any within the next
     CHANGE_TAG_CLASS_DAYS class days, plus quiz, test, and project days and
@@ -609,14 +626,17 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
             continue
         any_change = True
         if date_ <= window_end or _is_assessment(before_day) or _is_assessment(after_day):
-            tagged.append({"date": date_, "what": what, "was": was, "now": now})
+            detail = {"date": date_, "what": what, "was": was, "now": now, "kind": "changed"}
+            moved_to = what == "title" and _moved_to(before_day, after_calendar, date_, today)
+            if moved_to:
+                detail.update(kind="moved", moved_to=moved_to)
+            tagged.append(detail)
     dues = _due_changes(before_calendar, after_calendar, today, small_fix)
     if not any_change and not dues:
         return None
     # A moved or dropped due date is tagged wherever it is; a reworded
     # assignment only inside the window, like class work.
-    tagged += [{k: v for k, v in d.items() if k != "reworded"} for d in dues
-               if not d["reworded"] or d["date"] <= window_end]
+    tagged += [d for d in dues if d["kind"] != "changed" or d["date"] <= window_end]
     tagged.sort(key=lambda d: d["date"])
     entry = {"logged": today, "summary": summary, "reason": reason, "days": tagged}
     course.setdefault("changes", []).append(entry)
