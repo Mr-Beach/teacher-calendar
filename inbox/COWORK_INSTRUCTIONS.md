@@ -61,7 +61,9 @@ WORDING
 - Pages are always "pg" (pg 27, pg 15-16), never "p.", "pp.", or
   "page(s)", in homework.
 - Practice Log: homework whose text starts "Practice Log", assigned
-  Monday, due Friday. The calendar lists what it covers on its own:
+  Monday, due Friday. Its text is always exactly: "Practice Log: Add each
+  assignment when it's due. Answer keys open on Schoology on the due
+  date." The calendar adds what to do on due dates by itself. The calendar lists what it covers on its own:
   every other assignment due from the day it's assigned through its due
   date. Don't list them in its text. If that's the wrong set (I name
   different assignments, or some were due before the log was assigned),

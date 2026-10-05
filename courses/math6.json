@@ -1613,7 +1613,7 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: add each assignment when it's due; we check it with the keys in class",
+          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
           "due": "2026-10-16"
         }
       ],
@@ -1702,7 +1702,7 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: add each assignment when it's due; we check it with the keys in class",
+          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
           "due": "2026-10-23"
         }
       ],
@@ -1767,7 +1767,7 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: add each assignment when it's due; we check it with the keys in class",
+          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
           "due": "2026-10-30"
         }
       ],
@@ -3038,5 +3038,15 @@
     "Calculator",
     "Glue stick",
     "Ruler"
+  ],
+  "changes": [
+    {
+      "logged": "2026-10-04",
+      "summary": "Practice Log: answer keys now open on Schoology on each due date",
+      "reason": null,
+      "changed": true,
+      "days": [],
+      "updated": []
+    }
   ]
 }
