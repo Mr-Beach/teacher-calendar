@@ -184,10 +184,17 @@ def render_panel(day, course):
                      f'<ul class="hw">{"".join(items)}</ul></div>')
     items = []
     for due in day["due"] or []:
-        # Each due assignment links to the course's answer keys -- except a
+        # Each due assignment links to its answer key: the folder of the
+        # Practice Log it goes in, else the course's answer keys -- except a
         # quiz redo, which has no key and links to the quiz folder instead.
+        # A Practice Log with a link is that folder; its own text links there.
         redo = is_quiz_redo(due["text"])
-        key = course.get("quiz_link") if redo else course.get("answer_key_link")
+        if redo:
+            key = course.get("quiz_link")
+        elif is_practice_log(due) and due.get("link"):
+            key = None
+        else:
+            key = due.get("log_link") or course.get("answer_key_link")
         key_html = (f'<a class="keylink" href="{esc(key)}" target="_blank" rel="noopener">'
                     f'{"Weekly quizzes" if redo else "Answer key"}{ARROW}</a>' if key else "")
         given = f'<span class="given">(given {short_date(due["assigned"])})</span>'

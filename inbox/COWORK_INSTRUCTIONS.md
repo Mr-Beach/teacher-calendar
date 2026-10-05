@@ -75,7 +75,8 @@ WORDING
   instead of the answer keys.
 - Each homework item gets a "link": that assignment's own page in
   Schoology, not the lesson folder. If I haven't given you one, ask. A
-  Practice Log has no link.
+  Practice Log's link is that week's answer-key folder in Schoology; ask
+  me for it.
 - Work with no due date isn't homework. Leave it out.
 - link: the Schoology folder (or OneDrive share) for that lesson. Never
   link a lesson slide deck; those aren't for students. Match links to

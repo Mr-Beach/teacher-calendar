@@ -265,9 +265,11 @@ def render(course):
     # A Practice Log carries the assignments it covers ("includes"; the page
     # shows them as a checklist on the log's due date), and each assignment
     # it covers carries that log's due date ("log_due"; the page tags the
-    # assignment with it). An assignment in two logs gets the earlier one.
+    # assignment with it) and its link ("log_link": the week's answer-key
+    # folder, where the page sends it for its key). An assignment in two
+    # logs gets the earlier one.
     log_contents = _practice_log_contents(placements)
-    log_due_of = {}
+    log_due_of, log_link_of = {}, {}
     for day, lesson in placements:
         for log in _homework_with_links(lesson):
             covered = log_contents.get((day["date"], log["text"]))
@@ -277,6 +279,7 @@ def render(course):
                 key = (c["text"], c["due"])
                 if key not in log_due_of or log["due"] < log_due_of[key]:
                     log_due_of[key] = log["due"]
+                    log_link_of[key] = log["link"]
 
     def homework_for(day, lesson):
         items = _homework_with_links(lesson)
@@ -285,6 +288,7 @@ def render(course):
                 hw["includes"] = log_contents[(day["date"], hw["text"])]
             elif (hw["text"], hw["due"]) in log_due_of:
                 hw["log_due"] = log_due_of[(hw["text"], hw["due"])]
+                hw["log_link"] = log_link_of[(hw["text"], hw["due"])]
         return items
 
     due_by_date = {}
@@ -296,6 +300,7 @@ def render(course):
                     entry["includes"] = hw["includes"]
                 if "log_due" in hw:
                     entry["log_due"] = hw["log_due"]
+                    entry["log_link"] = hw["log_link"]
                 due_by_date.setdefault(hw["due"], []).append(entry)
 
     calendar = []
@@ -823,12 +828,12 @@ def check_homework_due_dates(course):
 def check_homework_links(course):
     """Flag assignments with no link of their own. Each assignment should open
     its own page in Schoology; without a link it shows as plain text. A
-    Practice Log is exempt -- it has no page; the assignments it lists carry
-    their own links."""
+    Practice Log links to its week's answer-key folder, which is also where
+    every assignment in it sends students for the key."""
     calendar, _ = render(course)
     return [f"'{hw['text']}' (assigned {day['date']}, due {hw['due']}): no link"
-            for day in calendar for hw in day["homework"] or []
-            if not hw["link"] and not is_practice_log(hw)]
+            + (" (its week's answer-key folder)" if is_practice_log(hw) else "")
+            for day in calendar for hw in day["homework"] or [] if not hw["link"]]
 
 
 def run_all_checks(course):
