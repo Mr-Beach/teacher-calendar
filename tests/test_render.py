@@ -54,6 +54,8 @@ class PageTests(unittest.TestCase):
             days = json.loads(re.search(r"const DAYS = (.*?);\n", page).group(1))
             self.assertEqual([d["date"] for d in days], [d["date"] for d in calendar], slug)
             json.loads(re.search(r"const HOMEWORK = (.*?);\n", page).group(1))
+            self.assertEqual(json.loads(re.search(r"const THROUGH_UNIT_TEST = (.*?);\n", page).group(1)),
+                             bool(course.get("show_through_unit_test")), slug)
             self.assertEqual(json.loads(re.search(r"const CHANGES = (.*?);\n", page).group(1)),
                              course.get("changes") or [], slug)
             self.assertNotIn("%%", page, slug)  # every placeholder filled
