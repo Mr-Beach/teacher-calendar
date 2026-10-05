@@ -569,6 +569,10 @@ PAGE = """<!doctype html>
      day, the old version in its details, and the Recent changes list. */
   .chg-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; font-size: 11px; font-weight: 700;
              border-radius: 4px; padding: 0 4px; line-height: 16px; background: var(--accent); color: #FFFFFF; }
+  /* Content added to a day (a target, a link, new homework): lighter than a
+     change, and shown for less time. */
+  .upd-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; font-size: 11px; font-weight: 700;
+             border-radius: 4px; padding: 0 4px; line-height: 14px; border: 1.5px solid var(--accent); color: var(--accent); }
   .chg-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); flex: none; }
   .cell-selected .chg-dot { background: #FFFFFF; }
   .pnl-changed { border-left: 3px solid var(--accent); padding-left: 10px; font-size: 14px; }
@@ -792,8 +796,11 @@ PAGE = """<!doctype html>
   const CHANGE_LINKS = 5;
   // A tag says what happened to the day, not just that something did.
   const CHANGE_LABELS = { moved: 'Moved', 'due moved': 'Due date moved', dropped: 'HW dropped', changed: 'Changed' };
-  const recentChanges = CHANGES.filter((c) => c.logged <= TODAY && c.logged > addDays(TODAY, -CHANGE_DAYS))
-    .sort((a, b) => (a.logged < b.logged ? 1 : a.logged > b.logged ? -1 : 0));
+  const UPDATED_DAYS = 2;
+  const within = (c, n) => c.logged <= TODAY && c.logged > addDays(TODAY, -n);
+  const byNewest = (a, b) => (a.logged < b.logged ? 1 : a.logged > b.logged ? -1 : 0);
+  // An entry that only added content isn't a change (`changed` false).
+  const recentChanges = CHANGES.filter((c) => c.changed !== false && within(c, CHANGE_DAYS)).sort(byNewest);
   function changeLine(c, d) {
     const p = el('p', 'pnl-changed');
     p.appendChild(el('b', null, 'Changed ' + shortDate(c.logged) + '. '));
@@ -828,6 +835,16 @@ PAGE = """<!doctype html>
         cell.querySelector('.cell-top').appendChild(el('span', 'chg-dot'));
         cell.setAttribute('aria-label', cell.getAttribute('aria-label') + ' (changed)');
       }
+    }));
+  }
+  // Days with content added (engine.record_change's `updated`) get a
+  // lighter "Updated" tag for UPDATED_DAYS days -- unless they're also
+  // tagged as changed, which says more.
+  function tagUpdates() {
+    CHANGES.filter((c) => within(c, UPDATED_DAYS)).forEach((c) => (c.updated || []).forEach((date) => {
+      if (date < TODAY) return;
+      const title = document.querySelector('.day[data-date="' + date + '"] .row-title');
+      if (title && !title.querySelector('.chg-tag, .upd-tag')) title.appendChild(el('span', 'upd-tag', 'Updated'));
     }));
   }
   function renderChanges() {
@@ -1142,6 +1159,7 @@ PAGE = """<!doctype html>
   window.addEventListener('resize', fitSide);
 
   tagChanges();  // first: the today card and Whole-year details copy the tagged panels
+  tagUpdates();
   renderToday();
   renderHomework();
   renderChanges();

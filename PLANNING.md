@@ -200,6 +200,12 @@ A typo fix in class work can be recorded as a small fix
 (`small_fix=True`), which doesn't tag it. A changed title or a moved due
 date is always tagged.
 
+**"Updated"** is the lighter tag for content added to a day that keeps
+its lesson: a target, a link, materials, a new assignment. The lesson's
+name doesn't count; it's there from the start of the year. It shows for 2
+days, isn't listed under Recent changes, and gives way to a change tag on
+the same day. The weekly fill is what usually earns it.
+
 The log starts empty: the changes made before this existed aren't in it.
 
 ## Sanity checks after any edit

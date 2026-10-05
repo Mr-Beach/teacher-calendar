@@ -218,6 +218,14 @@ class RecordChangeTests(unittest.TestCase):
         before, _ = engine.render(course)
         engine.edit_lesson(course, 6, classwork="New class work",
                            homework=[{"text": "Practice 7", "due": "2026-10-15"}])
+        entry = self.record(course, before)
+        # Not a change, but news: the day is tagged "Updated", not "Changed".
+        self.assertFalse(entry["changed"])
+        self.assertEqual((entry["days"], entry["updated"]), ([], ["2026-10-09"]))
+
+    def test_no_edit_logs_nothing(self):
+        course = self.course()
+        before, _ = engine.render(course)
         self.assertIsNone(self.record(course, before))
         self.assertNotIn("changes", course)
 

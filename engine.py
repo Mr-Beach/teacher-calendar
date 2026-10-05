@@ -521,6 +521,20 @@ def _is_assessment(day):
     return day["kind"] in ("Quiz", "Test", "Project") or bool(day.get("quiz_paired"))
 
 
+# What filling in a day adds. `display` and `title` are left out: the
+# lesson's name is there from the start of the year.
+_CONTENT_FIELDS = ("target", "classwork", "link", "extra_materials")
+
+
+def _content_added(before_day, after_day):
+    """Whether something was added to a day that keeps its lesson: a field
+    that was blank and isn't now, or a new assignment given that day."""
+    if any(not before_day[f] and after_day[f] for f in _CONTENT_FIELDS):
+        return True
+    given = lambda d: {(h["text"], h["due"]) for h in d["homework"] or []}
+    return bool(given(after_day) - given(before_day)) and len(after_day["homework"] or []) > len(before_day["homework"] or [])
+
+
 def _moved_to(before_day, after_calendar, date_, today):
     """Where the lesson that was on `date_` is now, if it's still on the
     calendar on another day from today on -- the first such day, so a
@@ -602,21 +616,29 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
     moved or dropped due dates anywhere. The rest is covered by `summary`
     alone.
 
-    Returns the entry it logged, or None if nothing seen changed (and then
-    logs nothing)."""
+    Content added to a day that keeps its lesson (a target, class work, a
+    link, a new assignment) isn't a change, but it's news: those dates go
+    in the entry's `updated`, which the page tags "Updated" for 2 days.
+    `changed` says whether anything seen changed; an entry that only
+    updated isn't listed under Recent changes.
+
+    Returns the entry it logged, or None if nothing changed or was added
+    (and then logs nothing)."""
     today = (today or school_today()).isoformat()
     after_calendar, _ = render(course)
     before = {d["date"]: d for d in before_calendar}
     upcoming_class = [d["date"] for d in after_calendar
                       if d["date"] >= today and d["type"] == "Instruction"]
     window_end = upcoming_class[min(CHANGE_TAG_CLASS_DAYS, len(upcoming_class)) - 1] if upcoming_class else today
-    any_change, tagged = False, []
+    any_change, tagged, updated = False, [], []
     for after_day in after_calendar:
         date_ = after_day["date"]
         if date_ < today or date_ not in before:
             continue
         before_day = before[date_]
         was, now = _seen_title(before_day), _seen_title(after_day)
+        if was == now and _content_added(before_day, after_day):
+            updated.append(date_)
         if was is not None and was != now:
             what = "title"
         elif (not small_fix and was == now and before_day["classwork"]
@@ -632,13 +654,16 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
                 detail.update(kind="moved", moved_to=moved_to)
             tagged.append(detail)
     dues = _due_changes(before_calendar, after_calendar, today, small_fix)
-    if not any_change and not dues:
+    changed = any_change or bool(dues)
+    if not changed and not updated:
         return None
     # A moved or dropped due date is tagged wherever it is; a reworded
     # assignment only inside the window, like class work.
     tagged += [d for d in dues if d["kind"] != "changed" or d["date"] <= window_end]
     tagged.sort(key=lambda d: d["date"])
-    entry = {"logged": today, "summary": summary, "reason": reason, "days": tagged}
+    tagged_dates = {d["date"] for d in tagged}
+    entry = {"logged": today, "summary": summary, "reason": reason, "changed": changed,
+             "days": tagged, "updated": [d for d in updated if d not in tagged_dates]}
     course.setdefault("changes", []).append(entry)
     return entry
 
