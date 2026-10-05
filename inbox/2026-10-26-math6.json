@@ -1,0 +1,23 @@
+{
+  "course": "math6",
+  "week_of": "2026-10-26",
+  "days": [
+    {
+      "date": "2026-10-26",
+      "expect": "T1L7",
+      "target": "I can divide fractions by multiplying by the reciprocal."
+    },
+    {
+      "date": "2026-10-27",
+      "expect": "T1L7",
+      "target": "I can divide fractions to solve word problems and check my answer with multiplication.",
+      "homework": [
+        {
+          "text": "Topic 1 Lesson 7 Practice: workbook pg 43–44 #14, 16, 18, 20, 22, 24, 28, 30, 32",
+          "due": "2026-10-30",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587037923"
+        }
+      ]
+    }
+  ]
+}
