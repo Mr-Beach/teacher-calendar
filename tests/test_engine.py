@@ -198,5 +198,103 @@ class CheckTests(unittest.TestCase):
         self.assertEqual([w for _, ws in engine.run_all_checks(course) for w in ws], [])
 
 
+
+class RecordChangeTests(unittest.TestCase):
+    """engine.record_change: what counts as a change families already saw."""
+    TODAY = date(2026, 10, 5)
+
+    def course(self):
+        # No quizzes, so lessons sit on consecutive class days.
+        course = make_course("2026-10-01", "2026-10-30", lessons=30, quiz_rhythm_start="2027-01-01")
+        engine.edit_lesson(course, 5, classwork="Workbook pg 10",
+                           homework=[{"text": "Practice 6", "due": "2026-10-14"}])
+        return course
+
+    def record(self, course, before, **kw):
+        return engine.record_change(course, before, "summary", today=self.TODAY, **kw)
+
+    def test_filling_a_blank_is_not_a_change(self):
+        course = self.course()
+        before, _ = engine.render(course)
+        engine.edit_lesson(course, 6, classwork="New class work",
+                           homework=[{"text": "Practice 7", "due": "2026-10-15"}])
+        self.assertIsNone(self.record(course, before))
+        self.assertNotIn("changes", course)
+
+    def test_lost_day_tags_the_near_days_and_logs_one_entry(self):
+        course = self.course()
+        before, _ = engine.render(course)
+        engine.set_day(course, "2026-10-07", type="Other", note="Assembly")
+        entry = self.record(course, before, reason="assembly")
+        self.assertEqual(course["changes"], [entry])
+        self.assertEqual(entry["reason"], "assembly")
+        days = {d["date"] for d in entry["days"]}
+        # The lost day and the next class days in the window are tagged...
+        self.assertIn("2026-10-07", days)
+        self.assertIn("2026-10-08", days)
+        # ...days past the 5-class-day window are not (no tests there).
+        self.assertNotIn("2026-10-20", days)
+        lost = next(d for d in entry["days"] if d["date"] == "2026-10-07")
+        self.assertEqual((lost["was"], lost["now"]), ("Lesson 5", "Assembly"))
+
+    def test_past_days_are_left_alone(self):
+        course = self.course()
+        before, _ = engine.render(course)
+        engine.set_day(course, "2026-10-02", type="Other", note="Assembly")
+        entry = self.record(course, before)
+        self.assertTrue(all(d["date"] >= "2026-10-05" for d in entry["days"]))
+
+    def test_moved_test_is_tagged_beyond_the_window(self):
+        lessons = [("A", "Lesson")] * 15 + [("Topic 1 Test", "Test")] + [("B", "Lesson")] * 10
+        course = make_course("2026-10-01", "2026-10-30", lessons=lessons, quiz_rhythm_start="2027-01-01")
+        before, _ = engine.render(course)
+        engine.set_day(course, "2026-10-06", type="Other", note="Assembly")
+        days = {d["date"] for d in self.record(course, before)["days"]}
+        self.assertIn("2026-10-22", days)  # was the test
+        self.assertIn("2026-10-23", days)  # is the test now
+        self.assertNotIn("2026-10-21", days)  # an ordinary lesson out there
+
+    def test_moved_due_date(self):
+        course = self.course()
+        before, _ = engine.render(course)
+        engine.edit_lesson(course, 5, homework=[{"text": "Practice 6", "due": "2026-10-16"}])
+        [d] = self.record(course, before)["days"]
+        self.assertEqual((d["date"], d["was"], d["now"]),
+                         ("2026-10-14", "Practice 6 (due 10/14)", "Practice 6 (due 10/16)"))
+
+    def test_dropped_and_reworded_assignments(self):
+        course = self.course()
+        before, _ = engine.render(course)
+        engine.edit_lesson(course, 5, homework=None)
+        [d] = self.record(course, before)["days"]
+        self.assertIsNone(d["now"])
+        course = self.course()
+        before, _ = engine.render(course)
+        engine.edit_lesson(course, 5, homework=[{"text": "Practice 6 (odds)", "due": "2026-10-14"}])
+        # Reworded, due beyond the 5-class-day window: logged, not tagged.
+        self.assertEqual(self.record(course, before)["days"], [])
+        course = self.course()
+        engine.edit_lesson(course, 5, homework=[{"text": "Practice 6", "due": "2026-10-08"}])
+        before, _ = engine.render(course)
+        engine.edit_lesson(course, 5, homework=[{"text": "Practice 6 (odds)", "due": "2026-10-08"}])
+        [d] = self.record(course, before)["days"]
+        self.assertEqual(d["now"], "Practice 6 (odds) (due 10/8)")
+
+    def test_small_fix_skips_wording_but_not_dates(self):
+        course = self.course()
+        before, _ = engine.render(course)
+        engine.edit_lesson(course, 5, classwork="Workbook page 10",
+                           homework=[{"text": "Practice 6!", "due": "2026-10-14"}])
+        self.assertIsNone(self.record(course, before, small_fix=True))
+        engine.edit_lesson(course, 5, homework=[{"text": "Practice 6!", "due": "2026-10-15"}])
+        self.assertIsNotNone(self.record(course, before, small_fix=True))
+
+    def test_changed_class_work_on_the_same_lesson(self):
+        course = self.course()
+        before, _ = engine.render(course)
+        engine.edit_lesson(course, 5, classwork="Something else")
+        [d] = self.record(course, before)["days"]
+        self.assertEqual((d["what"], d["was"]), ("class work", "Workbook pg 10"))
+
 if __name__ == "__main__":
     unittest.main()

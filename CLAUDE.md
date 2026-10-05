@@ -95,6 +95,12 @@ session anyway, writing it as a week file and running
 7. Report the impact using `engine.diff_impact(course, before_calendar,
    before_leftover)` in Aaron's terms — what date things start shifting
    from, whether the leftover/shortfall count changed — not a raw diff.
+   Then log it for students with `engine.record_change(course,
+   before_calendar, summary, reason=...)`: a one-line summary in his
+   words, and his reason if he gave one (PLANNING.md, "When the calendar
+   changes"). One call per edit he confirms. Tell him which days it tags,
+   or that it tagged none. If he says the edit is only a typo fix, pass
+   `small_fix=True`.
 8. Show Aaron the summary and get a go-ahead before committing. Once
    confirmed, commit the edited course file (only — leave `docs/index.html`
    alone) and push to `main`. This repo is single-user and the whole point

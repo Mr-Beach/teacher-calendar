@@ -238,6 +238,23 @@ def _fmt(value):
     return value
 
 
+def _md(iso):
+    try:
+        return engine._md(iso)
+    except ValueError:
+        return iso
+
+
+def _changes_note(entry):
+    """What students will see marked as changed, for the PR description."""
+    if entry is None:
+        return "\nStudents won't see anything marked as changed: this only fills in blanks.\n"
+    days = sorted({d["date"] for d in entry["days"]})
+    tagged = ", ".join(days) if days else "no single day (summary line only)"
+    return (f"\n**Students will see this as a change** (Recent changes: \"{entry['summary']}\"). "
+            f"Tagged: {tagged}.\n")
+
+
 def summarize(edits, impact, warnings, week_of):
     lines = [f"## Week of {week_of}", ""]
     if not edits:
@@ -303,8 +320,12 @@ def main(argv=None):
 
     apply_changes(course, edits)
     impact = placement_impact(course, before_calendar, before_leftover)
-    summary = summarize(edits, impact, engine.run_all_checks(course),
-                        week.get("week_of", week_path.stem))
+    week_of = week.get("week_of", week_path.stem)
+    summary = summarize(edits, impact, engine.run_all_checks(course), week_of)
+    # Filling in the week logs nothing; changing what students already saw
+    # does, so the page can tag it (PLANNING.md, "When the calendar changes").
+    logged = engine.record_change(course, before_calendar, f"Plans updated for the week of {_md(week_of)}")
+    summary += _changes_note(logged)
     print(summary)
     if args.summary:
         Path(args.summary).write_text(summary)

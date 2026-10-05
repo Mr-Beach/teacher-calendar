@@ -118,6 +118,15 @@ own documents (at-a-Glance guide, sample calendars, SPS school calendar).
   instruction. A day-budget shift being intentional doesn't make its
   downstream effects (a later test landing on a Monday, a shortfall/leftover
   at year's end) not worth reporting.
+- Every confirmed edit is also logged for students:
+  `engine.record_change(course, before_calendar, summary, reason=...)`,
+  using the same pre-edit `render()` snapshot. The summary is one line in
+  Aaron's words ("Tuesday lost to an assembly; lessons from Tuesday on
+  moved one day later"), and the reason is his, if he gave one. The page
+  tags each changed day and lists the summary under Recent changes for a
+  week (PLANNING.md, "When the calendar changes"). Tell Aaron which days
+  it tags. Pass `small_fix=True` only for a typo fix he calls one. It logs
+  nothing if nothing students had already seen changed.
 
 ## Applying curriculum-audit findings
 

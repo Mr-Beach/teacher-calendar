@@ -481,6 +481,148 @@ def diff_impact(course, before_calendar, before_leftover):
     }
 
 
+# --- Changes families have already seen (PLANNING.md, "When the calendar
+# changes") ------------------------------------------------------------------
+
+# A changed day gets its own "Changed" tag on the page when it's one of the
+# next this-many class days. Further out, only test/quiz days and homework
+# get a tag; the rest is covered by the entry's one summary line.
+CHANGE_TAG_CLASS_DAYS = 5
+SCHOOL_TZ = "America/Los_Angeles"
+
+
+def school_today():
+    """Today at school -- not the machine's date, which is UTC on a cloud
+    session or a build and turns into tomorrow in the evening."""
+    try:
+        from zoneinfo import ZoneInfo
+        from datetime import datetime
+        return datetime.now(ZoneInfo(SCHOOL_TZ)).date()
+    except Exception:  # no time zone data on this machine
+        return date.today()
+
+
+def _seen_title(day):
+    """A day's title as a family sees it, or None for a lesson day with
+    nothing planned yet (filling that in later isn't a change)."""
+    if day["type"] != "Instruction":
+        return day["display"]
+    if day["lesson_text"] in (None, "(no lesson planned)"):
+        return None
+    return day["lesson_text"] + (" + Quiz" if day.get("quiz_paired") else "")
+
+
+def _md(iso):
+    d = date.fromisoformat(iso)
+    return f"{d.month}/{d.day}"
+
+
+def _is_assessment(day):
+    return day["kind"] in ("Quiz", "Test", "Project") or bool(day.get("quiz_paired"))
+
+
+def _due_changes(before_calendar, after_calendar, today, small_fix=False):
+    """Assignments whose due date moved, that were reworded, or that were
+    dropped, as change details on the date families were told (or the new
+    one, if that one's past). Compared across the whole calendar by (text,
+    due), not day by day: the day an assignment is given moves with its
+    lesson, and that alone isn't news -- its due date is fixed, and a moved
+    due date is. A reworded assignment is matched by its unchanged due
+    date; `small_fix` skips those."""
+    def items(calendar):
+        out = []
+        for d in calendar:
+            out += [(h["text"], h["due"]) for h in d["homework"] or [] if h["due"]]
+        return out
+    before, after = items(before_calendar), items(after_calendar)
+    removed, added = list(before), []
+    for it in after:
+        if it in removed:
+            removed.remove(it)
+        else:
+            added.append(it)
+    changes = []
+    for text, was_due in removed:
+        now = next(((t, due) for t, due in added if t == text), None)  # due date moved
+        if now is None:
+            now = next(((t, due) for t, due in added if due == was_due), None)  # reworded
+            if now is not None and small_fix:
+                added.remove(now)
+                continue
+        if now is not None:
+            added.remove(now)
+        if max(was_due, now[1] if now else was_due) < today:
+            continue
+        changes.append({
+            "date": was_due if was_due >= today else now[1], "what": "homework",
+            "was": f"{text} (due {_md(was_due)})",
+            "now": f"{now[0]} (due {_md(now[1])})" if now else None,
+            "reworded": bool(now) and now[1] == was_due,
+        })
+    return changes
+
+
+def record_change(course, before_calendar, summary, reason=None, small_fix=False, today=None):
+    """Log one confirmed edit's visible changes in course["changes"], which
+    the page turns into "Changed" tags and its Recent changes list.
+
+    Call render() before editing (the same snapshot diff_impact takes), make
+    the edit, then call this with a one-line `summary` in Aaron's words
+    ("Tuesday lost to an assembly; lessons from Tuesday on moved one day
+    later") and his `reason` if he gave one. One call per confirmed edit,
+    however many days it moved: families read one line per change.
+
+    What counts is what a family could already have seen, from today on:
+    a day's title (its lesson, quiz, test, or closure), its class work when
+    the lesson itself didn't change, and each assignment's due date. Filling
+    in something that was blank isn't a change. `small_fix=True` is for
+    typo-level fixes: it skips changed class-work text and reworded
+    assignments. It never skips a changed title or a moved or dropped
+    assignment.
+
+    Which changed days get their own tag (`days`): any within the next
+    CHANGE_TAG_CLASS_DAYS class days, plus quiz, test, and project days and
+    moved or dropped due dates anywhere. The rest is covered by `summary`
+    alone.
+
+    Returns the entry it logged, or None if nothing seen changed (and then
+    logs nothing)."""
+    today = (today or school_today()).isoformat()
+    after_calendar, _ = render(course)
+    before = {d["date"]: d for d in before_calendar}
+    upcoming_class = [d["date"] for d in after_calendar
+                      if d["date"] >= today and d["type"] == "Instruction"]
+    window_end = upcoming_class[min(CHANGE_TAG_CLASS_DAYS, len(upcoming_class)) - 1] if upcoming_class else today
+    any_change, tagged = False, []
+    for after_day in after_calendar:
+        date_ = after_day["date"]
+        if date_ < today or date_ not in before:
+            continue
+        before_day = before[date_]
+        was, now = _seen_title(before_day), _seen_title(after_day)
+        if was is not None and was != now:
+            what = "title"
+        elif (not small_fix and was == now and before_day["classwork"]
+              and before_day["classwork"] != after_day["classwork"]):
+            what, was, now = "class work", before_day["classwork"], after_day["classwork"]
+        else:
+            continue
+        any_change = True
+        if date_ <= window_end or _is_assessment(before_day) or _is_assessment(after_day):
+            tagged.append({"date": date_, "what": what, "was": was, "now": now})
+    dues = _due_changes(before_calendar, after_calendar, today, small_fix)
+    if not any_change and not dues:
+        return None
+    # A moved or dropped due date is tagged wherever it is; a reworded
+    # assignment only inside the window, like class work.
+    tagged += [{k: v for k, v in d.items() if k != "reworded"} for d in dues
+               if not d["reworded"] or d["date"] <= window_end]
+    tagged.sort(key=lambda d: d["date"])
+    entry = {"logged": today, "summary": summary, "reason": reason, "days": tagged}
+    course.setdefault("changes", []).append(entry)
+    return entry
+
+
 def check_test_placement(course):
     """Flag Tests landing somewhere PLANNING.md says to avoid. These aren't
     auto-fixed -- resolving one is an editorial call (what moves, and to

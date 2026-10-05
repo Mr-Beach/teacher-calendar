@@ -165,6 +165,40 @@ The calendar is student-facing. That governs everything on it:
   vs. summative reads differently at a glance.
 - **No student names, grades, or anything student-identifying. Ever.**
 
+## When the calendar changes
+
+Students and families who watch the calendar notice when it changes, so the
+page says what changed instead of leaving them to spot it. Every confirmed
+edit is logged with `engine.record_change` in the course file's `changes`
+list, and the page builds two things from that log:
+
+- **A "Changed" tag** on each changed day (a dot on its Whole-year square),
+  with the old version at the top of the day's details. The tag shows for 7
+  days after the change, or until the day itself is past.
+- **Recent changes** on Upcoming: one line per edit, in my words, with the
+  reason if I gave one, listed for 7 days.
+
+What counts is what someone could already have seen, from today on:
+
+- **A day's title** changed: its lesson, a quiz or test appearing or
+  disappearing, a day closed.
+- **Class work** changed on a day whose lesson stayed the same.
+- **An assignment's due date** moved, or the assignment was dropped.
+  Homework moving to a new day along with its lesson isn't news; its due
+  date is.
+- **Filling in a blank is not a change.** Adding detail to a planned day is
+  the calendar working. So is changing a day that's already past.
+
+Which changed days get a tag: any in the next 5 class days, plus quiz,
+test, and project days and moved or dropped due dates anywhere. A re-flow that shifts the
+rest of the year shows up as its one summary line, not a hundred tags.
+
+A typo fix in class work can be recorded as a small fix
+(`small_fix=True`), which doesn't tag it. A changed title or a moved due
+date is always tagged.
+
+The log starts empty: the changes made before this existed aren't in it.
+
 ## Sanity checks after any edit
 
 `engine.run_all_checks()` runs every one of these in one call. None are

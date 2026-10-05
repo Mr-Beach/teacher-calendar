@@ -345,7 +345,8 @@ def build_page(course, calendar):
     subtitle = " · ".join(x for x in (TEACHER, course.get("school_year")) if x)
     data = (f"const DAYS = {to_json(days_data(calendar))};\n"
             f"const HOMEWORK = {to_json(homework_data(calendar))};\n"
-            f"const DAILY_MATERIALS = {to_json(course.get('daily_materials') or [])};\n")
+            f"const DAILY_MATERIALS = {to_json(course.get('daily_materials') or [])};\n"
+            f"const CHANGES = {to_json(course.get('changes') or [])};\n")
     # Placeholders filled one at a time: the page itself is a plain string,
     # so its CSS and JS braces need no escaping.
     page = PAGE
@@ -564,6 +565,20 @@ PAGE = """<!doctype html>
   .detail .panel { padding: 0; }
   .linkbtn { background: none; border: 0; font-weight: 700; text-decoration: underline; min-height: 44px; padding: 0 4px; cursor: pointer; }
   .keydates { list-style: none; margin: 0; padding: 0; }
+  /* Changes families have already seen (engine.record_change): a tag on the
+     day, the old version in its details, and the Recent changes list. */
+  .chg-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; font-size: 11px; font-weight: 700;
+             border-radius: 4px; padding: 0 4px; line-height: 16px; background: var(--accent); color: #FFFFFF; }
+  .chg-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); flex: none; }
+  .cell-selected .chg-dot { background: #FFFFFF; }
+  .pnl-changed { border-left: 3px solid var(--accent); padding-left: 10px; font-size: 14px; }
+  .pnl-changed b { color: var(--accent); }
+  .chglist { padding: 4px 14px; }
+  .chg-item { padding: 10px 0; display: flex; flex-direction: column; gap: 4px; }
+  .chg-item + .chg-item { border-top: 1.5px solid var(--line); }
+  .chg-item p { margin: 0; }
+  .chg-days { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 14px; }
+  .chg-days a { font-weight: 700; }
   .keydates li { display: flex; gap: 12px; padding: 9px 0; align-items: baseline; }
   .keydates li + li { border-top: 1.5px solid var(--line); }
   .keydates .when-k { flex: none; width: 120px; font-size: 14px; font-weight: 700; }
@@ -591,6 +606,10 @@ PAGE = """<!doctype html>
         <section id="homework" hidden>
           <h2 class="section-title">Homework</h2>
           <div class="card hwlist" id="hw-list"></div>
+        </section>
+        <section id="changes" hidden>
+          <h2 class="section-title">Recent changes</h2>
+          <div class="card chglist" id="chg-list"></div>
         </section>
         <section id="coming" hidden>
           <h2 class="section-title">Coming up</h2>
@@ -763,6 +782,70 @@ PAGE = """<!doctype html>
     const btn = row.querySelector('.row[aria-controls]');
     if (btn && btn.getAttribute('aria-expanded') !== 'true') btn.click();
     bringIntoView(row);
+  }
+
+  // ---- Changes families have already seen ----
+  // Each entry in CHANGES is one confirmed edit (engine.record_change). It's
+  // listed under Recent changes for CHANGE_DAYS days after it was made, and
+  // each day it changed is tagged until then -- or until that day is past.
+  const CHANGE_DAYS = 7;
+  const CHANGE_LINKS = 5;
+  const recentChanges = CHANGES.filter((c) => c.logged <= TODAY && c.logged > addDays(TODAY, -CHANGE_DAYS))
+    .sort((a, b) => (a.logged < b.logged ? 1 : a.logged > b.logged ? -1 : 0));
+  function changeLine(c, d) {
+    const p = el('p', 'pnl-changed');
+    p.appendChild(el('b', null, 'Changed ' + shortDate(c.logged) + '. '));
+    const label = d.what === 'class work' ? 'Class work was: ' : 'Was: ';
+    const end = (t) => (/[.!?]$/.test(t) ? t : t + '.');
+    let text = end(label + d.was);
+    if (d.what === 'homework') text += d.now ? ' ' + end('Now: ' + d.now) : ' No longer assigned.';
+    if (c.reason) text += ' ' + end('Why: ' + c.reason);
+    p.appendChild(document.createTextNode(' ' + text));
+    return p;
+  }
+  function tagChanges() {
+    recentChanges.slice().reverse().forEach((c) => c.days.forEach((d) => {
+      if (d.date < TODAY) return;
+      const row = document.querySelector('.day[data-date="' + d.date + '"]');
+      if (row) {
+        const title = row.querySelector('.row-title');
+        if (!title.querySelector('.chg-tag')) title.appendChild(el('span', 'chg-tag', 'Changed'));
+        const panel = document.getElementById('p-' + d.date);
+        if (panel) panel.insertBefore(changeLine(c, d), panel.firstChild);
+        else row.querySelector('.row-main').appendChild(el('span', 'row-sub', changeLine(c, d).textContent));
+      }
+      const cell = document.querySelector('.cell[data-date="' + d.date + '"]');
+      if (cell && !cell.querySelector('.chg-dot')) {
+        cell.querySelector('.cell-top').appendChild(el('span', 'chg-dot'));
+        cell.setAttribute('aria-label', cell.getAttribute('aria-label') + ' (changed)');
+      }
+    }));
+  }
+  function renderChanges() {
+    if (!recentChanges.length) return;
+    const list = document.getElementById('chg-list');
+    recentChanges.forEach((c) => {
+      const item = el('div', 'chg-item');
+      item.appendChild(el('span', 'eyebrow', shortDate(c.logged)));
+      item.appendChild(el('p', null, c.summary));
+      if (c.reason) item.appendChild(el('p', 'muted', 'Why: ' + c.reason));
+      const dates = [...new Set(c.days.map((d) => d.date))].filter((d) => d >= TODAY);
+      if (dates.length) {
+        const links = el('div', 'chg-days');
+        // The first few days as links; a re-flow can touch a dozen test
+        // days across the year, and the line shouldn't become a wall.
+        dates.slice(0, CHANGE_LINKS).forEach((date) => {
+          const a = el('a', null, shortDate(date));
+          a.href = '#';
+          a.addEventListener('click', (e) => { e.preventDefault(); openDay(date); });
+          links.appendChild(a);
+        });
+        if (dates.length > CHANGE_LINKS) links.appendChild(el('span', 'muted', '+' + (dates.length - CHANGE_LINKS) + ' later days, tagged in the calendar'));
+        item.appendChild(links);
+      }
+      list.appendChild(item);
+    });
+    document.getElementById('changes').hidden = false;
   }
 
   // ---- Upcoming: today, homework, coming up ----
@@ -1049,8 +1132,10 @@ PAGE = """<!doctype html>
   window.addEventListener('scroll', fitSide, { passive: true });
   window.addEventListener('resize', fitSide);
 
+  tagChanges();  // first: the today card and Whole-year details copy the tagged panels
   renderToday();
   renderHomework();
+  renderChanges();
   renderComing();
   fitSide();
   showMonths(homeIndex());
