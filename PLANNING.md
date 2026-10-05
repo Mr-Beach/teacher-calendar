@@ -162,9 +162,9 @@ The calendar is student-facing. That governs everything on it:
 - **The current unit is in focus** (`"focus_current_unit": true` in each
   course file). The unit runs from the day after the last unit test
   through the next one. Its days show everything: homework, due dates,
-  Due tags, links, details. Class days outside it, past units and future
-  ones, show their lesson name, quiz, or test, faded, and nothing else: no
-  homework, due dates, or links, and they don't open. One line after the
+  Due tags, links, details. Past units keep all of it, faded. Class days
+  in later units show their lesson name, quiz, or test, faded, and nothing
+  else: no homework, due dates, or links, and they don't open. One line after the
   test's week says so. The day after the test, the next unit comes into
   focus on its own. The near week is set, the week after can still
   change, and the rest of the unit can change before the test.

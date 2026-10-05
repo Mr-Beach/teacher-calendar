@@ -557,9 +557,9 @@ PAGE = """<!doctype html>
   .dow { font-size: 13px; font-weight: 700; color: var(--muted); padding-left: 4px; }
   .cell { height: 64px; border-radius: 10px; padding: 5px 6px; border: 0; background: var(--closed-bg); display: flex; flex-direction: column; gap: 1px; text-align: left; font-size: 13px; line-height: 1.25; overflow: hidden; cursor: pointer; min-width: 0; }
   .cell-none { background: none; cursor: default; }
-  /* Outside the current unit (FOCUS_UNIT): lesson names only, drawing no
-     attention -- no Due tags, no details. */
-  .cell.cell-outside { opacity: .45; }
+  /* Later units (FOCUS_UNIT): lesson names only, drawing no attention --
+     no Due tags, no details. Past units keep their details, faded. */
+  .cell.cell-outside, .cell.cell-past-unit { opacity: .45; }
   .cell-outside .due-tag { display: none; }
   .day-outside .row { cursor: default; }
   .day-outside .row-title { font-weight: 400; color: var(--muted); }
@@ -719,14 +719,16 @@ PAGE = """<!doctype html>
   const isClassDay = (d) => d.type === 'Instruction';
   const nextClass = (after) => DAYS.find((d) => d.date > after && isClassDay(d)) || null;
   // A course can put the current unit in focus (its "focus_current_unit"):
-  // the unit runs from the day after the last test through the next one.
-  // Its days get everything; class days outside it, past or future, show
-  // their lesson name, quiz, or test and nothing else -- no homework, due
-  // dates, or links. The unit moves on by itself the day after its test.
+  // the unit runs from the day after the last test through the next one,
+  // and its days get everything. Past units keep everything too, faded.
+  // Class days in later units show their lesson name, quiz, or test and
+  // nothing else -- no homework, due dates, or links. The unit moves on by
+  // itself the day after its test.
   const unitTest = FOCUS_UNIT ? DAYS.find((d) => d.date >= TODAY && d.kind === 'Test') : null;
   const lastTest = FOCUS_UNIT ? DAYS.filter((d) => d.date < TODAY && d.kind === 'Test').pop() : null;
-  const outside = (date) => FOCUS_UNIT && isClassDay(BY_DATE[date] || {})
-    && ((lastTest && date <= lastTest.date) || (unitTest && date > unitTest.date));
+  const isClass = (date) => isClassDay(BY_DATE[date] || {});
+  const outside = (date) => Boolean(unitTest) && date > unitTest.date && isClass(date);
+  const pastUnit = (date) => Boolean(lastTest) && date <= lastTest.date && isClass(date);
   const laterText = unitTest
     ? 'After the ' + unitTest.title + ': lesson names only. Homework, due dates, and links are posted when each unit starts.' : '';
 
@@ -1192,7 +1194,7 @@ PAGE = """<!doctype html>
     back.addEventListener('click', () => { showKeyDates(); cell.focus(); });
     head.appendChild(back);
     if (outside(date)) {
-      const note = date < TODAY ? 'This unit is finished.' : 'Homework, due dates, and links are posted when this unit starts.';
+      const note = 'Homework, due dates, and links are posted when this unit starts.';
       swapDetail(head, el('h3', null, d.kind === 'Quiz' ? 'Quiz' : d.title), el('p', 'muted', note));
       alignDetail();
       return;
@@ -1204,6 +1206,7 @@ PAGE = """<!doctype html>
   }
   document.querySelectorAll('.cell[data-date]').forEach((c) => {
     if (c.dataset.date === TODAY) c.classList.add('cell-today');
+    if (pastUnit(c.dataset.date)) c.classList.add('cell-past-unit');
     if (outside(c.dataset.date)) {
       c.classList.add('cell-outside');
       c.setAttribute('aria-label', longDate(c.dataset.date) + ': ' + BY_DATE[c.dataset.date].title);
