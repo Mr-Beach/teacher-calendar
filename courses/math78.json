@@ -3106,6 +3106,71 @@
       "updated": [
         "2026-10-26"
       ]
+    },
+    {
+      "logged": "2026-10-04",
+      "summary": "Test self-grading is now the Wednesday after each topic test, in place of that week's quiz",
+      "reason": null,
+      "changed": true,
+      "days": [
+        {
+          "date": "2026-10-07",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2026-11-04",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2026-12-16",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-01-13",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-02-03",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-03-24",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-05-05",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-05-19",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        }
+      ],
+      "updated": []
     }
   ]
 }

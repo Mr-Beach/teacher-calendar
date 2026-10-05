@@ -55,6 +55,7 @@ CHEVRON = ('<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="n
 ARROW = ' <span aria-hidden="true">↗</span>'
 DUE_TAG = '<span class="due-tag">Due</span>'
 PAIRED_TAG = '<span class="quiz-tag">+Quiz</span>'
+SG_TAG = '<span class="sg-tag">+Self-grade</span>'
 EMPTY_CELL = '<span class="cell cell-none"></span>'
 
 
@@ -165,6 +166,8 @@ def render_panel(day, course):
     parts = []
     if day.get("quiz_paired"):
         parts.append('<p class="pnl-quiz">+ Quiz today, sharing the period with this lesson</p>')
+    if day.get("self_grading_paired"):
+        parts.append('<p class="pnl-sg">+ Test self-grading today, sharing the period with this lesson</p>')
     if day["type"] != "Instruction":
         parts.append(f'<p class="pnl-closed">{esc(day["display"])}</p>')
     if day["target"]:
@@ -226,6 +229,8 @@ def row_summary(day):
         bits.append("3-Act task")
     if day.get("quiz_paired"):
         bits.append("+ Quiz")
+    if day.get("self_grading_paired"):
+        bits.append("+ Test self-grading")
     for label, items in (("Due", day["due"]), ("HW", day["homework"])):
         if items:
             more = f" (+{len(items) - 1} more)" if len(items) > 1 else ""
@@ -292,6 +297,8 @@ def cell_labels(day):
         return "Test", "", day["lesson_text"]
     if kind == "project":
         return "Project", "", day["lesson_text"]
+    if day["kind"] == "Self-Grading":
+        return "Self-grade", "", day["lesson_text"]
     code, rest = split_code(day["lesson_text"])
     if code:
         return code, code, rest
@@ -306,7 +313,8 @@ def render_cell(day):
     short, code, title = cell_labels(day)
     label = f"{long_date(day['date'])}: {day_title(day)}" + (" (something due)" if day["due"] else "")
     top = (f'<span class="cell-top"><span class="cell-num">{int(day["date"][8:])}</span>'
-           f'{DUE_TAG if day["due"] else ""}{PAIRED_TAG if day.get("quiz_paired") else ""}</span>')
+           f'{DUE_TAG if day["due"] else ""}{PAIRED_TAG if day.get("quiz_paired") else ""}'
+           f'{SG_TAG if day.get("self_grading_paired") else ""}</span>')
     code_html = f'<span class="cell-code">{esc(code)}</span>' if code else ""
     title_html = f'<span class="cell-title">{esc(title)}</span>' if title else ""
     return (f'<button type="button" class="cell cell-{day_kind(day)}" data-date="{day["date"]}" '
@@ -522,6 +530,7 @@ PAGE = """<!doctype html>
   @media (max-width: 420px) { .panel { padding-left: 16px; } }
   .panel p { margin: 0; }
   .pnl-quiz { font-weight: 700; color: var(--quiz-ink); }
+  .pnl-sg { font-weight: 700; }
   .pnl-note { font-style: italic; color: var(--muted); }
   .pnl-closed { font-style: italic; }
   .hw, .log { margin: 4px 0 0; padding-left: 18px; }
@@ -572,6 +581,8 @@ PAGE = """<!doctype html>
   .due-tag { background: var(--ink); color: #FFFFFF; }
   .row-title .due-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; }
   .quiz-tag { background: var(--quiz-bg); color: var(--quiz-ink); }
+  /* Too wide for a phone-width square; the day's details say it there. */
+  .sg-tag { display: none; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 0 4px; line-height: 16px; border: 1px solid var(--ink); white-space: nowrap; }
   .cell-short { margin-top: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cell-code, .cell-title { display: none; }
   .cell-quiz { background: var(--quiz-bg); }
@@ -589,6 +600,7 @@ PAGE = """<!doctype html>
     .cell { height: 92px; padding: 6px 8px; }
     .cell-short { display: none; }
     .cell-code { display: block; font-weight: 700; }
+    .sg-tag { display: inline-block; }
     .cell-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
   }
   .detail { margin-top: 20px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 4px 4px 0 var(--ink); }

@@ -26,7 +26,7 @@ It prints, per course, each upcoming lesson day with no target or link
 (or class work, in a course that shows it), e.g.
 `Mon 10/12  T1L2 Fluently Add, ... -- needs target, link`.
 Those are the days to ask Aaron about; the lesson code on each line is the
-`expect` value for that day. Quizzes and tests are never listed. Raise
+`expect` value for that day. Quizzes, tests, and self-grading days are never listed. Raise
 `--days` to look further ahead.
 
 ## Format
@@ -86,7 +86,8 @@ Rules, per day:
 - Day field: `note` — always shown to students; never a note to self.
 - Leave a key out to leave that field alone; set it to `null` to clear it.
   `homework: []` is the same as `null`.
-- Quiz days, closed days, and empty days take a `note` only.
+- Quiz days, test self-grading days, closed days, and empty days take a
+  `note` only.
 - Same wording rules as the pacing-calendar skill: `target` and `classwork`
   are terse and detail-only; teacher-facing planning color is dropped, not
   stored.

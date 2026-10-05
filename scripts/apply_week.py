@@ -171,6 +171,7 @@ def plan_changes(course, week):
         if lesson_changes:
             if index is None:
                 what = "a quiz" if item is engine.QUIZ_ITEM else (
+                    "the test self-grading day" if item is engine.SELF_GRADING_ITEM else
                     f"a '{day['type']}' day" if day["type"] != "Instruction" else "an empty day")
                 problems.append(f"{where}: is {what}, so it has no lesson to put "
                                 f"{sorted(lesson_changes)} on (a note is fine)")

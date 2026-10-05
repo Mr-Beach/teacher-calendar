@@ -314,7 +314,8 @@
       "date": "2026-11-10",
       "weekday": "Tue",
       "type": "Instruction",
-      "note": null
+      "note": null,
+      "self_grading": "paired"
     },
     {
       "date": "2026-11-11",
@@ -3069,6 +3070,57 @@
         "2026-10-26",
         "2026-10-27"
       ]
+    },
+    {
+      "logged": "2026-10-04",
+      "summary": "Test self-grading is now the Wednesday after each topic test, in place of that week's quiz (after the 11/4 test it's half of Tue 11/10, since 11/11 is a holiday)",
+      "reason": null,
+      "changed": true,
+      "days": [
+        {
+          "date": "2026-10-07",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2026-11-10",
+          "what": "title",
+          "was": "T3L1 Understand and Represent Exponents",
+          "now": "T3L1 Understand and Represent Exponents + Test self-grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2026-12-16",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-01-27",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-03-03",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-03-24",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
+          "kind": "changed"
+        }
+      ],
+      "updated": []
     }
   ]
 }

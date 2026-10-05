@@ -35,11 +35,12 @@ sys.path.insert(0, str(ROOT))
 import engine  # noqa: E402
 
 # Kinds that get a tag; a plain "Lesson" doesn't need one.
-TAGGED_KINDS = {"Quiz", "Test", "Opener", "3-Act", "Project"}
-# Quizzes and tests carry no target/classwork of their own, so they're never
-# flagged as missing content. Quizzes link to the course's quiz folder, and a
-# test has nothing for students to open, so neither needs a link either.
-CONTENT_EXEMPT_KINDS = {"Quiz", "Test"}
+TAGGED_KINDS = {"Quiz", "Test", "Opener", "3-Act", "Project", "Self-Grading"}
+# Quizzes, tests, and self-grading days carry no target/classwork of their
+# own, so they're never flagged as missing content. Quizzes link to the
+# course's quiz folder, and a test or self-grading day has nothing for
+# students to open, so none of them needs a link either.
+CONTENT_EXEMPT_KINDS = {"Quiz", "Test", "Self-Grading"}
 CONTENT_FIELDS = ("target", "classwork", "link")
 FIELD_LABELS = {"target": "target", "classwork": "class work", "link": "link",
                 "homework_link": "assignment link"}

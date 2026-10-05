@@ -47,6 +47,8 @@ def render_day(day, course=None):
     badge = f'<span class="badge">{esc(kind)}</span>' if kind in TAGGED_KINDS else ""
     if day["quiz_paired"]:
         badge += '<span class="badge paired">+ Quiz</span>'
+    if day.get("self_grading_paired"):
+        badge += '<span class="badge">+ Self-grading</span>'
     parts = [f'<div class="title">{badge}{esc(day["lesson_text"])}</div>']
     if day["target"]:
         parts.append(f'<div class="line">{esc(day["target"])}</div>')

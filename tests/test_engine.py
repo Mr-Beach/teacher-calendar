@@ -66,7 +66,8 @@ class QuizRuleTests(unittest.TestCase):
         course = make_course("2026-10-05", "2026-10-16", lessons=lessons)
         days = by_date(course)
         self.assertNotEqual(days["2026-10-07"]["kind"], "Quiz")
-        self.assertEqual(days["2026-10-14"]["kind"], "Quiz")
+        # The next week's quiz slot is still there; self-grading takes it.
+        self.assertEqual(days["2026-10-14"]["kind"], "Self-Grading")
 
     def test_test_week_found_after_quizzes_shift_it(self):
         # Without a quiz on 10/7 the Test would land in week one; with it,
@@ -111,6 +112,64 @@ class QuizRuleTests(unittest.TestCase):
         course = make_course("2026-10-05", "2026-10-09")
         with self.assertRaises(ValueError):
             engine.insert_lesson(course, 0, {"district_title": "Quiz", "kind": "Quiz"})
+
+
+class SelfGradingTests(unittest.TestCase):
+    """The Wednesday after a test week is test self-grading, in the quiz's slot."""
+    LESSONS = [("A", "Lesson"), ("B", "Lesson"), ("C", "Lesson"),
+               ("Topic 1 Review", "Lesson"), ("Topic 1 Test", "Test")] + [("D", "Lesson")] * 20
+
+    def test_takes_the_quiz_slot_without_moving_lessons(self):
+        course = make_course("2026-10-05", "2026-10-23", lessons=self.LESSONS)
+        days = by_date(course)
+        self.assertEqual(days["2026-10-14"]["lesson_text"], "Test Self-Grading")
+        self.assertEqual(days["2026-10-21"]["kind"], "Quiz")
+        without = make_course("2026-10-05", "2026-10-23", lessons=self.LESSONS)
+        placed = lambda c: [(d, i) for d, i in engine.place(c)[0]
+                            if i not in (engine.QUIZ_ITEM, engine.SELF_GRADING_ITEM)]
+        self.assertEqual(placed(course), placed(without))
+        self.assertEqual(engine.check_self_grading(course), [])
+
+    def test_follows_the_test_when_it_moves(self):
+        course = make_course("2026-10-05", "2026-10-23", lessons=self.LESSONS)
+        engine.insert_lesson(course, 0, {"district_title": "Extra"})
+        engine.insert_lesson(course, 0, {"district_title": "Extra"})
+        engine.insert_lesson(course, 0, {"district_title": "Extra"})
+        days = by_date(course)  # the test now lands the week of 10/12
+        self.assertEqual(days["2026-10-15"]["kind"], "Test")
+        self.assertEqual(days["2026-10-21"]["kind"], "Self-Grading")
+        self.assertNotIn("Self-Grading", [days[d]["kind"] for d in ("2026-10-07", "2026-10-14")])
+
+    def test_no_slot_is_flagged_not_forced(self):
+        course = make_course("2026-10-05", "2026-10-23", lessons=self.LESSONS,
+                             closed=("2026-10-14",))
+        days = by_date(course)
+        self.assertNotIn("Self-Grading", [d["kind"] for d in days.values()])
+        [warning] = engine.check_self_grading(course)
+        self.assertIn("2026-10-14", warning)
+
+    def test_paired_with_a_lesson_when_wednesday_is_closed(self):
+        course = make_course("2026-10-05", "2026-10-23", lessons=self.LESSONS,
+                             closed=("2026-10-14",))
+        before = [d["lesson_text"] for d in engine.render(course)[0]]
+        engine.set_day(course, "2026-10-13", self_grading="paired")
+        cal = engine.render(course)[0]
+        self.assertEqual([d["lesson_text"] for d in cal], before)  # nothing moves
+        self.assertTrue(by_date(course)["2026-10-13"]["self_grading_paired"])
+        self.assertEqual(engine.check_self_grading(course), [])
+        with self.assertRaises(ValueError):
+            engine.set_day(course, "2026-10-14", self_grading="paired")  # a closed day
+
+    def test_full_override_keeps_the_quiz(self):
+        course = make_course("2026-10-05", "2026-10-23", lessons=self.LESSONS)
+        engine.set_day(course, "2026-10-14", quiz="full")
+        self.assertEqual(by_date(course)["2026-10-14"]["kind"], "Quiz")
+
+    def test_never_stored(self):
+        course = make_course("2026-10-05", "2026-10-09")
+        with self.assertRaises(ValueError):
+            engine.insert_lesson(course, 0, {"district_title": "Test Self-Grading",
+                                             "kind": "Self-Grading"})
 
 
 class QuizOverrideTests(unittest.TestCase):

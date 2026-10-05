@@ -29,6 +29,8 @@ lesson after it by one position.
 - `Quiz` — formative, graded, visually distinct from a Test
 - `Test` — summative, the second of a district topic-test's two days
 - `3-Act` — 3-Act Math task
+- `Self-Grading` — test self-grading day, students grading their own topic
+  test. Computed, never stored, like a quiz (see Assessments)
 - `Project` — a project work day. Summative, so it's shown in the Test
   colors, but it isn't a Test: it doesn't need a review day, and it
   doesn't stop that week's quiz (turn one off with the day's `quiz`
@@ -62,6 +64,16 @@ depend on where anything sits in `sequence`.
   Moving a quiz is `"none"` on its Wednesday plus `"full"` on the new day.
 
 A day's note never affects quiz placement — it's only text.
+
+**The Wednesday of the week after a topic test is test self-grading**, in
+both courses. It takes that week's quiz slot, so that week has no quiz and
+no lesson moves. Like quizzes, it's computed every render, so it follows the
+test when the test moves. If that Wednesday has no quiz slot (a holiday,
+a `quiz` override, another test that week), there's no self-grading day
+and the "Self-grading" check flags it, since giving it another day costs a
+lesson day. The usual fix is half a period: `engine.set_day(course, date,
+self_grading="paired")` puts self-grading alongside that day's lesson
+(nothing moves; the page shows "+ Test self-grading" on it). A `"full"` quiz override on that Wednesday keeps the quiz.
 
 `course["quiz_rhythm_start"]` is the first date this rule applies from —
 the first couple weeks of school (syllabus, routines) aren't quiz weeks even
@@ -242,6 +254,9 @@ weekly-update PR as standing warnings.
   review day as the class right before it (closed days in between are
   fine; a quiz or lesson is not). A review is recognized by "Review" in its
   title.
+- **Self-grading** (`check_self_grading`): every Test has its self-grading
+  day on the Wednesday of the following week, or shared with a lesson that
+  week.
 - **Test placement** (`check_test_placement`): no Monday tests, and none in
   the first Mon-Wed back from a break of a week or more.
 - **Unexplained closures** (`check_unexplained_closures`): every real closure
