@@ -61,15 +61,15 @@ Each phase ships and gets used before the next one starts.
   (lesson, test, or project). The grid looks dated, but it's a view onto
   her sequence (see "Data model"): filling an empty day adds the next
   lesson, and copying last week adds last week's lessons again as the next
-  ones. Marking a day "no school" or a quiz isn't a lesson; it's a change
-  to the day, as in v1.
+  ones. Marking a day "no school" isn't a lesson; it's a change to the
+  day, as in v1. Neither is a quiz (see "Recurring activities").
 - Saving publishes right away, with no build step.
 - Her students' page uses the same design as mine (Upcoming plus Whole
   year), with her name and class on it.
-- Her own rules are settings, not code: which weekday quizzes go on (or
-  none), and whether a test needs a review day the class before. Quizzes
-  are computed from the weekday setting, as in v1, never typed in; she can
-  turn one off or move it on a given day.
+- Her own rules are settings, not code: her recurring activities (below),
+  and whether a test needs a review day the class before.
+- Changes families have already seen are marked on the page (see "When the
+  calendar changes").
 - She can start from a copy of my Math 6 sequence instead of a blank year.
   The copy keeps the lesson codes, titles, kinds, and I-can targets. It
   drops my links (they point at my OneDrive and my Schoology), class work,
@@ -85,6 +85,78 @@ Each phase ships and gets used before the next one starts.
   plan, then a recent-days log that reads like a short daily note home,
   then upcoming events. A month view can wait until she asks for it.
 
+## Recurring activities
+
+A quiz is one case of something more general: an activity that comes back
+on a rule. All of them are optional; a new calendar has none. Examples:
+a Wednesday quiz, a weekly Practice Log due Friday, a homework-help day,
+a monthly catch-up day, a preschool "library day."
+
+- **The rule**: a weekday every week, every other week, or a monthly
+  position (first Friday, last class day of the month), starting from a
+  date.
+- **How it sits on the day**: it takes the whole period (lessons flow
+  past it, like a full quiz day), it shares the period with that day's
+  lesson (like a paired quiz), or it's an assignment due that day (like
+  my Practice Log), not a day at all.
+- **When it skips**, from a short list: a week with a test, the first
+  week back from a break of a week or more, a day before a holiday. These
+  are v1's quiz exceptions, made choosable.
+- **One-day changes**: turn it off that day, move it, or switch it between
+  full and shared. This is v1's `quiz` override, for any activity.
+- Like v1's quizzes, these are computed every time the page is built and
+  never stored as lessons. Adding or cutting a lesson can't knock one off
+  its day.
+
+## When the calendar changes
+
+Families who check the page closely notice when it changes, and changes
+they didn't see coming cost trust. So the page says what changed, plainly,
+and the editor helps the teacher change things less often.
+
+**What counts as a change.** Something a family could already have seen,
+altered or removed: a date moved, a lesson replaced, homework changed or
+its due date moved, a day lost. Filling in a blank isn't a change; adding
+detail to a planned day is the system working. A typo fix in text can be
+saved as "small fix" and isn't flagged; a change to a date, a test, or a
+due date can't be.
+
+**What families see:**
+- A "Changed" tag on each affected day, with what it was and what it is
+  now ("Quiz moved from Wed 10/14 to Thu 10/15").
+- One line per save, not one per day: a lost day that moves twenty
+  lessons reads "Tuesday lost to an assembly; lessons from Tuesday on
+  moved one day later."
+- The teacher's reason, when there is one ("assembly", "we needed another
+  day on ratios").
+- A "Recent changes" list on Upcoming. A tag shows until the changed day
+  passes or for 7 days, whichever comes first.
+- For a preschool calendar, editing a past day to what actually happened
+  is the log working, not a change. Only plans and events families have
+  already seen are flagged.
+
+**Best practices the editor nudges toward** (defaults, which a teacher can
+change; notices, never blocks):
+- **The next 5 class days are settled.** A change inside that window asks
+  for a one-line reason, and the editor says before saving how many days
+  families have already seen will change. Changes further out are logged
+  but tagged only when they touch a test or a due date.
+- **Never move a test or a due date earlier** once it's been shown. Later
+  is fine, with a reason.
+- **Announce a test at least 5 class days ahead.** A test added inside the
+  window gets a notice.
+- **Save changes together.** Saves made within a few minutes of each other
+  count as one change, so a teacher fixing three things reads as one
+  update, not three.
+- **Watch the count.** If the settled window has changed more than twice
+  in a week, the editor says so. That's a sign to plan less far into the
+  detail, not to stop telling families.
+
+The record behind this is a change log per calendar: each save that alters
+something already published stores what changed, from what, to what, the
+reason, and when. Phase 1 builds the tags and the log; the nudges are
+Phase 2.
+
 **Phase 2: planning buttons, no AI**
 - "Lost this day": the day stops being a class day for that calendar, and
   every lesson from it on moves one class day later (re-flow, as in v1).
@@ -92,6 +164,7 @@ Each phase ships and gets used before the next one starts.
 - "Add a day" and "remove a day" on a lesson.
 - v1's checks as gentle notices in the editor: a test on a Monday, a test
   with no review day, homework due on a day off.
+- The change nudges from "When the calendar changes".
 
 **Phase 3: AI where the rules can't reach**
 - **Describe a change.** One box in the editor for requests the buttons
@@ -119,8 +192,8 @@ Each phase ships and gets used before the next one starts.
   page families see. A teacher can have more than one calendar (my Math 6
   and Math 7/8).
 - **Class days** per calendar: the school's calendar plus this calendar's
-  own changes (an assembly that only hits one class period, a lost day, a quiz
-  turned off or moved). This is v1's `school_days`.
+  own changes (an assembly that only hits one class period, a lost day, a
+  recurring activity turned off or moved). This is v1's `school_days`.
 - **A `class` calendar stores a sequence, not dates.** It keeps v1's model:
   an ordered list of lessons, each placed on the next class day when the
   page is built. That's what makes re-flow free. Losing a day is one change
@@ -131,8 +204,8 @@ Each phase ships and gets used before the next one starts.
     it flow past it. Pinning is opt-in. A test flows by default, as in v1.
   - **Homework due dates** are fixed dates, as in v1. A lost day can leave
     something due on a day off, which is a notice, not an auto-fix.
-  Quizzes aren't stored at all; they're computed from the quiz weekday
-  setting, as in v1.
+  Recurring activities aren't stored as lessons at all; they're computed
+  from their rules, as v1's quizzes are.
 - **A `preschool` calendar stores dated entries**, one per day per row,
   planned ahead and edited after the day to what happened. Nothing
   re-flows: a lost day's plan is moved or dropped by hand ("move this
@@ -140,8 +213,12 @@ Each phase ships and gets used before the next one starts.
   events are dates.
 - **Saved lists** per calendar and row: the songs, books, or activities a
   teacher picks from when filling a cell.
-- **Settings** per calendar: quiz weekday or none, review day before a
-  test, and the kinds of lesson it uses. For `preschool`, the labels it
+- **Recurring activities** per calendar: name, rule, how it sits on the
+  day, skip conditions, and an optional link (v1's `quiz_link`).
+- **Change log** per calendar: one record per save that altered something
+  already published (see "When the calendar changes").
+- **Settings** per calendar: review day before a test, the change nudges'
+  numbers, and the kinds of lesson it uses. For `preschool`, the labels it
   uses (e.g. "Circle", "Practical life").
 
 The editor and the family page both render a class calendar the same way
