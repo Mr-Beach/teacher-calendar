@@ -1765,7 +1765,7 @@
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276288",
-      "target": null,
+      "target": "I can simplify, expand, factor, add, and subtract expressions.",
       "classwork": null,
       "extra_materials": null
     },
@@ -3095,6 +3095,16 @@
       "changed": true,
       "days": [],
       "updated": []
+    },
+    {
+      "logged": "2026-10-04",
+      "summary": "Plans updated for the week of 10/26",
+      "reason": null,
+      "changed": false,
+      "days": [],
+      "updated": [
+        "2026-10-26"
+      ]
     }
   ]
 }
