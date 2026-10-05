@@ -1529,6 +1529,7 @@
         {
           "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
           "due": "2026-10-02",
+          "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1045509204",
           "includes": [
             {
               "text": "Topic 1 Lesson 4 Practice, workbook pg 27 #1-8",
@@ -1613,8 +1614,9 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
-          "due": "2026-10-16"
+          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
+          "due": "2026-10-16",
+          "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1045918019"
         },
         {
           "text": "Topic 5 Lesson 3 Practice: workbook pg 271 #7\u201312",
@@ -1696,7 +1698,7 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
+          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
           "due": "2026-10-23"
         }
       ],
@@ -1757,7 +1759,7 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
+          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
           "due": "2026-10-30"
         }
       ],
@@ -3083,5 +3085,15 @@
     "Calculator",
     "Glue stick",
     "Ruler"
+  ],
+  "changes": [
+    {
+      "logged": "2026-10-04",
+      "summary": "Practice Log: answer keys now open on Schoology on each due date",
+      "reason": null,
+      "changed": true,
+      "days": [],
+      "updated": []
+    }
   ]
 }

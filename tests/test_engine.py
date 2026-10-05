@@ -199,6 +199,16 @@ class CheckTests(unittest.TestCase):
 
 
 
+class PracticeLogLinkTests(unittest.TestCase):
+    def test_assignment_carries_its_logs_folder(self):
+        course = make_course("2026-10-05", "2026-10-09", lessons=5, quiz_rhythm_start="2027-01-01")
+        engine.edit_lesson(course, 0, homework=[{"text": "Practice Log: weekly", "due": "2026-10-09",
+                                                 "link": "https://example.org/week1-keys"}])
+        engine.edit_lesson(course, 1, homework=[{"text": "Lesson 2 practice", "due": "2026-10-07"}])
+        days = by_date(course)
+        [due] = days["2026-10-07"]["due"]
+        self.assertEqual(due["log_link"], "https://example.org/week1-keys")
+
 class RecordChangeTests(unittest.TestCase):
     """engine.record_change: what counts as a change families already saw."""
     TODAY = date(2026, 10, 5)

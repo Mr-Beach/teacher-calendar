@@ -55,8 +55,8 @@ homework item carries a `"link"`: the assignment's own page in Schoology.
 The lesson's `link` is the lesson folder, and an assignment never falls back
 to it. An assignment without a link is flagged by `run_all_checks` ("homework
 links") and on the teacher look-ahead; tell Aaron whenever one is added
-without a link. A Practice Log takes no link (the assignments it lists carry
-their own). `link` is an
+without a link. A Practice Log's link is its week's answer-key folder in
+Schoology; every assignment in that log sends students there for its key. `link` is an
 optional URL to a student resource (Drive/OneDrive link shared "anyone with
 the link", or a path under `docs/`), rendered as the "Open the lesson" button in
 that day's details.

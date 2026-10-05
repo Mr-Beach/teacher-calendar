@@ -147,12 +147,19 @@ class ApplyWeekTests(unittest.TestCase):
         self.assertEqual([h["text"] for h in cal[due]["due"]], ["p. 2"])
         self.assertTrue(engine.check_homework_due_dates(self.course))
 
-    def test_linked_assignments_and_practice_logs_are_not_flagged(self):
+    def test_linked_assignments_are_not_flagged_and_a_log_needs_its_folder(self):
         due = self.day2["date"]
+        mine = lambda: [w for w in engine.check_homework_links(self.course)
+                        if f"assigned {self.day1['date']}" in w]
         self.plan_apply([{"date": self.day1["date"], "expect": self.code, "homework": [
             {"text": "p. 2", "due": due, "link": "https://example.org/p2"},
             {"text": "Practice Log", "due": due}]}])
-        self.assertEqual(engine.check_homework_links(self.course), [])
+        [warning] = mine()
+        self.assertIn("'Practice Log'", warning)
+        self.plan_apply([{"date": self.day1["date"], "expect": self.code, "homework": [
+            {"text": "p. 2", "due": due, "link": "https://example.org/p2"},
+            {"text": "Practice Log", "due": due, "link": "https://example.org/week-keys"}]}])
+        self.assertEqual(mine(), [])
 
     def test_reapplying_is_a_no_op(self):
         week = [{"date": self.day1["date"], "expect": self.code, "target": "T", "note": "N"}]
