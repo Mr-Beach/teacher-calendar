@@ -22,8 +22,9 @@ git pull
 python3 scripts/lookahead.py --needs --days 15
 ```
 
-It prints, per course, each upcoming lesson day with no target, class work,
-or link, e.g. `Mon 10/12  T1L2 Fluently Add, ... -- needs target, class work`.
+It prints, per course, each upcoming lesson day with no target or link
+(or class work, in a course that shows it), e.g.
+`Mon 10/12  T1L2 Fluently Add, ... -- needs target, link`.
 Those are the days to ask Aaron about; the lesson code on each line is the
 `expect` value for that day. Quizzes and tests are never listed. Raise
 `--days` to look further ahead.
@@ -63,7 +64,9 @@ Rules, per day:
   the guard against a calendar that shifted after the week was planned — a
   mismatch rejects the whole file and changes nothing.
 - Lesson fields: `target`, `classwork`, `homework`, `link`,
-  `extra_materials` (list).
+  `extra_materials` (list). `classwork` only counts in a course that shows
+  class work (`"show_classwork"` in the course file; it's off for both of
+  Aaron's courses): otherwise it's skipped, and the summary says so.
 - `homework` — a list of the assignments **given that day**, each
   `{"text": ..., "due": "YYYY-MM-DD"}`. Put it only on the day it's
   assigned; don't repeat it on later days. The page shows it on its due

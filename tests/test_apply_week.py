@@ -175,7 +175,7 @@ class ApplyWeekTests(unittest.TestCase):
             week = repo / "inbox" / "test.json"
             week.parent.mkdir(exist_ok=True)
             week.write_text(json.dumps({"course": "math6", "week_of": "test", "days": [
-                {"date": self.day1["date"], "expect": self.code, "classwork": "Workbook p. 5 – 6"}]}))
+                {"date": self.day1["date"], "expect": self.code, "target": "I can do p. 5 – 6"}]}))
             course_file = repo / "courses" / "math6.json"
             original = course_file.read_text()
             run = lambda *a: subprocess.run([sys.executable, "scripts/apply_week.py", *a],
@@ -190,6 +190,14 @@ class ApplyWeekTests(unittest.TestCase):
             diff = [l for l in zip(original.splitlines(), new.splitlines()) if l[0] != l[1]]
             self.assertEqual(len(diff), 1, "exactly one line should change")
             self.assertIn("No dates moved", (repo / "s.md").read_text())
+            # Class work is off for Math 6: a week's class work is skipped, and said so.
+            cw = repo / "inbox" / "cw.json"
+            cw.write_text(json.dumps({"course": "math6", "days": [
+                {"date": self.day1["date"], "expect": self.code, "classwork": "Workbook p. 7"}]}))
+            r = run(str(cw), "--summary", str(repo / "s.md"))
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertEqual(course_file.read_text(), new)
+            self.assertIn("was skipped", (repo / "s.md").read_text())
             bad = repo / "inbox" / "bad.json"
             bad.write_text(json.dumps({"days": [{"date": self.day1["date"], "expect": "9.9", "target": "x"}]}))
             r = run(str(bad))

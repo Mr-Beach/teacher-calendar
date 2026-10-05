@@ -58,13 +58,19 @@ class LookaheadTests(unittest.TestCase):
     def test_needs_lists_only_gap_days(self):
         window = la.lookahead(COURSE, FIRST_DATE, 20)
         lines = la.format_needs(COURSE, window)
-        gaps = [d for d in window if la.missing_content(d)]
+        gaps = [d for d in window if la.missing_content(d, COURSE)]
         self.assertEqual(len(lines), 1 + len(gaps))
         for day, line in zip(gaps, lines[1:]):
             self.assertIn(day["lesson_text"], line)
 
+    def test_class_work_not_needed_when_turned_off(self):
+        day = next(d for d in CALENDAR if d["kind"] == "Lesson")
+        blank = {**day, "classwork": None}
+        self.assertIn("classwork", la.missing_content(blank, {**COURSE, "show_classwork": True}))
+        self.assertNotIn("classwork", la.missing_content(blank, {**COURSE, "show_classwork": False}))
+
     def test_needs_with_no_gaps(self):
-        window = [d for d in la.lookahead(COURSE, FIRST_DATE, 5) if not la.missing_content(d)]
+        window = [d for d in la.lookahead(COURSE, FIRST_DATE, 5) if not la.missing_content(d, COURSE)]
         self.assertIn("every lesson day has its content", la.format_needs(COURSE, window)[0])
 
     def test_cli_prints_every_course(self):

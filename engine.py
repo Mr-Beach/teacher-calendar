@@ -240,6 +240,14 @@ def _practice_log_contents(placements):
     return contents
 
 
+def shows_classwork(course):
+    """Whether a course shows class work at all (its "show_classwork",
+    default on). Off, render() blanks every day's class work, so nothing
+    downstream -- the page, the look-ahead, change tracking -- sees it; what's
+    stored stays, and turning it back on brings it back."""
+    return course.get("show_classwork", True)
+
+
 def place(course):
     """(placements, leftover): each school day paired with the sequence
     entry, QUIZ_ITEM, or None that lands on it -- the one placement every
@@ -309,7 +317,7 @@ def render(course):
                 "homework": homework_for(day, lesson) or None,
                 "due": due_by_date.get(day["date"]), "note": note,
                 "target": lesson.get("target") if lesson else None,
-                "classwork": lesson.get("classwork") if lesson else None,
+                "classwork": lesson.get("classwork") if lesson and shows_classwork(course) else None,
                 # A computed quiz day has no stored entry to carry a link, so
                 # every quiz links to the course's one quiz folder.
                 "link": (course.get("quiz_link") if lesson is QUIZ_ITEM
@@ -535,16 +543,34 @@ def _content_added(before_day, after_day):
     return bool(given(after_day) - given(before_day)) and len(after_day["homework"] or []) > len(before_day["homework"] or [])
 
 
-def _moved_to(before_day, after_calendar, date_, today):
+def _same_occurrence(title, date_, from_calendar, to_calendar, today):
+    """The date in `to_calendar` of the same occurrence of `title` that
+    `from_calendar` has on `date_` -- matched by order, so the second day of
+    a two-day lesson or project maps to its new second day, not its first.
+    None if it's gone, past, or on the same date."""
+    k = sum(1 for d in from_calendar if d["date"] < date_ and d["lesson_text"] == title)
+    dates = [d["date"] for d in to_calendar if d["lesson_text"] == title]
+    if k >= len(dates) or dates[k] < today or dates[k] == date_:
+        return None
+    return dates[k]
+
+
+def _moved_to(before_day, before_calendar, after_calendar, date_, today):
     """Where the lesson that was on `date_` is now, if it's still on the
-    calendar on another day from today on -- the first such day, so a
-    two-day lesson points at its new first day. None for a quiz (every quiz
-    looks alike) or a closed day."""
+    calendar from today on. None for a quiz (every quiz looks alike) or a
+    closed day."""
     if before_day["type"] != "Instruction" or before_day["kind"] == "Quiz":
         return None
-    title = before_day["lesson_text"]
-    return next((d["date"] for d in after_calendar
-                 if d["date"] >= today and d["date"] != date_ and d["lesson_text"] == title), None)
+    return _same_occurrence(before_day["lesson_text"], date_, before_calendar, after_calendar, today)
+
+
+def _moved_from(after_day, before_calendar, after_calendar, date_, today):
+    """Where a test or project that's on `date_` now used to be, from today
+    on -- so the day it arrives on can say so. Only tests and projects:
+    that's where the new date is the news. None otherwise."""
+    if after_day["kind"] not in ("Test", "Project"):
+        return None
+    return _same_occurrence(after_day["lesson_text"], date_, after_calendar, before_calendar, today)
 
 
 def _due_changes(before_calendar, after_calendar, today, small_fix=False):
@@ -607,7 +633,8 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
     assignment.
 
     Each tagged day's `kind` says what happened, for the page's tag:
-    "moved" (its lesson or test is now on `moved_to`), "due moved" (an
+    "moved" (its lesson or test is now on `moved_to`, and/or the test or
+    project now on it came from `moved_from`), "due moved" (an
     assignment's due date), "dropped" (an assignment is gone), or
     "changed" (anything else).
 
@@ -649,9 +676,12 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
         any_change = True
         if date_ <= window_end or _is_assessment(before_day) or _is_assessment(after_day):
             detail = {"date": date_, "what": what, "was": was, "now": now, "kind": "changed"}
-            moved_to = what == "title" and _moved_to(before_day, after_calendar, date_, today)
+            moved_to = what == "title" and _moved_to(before_day, before_calendar, after_calendar, date_, today)
             if moved_to:
                 detail.update(kind="moved", moved_to=moved_to)
+            moved_from = what == "title" and _moved_from(after_day, before_calendar, after_calendar, date_, today)
+            if moved_from:
+                detail.update(kind="moved", moved_from=moved_from)
             tagged.append(detail)
     dues = _due_changes(before_calendar, after_calendar, today, small_fix)
     changed = any_change or bool(dues)

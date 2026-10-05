@@ -168,8 +168,10 @@ course file, so what was applied stays on record.
 
 A week as a plain-text block, one entry per school day: date, lesson name, a
 `Target` (I-can statement), `Class work` (activity + point value),
-`Homework`, and sometimes `Note` / `Extension` / `Warm up`. Map `Target` →
-`target` and `Class work` (plus any `Extension`/`Warm up`) → `classwork`,
+`Homework`, and sometimes `Note` / `Extension` / `Warm up`. **Class work is
+turned off for both courses** (`"show_classwork": false`), so drop `Class
+work`, `Extension`, and `Warm up` unless Aaron turns it back on. Otherwise,
+map `Target` → `target` and `Class work` (plus any `Extension`/`Warm up`) → `classwork`,
 terse and matching the file's existing style, not transcribed in full
 (pages always "pg 27" / "pg 15–16", never "p.", "pp.", or "page") —
 both are detail-only, never the tile title (see above). `Homework` →

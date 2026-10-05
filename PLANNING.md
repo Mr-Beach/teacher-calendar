@@ -159,6 +159,10 @@ The calendar is student-facing. That governs everything on it:
   today" / "due tomorrow" called out. A due date is a fixed date — it's how much time students have,
   not tied to content, so a lost day never moves it. Homework is never
   assigned on a quiz day, but can be due on one.
+- **Class work is off** for both courses (`"show_classwork": false` in
+  each course file). Any stored class work stays in the file but isn't
+  shown, flagged as missing, or tracked as a change; turning the setting
+  back on brings it back.
 - Lesson text is written for a sixth grader, not copied from district titles
   where those are opaque.
 - Quiz and Test days are visually flagged, in **different colors** — formative
@@ -173,13 +177,16 @@ edit is logged with `engine.record_change` in the course file's `changes`
 list, and the page builds two things from that log:
 
 - **A tag on each changed day** that says what happened: "Moved" (its
-  lesson or test is on another day now, and the details say which),
+  lesson or test is on another day now, and the details say which; the
+  day a test or project moves to says where it came from),
   "Due date moved", "HW dropped", or "Changed" for anything else. It's a
   dot on the day's Whole-year square, and the old version sits at the top
   of the day's details. The tag shows for 7
   days after the change, or until the day itself is past.
 - **Recent changes** on Upcoming: one line per edit, in my words, with the
   reason if I gave one, listed for 7 days.
+- **Coming up**: the next quiz or test tile carries the same tag when its
+  day changed, and a moved test says where it moved from.
 
 What counts is what someone could already have seen, from today on:
 

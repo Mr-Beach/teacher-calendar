@@ -801,12 +801,19 @@ PAGE = """<!doctype html>
   const byNewest = (a, b) => (a.logged < b.logged ? 1 : a.logged > b.logged ? -1 : 0);
   // An entry that only added content isn't a change (`changed` false).
   const recentChanges = CHANGES.filter((c) => c.changed !== false && within(c, CHANGE_DAYS)).sort(byNewest);
+  const recentDetails = [].concat(...recentChanges.map((c) => c.days));
   function changeLine(c, d) {
     const p = el('p', 'pnl-changed');
     p.appendChild(el('b', null, 'Changed ' + shortDate(c.logged) + '. '));
     const end = (t) => (/[.!?]$/.test(t) ? t : t + '.');
     let text;
-    if (d.kind === 'moved') text = end(d.was + ' moved to ' + longDate(d.moved_to));
+    if (d.kind === 'moved') {
+      // The arrival first: on a test's new day, that's what students came for.
+      const parts = [];
+      if (d.moved_from) parts.push(end(d.now + ' moved here from ' + longDate(d.moved_from)));
+      if (d.moved_to) parts.push(end(d.was + ' moved to ' + longDate(d.moved_to)));
+      text = parts.join(' ');
+    }
     else if (d.kind === 'dropped') text = end(d.was) + ' No longer assigned.';
     else {
       text = end((d.what === 'class work' ? 'Class work was: ' : 'Was: ') + d.was);
@@ -966,9 +973,14 @@ PAGE = """<!doctype html>
       if (!d) return;
       const t = el('button', 'tile tile-' + kind);
       t.type = 'button';
-      t.appendChild(el('span', 'k', label));
+      // A recently moved or changed quiz/test says so on its tile too --
+      // this is where students look for the date.
+      const change = recentDetails.find((x) => x.date === d.date);
+      const k = el('span', 'k', label);
+      if (change) k.appendChild(el('span', 'chg-tag', CHANGE_LABELS[change.kind] || 'Changed'));
+      t.appendChild(k);
       t.appendChild(el('span', 'v', tileDate(d.date)));
-      t.appendChild(el('span', 'w', fromNow(d.date)));
+      t.appendChild(el('span', 'w', fromNow(d.date) + (change && change.moved_from ? ' · moved from ' + shortDate(change.moved_from) : '')));
       t.addEventListener('click', () => openDay(d.date));
       tiles.appendChild(t);
     });

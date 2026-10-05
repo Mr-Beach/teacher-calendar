@@ -67,6 +67,8 @@ session anyway, writing it as a week file and running
      rather than relying on `target` to stand in for it. `target` (the
      day's I-can statement) and `classwork` (the activity, with its point
      value) are detail-only — shown only when a student clicks the day.
+     Class work is turned off for both courses (`"show_classwork": false`):
+     don't write it.
    - `link` (on `insert_lesson`/`edit_lesson`) is an optional URL to a
      student-facing resource for that day — **not** a lesson-builder deck
      (Aaron isn't sharing those with students). The current plan is a

@@ -39,8 +39,8 @@ class LookaheadPageTests(unittest.TestCase):
     def test_gap_flag_matches_missing_content(self):
         page = lp.build_page([(SLUG, COURSE)], today=FIRST)
         for day in CALENDAR:
-            html = lp.render_day(day)
-            self.assertEqual('data-gap="1"' in html, bool(la.missing_content(day)))
+            html = lp.render_day(day, COURSE)
+            self.assertEqual('data-gap="1"' in html, bool(la.missing_content(day, COURSE)))
             self.assertIn(html, page)
 
     def test_not_indexed(self):

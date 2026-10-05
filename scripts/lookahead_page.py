@@ -33,14 +33,14 @@ def week_monday(iso):
     return d - timedelta(days=d.weekday())
 
 
-def render_day(day):
+def render_day(day, course=None):
     d = date.fromisoformat(day["date"])
     when = f'<div class="when"><span>{day["weekday"]}</span>{d.month}/{d.day}</div>'
     if day["type"] != "Instruction":
         return (f'<li class="day closed" data-date="{day["date"]}">{when}'
                 f'<div class="what"><div class="title">{esc(day["display"])}</div></div></li>')
     kind = day["kind"]
-    needs = missing_content(day)
+    needs = missing_content(day, course)
     css = ["day", KIND_CLASS.get(kind, "lesson")]
     if needs:
         css.append("gap")
@@ -82,7 +82,7 @@ def render_course(slug, course, start):
         weeks[-1][1].append(day)
     body = "".join(
         f'<section class="week"><h3>Week of {monday.strftime("%b")} {monday.day}</h3>'
-        f'<ol>{"".join(render_day(d) for d in week)}</ol></section>'
+        f'<ol>{"".join(render_day(d, course) for d in week)}</ol></section>'
         for monday, week in weeks
     ) or '<p class="empty">No school days left in the calendar.</p>'
     return (f'<article class="course" data-course="{esc(slug)}">'

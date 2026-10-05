@@ -69,13 +69,16 @@ def lookahead(course, start, days):
     return window
 
 
-def missing_content(day):
+def missing_content(day, course=None):
     """Content fields a lesson day still needs, e.g. ["target", "link"].
     "homework_link" means an assignment given that day has no link of its
-    own (a Practice Log needs none)."""
+    own (a Practice Log needs none). Class work isn't needed in a course
+    that has it turned off (engine.shows_classwork)."""
     if day["type"] != "Instruction" or day["kind"] is None:
         return []
-    needs = [] if day["kind"] in CONTENT_EXEMPT_KINDS else [f for f in CONTENT_FIELDS if not day[f]]
+    fields = [f for f in CONTENT_FIELDS
+              if f != "classwork" or course is None or engine.shows_classwork(course)]
+    needs = [] if day["kind"] in CONTENT_EXEMPT_KINDS else [f for f in fields if not day[f]]
     if any(not hw["link"] and not engine.is_practice_log(hw) for hw in day["homework"] or []):
         needs.append("homework_link")
     return needs
@@ -101,7 +104,7 @@ def format_course(course, window):
             lines.append(f"{indent}{day['target']}")
         if day["note"]:
             lines.append(f"{indent}note: {day['note']}")
-        needs = missing_content(day)
+        needs = missing_content(day, course)
         if needs:
             lines.append(f"{indent}needs: {', '.join(FIELD_LABELS[f] for f in needs)}")
     return lines
@@ -109,7 +112,7 @@ def format_course(course, window):
 
 def format_needs(course, window):
     """Only the days in `window` still missing content, one line each."""
-    gaps = [(day, missing_content(day)) for day in window]
+    gaps = [(day, missing_content(day, course)) for day in window]
     gaps = [(day, needs) for day, needs in gaps if needs]
     if not window:
         return [f"{course['course']}: no instructional days left in the calendar"]

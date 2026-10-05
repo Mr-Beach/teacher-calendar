@@ -261,6 +261,8 @@ class RecordChangeTests(unittest.TestCase):
         self.assertIn("2026-10-22", days)  # was the test
         self.assertIn("2026-10-23", days)  # is the test now
         self.assertNotIn("2026-10-21", days)  # an ordinary lesson out there
+        arrived = next(d for d in self.record(course, before)["days"] if d["date"] == "2026-10-23")
+        self.assertEqual(arrived.get("moved_from"), "2026-10-22")
 
     def test_moved_due_date(self):
         course = self.course()

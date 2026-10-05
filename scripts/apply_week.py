@@ -313,6 +313,13 @@ def main(argv=None):
     course = json.loads(course_path.read_text())
 
     before_calendar, before_leftover = engine.render(course)
+    # A course with class work turned off (engine.shows_classwork) takes
+    # none: drop it from the week rather than store text nobody sees.
+    skipped = []
+    if not engine.shows_classwork(course):
+        for day in week.get("days") or []:
+            if isinstance(day, dict) and day.pop("classwork", None) is not None:
+                skipped.append(day.get("date", "?"))
     try:
         edits = plan_changes(course, week)
     except WeekError as e:
@@ -330,6 +337,9 @@ def main(argv=None):
     # does, so the page can tag it (PLANNING.md, "When the calendar changes").
     logged = engine.record_change(course, before_calendar, f"Plans updated for the week of {_md(week_of)}")
     summary += _changes_note(logged)
+    if skipped:
+        summary += (f"\nClass work is off for this course, so the class work for "
+                    f"{', '.join(skipped)} was skipped.\n")
     print(summary)
     if args.summary:
         Path(args.summary).write_text(summary)
