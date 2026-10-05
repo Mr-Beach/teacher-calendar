@@ -38,7 +38,7 @@ from datetime import date, timedelta
 from itertools import groupby
 from pathlib import Path
 
-from engine import render, run_all_checks
+from engine import is_practice_log, render, run_all_checks
 
 TEACHER = "Mr. Beach"
 MONTH_NAMES = [
@@ -149,6 +149,18 @@ def log_checklist(item):
     return f'<ul class="log">{"".join(rows)}</ul>' if rows else ""
 
 
+def due_note(due, course):
+    """What to do with an assignment on its due date, from the course's
+    "due_notes": "practice_log" for the log itself, "in_log" for an
+    assignment that goes in a Practice Log. None when the course sets none."""
+    notes = course.get("due_notes") or {}
+    if is_practice_log(due):
+        return notes.get("practice_log")
+    if due.get("log_due"):
+        return notes.get("in_log")
+    return None
+
+
 def render_panel(day, course):
     parts = []
     if day.get("quiz_paired"):
@@ -179,8 +191,10 @@ def render_panel(day, course):
         key_html = (f'<a class="keylink" href="{esc(key)}" target="_blank" rel="noopener">'
                     f'{"Weekly quizzes" if redo else "Answer key"}{ARROW}</a>' if key else "")
         given = f'<span class="given">(given {short_date(due["assigned"])})</span>'
+        note = due_note(due, course)
+        note_html = f'<span class="due-note">{esc(note)}</span>' if note else ""
         # Laid out like the Homework list: the assignment, then a dark pill.
-        items.append(f'<li class="due-item"><div class="due-body">{hw_text(due)} {given}{key_html}'
+        items.append(f'<li class="due-item"><div class="due-body">{hw_text(due)} {given}{note_html}{key_html}'
                      f'{log_checklist(due)}</div><span class="pill pill-today">Due</span></li>')
     if items:
         parts.append(f'<div class="field pnl-due"><span class="lbl">Due this day</span><ul>{"".join(items)}</ul></div>')
@@ -513,6 +527,7 @@ PAGE = """<!doctype html>
   .due-item + .due-item { border-top: 1.5px solid var(--line); }
   .due-body { min-width: 0; }
   .given { color: var(--muted); }
+  .due-note { display: block; font-size: 14px; }
   .keylink { display: block; width: fit-content; font-size: 14px; }
   .btn { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; border-radius: 12px; background: var(--ink); color: #FFFFFF; font-weight: 700; text-decoration: none; }
 

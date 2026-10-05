@@ -294,6 +294,8 @@ def render(course):
                 entry = {"text": hw["text"], "assigned": day["date"], "link": hw["link"]}
                 if "includes" in hw:
                     entry["includes"] = hw["includes"]
+                if "log_due" in hw:
+                    entry["log_due"] = hw["log_due"]
                 due_by_date.setdefault(hw["due"], []).append(entry)
 
     calendar = []
