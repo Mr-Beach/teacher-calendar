@@ -40,6 +40,12 @@ class PageTests(unittest.TestCase):
                                     + re.escape(render.DUE_TAG), page))
             self.assertEqual(tagged, {d["date"] for d in calendar if d["due"]}, slug)
 
+    def test_due_and_given_each_get_a_line(self):
+        day = {"kind": "Lesson", "due": [{"text": "Practice Log: a long sentence"}, {"text": "pg 2"}],
+               "homework": [{"text": "pg 5"}]}
+        self.assertEqual(render.row_summary(day), ["Due: Practice Log: a long sentence (+1 more)", "HW: pg 5"])
+        self.assertEqual(render.row_summary({**day, "kind": "3-Act", "due": []}), ["3-Act task · HW: pg 5"])
+
     def test_every_expandable_row_has_its_panel(self):
         for slug, course in COURSES:
             page, _ = page_and_calendar(course)

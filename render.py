@@ -221,7 +221,9 @@ def render_panel(day, course):
 # --- Upcoming: the week-by-week list -----------------------------------------
 
 def row_summary(day):
-    """The one line under a row's title: what kind of day, what's due, what's given."""
+    """The lines under a row's title: what kind of day and what's due, then
+    what's given. Due and given get a line each -- each line is cut short to
+    fit, and on one shared line a long due item hid the homework given."""
     bits = []
     if day["kind"] == "Opener":
         bits.append("Topic opener")
@@ -231,11 +233,14 @@ def row_summary(day):
         bits.append("+ Quiz")
     if day.get("self_grading_paired"):
         bits.append("+ Test self-grading")
+    lines = []
     for label, items in (("Due", day["due"]), ("HW", day["homework"])):
         if items:
             more = f" (+{len(items) - 1} more)" if len(items) > 1 else ""
-            bits.append(f"{label}: {items[0]['text']}{more}")
-    return " · ".join(bits)
+            lines.append(f"{label}: {items[0]['text']}{more}")
+    if bits:
+        lines[:1] = [" · ".join(bits + lines[:1])]
+    return lines
 
 
 def render_row(day, course):
@@ -249,8 +254,7 @@ def render_row(day, course):
         title = f'<span class="tag tag-test">{esc(day["lesson_text"])}</span>'
     else:
         title = esc(day_title(day))
-    summary = row_summary(day)
-    sub = f'<span class="row-sub">{esc(summary)}</span>' if summary else ""
+    sub = "".join(f'<span class="row-sub">{esc(line)}</span>' for line in row_summary(day))
     # The same "Due" tag a Whole-year square gets, after the title.
     due = f" {DUE_TAG}" if day["due"] else ""
     main = f'<span class="row-main"><span class="row-title">{title}{due}</span>{sub}</span>'
