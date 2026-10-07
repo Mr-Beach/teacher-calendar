@@ -73,7 +73,7 @@ def lookahead(course, start, days):
 def missing_content(day, course=None):
     """Content fields a lesson day still needs, e.g. ["target", "link"].
     "homework_link" means an assignment given that day has no link of its
-    own (a Practice Log's is its week's answer-key folder). Class work isn't needed in a course
+    own (a Practice Log's is its answer-key folder). Class work isn't needed in a course
     that has it turned off (engine.shows_classwork)."""
     if day["type"] != "Instruction" or day["kind"] is None:
         return []

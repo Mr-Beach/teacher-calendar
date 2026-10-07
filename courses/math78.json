@@ -1528,7 +1528,7 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: check your practice with the keys, fix mistakes, staple, and sign",
+          "text": "Practice Log: Add each assignment when it's assigned, then update it on the due date when we check it with the answer key.",
           "due": "2026-10-02",
           "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1045509204",
           "includes": [
@@ -1615,7 +1615,7 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
+          "text": "Practice Log: Add each assignment when it's assigned, then update it on the due date when we check it with the answer key.",
           "due": "2026-10-16",
           "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1045918019"
         },
@@ -1699,8 +1699,8 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
-          "due": "2026-10-23",
+          "text": "Practice Log: Add each assignment when it's assigned, then update it on the due date when we check it with the answer key.",
+          "due": "2026-10-26",
           "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1045921112"
         }
       ],
@@ -1759,12 +1759,7 @@
       "lesson_code": null,
       "district_title": "Topic 5 Review",
       "kind": "Lesson",
-      "homework": [
-        {
-          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
-          "due": "2026-10-30"
-        }
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276288",
       "target": "I can simplify, expand, factor, add, and subtract expressions.",
       "classwork": null,
@@ -3168,6 +3163,29 @@
           "was": "Quiz",
           "now": "Test Self-Grading",
           "kind": "changed"
+        }
+      ],
+      "updated": []
+    },
+    {
+      "logged": "2026-10-06",
+      "summary": "Practice Logs now run two weeks: the 10/23 and 10/30 logs are one log, due Mon 10/26 so it's checked before the Topic 5 test. Add each assignment when it's assigned, and update it on the due date when we check it.",
+      "reason": null,
+      "changed": true,
+      "days": [
+        {
+          "date": "2026-10-23",
+          "what": "homework",
+          "was": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date. (due 10/23)",
+          "now": null,
+          "kind": "dropped"
+        },
+        {
+          "date": "2026-10-30",
+          "what": "homework",
+          "was": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date. (due 10/30)",
+          "now": null,
+          "kind": "dropped"
         }
       ],
       "updated": []

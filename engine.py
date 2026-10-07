@@ -244,7 +244,7 @@ def _homework_with_links(lesson):
 
 
 def is_practice_log(hw):
-    """A Practice Log is the weekly container students record their practice
+    """A Practice Log is the two-week container students record their practice
     in -- recognized by its text, since it's entered like any other homework."""
     return hw["text"].lower().startswith("practice log")
 
@@ -303,7 +303,7 @@ def render(course):
     # A Practice Log carries the assignments it covers ("includes"; the page
     # shows them as a checklist on the log's due date), and each assignment
     # it covers carries that log's due date ("log_due"; the page tags the
-    # assignment with it) and its link ("log_link": the week's answer-key
+    # assignment with it) and its link ("log_link": the log's answer-key
     # folder, where the page sends it for its key). An assignment in two
     # logs gets the earlier one.
     log_contents = _practice_log_contents(placements)
@@ -916,12 +916,48 @@ def check_homework_due_dates(course):
 def check_homework_links(course):
     """Flag assignments with no link of their own. Each assignment should open
     its own page in Schoology; without a link it shows as plain text. A
-    Practice Log links to its week's answer-key folder, which is also where
+    Practice Log links to its answer-key folder, which is also where
     every assignment in it sends students for the key."""
     calendar, _ = render(course)
     return [f"'{hw['text']}' (assigned {day['date']}, due {hw['due']}): no link"
-            + (" (its week's answer-key folder)" if is_practice_log(hw) else "")
+            + (" (its answer-key folder)" if is_practice_log(hw) else "")
             for day in calendar for hw in day["homework"] or [] if not hw["link"]]
+
+
+MAX_LOG_ASSIGNMENTS = 5
+
+
+def check_practice_log_size(course):
+    """Flag a Practice Log covering more than MAX_LOG_ASSIGNMENTS assignments.
+    A log runs two weeks and has room for five; a sixth means a busy stretch
+    of homework, or a log window that crept wider. Not auto-fixed -- whether
+    to drop an assignment, move a due date, or split the log is Aaron's call."""
+    calendar, _ = render(course)
+    return [f"'{hw['text']}' (assigned {day['date']}, due {hw['due']}): "
+            f"{len(hw['includes'])} assignments, more than {MAX_LOG_ASSIGNMENTS}"
+            for day in calendar for hw in day["homework"] or []
+            if is_practice_log(hw) and len(hw.get("includes") or []) > MAX_LOG_ASSIGNMENTS]
+
+
+def check_practice_log_before_test(course, today=None):
+    """Flag a Practice Log assigned before a Test but due on or after it. Its
+    assignments get checked against the keys on the log's due date, and that
+    should happen before the test -- it's part of studying for it. Logs
+    already past are skipped. Not auto-fixed -- the usual fix is moving the
+    log's due date to the review day, but which day is Aaron's call."""
+    calendar, _ = render(course)
+    today = (today or school_today()).isoformat()
+    tests = [d["date"] for d in calendar if d["kind"] == "Test"]
+    warnings = []
+    for day in calendar:
+        for hw in day["homework"] or []:
+            if not is_practice_log(hw) or not hw["due"] or hw["due"] < today:
+                continue
+            for t in tests:
+                if day["date"] < t <= hw["due"]:
+                    warnings.append(f"'{hw['text']}' (assigned {day['date']}, due {hw['due']}): "
+                                    f"due on or after the {t} test")
+    return warnings
 
 
 def run_all_checks(course):
@@ -939,6 +975,8 @@ def run_all_checks(course):
         ("lesson shortfall", check_lesson_shortfall(course)),
         ("homework due dates", check_homework_due_dates(course)),
         ("homework links", check_homework_links(course)),
+        ("practice log size", check_practice_log_size(course)),
+        ("practice log before test", check_practice_log_before_test(course)),
     ]
 
 

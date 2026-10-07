@@ -76,11 +76,13 @@ Rules, per day:
   Each item also takes a `"link"`: the assignment's own page in Schoology
   (the day's `link` is the lesson folder; an assignment doesn't fall back
   to it). An assignment with no link shows as plain text and gets flagged
-  ("needs assignment link"). A Practice Log's link is that week's
+  ("needs assignment link"). A Practice Log's link is its
   answer-key folder in Schoology; every assignment in the log sends
   students there for its key.
-  A Practice Log (text starting "Practice Log") automatically lists every
-  other assignment due from the day it's assigned through its due date.
+  A Practice Log (text starting "Practice Log") runs two weeks, Monday
+  through the Friday after, and automatically lists every other
+  assignment due from the day it's assigned through its due date. More
+  than 5 is flagged ("practice log size").
   When that window is wrong, give it `"includes"`: the assignments it
   covers, each `{"text", "due"}` copied exactly from where it was assigned.
 - Day field: `note` — always shown to students; never a note to self.

@@ -268,6 +268,43 @@ class PracticeLogLinkTests(unittest.TestCase):
         [due] = days["2026-10-07"]["due"]
         self.assertEqual(due["log_link"], "https://example.org/week1-keys")
 
+    def _two_week_log(self, assignments):
+        course = make_course("2026-10-05", "2026-10-16", lessons=10, quiz_rhythm_start="2027-01-01")
+        engine.edit_lesson(course, 0, homework=[{"text": "Practice Log: two weeks", "due": "2026-10-16",
+                                                 "link": "https://example.org/keys"}])
+        for i in range(assignments):
+            engine.edit_lesson(course, i + 1, homework=[{"text": f"Lesson {i + 2} practice", "due": "2026-10-15",
+                                                         "link": "https://example.org/hw"}])
+        return course
+
+    def test_five_assignments_is_fine(self):
+        self.assertEqual(engine.check_practice_log_size(self._two_week_log(5)), [])
+
+    def test_sixth_assignment_is_flagged(self):
+        [warning] = engine.check_practice_log_size(self._two_week_log(6))
+        self.assertIn("6 assignments", warning)
+
+    def _log_around_test(self, log_due):
+        lessons = ([(f"Lesson {i + 1}", "Lesson") for i in range(5)] + [("Review", "Lesson"), ("Topic 1 Test", "Test")]
+                   + [(f"Lesson {i + 7}", "Lesson") for i in range(3)])
+        course = make_course("2026-10-05", "2026-10-16", lessons=lessons, quiz_rhythm_start="2027-01-01")
+        engine.edit_lesson(course, 0, homework=[{"text": "Practice Log: two weeks", "due": log_due,
+                                                 "link": "https://example.org/keys"}])
+        return course
+
+    def test_log_due_on_review_day_is_fine(self):
+        course = self._log_around_test("2026-10-12")  # the test is Tue 10/13
+        self.assertEqual(engine.check_practice_log_before_test(course, today=date(2026, 10, 5)), [])
+
+    def test_log_due_after_test_is_flagged(self):
+        course = self._log_around_test("2026-10-16")
+        [warning] = engine.check_practice_log_before_test(course, today=date(2026, 10, 5))
+        self.assertIn("2026-10-13 test", warning)
+
+    def test_past_log_is_not_flagged(self):
+        course = self._log_around_test("2026-10-16")
+        self.assertEqual(engine.check_practice_log_before_test(course, today=date(2026, 10, 19)), [])
+
 class RecordChangeTests(unittest.TestCase):
     """engine.record_change: what counts as a change families already saw."""
     TODAY = date(2026, 10, 5)

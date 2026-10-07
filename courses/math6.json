@@ -1539,7 +1539,7 @@
       "classwork": "Distance practice; find the missing coordinate; perimeter; first Practice Log.",
       "homework": [
         {
-          "text": "Practice Log: one row for each assignment listed under it",
+          "text": "Practice Log: Add each assignment when it's assigned, then update it on the due date when we check it with the answer key.",
           "due": "2026-10-02",
           "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1045511051",
           "includes": [
@@ -1616,7 +1616,7 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
+          "text": "Practice Log: Add each assignment when it's assigned, then update it on the due date when we check it with the answer key.",
           "due": "2026-10-16",
           "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1045918093"
         }
@@ -1706,9 +1706,9 @@
       "kind": "Lesson",
       "homework": [
         {
-          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
-          "due": "2026-10-23",
-          "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1045920911"
+          "text": "Practice Log: Add each assignment when it's assigned, then update it on the due date when we check it with the answer key.",
+          "due": "2026-10-30",
+          "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1045920922"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070548",
@@ -1770,13 +1770,7 @@
       "lesson_code": "1.7",
       "district_title": "Divide Fractions",
       "kind": "Lesson",
-      "homework": [
-        {
-          "text": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date.",
-          "due": "2026-10-30",
-          "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1045920922"
-        }
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070550",
       "target": "I can divide fractions by multiplying by the reciprocal.",
       "classwork": null,
@@ -3118,6 +3112,22 @@
           "was": "Quiz",
           "now": "Test Self-Grading",
           "kind": "changed"
+        }
+      ],
+      "updated": []
+    },
+    {
+      "logged": "2026-10-06",
+      "summary": "Practice Logs now run two weeks: the 10/23 and 10/30 logs are one log, due Fri 10/30. Add each assignment when it's assigned, and update it on the due date when we check it.",
+      "reason": null,
+      "changed": true,
+      "days": [
+        {
+          "date": "2026-10-23",
+          "what": "homework",
+          "was": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date. (due 10/23)",
+          "now": null,
+          "kind": "dropped"
         }
       ],
       "updated": []

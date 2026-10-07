@@ -269,6 +269,13 @@ weekly-update PR as standing warnings.
   with no school, or on/before the day it's assigned.
 - **Homework links** (`check_homework_links`): every assignment except a
   Practice Log links to its own page in Schoology.
+- **Practice log size** (`check_practice_log_size`): no Practice Log covers
+  more than 5 assignments. Logs run two weeks, assigned the Monday after the
+  last one was due; the log sheet has room for five.
+- **Practice log before test** (`check_practice_log_before_test`): a log
+  is due before any topic test that falls in its two weeks (usually on the
+  review day), so the work is checked against the keys before the test.
+  The next log starts after the test.
 
 Did any **quiz** move off a Wednesday? That should be structurally
 impossible — quizzes are computed, not stored — so if it ever happens,
