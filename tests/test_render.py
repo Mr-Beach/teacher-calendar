@@ -46,6 +46,26 @@ class PageTests(unittest.TestCase):
         self.assertEqual(render.row_summary(day), ["Due: Practice Log: a long sentence (+1 more)", "HW: pg 5"])
         self.assertEqual(render.row_summary({**day, "kind": "3-Act", "due": []}), ["3-Act task · HW: pg 5"])
 
+    def test_topic_names_come_from_tests(self):
+        self.assertEqual(render.topic_name("Topic 5 Test (CEA)"), "Topic 5")
+        self.assertEqual(render.topic_name("Topic 7 Part 1 Test"), "Topic 7 Part 1")
+
+    def test_topics_split_at_each_test_and_cover_every_day(self):
+        for slug, course in COURSES:
+            calendar = engine.render(course)[0]
+            spans = render.topic_spans(calendar)
+            tests = [d["date"] for d in calendar if d["kind"] == "Test"]
+            self.assertEqual([end for _, _, end in spans][:len(tests)], tests, slug)
+            self.assertEqual(spans[0][1], calendar[0]["date"], slug)
+
+    def test_every_assignment_is_in_the_homework_view_once(self):
+        for slug, course in COURSES:
+            page, calendar = page_and_calendar(course)
+            view = page.split('id="view-homework"')[1].split('id="view-year"')[0]
+            expected = sum(1 for d in calendar for hw in d["homework"] or []
+                           if hw["due"] and not engine.is_practice_log(hw))
+            self.assertEqual(view.count("<li data-assigned="), expected, slug)
+
     def test_every_expandable_row_has_its_panel(self):
         for slug, course in COURSES:
             page, _ = page_and_calendar(course)

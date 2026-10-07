@@ -9,12 +9,16 @@ beach-math.com/<course> (CLAUDE.md, "Hosting"); the output is never
 committed. Run it by hand only to preview, and never into docs/index.html
 -- that file is the redirect stub for old github.io bookmarks.
 
-The page has two views:
+The page has three views:
 
 - Upcoming (the default): a "today" card, the homework still open, the next
   quiz and test, then every school day as a list, week by week through
   June. Weeks already over fold away behind "Show earlier weeks". Tapping a
   day opens its details in place, under its row.
+- Homework: this topic's assignments so far, each under the Practice Log
+  it goes in, with that log's answer-key folder. A topic runs from the day
+  after one test through the next. Earlier topics fold away behind "Show
+  earlier topics"; the Homework list on Upcoming links here.
 - Whole year: Monday-Friday month grids -- two months side by side on a
   wide screen, one on a phone -- with arrows that move one month at a time.
   A day with something due carries a "Due" tag. Tapping a day shows its
@@ -350,6 +354,66 @@ def render_months(calendar):
     return "".join(out)
 
 
+# --- Homework: each topic's assignments, by Practice Log ---------------------
+
+def topic_name(test_title):
+    """'Topic 5 Test (CEA)' -> 'Topic 5': the unit a test closes."""
+    m = re.match(r"(.*?)\s+Test\b", test_title or "")
+    return m.group(1) if m else (test_title or "")
+
+
+def topic_spans(calendar):
+    """(name, first date, last date) for each unit: from the day after one
+    test through the next test -- the same units FOCUS_UNIT uses. School days
+    after the last test are a unit of their own."""
+    spans, start = [], None
+    for d in calendar:
+        start = start or d["date"]
+        if d["kind"] == "Test":
+            spans.append((topic_name(d["lesson_text"]), start, d["date"]))
+            start = None
+    if start:
+        spans.append(("End of the year", start, calendar[-1]["date"]))
+    return spans
+
+
+def render_topics(calendar):
+    """Every unit's homework, grouped under the Practice Log each assignment
+    goes in -- all of it, planned or not: the script shows only what's been
+    assigned by today, opens on this unit, and folds earlier ones away."""
+    logs = {hw["due"]: hw for d in calendar
+            for hw in d["homework"] or [] if is_practice_log(hw) and hw["due"]}
+    out = []
+    for name, start, end in topic_spans(calendar):
+        groups = {}
+        for d in calendar:
+            if not start <= d["date"] <= end:
+                continue
+            for hw in d["homework"] or []:
+                if hw["due"] and not is_practice_log(hw):
+                    groups.setdefault(hw.get("log_due"), []).append({**hw, "assigned": d["date"]})
+        cards = []
+        for log_due in sorted(groups, key=lambda k: (k is None, k or "")):
+            log = logs.get(log_due) if log_due else None
+            if log:
+                key = (f' <a class="keylink" href="{esc(log["link"])}" target="_blank" rel="noopener">'
+                       f'Answer keys{ARROW}</a>' if log.get("link") else "")
+                head = (f'<div class="log-head"><span class="log-name">Practice Log</span> '
+                        f'<span class="muted">due {short_date(log_due)}</span>{key}</div>')
+            else:
+                head = '<div class="log-head"><span class="log-name">Not in a Practice Log</span></div>'
+            rows = "".join(
+                f'<li data-assigned="{hw["assigned"]}" data-due="{hw["due"]}">{hw_text(hw)}'
+                f'<span class="hw-when">given {short_date(hw["assigned"])} · due {short_date(hw["due"])}</span></li>'
+                for hw in sorted(groups[log_due], key=lambda h: (h["due"], h["assigned"])))
+            cards.append(f'<div class="card loggroup">{head}'
+                         f'<ul class="topic-hw">{rows}</ul></div>')
+        out.append(f'<section class="topic" data-start="{start}" data-end="{end}">'
+                   f'<h2 class="section-title">{esc(name)} homework</h2>{"".join(cards)}'
+                   f'<p class="empty topic-empty" hidden>Nothing assigned yet.</p></section>')
+    return "".join(out)
+
+
 # --- Data the browser needs ---------------------------------------------------
 
 def days_data(calendar):
@@ -386,7 +450,8 @@ def build_page(course, calendar):
     page = PAGE
     for key, value in (("%%TITLE%%", esc(course["course"])), ("%%SUBTITLE%%", esc(subtitle)),
                        ("%%DATA%%", data), ("%%MONTHS%%", render_months(calendar)),
-                       ("%%WEEKS%%", render_weeks(calendar, course))):
+                       ("%%WEEKS%%", render_weeks(calendar, course)),
+                       ("%%TOPICS%%", render_topics(calendar))):
         page = page.replace(key, value)
     return page
 
@@ -439,10 +504,10 @@ PAGE = """<!doctype html>
   .top h1 { font-size: 28px; font-weight: 800; line-height: 1; }
   .week, .day, .earlier, .detail { scroll-margin-top: calc(var(--head, 80px) + 12px); }
   .top p { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
-  .switch { display: inline-grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; background: var(--card); }
+  .switch { display: inline-grid; grid-template-columns: 1fr 1fr 1fr; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; background: var(--card); }
   .switch button { border: 0; background: none; min-height: 44px; padding: 0 18px; font-weight: 700; cursor: pointer; }
   .switch button[aria-pressed="true"] { background: var(--ink); color: #FFFFFF; }
-  @media (max-width: 599px) { .switch { width: 100%; } .top h1 { font-size: 24px; } }
+  @media (max-width: 599px) { .switch { width: 100%; } .switch button { padding: 0 8px; } .top h1 { font-size: 24px; } }
 
   /* Upcoming: side column (today, homework, coming up) + the list */
   .cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-items: start; }
@@ -578,6 +643,21 @@ PAGE = """<!doctype html>
   .day-outside .row-title { font-weight: 400; color: var(--muted); }
   .day-outside .row-sub, .day-outside .row-title .due-tag, .day-outside .chev { display: none; }
   .day-outside .tag { opacity: .6; }
+  /* Homework: this topic's assignments under the Practice Log each goes in */
+  .topics { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  .topics-intro { margin: 0; color: var(--muted); }
+  .topic { display: flex; flex-direction: column; gap: 12px; }
+  .topic + .topic, .earlier + .topic { margin-top: 14px; }
+  .loggroup { padding: 12px 16px; }
+  .log-head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+  .log-name { font-weight: 700; }
+  .log-head .keylink { margin-left: auto; font-weight: 700; }
+  .topic-hw { list-style: none; margin: 6px 0 0; padding: 0; }
+  .topic-hw li { padding: 9px 0; display: flex; flex-direction: column; gap: 2px; }
+  .topic-hw li + li { border-top: 1.5px solid var(--line); }
+  .hw-when { font-size: 14px; color: var(--muted); }
+  .topic-hw li.hw-done .hwlink, .topic-hw li.hw-done > span:first-child { color: var(--muted); }
+  #all-hw { align-self: flex-start; margin-top: 4px; }
   .unit-note { margin: 4px 0 18px; padding: 12px 14px; border: 2px dashed var(--dash); border-radius: 14px; color: var(--muted); font-weight: 700; }
   .cell-top { display: flex; align-items: center; gap: 4px; }
   .cell-num { font-weight: 700; font-size: 15px; }
@@ -646,6 +726,7 @@ PAGE = """<!doctype html>
     </div>
     <div class="switch" role="group" aria-label="View">
       <button type="button" data-view="upcoming" aria-pressed="true">Upcoming</button>
+      <button type="button" data-view="homework" aria-pressed="false">Homework</button>
       <button type="button" data-view="year" aria-pressed="false">Whole year</button>
     </div>
 </div></header>
@@ -658,6 +739,7 @@ PAGE = """<!doctype html>
         <section id="homework" hidden>
           <h2 class="section-title">Homework</h2>
           <div class="card hwlist" id="hw-list"></div>
+          <button type="button" class="linkbtn" id="all-hw">All homework this topic</button>
         </section>
         <section id="changes" hidden>
           <h2 class="section-title">Recent changes</h2>
@@ -674,6 +756,14 @@ PAGE = """<!doctype html>
       </div>
     </div>
     <button type="button" class="backweek" id="back-week" hidden>Back to this week</button>
+  </main>
+
+  <main id="view-homework" hidden>
+    <div class="topics" id="topics">
+      <p class="topics-intro">Everything assigned so far this topic, grouped by the Practice Log it goes in.</p>
+      %%TOPICS%%
+      <button type="button" class="earlier" id="earlier-topics" hidden></button>
+    </div>
   </main>
 
   <main id="view-year" hidden>
@@ -748,12 +838,13 @@ PAGE = """<!doctype html>
   const laterText = unitTest
     ? 'After the ' + unitTest.title + ': lesson names only. Homework, due dates, and links are posted when each unit starts.' : '';
 
-  // ---- The view switch (kept in the address as #year, so a refresh stays put) ----
+  // ---- The view switch (kept in the address as #year or #homework, so a refresh stays put) ----
   function showView(name) {
     document.getElementById('view-upcoming').hidden = name !== 'upcoming';
+    document.getElementById('view-homework').hidden = name !== 'homework';
     document.getElementById('view-year').hidden = name !== 'year';
     document.querySelectorAll('.switch button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === name)));
-    history.replaceState(null, '', name === 'year' ? '#year' : location.pathname + location.search);
+    history.replaceState(null, '', name === 'upcoming' ? location.pathname + location.search : '#' + name);
     updateBackWeek();
     if (name === 'year') fitSpacer();
   }
@@ -1030,6 +1121,45 @@ PAGE = """<!doctype html>
     document.getElementById('homework').hidden = false;
   }
 
+  // ---- Homework: this topic's assignments, earlier topics folded away ----
+  // Every unit is on the page with all its homework; only what's been
+  // assigned by today shows. The unit today falls in opens; units already
+  // over sit behind "Show earlier topics", newest first; later ones stay out.
+  function renderTopics() {
+    const box = document.getElementById('topics');
+    const topics = Array.from(box.querySelectorAll('.topic'));
+    topics.forEach((t) => {
+      t.querySelectorAll('li[data-assigned]').forEach((li) => {
+        li.hidden = li.dataset.assigned > TODAY;
+        li.classList.toggle('hw-done', li.dataset.due < TODAY);
+      });
+      t.querySelectorAll('.loggroup').forEach((g) => {
+        g.hidden = !g.querySelector('li:not([hidden])');
+      });
+      t.querySelector('.topic-empty').hidden = Boolean(t.querySelector('.loggroup:not([hidden])'));
+    });
+    let cur = topics.findIndex((t) => t.dataset.start <= TODAY && TODAY <= t.dataset.end);
+    if (cur < 0) cur = topics.length && TODAY < topics[0].dataset.start ? 0 : topics.length - 1;
+    topics.forEach((t, i) => { if (i > cur) t.remove(); });
+    const earlierTopics = topics.slice(0, Math.max(cur, 0))
+      .filter((t) => t.querySelector('.loggroup:not([hidden])')).reverse();
+    const btn = document.getElementById('earlier-topics');
+    topics.slice(0, Math.max(cur, 0)).forEach((t) => { if (!earlierTopics.includes(t)) t.remove(); });
+    earlierTopics.forEach((t) => { t.hidden = true; box.appendChild(t); });
+    if (earlierTopics.length) {
+      const show = 'Show earlier topics';
+      btn.textContent = show;
+      btn.hidden = false;
+      box.insertBefore(btn, earlierTopics[0]);
+      btn.addEventListener('click', () => {
+        const open = earlierTopics[0].hidden;
+        earlierTopics.forEach((t) => { t.hidden = !open; });
+        btn.textContent = open ? 'Hide earlier topics' : show;
+      });
+    }
+  }
+  document.getElementById('all-hw').addEventListener('click', () => { showView('homework'); window.scrollTo(0, 0); });
+
   function fromNow(date) {
     const days = Math.round((parse(date) - parse(TODAY)) / 86400000);
     if (days === 1) return 'tomorrow';
@@ -1260,7 +1390,9 @@ PAGE = """<!doctype html>
   renderComing();
   fitSide();
   showMonths(homeIndex());
+  renderTopics();
   if (location.hash === '#year') showView('year');
+  if (location.hash === '#homework') showView('homework');
 })();
 </script>
 </body>
