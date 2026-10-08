@@ -187,8 +187,8 @@
     {
       "date": "2026-10-12",
       "weekday": "Mon",
-      "type": "Instruction",
-      "note": null
+      "type": "Testing",
+      "note": "MAP Testing (exact dates vary by school)"
     },
     {
       "date": "2026-10-13",
@@ -199,8 +199,9 @@
     {
       "date": "2026-10-14",
       "weekday": "Wed",
-      "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "type": "Instruction",
+      "note": null,
+      "quiz": "none"
     },
     {
       "date": "2026-10-15",
@@ -3128,6 +3129,30 @@
           "was": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date. (due 10/23)",
           "now": null,
           "kind": "dropped"
+        }
+      ],
+      "updated": []
+    },
+    {
+      "logged": "2026-10-08",
+      "summary": "MAP testing is now Monday 10/12 and Tuesday 10/13. Math class meets Wednesday 10/14.",
+      "reason": null,
+      "changed": true,
+      "days": [
+        {
+          "date": "2026-10-12",
+          "what": "title",
+          "was": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
+          "now": "MAP Testing (exact dates vary by school)",
+          "kind": "moved",
+          "moved_to": "2026-10-14"
+        },
+        {
+          "date": "2026-10-14",
+          "what": "title",
+          "was": "MAP Testing (exact dates vary by school)",
+          "now": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
+          "kind": "changed"
         }
       ],
       "updated": []
