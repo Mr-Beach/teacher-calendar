@@ -171,6 +171,14 @@ The calendar is student-facing. That governs everything on it:
   today" / "due tomorrow" called out. A due date is a fixed date — it's how much time students have,
   not tied to content, so a lost day never moves it. Homework is never
   assigned on a quiz day, but can be due on one.
+- **When homework is due.** Assigned Monday or Tuesday: due that Friday.
+  Assigned Thursday or Friday: due the following Wednesday (a quiz day is
+  fine to be due on). Nothing is assigned on a quiz Wednesday; assigned
+  on a Wednesday with no quiz, it's due that Friday. Exception: anything
+  that would come due after the unit's topic test is due the day before
+  the test instead. When homework moves with its lesson to a new day, its
+  due date is reset by this rule. Practice Logs have their own rhythm (two
+  weeks, due before any topic test in them; see Sanity checks).
 - **The current unit is in focus** (`"focus_current_unit": true` in each
   course file). The unit runs from the day after the last unit test
   through the next one. Its days show everything: homework, due dates,

@@ -1648,6 +1648,17 @@
       "extra_materials": null
     },
     {
+      "topic": null,
+      "lesson_code": null,
+      "district_title": "Topic 1 Review: Choice Board",
+      "kind": "Lesson",
+      "target": "I can find and fix my mistakes from the Topic 1 test.",
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
       "topic": "5",
       "lesson_code": "5.4",
       "district_title": "Expand Expressions",
@@ -1655,7 +1666,7 @@
       "homework": [
         {
           "text": "Topic 5 Lesson 4 Practice: workbook pg 277\u2013278 #7\u201314",
-          "due": "2026-10-14",
+          "due": "2026-10-21",
           "link": "https://districtlms.seattleschools.org/course/8516312082/materials/gp/8587014408"
         }
       ],
@@ -1682,8 +1693,13 @@
       "kind": "Lesson",
       "homework": [
         {
+          "text": "Practice Log: Add each assignment when it's assigned, then update it on the due date when we check it with the answer key.",
+          "due": "2026-10-26",
+          "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1045921112"
+        },
+        {
           "text": "Topic 5 Lesson 7 Practice: workbook pg 295\u2013296 #7\u201315",
-          "due": "2026-10-21",
+          "due": "2026-10-23",
           "link": "https://districtlms.seattleschools.org/course/8516312082/materials/gp/8587015384"
         }
       ],
@@ -1697,13 +1713,7 @@
       "lesson_code": "5.5",
       "district_title": "Factor Expressions",
       "kind": "Lesson",
-      "homework": [
-        {
-          "text": "Practice Log: Add each assignment when it's assigned, then update it on the due date when we check it with the answer key.",
-          "due": "2026-10-26",
-          "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1045921112"
-        }
-      ],
+      "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276276",
       "target": "I can factor an expression using the greatest common factor.",
       "classwork": "Factor and expand with negative numbers using area diagrams.",
@@ -1717,24 +1727,13 @@
       "homework": [
         {
           "text": "Topic 5 Lesson 5 Practice: workbook pg 283\u2013284 #6\u201317",
-          "due": "2026-10-23",
+          "due": "2026-10-26",
           "link": "https://districtlms.seattleschools.org/course/8516312082/materials/gp/8587014722"
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276276",
       "target": "I can factor expressions, including with a negative factor.",
       "classwork": "Rewrite expressions with fewer terms using a common factor.",
-      "extra_materials": null
-    },
-    {
-      "topic": "5",
-      "lesson_code": "5.8",
-      "district_title": "Analyze Equivalent Expressions",
-      "kind": "Lesson",
-      "homework": null,
-      "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276280",
-      "target": "I can write equivalent expressions to show how quantities are related.",
-      "classwork": "Two ways to calculate: temperature, tips, and unit conversions.",
       "extra_materials": null
     },
     {
@@ -1750,8 +1749,8 @@
         }
       ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276280",
-      "target": "I can use equivalent expressions to compare discounts and increases.",
-      "classwork": "Which way? 20% off and $30 off, in either order.",
+      "target": "I can write equivalent expressions to show how quantities are related.",
+      "classwork": "Two ways to calculate: temperature, tips, and unit conversions.",
       "extra_materials": null
     },
     {
@@ -3186,6 +3185,68 @@
           "was": "Practice Log: Add each assignment when it's due. Answer keys open on Schoology on the due date. (due 10/30)",
           "now": null,
           "kind": "dropped"
+        }
+      ],
+      "updated": []
+    },
+    {
+      "logged": "2026-10-08",
+      "summary": "Thu 10/8 was a Topic 1 review (choice board) to prepare for the retake. Topic 5 lessons moved later and Analyze Equivalent Expressions is one day now, so the Topic 5 test stays Tue 10/27. Some homework due dates changed.",
+      "reason": null,
+      "changed": true,
+      "days": [
+        {
+          "date": "2026-10-08",
+          "what": "title",
+          "was": "T5L4 Expand Expressions",
+          "now": "Topic 1 Review: Choice Board",
+          "kind": "moved",
+          "moved_to": "2026-10-15"
+        },
+        {
+          "date": "2026-10-14",
+          "what": "homework",
+          "was": "Topic 5 Lesson 4 Practice: workbook pg 277\u2013278 #7\u201314 (due 10/14)",
+          "now": "Topic 5 Lesson 4 Practice: workbook pg 277\u2013278 #7\u201314 (due 10/21)",
+          "kind": "due moved"
+        },
+        {
+          "date": "2026-10-15",
+          "what": "title",
+          "was": "T5L4 & T5L7 Expand Expressions & Subtract Expressions",
+          "now": "T5L4 Expand Expressions",
+          "kind": "moved",
+          "moved_to": "2026-10-16"
+        },
+        {
+          "date": "2026-10-16",
+          "what": "title",
+          "was": "T5L7 Subtract Expressions",
+          "now": "T5L4 & T5L7 Expand Expressions & Subtract Expressions",
+          "kind": "moved",
+          "moved_to": "2026-10-19"
+        },
+        {
+          "date": "2026-10-19",
+          "what": "title",
+          "was": "T5L5 Factor Expressions",
+          "now": "T5L7 Subtract Expressions",
+          "kind": "moved",
+          "moved_to": "2026-10-20"
+        },
+        {
+          "date": "2026-10-21",
+          "what": "homework",
+          "was": "Topic 5 Lesson 7 Practice: workbook pg 295\u2013296 #7\u201315 (due 10/21)",
+          "now": "Topic 5 Lesson 7 Practice: workbook pg 295\u2013296 #7\u201315 (due 10/23)",
+          "kind": "due moved"
+        },
+        {
+          "date": "2026-10-23",
+          "what": "homework",
+          "was": "Topic 5 Lesson 5 Practice: workbook pg 283\u2013284 #6\u201317 (due 10/23)",
+          "now": "Topic 5 Lesson 5 Practice: workbook pg 283\u2013284 #6\u201317 (due 10/26)",
+          "kind": "due moved"
         }
       ],
       "updated": []

@@ -55,7 +55,12 @@ WORDING
 - note: always shown to students. Never put reminders to myself or
   planning reasons there. Leave those out.
 - homework: only on the day it's assigned, with a due date. Don't write
-  the due date into the text. Homework can be due on a quiz day but not
+  the due date into the text. Due dates follow my rule: assigned Monday
+  or Tuesday, due that Friday; assigned Thursday or Friday, due the
+  following Wednesday. Nothing is assigned on a quiz Wednesday; on a
+  Wednesday with no quiz, it's due that Friday. Anything that would come due after the topic test
+  is due the day before the test instead. If the rule lands on a day with
+  no school, ask me. Homework can be due on a quiz day but not
   assigned on one. Say where it comes from: "Topic 1 Lesson 2 Practice:
   workbook pg 15-16 #19-33", or the worksheet's title and problems.
 - Pages are always "pg" (pg 27, pg 15-16), never "p.", "pp.", or
