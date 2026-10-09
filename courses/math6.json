@@ -187,8 +187,8 @@
     {
       "date": "2026-10-12",
       "weekday": "Mon",
-      "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "type": "Instruction",
+      "note": null
     },
     {
       "date": "2026-10-13",
@@ -199,9 +199,8 @@
     {
       "date": "2026-10-14",
       "weekday": "Wed",
-      "type": "Instruction",
-      "note": null,
-      "quiz": "none"
+      "type": "Testing",
+      "note": "MAP Testing (exact dates vary by school)"
     },
     {
       "date": "2026-10-15",
@@ -1674,6 +1673,17 @@
     },
     {
       "topic": "1",
+      "lesson_code": "1.2",
+      "district_title": "Fluently Add, Subtract, and Multiply Decimals",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070545",
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
       "lesson_code": "1.3",
       "district_title": "Fluently Divide Whole Numbers and Decimals",
       "kind": "Lesson",
@@ -1691,7 +1701,7 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 3 Practice: workbook pg 21\u201322 #16\u201331",
-          "due": "2026-10-21",
+          "due": "2026-10-23",
           "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587036924"
         }
       ],
@@ -1725,7 +1735,7 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 5 Practice: workbook pg 31\u201332 #19\u201336",
-          "due": "2026-10-23",
+          "due": "2026-10-28",
           "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587037306"
         }
       ],
@@ -1757,7 +1767,7 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 6 Practice: workbook pg 37\u201338 #5\u201325",
-          "due": "2026-10-28",
+          "due": "2026-10-30",
           "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587037603"
         }
       ],
@@ -1785,7 +1795,7 @@
       "homework": [
         {
           "text": "Topic 1 Lesson 7 Practice: workbook pg 43\u201344 #14, 16, 18, 20, 22, 24, 28, 30, 32",
-          "due": "2026-10-30",
+          "due": "2026-11-04",
           "link": "https://districtlms.seattleschools.org/course/8516312158/materials/gp/8587037923"
         }
       ],
@@ -3152,6 +3162,182 @@
           "what": "title",
           "was": "MAP Testing (exact dates vary by school)",
           "now": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
+          "kind": "changed"
+        }
+      ],
+      "updated": []
+    },
+    {
+      "logged": "2026-10-08",
+      "summary": "MAP testing moves to Tue 10/13\u2013Wed 10/14. Class meets Mon 10/12, and lessons from Thu 10/15 on move one day later.",
+      "reason": "I'm out Monday 10/12, so MAP moves a day later.",
+      "changed": true,
+      "days": [
+        {
+          "date": "2026-10-12",
+          "what": "title",
+          "was": "MAP Testing (exact dates vary by school)",
+          "now": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
+          "kind": "changed"
+        },
+        {
+          "date": "2026-10-14",
+          "what": "title",
+          "was": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
+          "now": "MAP Testing (exact dates vary by school)",
+          "kind": "moved",
+          "moved_to": "2026-10-12"
+        },
+        {
+          "date": "2026-10-15",
+          "what": "title",
+          "was": "T1L3 Fluently Divide Whole Numbers and Decimals",
+          "now": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
+          "kind": "moved",
+          "moved_to": "2026-10-16"
+        },
+        {
+          "date": "2026-10-19",
+          "what": "title",
+          "was": "T1L5 Multiply Fractions",
+          "now": "T1L3 Fluently Divide Whole Numbers and Decimals",
+          "kind": "moved",
+          "moved_to": "2026-10-20"
+        },
+        {
+          "date": "2026-10-21",
+          "what": "homework",
+          "was": "Topic 1 Lesson 3 Practice: workbook pg 21\u201322 #16\u201331 (due 10/21)",
+          "now": "Topic 1 Lesson 3 Practice: workbook pg 21\u201322 #16\u201331 (due 10/23)",
+          "kind": "due moved"
+        },
+        {
+          "date": "2026-10-23",
+          "what": "homework",
+          "was": "Topic 1 Lesson 5 Practice: workbook pg 31\u201332 #19\u201336 (due 10/23)",
+          "now": "Topic 1 Lesson 5 Practice: workbook pg 31\u201332 #19\u201336 (due 10/28)",
+          "kind": "due moved"
+        },
+        {
+          "date": "2026-10-28",
+          "what": "homework",
+          "was": "Topic 1 Lesson 6 Practice: workbook pg 37\u201338 #5\u201325 (due 10/28)",
+          "now": "Topic 1 Lesson 6 Practice: workbook pg 37\u201338 #5\u201325 (due 10/30)",
+          "kind": "due moved"
+        },
+        {
+          "date": "2026-10-30",
+          "what": "homework",
+          "was": "Topic 1 Lesson 7 Practice: workbook pg 43\u201344 #14, 16, 18, 20, 22, 24, 28, 30, 32 (due 10/30)",
+          "now": "Topic 1 Lesson 7 Practice: workbook pg 43\u201344 #14, 16, 18, 20, 22, 24, 28, 30, 32 (due 11/4)",
+          "kind": "due moved"
+        },
+        {
+          "date": "2026-11-02",
+          "what": "title",
+          "was": "Recipe Decimal Project",
+          "now": "T1L9 Solve Problems with Rational Numbers",
+          "kind": "moved",
+          "moved_to": "2026-11-03"
+        },
+        {
+          "date": "2026-11-03",
+          "what": "title",
+          "was": "Topic 1 Review",
+          "now": "Recipe Decimal Project",
+          "kind": "moved",
+          "moved_to": "2026-11-04",
+          "moved_from": "2026-11-02"
+        },
+        {
+          "date": "2026-11-04",
+          "what": "title",
+          "was": "Topic 1 Test",
+          "now": "Topic 1 Review",
+          "kind": "moved",
+          "moved_to": "2026-11-05"
+        },
+        {
+          "date": "2026-11-05",
+          "what": "title",
+          "was": "Recipe Decimal Project",
+          "now": "Topic 1 Test",
+          "kind": "moved",
+          "moved_to": "2026-11-06",
+          "moved_from": "2026-11-04"
+        },
+        {
+          "date": "2026-11-06",
+          "what": "title",
+          "was": "Numeric and Algebraic Expressions",
+          "now": "Recipe Decimal Project",
+          "kind": "moved",
+          "moved_to": "2026-11-09",
+          "moved_from": "2026-11-05"
+        },
+        {
+          "date": "2026-12-08",
+          "what": "title",
+          "was": "Topic 3 Test",
+          "now": "Topic 3 Review",
+          "kind": "moved",
+          "moved_to": "2026-12-09"
+        },
+        {
+          "date": "2026-12-09",
+          "what": "title",
+          "was": "T4L1 Understand Equations and Solutions",
+          "now": "Topic 3 Test",
+          "kind": "moved",
+          "moved_to": "2026-12-10",
+          "moved_from": "2026-12-08"
+        },
+        {
+          "date": "2027-01-19",
+          "what": "title",
+          "was": "Topic 4 Test",
+          "now": "Topic 4 Review",
+          "kind": "moved",
+          "moved_to": "2027-01-20"
+        },
+        {
+          "date": "2027-01-20",
+          "what": "title",
+          "was": "Ratio and Rate",
+          "now": "Topic 4 Test",
+          "kind": "moved",
+          "moved_to": "2027-01-21",
+          "moved_from": "2027-01-19"
+        },
+        {
+          "date": "2027-02-26",
+          "what": "title",
+          "was": "Topic 5 Test",
+          "now": "Topic 5 Review",
+          "kind": "moved",
+          "moved_to": "2027-03-01"
+        },
+        {
+          "date": "2027-03-01",
+          "what": "title",
+          "was": "T6L1 Understand Percent",
+          "now": "Topic 5 Test",
+          "kind": "moved",
+          "moved_to": "2027-03-02",
+          "moved_from": "2027-02-26"
+        },
+        {
+          "date": "2027-03-03",
+          "what": "title",
+          "was": "Test Self-Grading",
+          "now": "T6L1 Understand Percent",
+          "kind": "changed"
+        },
+        {
+          "date": "2027-03-10",
+          "what": "title",
+          "was": "Quiz",
+          "now": "Test Self-Grading",
           "kind": "changed"
         }
       ],

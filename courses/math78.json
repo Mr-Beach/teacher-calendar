@@ -188,8 +188,8 @@
     {
       "date": "2026-10-12",
       "weekday": "Mon",
-      "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "type": "Instruction",
+      "note": null
     },
     {
       "date": "2026-10-13",
@@ -200,8 +200,8 @@
     {
       "date": "2026-10-14",
       "weekday": "Wed",
-      "type": "Instruction",
-      "note": null
+      "type": "Testing",
+      "note": "MAP Testing (exact dates vary by school)"
     },
     {
       "date": "2026-10-15",
@@ -1653,6 +1653,17 @@
       "district_title": "Topic 1 Review: Choice Board",
       "kind": "Lesson",
       "target": "I can find and fix my mistakes from the Topic 1 test.",
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Topic 5 Practice: Simplify and Add Expressions",
+      "kind": "Lesson",
+      "target": null,
       "classwork": null,
       "homework": null,
       "link": null,
@@ -3247,6 +3258,29 @@
           "was": "Topic 5 Lesson 5 Practice: workbook pg 283\u2013284 #6\u201317 (due 10/23)",
           "now": "Topic 5 Lesson 5 Practice: workbook pg 283\u2013284 #6\u201317 (due 10/26)",
           "kind": "due moved"
+        }
+      ],
+      "updated": []
+    },
+    {
+      "logged": "2026-10-08",
+      "summary": "MAP testing moves to Tue 10/13\u2013Wed 10/14. Mon 10/12 is a Topic 5 practice day, and there's no quiz this week.",
+      "reason": "I'm out Monday 10/12, so MAP moves a day later.",
+      "changed": true,
+      "days": [
+        {
+          "date": "2026-10-12",
+          "what": "title",
+          "was": "MAP Testing (exact dates vary by school)",
+          "now": "Topic 5 Practice: Simplify and Add Expressions",
+          "kind": "changed"
+        },
+        {
+          "date": "2026-10-14",
+          "what": "title",
+          "was": "Quiz",
+          "now": "MAP Testing (exact dates vary by school)",
+          "kind": "changed"
         }
       ],
       "updated": []
