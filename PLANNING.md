@@ -253,7 +253,8 @@ list, and the page builds two things from that log:
   change (decided 10/9): students couldn't tell "Changed" from "Updated"
   at a glance, and the specifics are one tap away.
 - **Recent changes** on Upcoming: one line per edit, in my words, with the
-  reason if I gave one, listed for 7 days.
+  reason if I gave one, listed as long as its tags show (the day of the
+  edit and the next class day), in a dropdown that starts closed.
 - **Coming up**: the next quiz or test tile carries the tag when its day
   changed, and a moved test says where it moved from -- where a moved
   test stays obvious with only one tag word.
