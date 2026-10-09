@@ -222,8 +222,10 @@ Phase 2.
   uses (e.g. "Circle", "Practical life").
 
 The editor and the family page both render a class calendar the same way
-v1 does: sequence plus class days in, dated days out. Porting `engine.py`'s
-`render()` to the Worker is the core of Phase 1, not of Phase 2. Phase 2's
+v1 does: sequence plus class days in, dated days out. Getting `engine.py`'s
+`render()` into the Worker is the core of Phase 1, not of Phase 2.
+`PLAN-v2-phase1.md` runs it as is in a Python Worker rather than porting
+it. Phase 2's
 buttons are then small edits to the sequence or the class days, the same
 ones `set_day`, `insert_lesson`, and `cut_lesson` make today.
 
@@ -300,8 +302,9 @@ the old addresses there.
 3. **Phase 3's API key and cost.** The "describe the change" box calls a
    model from the Worker with my key. That needs a per-teacher daily limit
    and a monthly spending cap before anyone but me can reach it.
-4. **The teacher look-ahead** (beach-math.com/teacher): does it become a
-   per-teacher page in the editor in Phase 1, or wait?
+4. ~~**The teacher look-ahead**~~ Decided 2026-10-08: it's a page in each
+   teacher's editor in Phase 1 (`PLAN-v2-phase1.md`, decision 7). My
+   `/teacher` stays as it is until my courses move.
 
 ## Out of scope for v2
 
