@@ -259,7 +259,7 @@ def _changes_note(entry):
     """What students will see marked as changed, for the PR description."""
     if entry is None:
         return "\nStudents won't see anything tagged: nothing changed or was added.\n"
-    updated = (f"\nTagged \"Updated\" for 2 days: {', '.join(entry['updated'])}.\n"
+    updated = (f"\nTagged \"Updated\" for 2 class days: {', '.join(entry['updated'])}.\n"
                if entry["updated"] else "")
     if not entry["changed"]:
         return updated + "Nothing is marked as changed: this only fills in blanks.\n"

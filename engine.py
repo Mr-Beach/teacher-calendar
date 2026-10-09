@@ -812,7 +812,7 @@ def diff_impact(course, before_calendar, before_leftover):
 # --- Changes families have already seen (PLANNING.md, "When the calendar
 # changes") ------------------------------------------------------------------
 
-# A changed day gets its own "Changed" tag on the page when it's one of the
+# A changed day gets its own tag on the page when it's one of the
 # next this-many class days. Further out, only test/quiz days and homework
 # get a tag; the rest is covered by the entry's one summary line.
 CHANGE_TAG_CLASS_DAYS = 5
@@ -947,7 +947,7 @@ def _due_changes(before_calendar, after_calendar, today, small_fix=False, throug
 
 def record_change(course, before_calendar, summary, reason=None, small_fix=False, today=None):
     """Log one confirmed edit's visible changes in course["changes"], which
-    the page turns into "Changed" tags and its Recent changes list.
+    the page turns into "Updated" tags and its Recent changes list.
 
     Call render() before editing (the same snapshot diff_impact takes), make
     the edit, then call this with a one-line `summary` in Aaron's words
@@ -963,7 +963,8 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
     assignments. It never skips a changed title or a moved or dropped
     assignment.
 
-    Each tagged day's `kind` says what happened, for the page's tag:
+    Each tagged day's `kind` says what happened, for its details line
+    (the tag itself is always "Updated"):
     "moved" (its lesson or test is now on `moved_to`, and/or the test or
     project now on it came from `moved_from`), "due moved" (an
     assignment's due date), "dropped" (an assignment is gone), or
@@ -986,8 +987,8 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
 
     Content added to a day that keeps its lesson (a target, class work, a
     link, a new assignment) isn't a change, but it's news: those dates go
-    in the entry's `updated`, which the page tags "Updated" for 2 days
-    (set days only, in a course with a set-through date).
+    in the entry's `updated`, which the page tags "Updated" too, for the
+    same 2 class days (set days only, in a course with a set-through date).
     `changed` says whether anything seen changed; an entry that only
     updated isn't listed under Recent changes.
 

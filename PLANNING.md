@@ -241,18 +241,22 @@ page says what changed instead of leaving them to spot it. Every confirmed
 edit is logged with `engine.record_change` in the course file's `changes`
 list, and the page builds two things from that log:
 
-- **A tag on each changed day** that says what happened: "Moved" (its
-  lesson or test is on another day now, and the details say which; the
-  day a test or project moves to says where it came from),
-  "Due date moved", "HW dropped", or "Changed" for anything else. It's a
-  dot on the day's Whole-year square, and the old version sits at the top
-  of the day's details. The tag shows on the class day of the change and
-  the next two class days (a weekend doesn't count), or until the day
-  itself is past. A newer change to the same day replaces its tag.
+- **One tag, "Updated"**, on each day that changed or had something
+  added (below), and a dot on its Whole-year square. The details of a
+  changed day start with what happened: what it was, what moved where
+  (the day a test or project moves to says where it came from), a due
+  date that moved, homework dropped. The tag shows on the class day of
+  the edit and the next class day (a weekend or testing day doesn't
+  count), or until the day itself is past. Short on purpose: it rewards
+  checking often, and anyone who checks less sees the current plan,
+  Recent changes, and the Coming up tiles. One word, not one per kind of
+  change (decided 10/9): students couldn't tell "Changed" from "Updated"
+  at a glance, and the specifics are one tap away.
 - **Recent changes** on Upcoming: one line per edit, in my words, with the
   reason if I gave one, listed for 7 days.
-- **Coming up**: the next quiz or test tile carries the same tag when its
-  day changed, and a moved test says where it moved from.
+- **Coming up**: the next quiz or test tile carries the tag when its day
+  changed, and a moved test says where it moved from -- where a moved
+  test stays obvious with only one tag word.
 
 What counts is what someone could already have seen, from today on:
 
@@ -289,11 +293,11 @@ A typo fix in class work can be recorded as a small fix
 (`small_fix=True`), which doesn't tag it. A changed title or a moved due
 date is always tagged.
 
-**"Updated"** is the lighter tag for content added to a day that keeps
-its lesson: a target, a link, materials, a new assignment. The lesson's
-name doesn't count; it's there from the start of the year. It shows for 2
-days, isn't listed under Recent changes, and gives way to a change tag on
-the same day. The weekly fill is what usually earns it.
+**Content added** to a day that keeps its lesson (a target, a link,
+materials, a new assignment, a day I'm out) gets the same "Updated" tag
+for the same time, but no line in its details (nothing was replaced) and
+no line under Recent changes. The lesson's name doesn't count; it's there
+from the start of the year. The weekly fill is what usually earns it.
 
 The log starts empty: the changes made before this existed aren't in it.
 

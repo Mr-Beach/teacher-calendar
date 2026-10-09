@@ -247,10 +247,6 @@
      day, the old version in its details, and the Recent changes list. */
   .chg-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; font-size: 11px; font-weight: 700;
              border-radius: 4px; padding: 0 4px; line-height: 16px; background: var(--accent); color: var(--on-ink); }
-  /* Content added to a day (a target, a link, new homework): lighter than a
-     change, and shown for less time. */
-  .upd-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; font-size: 11px; font-weight: 700;
-             border-radius: 4px; padding: 0 4px; line-height: 14px; border: 1.5px solid var(--accent); color: var(--accent); }
   .chg-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); flex: none; }
   .cell-selected .chg-dot { background: var(--on-ink); }
   .pnl-changed { border-left: 3px solid var(--accent); padding-left: 10px; font-size: 14px; }
@@ -548,16 +544,15 @@ const FOCUS_UNIT = true;
   // ---- Changes families have already seen ----
   // Each entry in CHANGES is one confirmed edit (engine.record_change). It's
   // listed under Recent changes for CHANGE_DAYS days after it was made. Each
-  // day it changed is tagged for less: the class day it was made and the
-  // next TAG_CLASS_DAYS - 1 class days (a weekend doesn't use any up), or
-  // until that day is past. Once students have seen the new plan, a tag is
-  // only noise.
+  // day it changed or added to gets one tag, "Updated", for less: the class
+  // day it was made and the next TAG_CLASS_DAYS - 1 class days (a weekend
+  // doesn't use any up), or until that day is past. It rewards checking
+  // often; what exactly happened is in the day's details, and a moved quiz
+  // or test also says so on its Coming up tile.
   const CHANGE_DAYS = 7;
-  const TAG_CLASS_DAYS = 3;
+  const TAG_CLASS_DAYS = 2;
   const CHANGE_LINKS = 5;
-  // A tag says what happened to the day, not just that something did.
-  const CHANGE_LABELS = { moved: 'Moved', 'due moved': 'Due date moved', dropped: 'HW dropped', changed: 'Changed' };
-  const UPDATED_DAYS = 2;
+  const TAG = 'Updated';
   const within = (c, n) => c.logged <= TODAY && c.logged > addDays(TODAY, -n);
   // Class days since an entry was logged, up to and including today.
   const classDaysSince = (logged) => DAYS.filter((d) => d.date > logged && d.date <= TODAY && isClassDay(d)).length;
@@ -588,7 +583,7 @@ const FOCUS_UNIT = true;
   const recentDetails = [].concat(...recentChanges.map((c) => c.days));
   function changeLine(c, d) {
     const p = el('p', 'pnl-changed');
-    p.appendChild(el('b', null, 'Changed ' + shortDate(c.logged) + '. '));
+    p.appendChild(el('b', null, 'Updated ' + shortDate(c.logged) + '. '));
     const end = (t) => (/[.!?]$/.test(t) ? t : t + '.');
     let text;
     if (d.kind === 'moved') {
@@ -607,34 +602,32 @@ const FOCUS_UNIT = true;
     p.appendChild(document.createTextNode(' ' + text));
     return p;
   }
+  // One tag per day however much happened to it: on its row and as a dot
+  // on its Whole-year square.
+  function tagDay(date) {
+    const title = document.querySelector('.day[data-date="' + date + '"] .row-title');
+    if (title && !title.querySelector('.chg-tag')) title.appendChild(el('span', 'chg-tag', TAG));
+    const cell = document.querySelector('.cell[data-date="' + date + '"]');
+    if (cell && !cell.querySelector('.chg-dot')) {
+      cell.querySelector('.cell-top').appendChild(el('span', 'chg-dot'));
+      cell.setAttribute('aria-label', cell.getAttribute('aria-label') + ' (updated)');
+    }
+  }
+  // A changed day: the tag, and what it was at the top of its details.
   function tagChanges() {
     recentChanges.slice().reverse().forEach((c) => c.days.forEach((d) => {
       if (d.date < TODAY) return;
-      const row = document.querySelector('.day[data-date="' + d.date + '"]');
-      if (row) {
-        const title = row.querySelector('.row-title');
-        const label = CHANGE_LABELS[d.kind] || 'Changed';
-        if (!Array.from(title.querySelectorAll('.chg-tag')).some((t) => t.textContent === label)) {
-          title.appendChild(el('span', 'chg-tag', label));
-        }
-        const panel = document.getElementById('p-' + d.date);
-        if (panel) panel.insertBefore(changeLine(c, d), panel.firstChild);
-      }
-      const cell = document.querySelector('.cell[data-date="' + d.date + '"]');
-      if (cell && !cell.querySelector('.chg-dot')) {
-        cell.querySelector('.cell-top').appendChild(el('span', 'chg-dot'));
-        cell.setAttribute('aria-label', cell.getAttribute('aria-label') + ' (changed)');
-      }
+      tagDay(d.date);
+      const panel = document.getElementById('p-' + d.date);
+      if (panel) panel.insertBefore(changeLine(c, d), panel.firstChild);
     }));
   }
-  // Days with content added (engine.record_change's `updated`) get a
-  // lighter "Updated" tag for UPDATED_DAYS days -- unless they're also
-  // tagged as changed, which says more.
+  // A day with content added (engine.record_change's `updated`): the same
+  // tag, for the same time. Nothing was replaced, so no line in its details.
   function tagUpdates() {
-    CHANGES.filter((c) => within(c, UPDATED_DAYS)).forEach((c) => (c.updated || []).forEach((date) => {
+    CHANGES.filter((c) => c.logged <= TODAY && tagFresh(c)).forEach((c) => (c.updated || []).forEach((date) => {
       if (date < TODAY || (setThrough !== null && date > setThrough)) return;
-      const title = document.querySelector('.day[data-date="' + date + '"] .row-title');
-      if (title && !title.querySelector('.chg-tag, .upd-tag')) title.appendChild(el('span', 'upd-tag', 'Updated'));
+      tagDay(date);
     }));
   }
   function renderChanges() {
@@ -818,7 +811,7 @@ const FOCUS_UNIT = true;
       // this is where students look for the date.
       const change = recentDetails.find((x) => x.date === d.date);
       const k = el('span', 'k', label);
-      if (change) k.appendChild(el('span', 'chg-tag', CHANGE_LABELS[change.kind] || 'Changed'));
+      if (change) k.appendChild(el('span', 'chg-tag', TAG));
       t.appendChild(k);
       t.appendChild(el('span', 'v', tileDate(d.date)));
       t.appendChild(el('span', 'w', fromNow(d.date) + (change && change.moved_from ? ' · moved from ' + shortDate(change.moved_from) : '')));
