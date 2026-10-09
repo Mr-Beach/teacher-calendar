@@ -1,0 +1,23 @@
+// v2's Worker (PLAN-v2-phase1.md, decision 2): its own Worker and its own
+// Workers Build (root directory v2/), in front of v1's on a few paths.
+// Each teacher gets a route pair below; every other path on beach-math.com
+// (/math6, /math78, /teacher, apps) still goes to v1's Worker.
+// Deploy: uv run pywrangler deploy (from v2/).
+{
+  "name": "teacher-calendar-v2",
+  "main": "src/entry.py",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["python_workers"],
+  "workers_dev": false,
+  // engine.py and render.py are the repo root's, copied in on every build
+  // and dev run, so v1 and v2 always run one engine (decision 1).
+  "build": { "command": "cp ../engine.py ../render.py src/" },
+  "routes": [
+    { "pattern": "beach-math.com/demo/*", "zone_name": "beach-math.com" },
+    { "pattern": "www.beach-math.com/demo/*", "zone_name": "beach-math.com" }
+  ],
+  "d1_databases": [
+    { "binding": "DB", "database_name": "teacher-calendar-v2", "database_id": "e36dfb8e-ed59-44ad-a5b0-e6ce84ac0ea8" }
+  ],
+  "observability": { "enabled": true }
+}

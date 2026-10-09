@@ -19,8 +19,13 @@ together, in one batch, or not at all.
 
 The database is reached through an adapter with four async methods --
 `all`, `first`, `run`, and `batch` -- the shape of D1's own API. SQLite
-(below) is the one the tests use; the Worker's D1 adapter comes with the
-Worker in M3. Everything here is async because D1 is.
+(below) is the one the tests use; the Worker's is d1.py. Everything here
+is async because D1 is.
+
+A family page is rendered on save and stored (PLAN-v2-phase1.md, decision
+6). A calendar whose stored page is missing -- one v2/seed.py added, or
+one whose school days seed.py just changed -- is rendered on its next
+visit and stored then.
 """
 import json
 import re
@@ -29,8 +34,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import engine
+import render
 
-SCHEMA = Path(__file__).resolve().parent / "schema.sql"
+SCHEMA = Path(__file__).resolve().parent.parent / "schema.sql"
 
 # First parts of a beach-math.com path that a teacher's slug can't take:
 # v1's pages and apps (served by the current Worker), and v2's own.
@@ -180,9 +186,29 @@ async def save_calendar(db, teacher, cal, page_html):
     return cal.version
 
 
+def family_page(course, teacher):
+    """The page families see, for a course dict: the same bytes
+    scripts/build_site.py publishes for v1, with the teacher's name from
+    her row unless the calendar names one itself."""
+    if not course.get("teacher"):
+        course = {**course, "teacher": teacher["name"]}
+    calendar, _ = engine.render(course)
+    return render.build_page(course, calendar) + "\n"
+
+
 async def published_page(db, teacher_slug, calendar_slug):
-    """The stored family page for beach-math.com/<teacher>/<calendar>, or
-    None. Public: no sign-in, as in v1."""
-    row = await db.first("SELECT c.page_html FROM calendars c JOIN teachers t ON t.id = c.owner_id "
+    """The family page for beach-math.com/<teacher>/<calendar>, or None.
+    Public: no sign-in, as in v1. A calendar with no stored page is
+    rendered now and stored, unless it was saved again meanwhile."""
+    row = await db.first("SELECT c.id, c.version, c.doc, c.page_html, t.name, t.school_id "
+                         "FROM calendars c JOIN teachers t ON t.id = c.owner_id "
                          "WHERE t.slug = ? AND c.slug = ?", teacher_slug, calendar_slug)
-    return row["page_html"] if row else None
+    if row is None:
+        return None
+    if row["page_html"] is not None:
+        return row["page_html"]
+    course = engine.course_for_render(await school_days(db, row["school_id"]), json.loads(row["doc"]))
+    page = family_page(course, row)
+    await db.run("UPDATE calendars SET page_html = ? WHERE id = ? AND version = ? AND page_html IS NULL",
+                 page, row["id"], row["version"])
+    return page

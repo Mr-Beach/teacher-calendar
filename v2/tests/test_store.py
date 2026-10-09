@@ -15,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "v2"))
+sys.path.insert(0, str(ROOT / "v2" / "src"))
 import engine  # noqa: E402
 import seed  # noqa: E402
 import store  # noqa: E402
@@ -127,7 +128,7 @@ class StoreTests(unittest.IsolatedAsyncioTestCase):
         # Her own calendar can share the slug.
         mine = await store.create_calendar(self.db, her, "math6", copy.deepcopy(MATH6))
         self.assertNotEqual(mine.id, self.cal.id)
-        self.assertIsNone(await store.published_page(self.db, "smith", "math6"))
+        self.assertIn("Smith", await store.published_page(self.db, "smith", "math6"))
 
     async def test_list_and_duplicates(self):
         course = engine.course_for_render(SCHOOL, engine.template_from(MATH78, SCHOOL))
@@ -142,6 +143,52 @@ class StoreTests(unittest.IsolatedAsyncioTestCase):
         self.assertIsNone(await store.teacher_by_email(self.db, "nobody@example.com"))
         self.assertIsNone(await store.published_page(self.db, "beach", "nope"))
         self.assertIsNone(await store.published_page(self.db, "nobody", "math6"))
+
+
+class PageTests(unittest.IsolatedAsyncioTestCase):
+    """M3: the family pages the Worker serves."""
+
+    async def asyncSetUp(self):
+        self.db = seeded()
+        self.addCleanup(self.db.conn.close)
+        self.me = await store.teacher_by_email(self.db, "teacher@example.com")
+
+    async def test_parity_with_the_v1_build(self):
+        # Math 6 imported into the store and rendered gives the same bytes
+        # build_site.py publishes at beach-math.com/math6.
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import build_site
+        expected = build_site.build_course(Path("math6.json"), copy.deepcopy(MATH6))
+        await store.create_calendar(self.db, self.me, "math6", copy.deepcopy(MATH6))
+        self.assertEqual(await store.published_page(self.db, "beach", "math6"), expected)
+        cal = await store.load_calendar(self.db, self.me, "math6")
+        self.assertEqual(store.family_page(cal.course, self.me), expected)
+
+    async def test_a_missing_page_is_rendered_once_and_stored(self):
+        await store.create_calendar(self.db, self.me, "math6", copy.deepcopy(MATH6))
+        page = await store.published_page(self.db, "beach", "math6")
+        self.assertEqual((await self.db.first("SELECT page_html FROM calendars"))["page_html"], page)
+        await self.db.run("UPDATE calendars SET page_html = '<p>stored</p>'")
+        self.assertEqual(await store.published_page(self.db, "beach", "math6"), "<p>stored</p>")
+
+    async def test_a_new_seed_clears_stored_pages(self):
+        await store.create_calendar(self.db, self.me, "math6", copy.deepcopy(MATH6), "<p>old days</p>")
+        self.db.conn.executescript(seed.seed_sql("home", "Our School", SCHOOL, "teacher@example.com",
+                                                 "Mr. Beach", "beach"))
+        self.assertNotEqual(await store.published_page(self.db, "beach", "math6"), "<p>old days</p>")
+
+    async def test_demo_calendar(self):
+        sql = seed.demo_sql("home", SCHOOL, MATH6)
+        self.db.conn.executescript(sql)
+        self.db.conn.executescript(sql)  # again: adds nothing
+        demo = await store.teacher_by_email(self.db, seed.DEMO["email"])
+        self.assertEqual((demo["slug"], demo["is_admin"]), ("demo", 0))
+        cal = await store.load_calendar(self.db, demo, "math6")
+        self.assertEqual(cal.course, engine.course_for_render(SCHOOL, engine.template_from(MATH6, SCHOOL)))
+        self.assertEqual((await self.db.first("SELECT COUNT(*) AS n FROM revisions"))["n"], 1)
+        page = await store.published_page(self.db, "demo", "math6")
+        self.assertIn("Demo Teacher", page)
+        self.assertNotIn("Mr. Beach", page)
 
 
 if __name__ == "__main__":
