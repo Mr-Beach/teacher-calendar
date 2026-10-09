@@ -43,19 +43,25 @@ class PageTests(unittest.TestCase):
     def test_due_and_given_each_get_a_line(self):
         day = {"kind": "Lesson", "due": [{"text": "Practice Log: a long sentence"}, {"text": "pg 2"}],
                "homework": [{"text": "pg 5"}]}
-        self.assertEqual(render.row_summary(day, {}), ["Due: Practice Log: a long sentence (+1 more)", "HW: pg 5"])
-        self.assertEqual(render.row_summary({**day, "kind": "3-Act", "due": []}, {}), ["3-Act task · HW: pg 5"])
+        self.assertEqual(render.row_summary(day), ["Due: Practice Log: a long sentence (+1 more)", "HW: pg 5"])
+        self.assertEqual(render.row_summary({**day, "kind": "3-Act", "due": []}), ["3-Act task · HW: pg 5"])
 
     def test_out_days_say_so_on_the_row_and_in_the_details(self):
-        day = {"kind": "Lesson", "due": [], "homework": [{"text": "pg 5"}], "teacher_out": True}
-        self.assertEqual(render.row_summary(day, {}), ["Mr. Beach out · HW: pg 5"])
-        self.assertEqual(render.out_line({**day, "teacher_out": "4th period"}, {"teacher": "Ms. Smith"}),
+        self.assertEqual(render.out_line({"teacher_out": "4th period"}, {"teacher": "Ms. Smith"}),
                          "Ms. Smith is out 4th period today.")
+        self.assertEqual(render.out_line({"teacher_out": True}, {}, short=True), "Mr. Beach out")
         course = json.loads((ROOT / "tests" / "golden" / "math6.json").read_text())
         engine.set_day(course, "2026-10-13", teacher_out=True)  # a MAP testing day
-        page, _ = page_and_calendar(course)
+        page, calendar = page_and_calendar(course)
         panel = re.search(r'id="p-2026-10-13" hidden>(.*?)</div>', page).group(1)
         self.assertIn('<p class="pnl-out">Mr. Beach is out today.</p>', panel)
+        # Its own row line (kept on a later unit's row), a tag on the month
+        # grid, and the script's data for a later unit's Whole-year details.
+        self.assertIn('<span class="row-sub row-out">Mr. Beach out</span>', page)
+        self.assertIn('<span class="cell-num">13</span>' + render.OUT_TAG, page)
+        [day] = [d for d in render.days_data(calendar, course) if d["date"] == "2026-10-13"]
+        self.assertEqual(day["out"], "Mr. Beach is out today.")
+        self.assertEqual(day["out_short"], "Mr. Beach out")
 
     def test_topic_names_come_from_tests(self):
         self.assertEqual(render.topic_name("Topic 5 Test (CEA)"), "Topic 5")

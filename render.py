@@ -94,6 +94,7 @@ CHEVRON = ('<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="n
            'stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>')
 ARROW = ' <span aria-hidden="true">↗</span>'
 DUE_TAG = '<span class="due-tag">Due</span>'
+OUT_TAG = '<span class="out-tag">Out</span>'
 PAIRED_TAG = '<span class="quiz-tag">+Quiz</span>'
 SG_TAG = '<span class="sg-tag">+Self-grade</span>'
 EMPTY_CELL = '<span class="cell cell-none"></span>'
@@ -295,11 +296,11 @@ def render_panel(day, course):
 
 # --- Upcoming: the week-by-week list -----------------------------------------
 
-def row_summary(day, course):
+def row_summary(day):
     """The lines under a row's title: what kind of day and what's due, then
     what's given. Due and given get a line each -- each line is cut short to
     fit, and on one shared line a long due item hid the homework given."""
-    bits = [out_line(day, course, short=True)] if day.get("teacher_out") else []
+    bits = []
     if day["kind"] == "Opener":
         bits.append("Topic opener")
     elif day["kind"] == "3-Act":
@@ -329,7 +330,11 @@ def render_row(day, course):
         title = f'<span class="tag tag-test">{esc(day["lesson_text"])}</span>'
     else:
         title = esc(day_title(day))
-    sub = "".join(f'<span class="row-sub">{esc(line)}</span>' for line in row_summary(day, course))
+    # The teacher being out gets its own line, which stays even on a later
+    # unit's row (FOCUS_UNIT): it's when class happens, not the plan for it.
+    out = (f'<span class="row-sub row-out">{esc(out_line(day, course, short=True))}</span>'
+           if day.get("teacher_out") else "")
+    sub = out + "".join(f'<span class="row-sub">{esc(line)}</span>' for line in row_summary(day))
     # The same "Due" tag a Whole-year square gets, after the title.
     due = f" {DUE_TAG}" if day["due"] else ""
     main = f'<span class="row-main"><span class="row-title">{title}{due}</span>{sub}</span>'
@@ -397,12 +402,14 @@ def cell_labels(day):
     return ("Review" if "review" in day["lesson_text"].lower() else "Lesson"), "", day["lesson_text"]
 
 
-def render_cell(day):
+def render_cell(day, course):
     short, code, title = cell_labels(day)
     label = (f"{long_date(day['date'])}: {day_title(day)}" + (" (something due)" if day["due"] else "")
+             + (f" ({out_line(day, course, short=True)})" if day.get("teacher_out") else "")
              + (" (planned)" if is_planned(day) else ""))
     top = (f'<span class="cell-top"><span class="cell-num">{int(day["date"][8:])}</span>'
-           f'{DUE_TAG if day["due"] else ""}{PAIRED_TAG if day.get("quiz_paired") else ""}'
+           f'{DUE_TAG if day["due"] else ""}{OUT_TAG if day.get("teacher_out") else ""}'
+           f'{PAIRED_TAG if day.get("quiz_paired") else ""}'
            f'{SG_TAG if day.get("self_grading_paired") else ""}</span>')
     code_html = f'<span class="cell-code">{esc(code)}</span>' if code else ""
     title_html = f'<span class="cell-title">{esc(title)}</span>' if title else ""
@@ -416,7 +423,7 @@ def render_cell(day):
             f'{code_html}{title_html}</button>')
 
 
-def render_months(calendar):
+def render_months(calendar, course):
     by_date = {d["date"]: d for d in calendar}
     heads = "".join(f'<span class="dow">{w}</span>' for w in ("Mon", "Tue", "Wed", "Thu", "Fri"))
     out = []
@@ -431,7 +438,7 @@ def render_months(calendar):
         while cur.month == m:
             if cur.weekday() < 5:
                 day = by_date.get(cur.isoformat())
-                cells.append(render_cell(day) if day else EMPTY_CELL)
+                cells.append(render_cell(day, course) if day else EMPTY_CELL)
             cur += timedelta(days=1)
         name = MONTH_NAMES[m - 1]
         out.append(f'<section class="month card" data-month="{key}" data-name="{name}">'
@@ -504,13 +511,15 @@ def render_topics(calendar):
 
 # --- Data the browser needs ---------------------------------------------------
 
-def days_data(calendar):
+def days_data(calendar, course):
     """Per school day, what the scripts need to find today, the next quiz or
     test, and the key dates. A day's details live in its panel instead."""
     return [{
         "date": d["date"], "type": d["type"], "kind": d["kind"],
         "title": day_title(d), "paired": bool(d.get("quiz_paired")),
         "extra": d["extra_materials"] or [],
+        "out": out_line(d, course) or None,
+        "out_short": out_line(d, course, short=True) or None,
     } for d in calendar]
 
 
@@ -538,7 +547,7 @@ def set_line(course):
 def build_page(course, calendar):
     """The whole page for one course. `calendar` is engine.render(course)[0]."""
     subtitle = " · ".join(x for x in (course.get("teacher") or TEACHER, course.get("school_year")) if x)
-    data = (f"const DAYS = {to_json(days_data(calendar))};\n"
+    data = (f"const DAYS = {to_json(days_data(calendar, course))};\n"
             f"const HOMEWORK = {to_json(homework_data(calendar))};\n"
             f"const DAILY_MATERIALS = {to_json(course.get('daily_materials') or [])};\n"
             f"const CHANGES = {to_json(course.get('changes') or [])};\n"
@@ -550,7 +559,7 @@ def build_page(course, calendar):
                        ("%%TITLE%%", esc(course["course"])), ("%%SUBTITLE%%", esc(subtitle)),
                        ("%%SETLINE%%", set_line(course)),
                        ("%%SETCAL%%", " setcal" if set_through(course) else ""),
-                       ("%%DATA%%", data), ("%%MONTHS%%", render_months(calendar)),
+                       ("%%DATA%%", data), ("%%MONTHS%%", render_months(calendar, course)),
                        ("%%WEEKS%%", render_weeks(calendar, course)),
                        ("%%TOPICS%%", render_topics(calendar))):
         page = page.replace(key, value)
@@ -748,7 +757,8 @@ PAGE = """<!doctype html>
   .cell-outside .due-tag { display: none; }
   .day-outside .row { cursor: default; }
   .day-outside .row-title { font-weight: 400; color: var(--muted); }
-  .day-outside .row-sub, .day-outside .row-title .due-tag, .day-outside .chev { display: none; }
+  .day-outside .row-sub:not(.row-out), .day-outside .row-title .due-tag, .day-outside .chev { display: none; }
+  .row-out, .out-key { font-weight: 700; }
   .day-outside .tag { opacity: .6; }
   /* Homework: this topic's assignments under the Practice Log each goes in */
   .topics { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
@@ -770,6 +780,7 @@ PAGE = """<!doctype html>
   .cell-num { font-weight: 700; font-size: 15px; }
   .due-tag, .quiz-tag { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 0 4px; line-height: 16px; }
   .due-tag { background: var(--ink); color: var(--on-ink); }
+  .out-tag { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 0 3px; line-height: 14px; border: 1px solid currentColor; }
   .row-title .due-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; }
   .quiz-tag { background: var(--quiz-bg); color: var(--quiz-ink); }
   /* Too wide for a phone-width square; the day's details say it there. */
@@ -1507,6 +1518,15 @@ PAGE = """<!doctype html>
       rows.push({ date: d.date, when: shortDate(d.date) + (j > i ? ' – ' + shortDate(inView[j].date) : ''), text: d.title, cls: 'closed' });
       i = j;
     }
+    // Days the teacher is out, back-to-back ones with the same words as one row.
+    for (let i = 0; i < inView.length; i++) {
+      const d = inView[i];
+      if (!d.out_short) continue;
+      let j = i;
+      while (j + 1 < inView.length && inView[j + 1].out_short === d.out_short) j++;
+      rows.push({ date: d.date, when: shortDate(d.date) + (j > i ? ' – ' + shortDate(inView[j].date) : ''), text: d.out_short, cls: 'out-key' });
+      i = j;
+    }
     rows.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
     const ul = el('ul', 'keydates');
     rows.forEach((r) => {
@@ -1533,7 +1553,9 @@ PAGE = """<!doctype html>
     head.appendChild(back);
     if (outside(date)) {
       const note = 'Homework, due dates, and links are posted when this unit starts.';
-      swapDetail(head, el('h3', null, d.kind === 'Quiz' ? 'Quiz' : d.title), el('p', 'muted', note));
+      const parts = [head, el('h3', null, d.kind === 'Quiz' ? 'Quiz' : d.title)];
+      if (d.out) parts.push(el('p', 'pnl-out', d.out));
+      swapDetail(...parts, el('p', 'muted', note));
       alignDetail();
       return;
     }
