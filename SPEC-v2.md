@@ -76,6 +76,11 @@ Each phase ships and gets used before the next one starts.
   and homework, so nothing on her page depends on my accounts.
 
 **Phase 1b: preschool calendar** (my wife)
+
+> **Unsettled (2026-10-08):** she's not mainly interested in the
+> parent-facing side. What she actually needs gets worked out with her
+> before Phase 1b is planned. Treat everything below as a first guess.
+
 - The same sign-in and the same week grid, with her table's rows. She
   plans a week or more ahead, and after a day she can change a cell to
   what actually happened. Alongside the grid: the current unit (a month or
@@ -296,9 +301,9 @@ the old addresses there.
    entered is visible right away. If my colleague finds herself holding
    back entries because students would see a rough plan, add a "visible
    from" date per week then, with her actual use as the guide.
-2. **My wife's school calendar and table.** Waiting on her: I need her
-   school's calendar and a copy of the weekly table she uses now, since
-   its rows become her grid's rows.
+2. **My wife's needs.** First, what she wants from it at all. She isn't
+   mainly after a parent page, so Phase 1b's shape is open. Then her
+   school's calendar and a copy of the weekly table she uses now.
 3. **Phase 3's API key and cost.** The "describe the change" box calls a
    model from the Worker with my key. That needs a per-teacher daily limit
    and a monthly spending cap before anyone but me can reach it.

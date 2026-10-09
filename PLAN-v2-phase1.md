@@ -6,6 +6,8 @@ this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
 **Status (2026-10-08):** plan written; nothing built. Next: M0.
+Color presets added to M1 and M7, my own trial run added as M7b, and
+layout choice moved to "Later" (end of this file).
 
 ## Decisions
 
@@ -139,6 +141,14 @@ deploys a Python Worker from a subdirectory.
   changes, and day overrides.
 - `engine.course_for_render(school_days, calendar_doc)`: joins school days
   with a calendar's own day changes.
+- Color presets: `render.py` sets its colors as tokens at the top of the
+  page, but about a dozen colors are still written out further down. Move
+  those into tokens, then add a `theme` setting on the course that picks
+  one of a few named presets. A course with no `theme` gets today's colors.
+  Each preset is checked for readability before it ships: body text 4.5:1
+  against its background, and quizzes and tests told apart by lightness,
+  not hue alone, as today. They're presets, not a free color picker, so
+  no teacher can make a page students can't read.
 - Tests: golden files of both my courses' rendered pages, which must come
   out byte-identical before and after M1. Plus new tests for each recurring
   rule and skip condition.
@@ -204,7 +214,18 @@ the change, and keeps a revision.
 
 Her recurring activities (add, edit, turn off on one day), review day
 before tests, display name, and class title. Starting a new calendar from
-a blank year or from my Math 6 template.
+a blank year or from my Math 6 template. Picking a color preset, shown as
+a small preview of her own page in each one.
+
+### M7b: my trial run
+
+Before she sees it, I set up a calendar from scratch myself, like any
+teacher: sign in, start a calendar (blank, then from the Math 6 copy),
+pick colors, plan two weeks in the grid, and check the page families
+would see. It's a practice calendar (e.g. `beach-math.com/beach/practice`).
+My students never see it, and `/math6` and `/math78` stay on git. My Google
+account gets a teacher row as well as admin. Anything confusing or slow
+gets fixed before M8.
 
 ### M8: ready for the trial
 
@@ -234,3 +255,21 @@ a blank year or from my Math 6 template.
 Phase 2's buttons (lost day with preview, add or remove a day), the change
 nudges, the "save changes together" grouping, drafts (open question 1),
 anything preschool (Phase 1b), and anything AI (Phase 3).
+
+## Later: a choice of page layout
+
+A teacher picking her page's layout at setup, not just its colors. The
+three candidates are the 10/3 designs in the "Calendar Redesign Options"
+canvas (https://claude.ai/artifact/88si4F4dvfJodcKVu1C12Z): **A · Planner**
+(what's live), **B · Week strip**, and **C · Wall calendar**. Not in Phase
+1, because each layout is a whole page to build and test on phone and
+laptop. Every page feature (homework due dates, Practice Log checklists,
+Changed tags, the today card) has to work in each one, and every later
+feature then gets built more than once.
+
+When it happens: each layout has to give the same information with a
+different style, and has to be airtight. I'll test each one with Claude
+before any teacher can pick it. Let the colleague's trial say which layout
+is worth building first. The bigger question behind it, that different
+kinds of calendar may want different styles, is already partly in the
+design: a preschool calendar gets its own page.
