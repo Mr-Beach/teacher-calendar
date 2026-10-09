@@ -19,3 +19,16 @@ jobs:
           python-version: "3.x"
       - name: Tests
         run: python3 -m unittest discover -s tests
+
+  # v2 (PLAN-v2-phase1.md): its own job, so a v2 failure reads as v2's and
+  # never as "the calendar didn't go live". The Cloudflare build of the
+  # live site doesn't run these at all.
+  v2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: v2 tests
+        run: python3 -m unittest discover -s v2/tests

@@ -5,8 +5,8 @@ week grid, and her students get a page like mine. Read `SPEC-v2.md` first;
 this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
-**Status (2026-10-08):** M0 and M1 done (see "M0 results", "M1
-results"). Next: M2. Color presets are in M1 and M7, my own trial run is
+**Status (2026-10-09):** M0, M1, and M2 done (see "M0 results", "M1
+results", "M2 results"). Next: M3. Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
@@ -221,6 +221,33 @@ switches to the TypeScript port.
   course, so each calendar keeps its own as day changes. Each of my
   courses is then the school record plus its own changes
   (`split_course`), tested to round-trip exactly.
+
+**M2 results (2026-10-09).** Done; 10 tests in `v2/tests` (`sqlite3`).
+- `v2/schema.sql` as planned. `revisions` keeps **every** saved version,
+  the current one included, each with who saved it and when, rather
+  than only the replaced one: undo is "save revision N-1 as new", and
+  who-changed-what is one table.
+- `v2/store.py` speaks course dicts, not documents: `load_calendar`
+  joins the school's days with the calendar's own changes, and
+  `save_calendar` splits them apart again, so the Worker only ever
+  calls engine functions. Every call starts from the signed-in
+  teacher's row, and another teacher's calendar is `None` /
+  `LookupError`, never a different error (the 404 in M4). A save and
+  its revision are one batch; a stale version changes nothing.
+- The adapter is D1's shape (`all`, `first`, `run`, `batch`), async
+  because D1 is. Only the `sqlite3` one exists; **the D1 adapter is
+  written in M3**, with the Worker, where it can be run.
+- `v2/seed.py` prints SQL for `wrangler d1 execute`: the school record
+  (37 closures), and my row as teacher (`beach`) and admin. My email is
+  an argument, since the repo is public. Running it again updates the
+  school's days in place, which is how a snow day entered in
+  `courses/*.json` reaches D1 during the trial.
+- Teacher slugs can't take an existing path (`RESERVED_SLUGS`; a test
+  checks it covers every course and app).
+- v2 tests are their own GitHub Actions job, not part of the
+  Cloudflare build's test run (decision 2).
+- **Not done yet: no D1 database exists.** It's created, given the
+  schema, and seeded in M3, alongside the Worker that binds it.
 
 ### M3: family pages from the Worker
 
