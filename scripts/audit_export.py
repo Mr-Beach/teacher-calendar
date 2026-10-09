@@ -15,18 +15,12 @@ Usage:
 import argparse
 import json
 import sys
-from datetime import date
 from itertools import groupby
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 import engine  # noqa: E402
-
-
-def short(iso):
-    d = date.fromisoformat(iso)
-    return f"{d.strftime('%a')} {d.month}/{d.day}"
 
 
 def lesson_runs(course):
@@ -51,7 +45,7 @@ def export(course, today):
 
     out = [f"# {course['course']}: current sequence",
            "",
-           f"From courses/*.json as of {short(today)}. Last instructional day: {short(last_day)}.",
+           f"From courses/*.json as of {engine.short_date(today)}. Last instructional day: {engine.short_date(last_day)}.",
            "",
            "## Day budget",
            "",
@@ -74,7 +68,7 @@ def export(course, today):
             if not dates:
                 when = "none"
             else:
-                when = short(dates[0]) if len(dates) == 1 else f"{short(dates[0])} to {short(dates[-1])}"
+                when = engine.short_date(dates[0]) if len(dates) == 1 else f"{engine.short_date(dates[0])} to {engine.short_date(dates[-1])}"
             status = ("taught" if dates and dates[-1] < today
                       else "in progress" if dates and dates[0] < today else "")
             if len(dates) < planned:
@@ -87,7 +81,7 @@ def export(course, today):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("course", help="math6 or math78")
-    ap.add_argument("--today", default=date.today().isoformat(), help="YYYY-MM-DD (default: today)")
+    ap.add_argument("--today", default=engine.school_today().isoformat(), help="YYYY-MM-DD (default: today)")
     args = ap.parse_args(argv)
     path = ROOT / "courses" / f"{args.course}.json"
     if not path.exists():

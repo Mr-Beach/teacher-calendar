@@ -134,8 +134,8 @@ def main(argv=None):
                         help="course slugs (default: every courses/*.json)")
     parser.add_argument("--days", type=int, default=10,
                         help="instructional days to show (default 10)")
-    parser.add_argument("--from", dest="start", default=date.today().isoformat(),
-                        help="first date, YYYY-MM-DD (default today)")
+    parser.add_argument("--from", dest="start", default=engine.school_today().isoformat(),
+                        help="first date, YYYY-MM-DD (default today at school)")
     parser.add_argument("--needs", action="store_true",
                         help="list only the days still missing target, class work, link, or an assignment link")
     args = parser.parse_args(argv)

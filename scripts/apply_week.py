@@ -81,6 +81,9 @@ def _placements_by_date(course):
 
 
 def _title(item):
+    """A lesson's title with its code as stored ("1.6 ..."), not as the page
+    shows it (engine.lesson_title's "T1L6 ..."): `expect` is matched against
+    it, and week files name lessons by the stored code."""
     if item is None:
         return None
     code = item.get("lesson_code")
@@ -247,7 +250,7 @@ def _fmt(value):
 
 def _md(iso):
     try:
-        return engine._md(iso)
+        return engine.month_day(iso)
     except ValueError:
         return iso
 

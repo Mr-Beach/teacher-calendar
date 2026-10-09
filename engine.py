@@ -22,7 +22,7 @@ student-facing text and never changes placement.
 import json
 import re
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 QUIZ_ITEM = {
@@ -43,6 +43,12 @@ SELF_GRADING_ITEM = {
 # against these instead of accepting free text.
 VALID_DAY_TYPES = {"Instruction", "Flex", "Testing", "No School", "Other"}
 VALID_LESSON_KINDS = {"Lesson", "Opener", "Quiz", "Test", "3-Act", "Project"}
+# The kinds students are assessed on, computed ones included. Their dates
+# count as set as soon as they're on the calendar (PLANNING.md, "Set and
+# planned days").
+ASSESSMENT_KINDS = {"Quiz", "Test", "Project", "Self-Grading"}
+# What an Instruction day shows when the sequence has run out.
+NO_LESSON = "(no lesson planned)"
 
 # A school day's optional "quiz" field -- the one way to override the
 # Wednesday rule on a given day. Absent means the rule decides.
@@ -167,8 +173,24 @@ def normalize_homework(value):
         items.append(hw)
     return items
 
-def _week_monday(d):
+
+# --- Dates, as every page and script shows them ------------------------------
+
+def week_monday(iso):
+    """The Monday of an ISO date's week, as a date."""
+    d = date.fromisoformat(iso)
     return d - timedelta(days=d.weekday())
+
+
+def month_day(iso):
+    """'2026-09-29' -> '9/29'."""
+    d = date.fromisoformat(iso)
+    return f"{d.month}/{d.day}"
+
+
+def short_date(iso):
+    """'2026-09-29' -> 'Tue 9/29', the way due dates read to students."""
+    return f"{date.fromisoformat(iso).strftime('%a')} {month_day(iso)}"
 
 
 def _day_before_thanksgiving(year):
@@ -202,7 +224,7 @@ def _break_return_weeks(school_days):
             run += 1
             j -= 1
         if run >= 5:
-            return_weeks.add(_week_monday(date.fromisoformat(d["date"])))
+            return_weeks.add(week_monday(d["date"]))
     return return_weeks
 
 
@@ -211,7 +233,7 @@ def _break_return_days(school_days, weekday="Wed"):
     return_weeks = _break_return_weeks(school_days)
     return {
         d["date"] for d in school_days
-        if d["weekday"] == weekday and _week_monday(date.fromisoformat(d["date"])) in return_weeks
+        if d["weekday"] == weekday and week_monday(d["date"]) in return_weeks
     }
 
 
@@ -237,6 +259,12 @@ def _place(school_days, sequence, quiz_dates, self_grading_dates=frozenset()):
     return placements, leftover
 
 
+def _is_stored_lesson(item):
+    """Whether a placed item is a sequence entry -- not nothing, and not a
+    computed quiz or self-grading day."""
+    return item is not None and item is not QUIZ_ITEM and item is not SELF_GRADING_ITEM
+
+
 def _forced_quiz_dates(school_days):
     """Days with a "full" quiz override: a full-period quiz whatever the rule says."""
     return {d["date"] for d in school_days
@@ -258,12 +286,12 @@ def _compute_quiz_dates(school_days, sequence, rule):
     if not rule["enabled"]:
         return set(forced)
     start = rule["start"]
-    first_monday = _week_monday(date.fromisoformat(start or school_days[0]["date"]))
+    first_monday = week_monday(start or school_days[0]["date"])
     candidates = [
         d["date"] for d in school_days
         if d["weekday"] == rule["weekday"] and d["type"] == "Instruction"
         and (start is None or d["date"] >= start)
-        and (_week_monday(date.fromisoformat(d["date"])) - first_monday).days // 7 % rule["every_weeks"] == 0
+        and (week_monday(d["date"]) - first_monday).days // 7 % rule["every_weeks"] == 0
     ]
     skip = set(rule["skip"])
     break_return = _break_return_days(school_days, rule["weekday"]) if "break_return" in skip else set()
@@ -278,7 +306,7 @@ def _compute_quiz_dates(school_days, sequence, rule):
             if qd not in overridden
             and qd not in break_return
             and not ("day_before_thanksgiving" in skip and qd == _day_before_thanksgiving(int(qd[:4])))
-            and _week_monday(date.fromisoformat(qd)) not in test_weeks
+            and week_monday(qd) not in test_weeks
         }
         if new_quiz_dates == quiz_dates:
             return quiz_dates
@@ -287,7 +315,7 @@ def _compute_quiz_dates(school_days, sequence, rule):
 
 
 def _test_weeks(placements):
-    return {_week_monday(date.fromisoformat(day["date"]))
+    return {week_monday(day["date"])
             for day, item in placements if item and item["kind"] == "Test"}
 
 
@@ -403,7 +431,7 @@ def set_floor(today=None):
     weekday, the coming week on a weekend. A set-through date nobody
     advanced can never leave the days students are using unnoticed."""
     today = today or school_today()
-    monday = _week_monday(today) + timedelta(days=7 if today.weekday() >= 5 else 0)
+    monday = week_monday(today.isoformat()) + timedelta(days=7 if today.weekday() >= 5 else 0)
     return (monday + timedelta(days=4)).isoformat()
 
 
@@ -458,46 +486,41 @@ def render(course):
     calendar = []
     for day, lesson in placements:
         note = day["note"]
+        # A non-instructional day has no lesson to show alongside, so the
+        # note (e.g. "No School (Holiday)") replaces the bare type label.
+        entry = {
+            "date": day["date"], "weekday": day["weekday"], "type": day["type"],
+            "set": through is None or day["date"] <= through,
+            "display": note or day["type"], "lesson_text": None, "kind": None,
+            "quiz_paired": False, "self_grading_paired": False,
+            "homework": None, "due": due_by_date.get(day["date"]), "note": note,
+            "target": None, "classwork": None, "link": None, "extra_materials": None,
+        }
         if day["type"] == "Instruction":
-            if lesson is None:
-                base = "(no lesson planned)"
-                kind = None
-            else:
-                base = lesson_title(lesson)
-                kind = lesson["kind"]
-            # A note on an instructional day is a reminder alongside the lesson
-            # (a testing window, a snow-make-up flag), not a replacement for it.
-            display = f"{base}\n{note}" if note else base
-            calendar.append({
-                "date": day["date"], "weekday": day["weekday"], "type": day["type"],
-                "set": through is None or day["date"] <= through,
-                "display": display, "lesson_text": base, "kind": kind,
-                # A quiz sharing the period with this lesson (QUIZ_OVERRIDES).
-                "quiz_paired": ((day.get("quiz") == "paired" or day["date"] in shared_quiz)
-                                and lesson not in (None, QUIZ_ITEM, SELF_GRADING_ITEM)),
-                "self_grading_paired": ((day.get("self_grading") == "paired" or day["date"] in shared_sg)
-                                        and lesson not in (None, QUIZ_ITEM, SELF_GRADING_ITEM)),
+            base = lesson_title(lesson) if lesson else NO_LESSON
+            stored = _is_stored_lesson(lesson)
+            entry.update({
+                # A note on an instructional day is a reminder alongside the lesson
+                # (a testing window, a snow-make-up flag), not a replacement for it.
+                "display": f"{base}\n{note}" if note else base,
+                "lesson_text": base, "kind": lesson["kind"] if lesson else None,
+                # A quiz or self-grading sharing the period with this lesson
+                # (QUIZ_OVERRIDES, SELF_GRADING_OVERRIDES, a "shared" rule).
+                "quiz_paired": stored and (day.get("quiz") == "paired" or day["date"] in shared_quiz),
+                "self_grading_paired": stored and (day.get("self_grading") == "paired"
+                                                   or day["date"] in shared_sg),
                 "homework": homework_for(day, lesson) or None,
-                "due": due_by_date.get(day["date"]), "note": note,
-                "target": lesson.get("target") if lesson else None,
-                "classwork": lesson.get("classwork") if lesson and shows_classwork(course) else None,
+            })
+        if lesson:
+            entry.update({
+                "target": lesson.get("target"),
+                "classwork": lesson.get("classwork") if shows_classwork(course) else None,
                 # A computed quiz day has no stored entry to carry a link, so
                 # every quiz links to the course's one quiz folder.
-                "link": (quiz_link if lesson is QUIZ_ITEM
-                         else lesson.get("link") if lesson else None),
-                "extra_materials": lesson.get("extra_materials") if lesson else None,
+                "link": quiz_link if lesson is QUIZ_ITEM else lesson.get("link"),
+                "extra_materials": lesson.get("extra_materials"),
             })
-        else:
-            # A non-instructional day has no lesson to show alongside, so the
-            # note (e.g. "No School (Holiday)") replaces the bare type label.
-            calendar.append({
-                "date": day["date"], "weekday": day["weekday"], "type": day["type"],
-                "set": through is None or day["date"] <= through,
-                "display": note or day["type"], "lesson_text": None, "kind": None,
-                "quiz_paired": False, "self_grading_paired": False,
-                "homework": None, "due": due_by_date.get(day["date"]), "note": note,
-                "target": None, "classwork": None, "link": None, "extra_materials": None,
-            })
+        calendar.append(entry)
     return calendar, leftover
 
 
@@ -656,6 +679,14 @@ def set_daily_materials(course, items):
     course["daily_materials"] = list(items)
 
 
+def _check_index(seq, index, inserting=False):
+    """Raise IndexError unless `index` is a sequence position -- or, when
+    `inserting`, one past the end."""
+    last = len(seq) if inserting else len(seq) - 1
+    if not 0 <= index <= last:
+        raise IndexError(f"sequence index {index} out of range (0-{last})")
+
+
 def insert_lesson(course, index, lesson):
     """Insert one entry into the sequence at `index` (a "spend" per
     PLANNING.md's day budget -- an extra lesson day, a make-up activity).
@@ -708,30 +739,24 @@ def insert_lesson(course, index, lesson):
         "link": lesson.get("link"),
         "extra_materials": lesson.get("extra_materials"),
     }
-    seq = course["sequence"]
-    if not 0 <= index <= len(seq):
-        raise IndexError(f"sequence index {index} out of range (0-{len(seq)})")
-    seq.insert(index, entry)
+    _check_index(course["sequence"], index, inserting=True)
+    course["sequence"].insert(index, entry)
     return entry
 
 
 def cut_lesson(course, index):
     """Remove one entry from the sequence (an "earn" per PLANNING.md's day
     budget -- cutting an Opener, a 3-Act, or a duplicate lesson day)."""
-    seq = course["sequence"]
-    if not 0 <= index < len(seq):
-        raise IndexError(f"sequence index {index} out of range (0-{len(seq) - 1})")
-    return seq.pop(index)
+    _check_index(course["sequence"], index)
+    return course["sequence"].pop(index)
 
 
 def edit_lesson(course, index, **fields):
     """Update fields (district_title, homework, target, classwork, link,
     ...) on an existing sequence entry in place. Content only -- no
     day-budget effect."""
-    seq = course["sequence"]
-    if not 0 <= index < len(seq):
-        raise IndexError(f"sequence index {index} out of range (0-{len(seq) - 1})")
-    entry = seq[index]
+    _check_index(course["sequence"], index)
+    entry = course["sequence"][index]
     for key, value in fields.items():
         if key not in entry:
             raise ValueError(f"not a sequence field: {key!r} (want one of {sorted(entry)})")
@@ -777,8 +802,7 @@ def school_today():
     """Today at school -- not the machine's date, which is UTC on a cloud
     session or a build and turns into tomorrow in the evening."""
     try:
-        from zoneinfo import ZoneInfo
-        from datetime import datetime
+        from zoneinfo import ZoneInfo  # Python 3.9+
         return datetime.now(ZoneInfo(SCHOOL_TZ)).date()
     except Exception:  # no time zone data on this machine
         return date.today()
@@ -789,15 +813,10 @@ def _seen_title(day):
     nothing planned yet (filling that in later isn't a change)."""
     if day["type"] != "Instruction":
         return day["display"]
-    if day["lesson_text"] in (None, "(no lesson planned)"):
+    if day["lesson_text"] in (None, NO_LESSON):
         return None
     return (day["lesson_text"] + (" + Quiz" if day.get("quiz_paired") else "")
             + (" + Test self-grading" if day.get("self_grading_paired") else ""))
-
-
-def _md(iso):
-    d = date.fromisoformat(iso)
-    return f"{d.month}/{d.day}"
 
 
 def _is_quiz_or_test(day):
@@ -805,7 +824,7 @@ def _is_quiz_or_test(day):
 
 
 def _is_assessment(day):
-    return (day["kind"] in ("Quiz", "Test", "Project", "Self-Grading")
+    return (day["kind"] in ASSESSMENT_KINDS
             or bool(day.get("quiz_paired")) or bool(day.get("self_grading_paired")))
 
 
@@ -819,8 +838,10 @@ def _content_added(before_day, after_day):
     that was blank and isn't now, or a new assignment given that day."""
     if any(not before_day[f] and after_day[f] for f in _CONTENT_FIELDS):
         return True
-    given = lambda d: {(h["text"], h["due"]) for h in d["homework"] or []}
-    return bool(given(after_day) - given(before_day)) and len(after_day["homework"] or []) > len(before_day["homework"] or [])
+    def given(day):
+        return {(h["text"], h["due"]) for h in day["homework"] or []}
+    return (bool(given(after_day) - given(before_day))
+            and len(after_day["homework"] or []) > len(before_day["homework"] or []))
 
 
 def _same_occurrence(title, date_, from_calendar, to_calendar, today):
@@ -896,8 +917,8 @@ def _due_changes(before_calendar, after_calendar, today, small_fix=False, throug
             continue
         changes.append({
             "date": was_due if was_due >= today else now[1], "what": "homework",
-            "was": f"{text} (due {_md(was_due)})",
-            "now": f"{now[0]} (due {_md(now[1])})" if now else None,
+            "was": f"{text} (due {month_day(was_due)})",
+            "now": f"{now[0]} (due {month_day(now[1])})" if now else None,
             "kind": "dropped" if now is None else "changed" if now[1] == was_due else "due moved",
         })
     return changes
@@ -1028,8 +1049,8 @@ def check_set_through_current(course, today=None):
     floor = set_floor(today)
     if through >= floor:
         return []
-    return [f"Set through is {_md(through)}, behind the week students are in (through "
-            f"{_md(floor)}): those days count as set anyway, but set the week -- a week "
+    return [f"Set through is {month_day(through)}, behind the week students are in (through "
+            f"{month_day(floor)}): those days count as set anyway, but set the week -- a week "
             f"file for it, or ask"]
 
 
@@ -1046,7 +1067,7 @@ def check_test_placement(course):
         d = date.fromisoformat(day["date"])
         if d.weekday() == 0:
             warnings.append(f"{day['date']}: Test lands on a Monday")
-        elif _week_monday(d) in return_weeks and d.weekday() in (0, 1, 2):
+        elif week_monday(day["date"]) in return_weeks and d.weekday() in (0, 1, 2):
             warnings.append(f"{day['date']}: Test lands in the first Mon-Wed back from a break")
     return warnings
 
@@ -1066,15 +1087,15 @@ def check_self_grading(course):
     for day, item in placements:
         if not item or item["kind"] != "Test":
             continue
-        wed = _self_grading_day(_week_monday(date.fromisoformat(day["date"])), rule["weekday"])
+        wed = _self_grading_day(week_monday(day["date"]), rule["weekday"])
         if wed > course["school_days"][-1]["date"]:
             continue
         wday, witem = by_date.get(wed, (None, None))
         if witem is SELF_GRADING_ITEM or wed in shared_sg:
             continue
-        week = _week_monday(date.fromisoformat(wed))
-        if any(d.get("self_grading") == "paired" and i not in (None, QUIZ_ITEM, SELF_GRADING_ITEM)
-               and _week_monday(date.fromisoformat(d["date"])) == week
+        week = week_monday(wed)
+        if any(d.get("self_grading") == "paired" and _is_stored_lesson(i)
+               and week_monday(d["date"]) == week
                for d, i in placements):
             continue
         why = ("isn't a school day" if wday is None

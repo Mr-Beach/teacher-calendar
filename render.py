@@ -42,7 +42,8 @@ from datetime import date, timedelta
 from itertools import groupby
 from pathlib import Path
 
-from engine import is_practice_log, quiz_rule, render, run_all_checks
+from engine import (ASSESSMENT_KINDS, is_practice_log, quiz_rule, render, run_all_checks,
+                    set_through, short_date, week_monday)
 
 # Shown under the course name. A course can name its own teacher ("teacher");
 # Aaron's course files don't, so they get this.
@@ -115,21 +116,10 @@ def to_json(value):
     return json.dumps(value).replace("</", "<\\/")
 
 
-def short_date(iso):
-    """'2026-09-29' -> 'Tue 9/29', the way due dates read to students."""
-    d = date.fromisoformat(iso)
-    return f"{d.strftime('%a')} {d.month}/{d.day}"
-
-
 def long_date(iso):
     """'2026-10-08' -> 'Thursday, October 8'."""
     d = date.fromisoformat(iso)
     return f"{WEEKDAY_NAMES[d.weekday()]}, {MONTH_NAMES[d.month - 1]} {d.day}"
-
-
-def week_monday(iso):
-    d = date.fromisoformat(iso)
-    return d - timedelta(days=d.weekday())
 
 
 def week_range(first_iso, last_iso):
@@ -201,15 +191,11 @@ def due_note(due, course):
     return None
 
 
-# Their dates count as set as soon as they're on the calendar (PLANNING.md,
-# "Set and planned days"), so they never look planned.
-ASSESSMENT_KINDS = ("Quiz", "Test", "Project", "Self-Grading")
-
-
 def is_planned(day):
     """A lesson day after the course's set-through date (engine.set_through):
-    its lesson and homework are the plan, and may still shift. Never a
-    quiz or test day."""
+    its lesson and homework are the plan, and may still shift. Never an
+    assessment day (engine.ASSESSMENT_KINDS): those dates count as set as
+    soon as they're on the calendar."""
     return (day["type"] == "Instruction" and not day.get("set", True)
             and day["kind"] not in ASSESSMENT_KINDS)
 
@@ -243,6 +229,7 @@ def render_panel(day, course):
     if items:
         parts.append('<div class="field pnl-hw"><span class="lbl">Homework given</span>'
                      f'<ul class="hw">{"".join(items)}</ul></div>')
+    through = set_through(course)
     items = []
     for due in day["due"] or []:
         # Each due assignment links to its answer key: the folder of the
@@ -258,7 +245,7 @@ def render_panel(day, course):
             key = due.get("log_link") or course.get("answer_key_link")
         key_html = (f'<a class="keylink" href="{esc(key)}" target="_blank" rel="noopener">'
                     f'{"Weekly quizzes" if redo else "Answer key"}{ARROW}</a>' if key else "")
-        given_planned = set_through_of(course) is not None and due["assigned"] > set_through_of(course)
+        given_planned = through is not None and due["assigned"] > through
         given = (f'<span class="given">(given {short_date(due["assigned"])}'
                  f'{"<span data-plan>, planned</span>" if given_planned else ""})</span>')
         note = due_note(due, course)
@@ -513,13 +500,9 @@ def homework_data(calendar):
     } for d in calendar for hw in d["homework"] or [] if hw["due"]]
 
 
-def set_through_of(course):
-    return course.get("set_through")
-
-
 def set_line(course):
     """The plain-words line near the top: how far the calendar is set."""
-    through = set_through_of(course)
+    through = set_through(course)
     if through is None:
         return ""
     return (f'<p class="setline" data-through="{through}"><b>Set through {short_date(through)}.</b> '
@@ -540,7 +523,7 @@ def build_page(course, calendar):
     for key, value in (("%%THEME%%", theme_css(course)),
                        ("%%TITLE%%", esc(course["course"])), ("%%SUBTITLE%%", esc(subtitle)),
                        ("%%SETLINE%%", set_line(course)),
-                       ("%%SETCAL%%", " setcal" if set_through_of(course) else ""),
+                       ("%%SETCAL%%", " setcal" if set_through(course) else ""),
                        ("%%DATA%%", data), ("%%MONTHS%%", render_months(calendar)),
                        ("%%WEEKS%%", render_weeks(calendar, course)),
                        ("%%TOPICS%%", render_topics(calendar))):

@@ -20,3 +20,6 @@ data/*.pdf
 
 # Lesson decks/worksheets Cowork saves here; not part of the calendar
 Claude outputs/
+
+# Wrangler CLI cache (account ID etc.); local only
+.wrangler/

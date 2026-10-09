@@ -13,24 +13,15 @@ Not for students: it shows the content gaps ("needs target & link").
 Access to /teacher is restricted at the Cloudflare edge, not in this page --
 see the site-hosting skill. Nothing links to it from the student pages.
 """
-from datetime import date, timedelta
-from html import escape
+from datetime import date
 
 import engine
 from lookahead import FIELD_LABELS, TAGGED_KINDS, missing_content
+from render import esc
 
 WINDOW = 10  # instructional days shown before "Show more"
 
 KIND_CLASS = {"Quiz": "quiz", "Test": "test", "Opener": "opener", "3-Act": "threeact", "Project": "test"}
-
-
-def esc(s):
-    return escape(str(s)) if s is not None else ""
-
-
-def week_monday(iso):
-    d = date.fromisoformat(iso)
-    return d - timedelta(days=d.weekday())
 
 
 def render_day(day, course=None):
@@ -78,7 +69,7 @@ def render_course(slug, course, start):
     days = [d for d in engine.render(course)[0] if d["date"] >= start]
     weeks = []
     for day in days:
-        monday = week_monday(day["date"])
+        monday = engine.week_monday(day["date"])
         if not weeks or weeks[-1][0] != monday:
             weeks.append((monday, []))
         weeks[-1][1].append(day)
@@ -94,7 +85,9 @@ def render_course(slug, course, start):
 
 def build_page(courses, today=None):
     """`courses` is a list of (slug, course dict), as in build_site.py."""
-    start = (today or date.today()).isoformat()
+    # School time, not the build machine's UTC: an evening build would
+    # otherwise start tomorrow and leave today off the page.
+    start = (today or engine.school_today()).isoformat()
     tabs = "".join(
         f'<button type="button" data-show="{esc(slug)}">{esc(c["course"])}</button>'
         for slug, c in courses

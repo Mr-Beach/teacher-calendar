@@ -28,14 +28,13 @@ import json
 import shutil
 import subprocess
 import sys
-from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from engine import render, run_all_checks  # noqa: E402
-from render import build_page  # noqa: E402
+from render import TEACHER, build_page, esc  # noqa: E402
 import lookahead_page  # noqa: E402
 
 TEACHER_PATH = "teacher"  # beach-math.com/teacher; no course or app may use it
@@ -54,7 +53,7 @@ def build_front_page(courses):
     (slug, course dict)."""
     years = sorted({c.get("school_year") for _, c in courses if c.get("school_year")})
     buttons = "\n".join(
-        f'    <a class="course" href="/{escape(slug)}/">{escape(c["course"])}'
+        f'    <a class="course" href="/{esc(slug)}/">{esc(c["course"])}'
         f'<span class="course__arrow" aria-hidden="true">&rsaquo;</span></a>'
         for slug, c in courses
     )
@@ -63,7 +62,7 @@ def build_front_page(courses):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mr. Beach's Math</title>
+<title>{esc(TEACHER)}'s Math</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
@@ -91,8 +90,8 @@ def build_front_page(courses):
 </head>
 <body>
 <main>
-  <h1>Mr. Beach's Math</h1>
-  <p class="subtitle">Class calendars{(" &middot; " + escape(", ".join(years))) if years else ""}</p>
+  <h1>{esc(TEACHER)}'s Math</h1>
+  <p class="subtitle">Class calendars{(" &middot; " + esc(", ".join(years))) if years else ""}</p>
   <nav class="courses">
 {buttons}
   </nav>
