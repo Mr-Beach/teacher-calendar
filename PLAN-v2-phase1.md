@@ -5,9 +5,9 @@ week grid, and her students get a page like mine. Read `SPEC-v2.md` first;
 this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
-**Status (2026-10-08):** plan written; nothing built. Next: M0.
-Color presets added to M1 and M7, my own trial run added as M7b, and
-layout choice moved to "Later" (end of this file).
+**Status (2026-10-08):** M0 done; decisions 1 and 4 confirmed (see "M0
+results"). Next: M1. Color presets are in M1 and M7, my own trial run is
+M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
 
@@ -123,8 +123,35 @@ deleted after) that:
 - records cold-start and warm timings (`wrangler tail` or observability).
 
 Done when: each item works, or the blocker is written up and decision 1
-switches to the TypeScript port. Also confirm here how Workers Builds
-deploys a Python Worker from a subdirectory.
+switches to the TypeScript port.
+
+**M0 results (2026-10-08).** Everything worked, so no port is needed.
+- `engine.py`, `render.py`, `lookahead.py`, and `lookahead_page.py` ran
+  unchanged in a Python Worker (Python 3.14 runtime). The Math 6 page it
+  served was **byte-identical** to `python3 render.py courses/math6.json`,
+  apart from `print()`'s trailing newline. The look-ahead page rendered
+  too.
+- Timing, measured from outside with curl: **0.85–1.5 s cold** (a fresh
+  Worker copy; Cloudflare measured startup at 875 ms) and **0.15–0.33 s
+  warm**, each including a full-year render and checks. Traffic this low
+  sees many cold starts, which is why decision 6 serves stored pages.
+- D1: the 77 KB Math 6 document saved and loaded back equal.
+- Access: on a path added to the existing "beach-math.com" Access app,
+  both `self.ctx.access.getIdentity()` and the Worker's own token check
+  (RS256 signature with Web Crypto through Pyodide, audience, issuer,
+  expiry) returned my email. A token with a tampered signature was
+  refused. **Use the Worker's own check** as the gate, since it pins this
+  app's audience whatever way Access is attached.
+- Gotchas for the real build:
+  - The current runtime expects the Workers SDK to be bundled by
+    `pywrangler` (workers-py ≥ 1.9). The spike used the
+    `disable_python_external_sdk` flag instead. The real Worker should use
+    `uv` + `pywrangler`.
+  - No randomness or other entropy at module top level; the runtime
+    refuses it at startup. Generate IDs inside a request.
+  - Don't parse the path by hand; use `urllib.parse.urlsplit(request.url)`.
+- **Not yet checked; moved to M3:** deploying a Python Worker from `v2/`
+  through Workers Builds, and whether its build image has `uv`.
 
 ### M1: engine prep, in this repo, nothing live changes
 
@@ -168,6 +195,9 @@ deploys a Python Worker from a subdirectory.
 
 ### M3: family pages from the Worker
 
+- Set up `v2/` as its own Workers Build (root directory `v2/`, deploy
+  with `pywrangler`), and confirm a push deploys it without touching the
+  current site's build.
 - `GET /<teacher>/<calendar>` serves the stored page; 404 otherwise.
 - A demo calendar (`/demo/math6`, a `template_from` copy) to look at.
 - Parity test: importing `math6.json` into the store and rendering it

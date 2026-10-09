@@ -1,0 +1,20 @@
+// M0 spike for v2 (PLAN-v2-phase1.md). Throwaway: delete the Worker, its
+// routes, and the v2-spike D1 database when M0 is done.
+{
+  "name": "v2-spike",
+  "main": "src/entry.py",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["python_workers", "disable_python_external_sdk"],
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "beach-math.com/v2-spike*", "zone_name": "beach-math.com" }
+  ],
+  "d1_databases": [
+    { "binding": "DB", "database_name": "v2-spike", "database_id": "e15e8be7-a953-4aa8-866a-b6ff21426125" }
+  ],
+  "vars": {
+    "TEAM_DOMAIN": "https://beach-math.cloudflareaccess.com",
+    "POLICY_AUD": "3e2baf895240ceac1559d297f04dd29b73ad038ffbc2e82b7aca61c1b00ec520"
+  },
+  "observability": { "enabled": true }
+}
