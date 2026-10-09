@@ -55,6 +55,54 @@ VALID_LESSON_KINDS = {"Lesson", "Opener", "Quiz", "Test", "3-Act", "Project"}
 #             one (the other half of moving a quiz, e.g. to Thursday).
 QUIZ_OVERRIDES = {"none", "paired", "full"}
 
+# The quiz rule, as settings (SPEC-v2's "Recurring activities", for the
+# quiz). A course's optional "quiz_rule" overrides any of these; without
+# one, the rule is exactly PLANNING.md's: Wednesdays, every week, a full
+# period, with its three skips. v1's "quiz_rhythm_start" and "quiz_link"
+# still supply the start and link, so Aaron's course files need no change.
+#   enabled:      False means no quizzes from the rule (a "full" day
+#                 override still makes one).
+#   weekday:      "Mon".."Fri".
+#   every_weeks:  1, or 2 for every other week, counted in calendar weeks
+#                 from `start`'s week (a skipped week still counts).
+#   start:        first date the rule applies from (None: the first day).
+#   sits:         "full" takes the whole period and lessons flow past it;
+#                 "shared" shares the period with that day's lesson, like
+#                 a "paired" day override, and moves nothing.
+#   skip:         which of QUIZ_SKIPS apply.
+#   link:         where students find the quizzes.
+#   self_grading: whether the test self-grading day takes the quiz slot
+#                 the week after a test (and is checked for).
+QUIZ_SKIPS = {"test_week", "break_return", "day_before_thanksgiving"}
+WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+_WEEKDAY_NAMES = {"Mon": "Monday", "Tue": "Tuesday", "Wed": "Wednesday",
+                  "Thu": "Thursday", "Fri": "Friday"}
+QUIZ_RULE_DEFAULTS = {
+    "enabled": True, "weekday": "Wed", "every_weeks": 1, "start": None,
+    "sits": "full", "skip": sorted(QUIZ_SKIPS), "link": None, "self_grading": True,
+}
+
+
+def quiz_rule(course):
+    """The course's effective quiz rule: QUIZ_RULE_DEFAULTS, then v1's
+    quiz_rhythm_start/quiz_link, then its own "quiz_rule". Raises
+    ValueError on a setting it doesn't recognize."""
+    rule = dict(QUIZ_RULE_DEFAULTS, start=course.get("quiz_rhythm_start"),
+                link=course.get("quiz_link"))
+    rule.update(course.get("quiz_rule") or {})
+    if set(rule) != set(QUIZ_RULE_DEFAULTS):
+        raise ValueError(f"unknown quiz_rule setting(s): {sorted(set(rule) - set(QUIZ_RULE_DEFAULTS))}")
+    if rule["weekday"] not in WEEKDAYS:
+        raise ValueError(f"quiz_rule weekday must be one of {WEEKDAYS}, got {rule['weekday']!r}")
+    if rule["every_weeks"] not in (1, 2):
+        raise ValueError(f"quiz_rule every_weeks must be 1 or 2, got {rule['every_weeks']!r}")
+    if rule["sits"] not in ("full", "shared"):
+        raise ValueError(f"quiz_rule sits must be 'full' or 'shared', got {rule['sits']!r}")
+    if set(rule["skip"]) - QUIZ_SKIPS:
+        raise ValueError(f"quiz_rule skip must come from {sorted(QUIZ_SKIPS)}, got {rule['skip']!r}")
+    return rule
+
+
 # A school day's optional "self_grading" field: "paired" puts test
 # self-grading in the same period as that day's lesson -- for a test whose
 # following Wednesday has no quiz slot to take (check_self_grading).
@@ -141,8 +189,8 @@ def lesson_title(item):
     return item["district_title"]
 
 
-def _break_return_wednesdays(school_days):
-    """Wednesdays of any week that starts with the first school day back
+def _break_return_weeks(school_days):
+    """Mondays of any week that starts with the first school day back
     after a break of 5+ consecutive 'No School' school-calendar days."""
     return_weeks = set()
     for i, d in enumerate(school_days):
@@ -155,9 +203,15 @@ def _break_return_wednesdays(school_days):
             j -= 1
         if run >= 5:
             return_weeks.add(_week_monday(date.fromisoformat(d["date"])))
+    return return_weeks
+
+
+def _break_return_days(school_days, weekday="Wed"):
+    """The `weekday` of each break-return week (_break_return_weeks)."""
+    return_weeks = _break_return_weeks(school_days)
     return {
         d["date"] for d in school_days
-        if d["weekday"] == "Wed" and _week_monday(date.fromisoformat(d["date"])) in return_weeks
+        if d["weekday"] == weekday and _week_monday(date.fromisoformat(d["date"])) in return_weeks
     }
 
 
@@ -183,27 +237,48 @@ def _place(school_days, sequence, quiz_dates, self_grading_dates=frozenset()):
     return placements, leftover
 
 
-def _compute_quiz_dates(school_days, sequence, quiz_rhythm_start=None):
-    wednesdays = [
+def _forced_quiz_dates(school_days):
+    """Days with a "full" quiz override: a full-period quiz whatever the rule says."""
+    return {d["date"] for d in school_days
+            if d.get("quiz") == "full" and d["type"] == "Instruction"}
+
+
+def _full_dates(rule, quiz_dates, forced):
+    """The quiz slots that take a whole period: all of them under a "full"
+    rule, only the forced ones under a "shared" rule."""
+    return quiz_dates if rule["sits"] == "full" else quiz_dates & forced
+
+
+def _compute_quiz_dates(school_days, sequence, rule):
+    """Every quiz slot: the rule's days (minus its skips and any day with a
+    `quiz` override) plus the forced ones. Full-period quizzes can push a
+    Test into a different week, which changes which weeks are test weeks,
+    so this iterates to a fixed point."""
+    forced = _forced_quiz_dates(school_days)
+    if not rule["enabled"]:
+        return set(forced)
+    start = rule["start"]
+    first_monday = _week_monday(date.fromisoformat(start or school_days[0]["date"]))
+    candidates = [
         d["date"] for d in school_days
-        if d["weekday"] == "Wed" and d["type"] == "Instruction"
-        and (quiz_rhythm_start is None or d["date"] >= quiz_rhythm_start)
+        if d["weekday"] == rule["weekday"] and d["type"] == "Instruction"
+        and (start is None or d["date"] >= start)
+        and (_week_monday(date.fromisoformat(d["date"])) - first_monday).days // 7 % rule["every_weeks"] == 0
     ]
-    break_return = _break_return_wednesdays(school_days)
+    skip = set(rule["skip"])
+    break_return = _break_return_days(school_days, rule["weekday"]) if "break_return" in skip else set()
     overridden = {d["date"] for d in school_days if d.get("quiz")}
-    forced = {d["date"] for d in school_days
-              if d.get("quiz") == "full" and d["type"] == "Instruction"}
 
     quiz_dates = set()
     for _ in range(10):
-        placements, _ = _place(school_days, sequence, quiz_dates)
-        test_weeks = _test_weeks(placements)
+        placements, _ = _place(school_days, sequence, _full_dates(rule, quiz_dates, forced))
+        test_weeks = _test_weeks(placements) if "test_week" in skip else set()
         new_quiz_dates = forced | {
-            wd for wd in wednesdays
-            if wd not in overridden
-            and wd not in break_return
-            and wd != _day_before_thanksgiving(int(wd[:4]))
-            and _week_monday(date.fromisoformat(wd)) not in test_weeks
+            qd for qd in candidates
+            if qd not in overridden
+            and qd not in break_return
+            and not ("day_before_thanksgiving" in skip and qd == _day_before_thanksgiving(int(qd[:4])))
+            and _week_monday(date.fromisoformat(qd)) not in test_weeks
         }
         if new_quiz_dates == quiz_dates:
             return quiz_dates
@@ -216,19 +291,37 @@ def _test_weeks(placements):
             for day, item in placements if item and item["kind"] == "Test"}
 
 
-def _self_grading_wednesday(test_week_monday):
-    return (test_week_monday + timedelta(days=9)).isoformat()
+def _self_grading_day(test_week_monday, weekday="Wed"):
+    """The quiz weekday of the week after a test week."""
+    return (test_week_monday + timedelta(days=7 + WEEKDAYS.index(weekday))).isoformat()
 
 
-def _compute_self_grading_dates(school_days, sequence, quiz_dates):
-    """The quiz slots that are the Wednesday of the week after a test week.
-    Only an existing quiz slot qualifies -- self-grading replaces that
-    week's quiz, so it never moves a lesson. A Wednesday with no quiz slot
-    (a holiday, a `quiz` override) gets none; check_self_grading flags it.
-    A "full" override on that Wednesday keeps the quiz."""
-    placements, _ = _place(school_days, sequence, quiz_dates)
-    forced = {d["date"] for d in school_days if d.get("quiz") == "full"}
-    return {_self_grading_wednesday(m) for m in _test_weeks(placements)} & (quiz_dates - forced)
+def _compute_self_grading_dates(school_days, sequence, quiz_dates, rule):
+    """The quiz slots that fall on the quiz weekday of the week after a
+    test week. Only an existing quiz slot qualifies -- self-grading
+    replaces that week's quiz, so it never moves a lesson. A day with no
+    quiz slot (a holiday, a `quiz` override) gets none; check_self_grading
+    flags it. A "full" override on that day keeps the quiz."""
+    if not rule["self_grading"]:
+        return set()
+    forced = _forced_quiz_dates(school_days)
+    placements, _ = _place(school_days, sequence, _full_dates(rule, quiz_dates, forced))
+    return ({_self_grading_day(m, rule["weekday"]) for m in _test_weeks(placements)}
+            & (quiz_dates - forced))
+
+
+def _placement(course):
+    """(placements, leftover, shared_quiz, shared_self_grading): place()'s
+    result plus the dates a "shared" quiz rule pairs a quiz, or the test
+    self-grading that replaces it, with that day's lesson."""
+    school_days, sequence = course["school_days"], course["sequence"]
+    rule = quiz_rule(course)
+    quiz_dates = _compute_quiz_dates(school_days, sequence, rule)
+    self_grading = _compute_self_grading_dates(school_days, sequence, quiz_dates, rule)
+    full = _full_dates(rule, quiz_dates, _forced_quiz_dates(school_days))
+    placements, leftover = _place(school_days, sequence, full, self_grading & full)
+    shared = quiz_dates - full
+    return placements, leftover, shared - self_grading, shared & self_grading
 
 
 def _homework_with_links(lesson):
@@ -289,14 +382,12 @@ def place(course):
     """(placements, leftover): each school day paired with the sequence
     entry, QUIZ_ITEM, or None that lands on it -- the one placement every
     caller shares, so nothing can disagree with render()."""
-    school_days, sequence = course["school_days"], course["sequence"]
-    quiz_dates = _compute_quiz_dates(school_days, sequence, course.get("quiz_rhythm_start"))
-    self_grading = _compute_self_grading_dates(school_days, sequence, quiz_dates)
-    return _place(school_days, sequence, quiz_dates, self_grading)
+    return _placement(course)[:2]
 
 
 def render(course):
-    placements, leftover = place(course)
+    placements, leftover, shared_quiz, shared_sg = _placement(course)
+    quiz_link = quiz_rule(course)["link"]
 
     # Homework shows twice: on the day it's assigned (with its lesson) and on
     # its due date, which is fixed and independent of where lessons land.
@@ -358,8 +449,9 @@ def render(course):
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
                 "display": display, "lesson_text": base, "kind": kind,
                 # A quiz sharing the period with this lesson (QUIZ_OVERRIDES).
-                "quiz_paired": day.get("quiz") == "paired" and lesson not in (None, QUIZ_ITEM, SELF_GRADING_ITEM),
-                "self_grading_paired": (day.get("self_grading") == "paired"
+                "quiz_paired": ((day.get("quiz") == "paired" or day["date"] in shared_quiz)
+                                and lesson not in (None, QUIZ_ITEM, SELF_GRADING_ITEM)),
+                "self_grading_paired": ((day.get("self_grading") == "paired" or day["date"] in shared_sg)
                                         and lesson not in (None, QUIZ_ITEM, SELF_GRADING_ITEM)),
                 "homework": homework_for(day, lesson) or None,
                 "due": due_by_date.get(day["date"]), "note": note,
@@ -367,7 +459,7 @@ def render(course):
                 "classwork": lesson.get("classwork") if lesson and shows_classwork(course) else None,
                 # A computed quiz day has no stored entry to carry a link, so
                 # every quiz links to the course's one quiz folder.
-                "link": (course.get("quiz_link") if lesson is QUIZ_ITEM
+                "link": (quiz_link if lesson is QUIZ_ITEM
                          else lesson.get("link") if lesson else None),
                 "extra_materials": lesson.get("extra_materials") if lesson else None,
             })
@@ -433,6 +525,101 @@ def set_day(course, date_str, type=_UNSET, note=_UNSET, quiz=_UNSET, self_gradin
                 day["self_grading"] = new_sg
             return day
     raise ValueError(f"no school day dated {date_str}")
+
+
+# --- v2: calendars stored apart from their school's days ---------------
+#
+# In v2 (SPEC-v2.md, "Data model") a school's days are stored once and
+# shared, and a calendar stores only its own differences from them, in
+# "day_changes": {date: that whole day as this calendar has it}. These
+# turn one into the course dict every function here takes, and back.
+
+
+def course_for_render(school_days, doc):
+    """A course dict from a school's days and a v2 calendar document:
+    the school's days, with this calendar's own changed days in place of
+    the school's."""
+    changes = doc.get("day_changes") or {}
+    dates = {d["date"] for d in school_days}
+    stray = sorted(set(changes) - dates)
+    if stray:
+        raise ValueError(f"day_changes for dates that aren't school days: {stray}")
+    course = {k: v for k, v in doc.items() if k != "day_changes"}
+    course["school_days"] = [dict(changes.get(d["date"], d)) for d in school_days]
+    return course
+
+
+def split_course(course, school_days):
+    """The inverse of course_for_render: a course dict as a v2 calendar
+    document, keeping only the days that differ from the school's."""
+    if [d["date"] for d in course["school_days"]] != [d["date"] for d in school_days]:
+        raise ValueError("the course's days and the school's days aren't the same dates")
+    doc = {k: v for k, v in course.items() if k != "school_days"}
+    doc["day_changes"] = {d["date"]: dict(d) for d, s in zip(course["school_days"], school_days)
+                          if d != s}
+    return doc
+
+
+# What a copy of a course keeps (SPEC-v2, Phase 1: "start from a copy of my
+# Math 6 sequence"): the district's sequence and the I-can targets, nothing
+# that points at the original teacher's accounts or is her own planning.
+_TEMPLATE_KEEPS = ("course", "school_year", "quiz_rhythm_start", "show_classwork",
+                   "focus_current_unit", "daily_materials", "due_notes", "review_before_test")
+_TEMPLATE_LESSON_KEEPS = ("topic", "lesson_code", "district_title", "kind", "target")
+
+
+def school_record(*courses):
+    """A school's shared days, from course dicts at that school: every
+    closure ('No School') they all agree on, with its note, and every other
+    day a plain Instruction day. Flex, testing, and 'Other' days aren't in
+    it: they differ by course (where a teacher put her Flex days, which day
+    her class tests), so each calendar keeps its own as day changes.
+    Raises ValueError if the courses disagree on a closure."""
+    first = courses[0]["school_days"]
+    for course in courses[1:]:
+        if [d["date"] for d in course["school_days"]] != [d["date"] for d in first]:
+            raise ValueError(f"{course.get('course')!r} has different dates from {courses[0].get('course')!r}")
+    record = []
+    for days in zip(*(c["school_days"] for c in courses)):
+        closed = {(d["type"] == "No School", d["note"] if d["type"] == "No School" else None) for d in days}
+        if len(closed) > 1:
+            raise ValueError(f"the courses disagree on whether {days[0]['date']} is a closure")
+        is_closed, note = closed.pop()
+        record.append({"date": days[0]["date"], "weekday": days[0]["weekday"],
+                       "type": "No School" if is_closed else "Instruction", "note": note})
+    return record
+
+
+def template_from(course, school_days=None):
+    """A new v2 calendar document copied from `course` (any calendar --
+    "start from Math 7/8"): lesson codes, titles, kinds, and targets, with
+    links, class work, homework, and extra materials cleared. Drops the
+    change log, the teacher's name, and every link (quiz_link,
+    answer_key_link, quiz_rule's link).
+
+    With `school_days` (the new calendar's school record), it also copies
+    the source's Flex, Testing, and 'Other' days, with their notes, as
+    the new calendar's day changes. It never copies the source teacher's
+    own planning: quiz and self-grading overrides, or her notes on class
+    days."""
+    doc = {k: course[k] for k in _TEMPLATE_KEEPS if k in course}
+    if course.get("quiz_rule"):
+        doc["quiz_rule"] = {k: v for k, v in course["quiz_rule"].items() if k != "link"}
+    doc["sequence"] = [
+        {**{k: entry.get(k) for k in _TEMPLATE_LESSON_KEEPS},
+         "homework": None, "link": None, "classwork": None, "extra_materials": None}
+        for entry in course["sequence"]
+    ]
+    doc["changes"] = []
+    doc["day_changes"] = {}
+    if school_days is not None:
+        school = {d["date"]: d for d in school_days}
+        for d in course["school_days"]:
+            s = school.get(d["date"])
+            if s and s["type"] == "Instruction" and d["type"] in ("Flex", "Testing", "Other"):
+                doc["day_changes"][d["date"]] = {"date": d["date"], "weekday": d["weekday"],
+                                                 "type": d["type"], "note": d["note"]}
+    return doc
 
 
 def set_daily_materials(course, items):
@@ -766,10 +953,7 @@ def check_test_placement(course):
     """Flag Tests landing somewhere PLANNING.md says to avoid. These aren't
     auto-fixed -- resolving one is an editorial call (what moves, and to
     where), so this just surfaces them for a human to decide."""
-    return_weeks = {
-        _week_monday(date.fromisoformat(d))
-        for d in _break_return_wednesdays(course["school_days"])
-    }
+    return_weeks = _break_return_weeks(course["school_days"])
 
     warnings = []
     for day, item in place(course)[0]:
@@ -789,17 +973,20 @@ def check_self_grading(course):
     another test that week), so there's no quiz to take the place of, and
     no lesson that week shares its period with it (`self_grading="paired"`).
     Not auto-fixed -- which day gives up its time is Aaron's call."""
-    placements, _ = place(course)
+    rule = quiz_rule(course)
+    if not (rule["enabled"] and rule["self_grading"]):
+        return []
+    placements, _, _, shared_sg = _placement(course)
     by_date = {day["date"]: (day, item) for day, item in placements}
     warnings = []
     for day, item in placements:
         if not item or item["kind"] != "Test":
             continue
-        wed = _self_grading_wednesday(_week_monday(date.fromisoformat(day["date"])))
+        wed = _self_grading_day(_week_monday(date.fromisoformat(day["date"])), rule["weekday"])
         if wed > course["school_days"][-1]["date"]:
             continue
         wday, witem = by_date.get(wed, (None, None))
-        if witem is SELF_GRADING_ITEM:
+        if witem is SELF_GRADING_ITEM or wed in shared_sg:
             continue
         week = _week_monday(date.fromisoformat(wed))
         if any(d.get("self_grading") == "paired" and i not in (None, QUIZ_ITEM, SELF_GRADING_ITEM)
@@ -810,7 +997,7 @@ def check_self_grading(course):
                else f"is '{wday['note'] or wday['type']}'" if wday["type"] != "Instruction"
                else "has no quiz slot to replace")
         warnings.append(f"{day['date']}: '{lesson_title(item)}' has no self-grading day -- "
-                        f"the Wednesday after, {wed}, {why}")
+                        f"the {_WEEKDAY_NAMES[rule['weekday']]} after, {wed}, {why}")
     return warnings
 
 
@@ -820,7 +1007,10 @@ def check_review_before_test(course):
     days in between are fine; a quiz or a lesson in between is not. A
     review is recognized by "Review" in its title. Not auto-fixed --
     whether to insert a review day or cut something to make room is
-    Aaron's call."""
+    Aaron's call. A course with "review_before_test": false skips it --
+    a teacher whose tests don't get a review day."""
+    if not course.get("review_before_test", True):
+        return []
     warnings, prev = [], None
     for day, item in place(course)[0]:
         if item is None:

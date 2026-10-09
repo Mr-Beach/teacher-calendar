@@ -5,8 +5,8 @@ week grid, and her students get a page like mine. Read `SPEC-v2.md` first;
 this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
-**Status (2026-10-08):** M0 done; decisions 1 and 4 confirmed (see "M0
-results"). Next: M1. Color presets are in M1 and M7, my own trial run is
+**Status (2026-10-08):** M0 and M1 done (see "M0 results", "M1
+results"). Next: M2. Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
@@ -180,6 +180,28 @@ switches to the TypeScript port.
   out byte-identical before and after M1. Plus new tests for each recurring
   rule and skip condition.
 
+**M1 results (2026-10-08).** Done; 115 tests pass (85 before M1).
+- `tests/test_golden.py` freezes both courses (as of 10/8) and their
+  pages and calendars. The engine changes left both byte-identical, and
+  every check's warnings matched the old engine's. The color tokens
+  changed the page's CSS text but not one color on it; the golden pages
+  were regenerated once, on purpose, for that.
+- **The quiz rule is settings** (`engine.quiz_rule`, a course's optional
+  `quiz_rule`): on or off, weekday, every week or every other, full period
+  or shared with the lesson, which skips apply, link, and whether test
+  self-grading takes the quiz slot. v1's `quiz_rhythm_start` and
+  `quiz_link` still work, so my course files needed no change.
+- **Narrowed from the plan:** the spec's other recurring activities
+  aren't built. The quiz is the one the colleague needs, and the page
+  already knows how to show it. Next in line is **catch-up days** (see
+  "Later"). A homework check stays off the calendar: it's a classroom
+  routine, and the page already shows what's due.
+- `review_before_test`, `teacher`, `theme` (presets `teal` (mine),
+  `plum`, `forest`, `slate`; `tests/test_themes.py` checks every text and
+  fill pair against WCAG contrast), `template_from`, `course_for_render`,
+  `split_course` (the reverse, for importing a course file), and
+  `school_record` (the closures every course agrees on).
+
 ### M2: the database and the store layer
 
 - `v2/schema.sql`: `schools`, `school_days`, `teachers` (email, display
@@ -189,9 +211,16 @@ switches to the TypeScript port.
   teacher's calendars, and an ownership check. It talks to the database
   through a small adapter, so **the tests run on Python's own `sqlite3`**
   (D1 is SQLite) in CI with no Cloudflare involved.
-- `v2/seed.py`: loads the school calendar from `math6.json`'s school days
-  and creates my admin row. The school days are loaded once, as the spec
-  says, and kept in step by hand until my courses move.
+- `v2/seed.py`: loads the school calendar and creates my admin row. The
+  school days are loaded once, as the spec says, and kept in step by hand
+  until my courses move.
+- **What's school-wide (settled 10/8).** The school record holds only
+  closures: `engine.school_record(math6, math78)` takes the 37 No School
+  days both courses agree on (they agree on every one) and makes every
+  other day a plain class day. Flex, testing, and "Other" days differ by
+  course, so each calendar keeps its own as day changes. Each of my
+  courses is then the school record plus its own changes
+  (`split_course`), tested to round-trip exactly.
 
 ### M3: family pages from the Worker
 
@@ -242,9 +271,18 @@ the change, and keeps a revision.
 
 ### M7: settings
 
-Her recurring activities (add, edit, turn off on one day), review day
-before tests, display name, and class title. Starting a new calendar from
-a blank year or from my Math 6 template. Picking a color preset, shown as
+Her quiz rule (on or off, weekday, every or every other week, full or
+shared; turn it off or move it on one day), review day before tests,
+display name, and class title.
+
+**Starting a calendar: start from one that exists.** The first screen
+asks what she teaches and fills the year from any existing calendar, at
+first Math 6 or Math 7/8 Compacted (the district's own pacing guides).
+`template_from(source, school_days)` copies its lessons and targets and
+its Flex, testing, and "Other" days, and leaves behind my links, homework,
+quiz changes, and class-day notes. Closures come from the school record,
+so she never enters holidays. "Blank year" is the last choice; uploading
+the district calendar instead is in "Later". Picking a color preset, shown as
 a small preview of her own page in each one.
 
 ### M7b: my trial run
@@ -285,6 +323,31 @@ gets fixed before M8.
 Phase 2's buttons (lost day with preview, add or remove a day), the change
 nudges, the "save changes together" grouping, drafts (open question 1),
 anything preschool (Phase 1b), and anything AI (Phase 3).
+
+## Later: catch-up days
+
+The first recurring activity after the quiz, built after the trial. A
+catch-up day is planned slack: a monthly day (e.g. the last Friday) that
+lessons flow past, like a Flex day. Its point is what happens when a day
+is lost: the editor offers "use your next catch-up day?", and taking it
+earns the lost day back without pushing every lesson later. Per SPEC-v2's
+"right amount of control", it's offered when there's a reason, after a
+lost day or when a teacher's year has no Flex days, not as a setup
+option. It needs page design first (how a catch-up day looks to
+students).
+
+## Later: setting up from a document, and more curricula
+
+- **Upload the district calendar or pacing guide** and have it fill the
+  school days or the sequence. That's reading a PDF or photo into the
+  grid, which is Phase 3's "fill from a source", and it lands the same
+  way: highlighted, unsaved, kept or cleared.
+- **A wider curriculum list.** Publishers' lesson orders aren't freely
+  available as data, so the list can't be bought or scraped. It grows
+  from teachers instead: a calendar a teacher has finished can become a
+  starting sequence for others, with her permission (`template_from`
+  already strips anything tied to her accounts). An upload (above) is the
+  other way in.
 
 ## Later: a choice of page layout
 

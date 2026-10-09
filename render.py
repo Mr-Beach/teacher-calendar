@@ -42,9 +42,44 @@ from datetime import date, timedelta
 from itertools import groupby
 from pathlib import Path
 
-from engine import is_practice_log, render, run_all_checks
+from engine import is_practice_log, quiz_rule, render, run_all_checks
 
+# Shown under the course name. A course can name its own teacher ("teacher");
+# Aaron's course files don't, so they get this.
 TEACHER = "Mr. Beach"
+# Color presets a course can pick with "theme" (SPEC-v2 / PLAN-v2-phase1,
+# M1). Each one swaps the page's ground, ink, accent, and neutrals; the
+# meaning colors -- quiz blue, test orange, today and "soon" yellow, white
+# on dark fills -- are the same in every preset, so a student reads them
+# the same way on any teacher's page. Presets, not a color picker, so every
+# one can be checked for readability (tests/test_themes.py). "teal" is the
+# page's own look, written in PAGE's :root; the others override it.
+THEMES = {
+    "teal": {},
+    "plum": {"--bg": "#F5F0F7", "--ink": "#3A1F4D", "--muted": "#5E4870", "--line": "#EAE1EF",
+             "--accent": "#83285F", "--closed-bg": "#F6F3F8", "--closed-ink": "#62507A",
+             "--dash": "#CDBCD8", "--soft": "#F0E8F4", "--dashed": "#9A84AA"},
+    "forest": {"--bg": "#EFF4EA", "--ink": "#1E3324", "--muted": "#435C48", "--line": "#DFE8D9",
+               "--accent": "#2D6528", "--closed-bg": "#F3F6F0", "--closed-ink": "#4F6354",
+               "--dash": "#B9CBB3", "--soft": "#E6EFE1", "--dashed": "#849B7E"},
+    "slate": {"--bg": "#F1F3F5", "--ink": "#1D232B", "--muted": "#4A5461", "--line": "#E2E5E9",
+              "--accent": "#2B5AA3", "--closed-bg": "#F4F5F7", "--closed-ink": "#555E6B",
+              "--dash": "#BCC3CC", "--soft": "#E8EBEF", "--dashed": "#87909C"},
+}
+
+
+def theme_css(course):
+    """The :root override for the course's "theme" (none for "teal", the
+    default). Raises ValueError on a theme that isn't a preset."""
+    name = course.get("theme") or "teal"
+    if name not in THEMES:
+        raise ValueError(f"theme must be one of {sorted(THEMES)}, got {name!r}")
+    tokens = THEMES[name]
+    if not tokens:
+        return ""
+    return "\n  :root { " + " ".join(f"{k}: {v};" for k, v in tokens.items()) + " }"
+
+
 MONTH_NAMES = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
@@ -197,7 +232,7 @@ def render_panel(day, course):
         # A Practice Log with a link is that folder; its own text links there.
         redo = is_quiz_redo(due["text"])
         if redo:
-            key = course.get("quiz_link")
+            key = quiz_rule(course)["link"]
         elif is_practice_log(due) and due.get("link"):
             key = None
         else:
@@ -439,7 +474,7 @@ def homework_data(calendar):
 
 def build_page(course, calendar):
     """The whole page for one course. `calendar` is engine.render(course)[0]."""
-    subtitle = " · ".join(x for x in (TEACHER, course.get("school_year")) if x)
+    subtitle = " · ".join(x for x in (course.get("teacher") or TEACHER, course.get("school_year")) if x)
     data = (f"const DAYS = {to_json(days_data(calendar))};\n"
             f"const HOMEWORK = {to_json(homework_data(calendar))};\n"
             f"const DAILY_MATERIALS = {to_json(course.get('daily_materials') or [])};\n"
@@ -448,7 +483,8 @@ def build_page(course, calendar):
     # Placeholders filled one at a time: the page itself is a plain string,
     # so its CSS and JS braces need no escaping.
     page = PAGE
-    for key, value in (("%%TITLE%%", esc(course["course"])), ("%%SUBTITLE%%", esc(subtitle)),
+    for key, value in (("%%THEME%%", theme_css(course)),
+                       ("%%TITLE%%", esc(course["course"])), ("%%SUBTITLE%%", esc(subtitle)),
                        ("%%DATA%%", data), ("%%MONTHS%%", render_months(calendar)),
                        ("%%WEEKS%%", render_weeks(calendar, course)),
                        ("%%TOPICS%%", render_topics(calendar))):
@@ -476,8 +512,9 @@ PAGE = """<!doctype html>
     --line: #E2E4F0; --accent: #0E7466; --today: #FFF6C9;
     --quiz-bg: #DCE6FF; --quiz-ink: #1D3FB0; --test-bg: #FFE2CF; --test-ink: #9A3412;
     --closed-bg: #F3F4F8; --closed-ink: #565A80; --dash: #B9BCD6; --soft: #E8EAF6;
+    --on-ink: #FFFFFF; --soon: #FFE58A; --dashed: #8C91B8;
     --display: 'Bricolage Grotesque', 'Atkinson Hyperlegible', Verdana, sans-serif;
-  }
+  }%%THEME%%
   * { box-sizing: border-box; }
   body {
     margin: 0; background: var(--bg); color: var(--ink);
@@ -506,7 +543,7 @@ PAGE = """<!doctype html>
   .top p { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
   .switch { display: inline-grid; grid-template-columns: 1fr 1fr 1fr; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; background: var(--card); }
   .switch button { border: 0; background: none; min-height: 44px; padding: 0 18px; font-weight: 700; cursor: pointer; }
-  .switch button[aria-pressed="true"] { background: var(--ink); color: #FFFFFF; }
+  .switch button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
   @media (max-width: 599px) { .switch { width: 100%; } .switch button { padding: 0 8px; } .top h1 { font-size: 24px; } }
 
   /* Upcoming: side column (today, homework, coming up) + the list */
@@ -536,7 +573,7 @@ PAGE = """<!doctype html>
   .chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .chips .lbl { margin-right: 2px; }
   .chip { border: 1.5px solid var(--ink); border-radius: 999px; padding: 2px 10px; font-size: 14px; }
-  .chip-extra { background: var(--ink); color: #FFFFFF; }
+  .chip-extra { background: var(--ink); color: var(--on-ink); }
   .lbl { display: block; font-size: 12px; font-weight: 700; letter-spacing: .05em; color: var(--muted); text-transform: uppercase; }
 
   .hwlist { padding: 4px 14px; }
@@ -545,8 +582,8 @@ PAGE = """<!doctype html>
   .hw-item svg { flex: none; margin-top: 2px; }
   .hw-body { flex: 1; min-width: 0; }
   .pill { flex: none; font-size: 13px; font-weight: 700; border-radius: 999px; padding: 3px 10px; background: var(--soft); white-space: nowrap; }
-  .pill-today { background: var(--ink); color: #FFFFFF; }
-  .pill-soon { background: #FFE58A; }
+  .pill-today { background: var(--ink); color: var(--on-ink); }
+  .pill-soon { background: var(--soon); }
   .empty { padding: 10px 0; color: var(--muted); }
 
   .coming { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -560,11 +597,11 @@ PAGE = """<!doctype html>
   .tile .w { font-size: 14px; color: var(--muted); }
 
   /* The list */
-  .earlier { width: 100%; min-height: 48px; margin-bottom: 18px; background: var(--card); border: 2px dashed #8C91B8; border-radius: 14px; font-weight: 700; cursor: pointer; }
+  .earlier { width: 100%; min-height: 48px; margin-bottom: 18px; background: var(--card); border: 2px dashed var(--dashed); border-radius: 14px; font-weight: 700; cursor: pointer; }
   .week { margin-bottom: 18px; }
   .backweek { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 5;
               min-height: 48px; padding: 0 20px; border-radius: 999px; border: 2px solid var(--ink);
-              background: var(--ink); color: #FFFFFF; font-weight: 700; cursor: pointer;
+              background: var(--ink); color: var(--on-ink); font-weight: 700; cursor: pointer;
               box-shadow: 0 4px 14px rgba(31, 37, 85, .3); }
   .month-head { font-size: 28px; font-weight: 800; border-bottom: 2px solid var(--ink); padding-bottom: 4px; margin: 10px 0 14px; }
   .week-title { font-size: 21px; font-weight: 800; margin-bottom: 8px; display: flex; gap: 10px; align-items: baseline; }
@@ -615,7 +652,7 @@ PAGE = """<!doctype html>
   .given { color: var(--muted); }
   .due-note { display: block; font-size: 14px; }
   .keylink { display: block; width: fit-content; font-size: 14px; }
-  .btn { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; border-radius: 12px; background: var(--ink); color: #FFFFFF; font-weight: 700; text-decoration: none; }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; border-radius: 12px; background: var(--ink); color: var(--on-ink); font-weight: 700; text-decoration: none; }
 
   /* Whole year */
   .yearnav { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
@@ -662,7 +699,7 @@ PAGE = """<!doctype html>
   .cell-top { display: flex; align-items: center; gap: 4px; }
   .cell-num { font-weight: 700; font-size: 15px; }
   .due-tag, .quiz-tag { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 0 4px; line-height: 16px; }
-  .due-tag { background: var(--ink); color: #FFFFFF; }
+  .due-tag { background: var(--ink); color: var(--on-ink); }
   .row-title .due-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; }
   .quiz-tag { background: var(--quiz-bg); color: var(--quiz-ink); }
   /* Too wide for a phone-width square; the day's details say it there. */
@@ -677,8 +714,8 @@ PAGE = """<!doctype html>
   .cell-closed { background: none; border: 1.5px dashed var(--dash); color: var(--closed-ink); }
   .cell-closed .cell-title { font-style: italic; }
   .cell-today { background: var(--today); box-shadow: inset 0 0 0 2px var(--ink); }
-  .cell-selected, .cell-selected .cell-short, .cell-selected .cell-code, .cell-selected .cell-title { background: var(--ink); color: #FFFFFF; box-shadow: none; }
-  .cell-selected .due-tag { background: #FFFFFF; color: var(--ink); }
+  .cell-selected, .cell-selected .cell-short, .cell-selected .cell-code, .cell-selected .cell-title { background: var(--ink); color: var(--on-ink); box-shadow: none; }
+  .cell-selected .due-tag { background: var(--on-ink); color: var(--ink); }
   /* Wide screens: room for the code and a title of up to two lines, then "..." */
   @media (min-width: 900px) {
     .cell { height: 92px; padding: 6px 8px; }
@@ -696,13 +733,13 @@ PAGE = """<!doctype html>
   /* Changes families have already seen (engine.record_change): a tag on the
      day, the old version in its details, and the Recent changes list. */
   .chg-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; font-size: 11px; font-weight: 700;
-             border-radius: 4px; padding: 0 4px; line-height: 16px; background: var(--accent); color: #FFFFFF; }
+             border-radius: 4px; padding: 0 4px; line-height: 16px; background: var(--accent); color: var(--on-ink); }
   /* Content added to a day (a target, a link, new homework): lighter than a
      change, and shown for less time. */
   .upd-tag { display: inline-block; vertical-align: 2px; margin-left: 4px; font-size: 11px; font-weight: 700;
              border-radius: 4px; padding: 0 4px; line-height: 14px; border: 1.5px solid var(--accent); color: var(--accent); }
   .chg-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); flex: none; }
-  .cell-selected .chg-dot { background: #FFFFFF; }
+  .cell-selected .chg-dot { background: var(--on-ink); }
   .pnl-changed { border-left: 3px solid var(--accent); padding-left: 10px; font-size: 14px; }
   .pnl-changed b { color: var(--accent); }
   .chglist { padding: 4px 14px; }

@@ -19,6 +19,27 @@ they're using it. No open-ended chatbot, no separate account, nothing to
 set up. A short back-and-forth about a proposed edit is fine; it always
 ends in an edit the teacher accepts or dismisses.
 
+**The second design rule: the right amount of control.** This is more
+planning power than most teachers have ever had, and that's a risk as
+well as a help. A tool that offers every choice up front pushes a teacher
+toward a tightly planned calendar that may not suit her, and every far-off
+detail is something that will change in front of families. So:
+
+1. **Defaults over choices.** Setup asks only what can't be guessed (what
+   she teaches, her quiz day if she has one). Everything else starts at a
+   sensible default, out of sight.
+2. **Options appear when there's a reason.** A setting is offered at the
+   moment it would help (after a lost day: "use your next catch-up day?"),
+   not laid out as a menu on day one.
+3. **Detail near, outline far.** The editor shows a week or two. Further
+   out, the year is lesson titles flowing in order. Nothing encourages
+   filling in March's homework in October.
+4. **Slack is a feature.** Built-in breathing room (catch-up days, Flex
+   days) matters as much as filling days. The tool should make the
+   calendar more forgiving, not more packed.
+
+Every new setting or feature gets checked against these before it's built.
+
 Two teachers to start, and they need different things:
 
 1. **A colleague at my school teaching the same course.** The page is for
