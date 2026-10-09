@@ -127,6 +127,15 @@ own documents (at-a-Glance guide, sample calendars, SPS school calendar).
   week (PLANNING.md, "When the calendar changes"). Tell Aaron which days
   it tags. Pass `small_fix=True` only for a typo fix he calls one. It logs
   nothing if nothing students had already seen changed.
+- **Set and planned days.** Each course has a `set_through` date
+  (PLANNING.md, "Set and planned days"). `record_change` only tags set
+  days, plus any quiz or test that moves; planned days change silently.
+  Tell Aaron which side of the date an edit falls on. Setting a week
+  means moving `set_through` to that week's Friday: a week file for the
+  next unset week does it, or he asks. The week students are in always
+  counts as set (`engine.set_floor`), so a date that fell behind can't
+  silence a notice; if the "set through" check fires, ask him whether to
+  set the week.
 
 ## Applying curriculum-audit findings
 

@@ -385,8 +385,31 @@ def place(course):
     return _placement(course)[:2]
 
 
+def set_through(course):
+    """The course's "set through" date (ISO), or None if it doesn't use one.
+    Every day up to and including it is set: its target, homework, due
+    dates, and links are final. Every day after it is planned: the expected
+    lesson order and homework, which may still shift (PLANNING.md, "Set
+    and planned days"). Aaron sets one week at a time."""
+    value = course.get("set_through")
+    if value is not None:
+        date.fromisoformat(value)  # raises ValueError on a malformed date
+    return value
+
+
+def set_floor(today=None):
+    """The last date that counts as set whatever a course's set_through
+    says: the Friday of the school week students are in -- this week on a
+    weekday, the coming week on a weekend. A set-through date nobody
+    advanced can never leave the days students are using unnoticed."""
+    today = today or school_today()
+    monday = _week_monday(today) + timedelta(days=7 if today.weekday() >= 5 else 0)
+    return (monday + timedelta(days=4)).isoformat()
+
+
 def render(course):
     placements, leftover, shared_quiz, shared_sg = _placement(course)
+    through = set_through(course)
     quiz_link = quiz_rule(course)["link"]
 
     # Homework shows twice: on the day it's assigned (with its lesson) and on
@@ -447,6 +470,7 @@ def render(course):
             display = f"{base}\n{note}" if note else base
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
+                "set": through is None or day["date"] <= through,
                 "display": display, "lesson_text": base, "kind": kind,
                 # A quiz sharing the period with this lesson (QUIZ_OVERRIDES).
                 "quiz_paired": ((day.get("quiz") == "paired" or day["date"] in shared_quiz)
@@ -468,6 +492,7 @@ def render(course):
             # note (e.g. "No School (Holiday)") replaces the bare type label.
             calendar.append({
                 "date": day["date"], "weekday": day["weekday"], "type": day["type"],
+                "set": through is None or day["date"] <= through,
                 "display": note or day["type"], "lesson_text": None, "kind": None,
                 "quiz_paired": False, "self_grading_paired": False,
                 "homework": None, "due": due_by_date.get(day["date"]), "note": note,
@@ -775,6 +800,10 @@ def _md(iso):
     return f"{d.month}/{d.day}"
 
 
+def _is_quiz_or_test(day):
+    return day["kind"] in ("Quiz", "Test") or bool(day.get("quiz_paired"))
+
+
 def _is_assessment(day):
     return (day["kind"] in ("Quiz", "Test", "Project", "Self-Grading")
             or bool(day.get("quiz_paired")) or bool(day.get("self_grading_paired")))
@@ -824,14 +853,21 @@ def _moved_from(after_day, before_calendar, after_calendar, date_, today):
     return _same_occurrence(after_day["lesson_text"], date_, after_calendar, before_calendar, today)
 
 
-def _due_changes(before_calendar, after_calendar, today, small_fix=False):
+def _due_changes(before_calendar, after_calendar, today, small_fix=False, through=None):
     """Assignments whose due date moved, that were reworded, or that were
     dropped, as change details on the date families were told (or the new
     one, if that one's past). Compared across the whole calendar by (text,
     due), not day by day: the day an assignment is given moves with its
     lesson, and that alone isn't news -- its due date is fixed, and a moved
     due date is. A reworded assignment is matched by its unchanged due
-    date; `small_fix` skips those."""
+    date; `small_fix` skips those. With `through` (the course's set-through
+    date), an assignment given on a planned day is skipped: planned
+    homework can change quietly."""
+    given_on = {}
+    for d in before_calendar:
+        for h in d["homework"] or []:
+            given_on.setdefault((h["text"], h["due"]), d["date"])
+
     def items(calendar):
         out = []
         for d in calendar:
@@ -855,6 +891,8 @@ def _due_changes(before_calendar, after_calendar, today, small_fix=False):
         if now is not None:
             added.remove(now)
         if max(was_due, now[1] if now else was_due) < today:
+            continue
+        if through is not None and given_on.get((text, was_due), "") > through:
             continue
         changes.append({
             "date": was_due if was_due >= today else now[1], "what": "homework",
@@ -894,9 +932,20 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
     moved or dropped due dates anywhere. The rest is covered by `summary`
     alone.
 
+    A course with a set-through date (set_through) works differently:
+    only days that were set before the edit count. Their changed title,
+    class work, target, or link is tagged, and a moved or dropped
+    assignment given on one. Planned days change silently -- no tags, and
+    no Recent changes line if nothing else changed -- except quizzes and
+    tests through the current unit's test: their dates count as set as soon
+    as they're on the calendar, so one appearing, disappearing, or moving
+    there is tagged. A test months out isn't. The next-few-class-days
+    window doesn't apply.
+
     Content added to a day that keeps its lesson (a target, class work, a
     link, a new assignment) isn't a change, but it's news: those dates go
-    in the entry's `updated`, which the page tags "Updated" for 2 days.
+    in the entry's `updated`, which the page tags "Updated" for 2 days
+    (set days only, in a course with a set-through date).
     `changed` says whether anything seen changed; an entry that only
     updated isn't listed under Recent changes.
 
@@ -908,24 +957,43 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
     upcoming_class = [d["date"] for d in after_calendar
                       if d["date"] >= today and d["type"] == "Instruction"]
     window_end = upcoming_class[min(CHANGE_TAG_CLASS_DAYS, len(upcoming_class)) - 1] if upcoming_class else today
+    through = set_through(course)
+    if through is not None:
+        through = max(through, set_floor(date.fromisoformat(today)))
+        window_end = through
+        # The current unit runs through its test -- the later of where the
+        # next test was and where it is now, if this edit moved it.
+        unit_end = max((next((d["date"] for d in cal if d["date"] >= today and d["kind"] == "Test"), "")
+                        for cal in (before_calendar, after_calendar)))
+    # The fields a set day's lesson can change without changing its title.
+    details = ("classwork",) if through is None else ("classwork", "target", "link")
     any_change, tagged, updated = False, [], []
     for after_day in after_calendar:
         date_ = after_day["date"]
         if date_ < today or date_ not in before:
             continue
         before_day = before[date_]
+        was_set = through is None or before_day.get("set", False) or date_ <= through
+        if through is None:
+            assessment = _is_assessment(before_day) or _is_assessment(after_day)
+        else:  # quizzes and tests only, and only through the current unit's test
+            assessment = date_ <= unit_end and (_is_quiz_or_test(before_day) or _is_quiz_or_test(after_day))
         was, now = _seen_title(before_day), _seen_title(after_day)
-        if was == now and _content_added(before_day, after_day):
+        if was == now and was_set and _content_added(before_day, after_day):
             updated.append(date_)
+        changed_detail = next((f for f in details if not small_fix and was == now
+                               and before_day[f] and before_day[f] != after_day[f]), None)
         if was is not None and was != now:
             what = "title"
-        elif (not small_fix and was == now and before_day["classwork"]
-              and before_day["classwork"] != after_day["classwork"]):
-            what, was, now = "class work", before_day["classwork"], after_day["classwork"]
+        elif changed_detail:
+            what, was, now = changed_detail.replace("classwork", "class work"), \
+                before_day[changed_detail], after_day[changed_detail]
         else:
             continue
+        if not (was_set or (what == "title" and assessment)):
+            continue  # a planned day: it changes quietly
         any_change = True
-        if date_ <= window_end or _is_assessment(before_day) or _is_assessment(after_day):
+        if date_ <= window_end or assessment:
             detail = {"date": date_, "what": what, "was": was, "now": now, "kind": "changed"}
             moved_to = what == "title" and _moved_to(before_day, before_calendar, after_calendar, date_, today)
             if moved_to:
@@ -934,19 +1002,35 @@ def record_change(course, before_calendar, summary, reason=None, small_fix=False
             if moved_from:
                 detail.update(kind="moved", moved_from=moved_from)
             tagged.append(detail)
-    dues = _due_changes(before_calendar, after_calendar, today, small_fix)
+    dues = _due_changes(before_calendar, after_calendar, today, small_fix, through)
     changed = any_change or bool(dues)
     if not changed and not updated:
         return None
     # A moved or dropped due date is tagged wherever it is; a reworded
     # assignment only inside the window, like class work.
-    tagged += [d for d in dues if d["kind"] != "changed" or d["date"] <= window_end]
+    tagged += [d for d in dues if d["kind"] != "changed" or d["date"] <= window_end or through]
     tagged.sort(key=lambda d: d["date"])
     tagged_dates = {d["date"] for d in tagged}
     entry = {"logged": today, "summary": summary, "reason": reason, "changed": changed,
              "days": tagged, "updated": [d for d in updated if d not in tagged_dates]}
     course.setdefault("changes", []).append(entry)
     return entry
+
+
+def check_set_through_current(course, today=None):
+    """Flag a set-through date that's fallen behind the week students are
+    in (set_floor). Those days are treated as set anyway, so nothing goes
+    out unnoticed, but the date is how a week gets set on purpose -- and
+    on a weekend, next week's days are already in use."""
+    through = set_through(course)
+    if through is None:
+        return []
+    floor = set_floor(today)
+    if through >= floor:
+        return []
+    return [f"Set through is {_md(through)}, behind the week students are in (through "
+            f"{_md(floor)}): those days count as set anyway, but set the week -- a week "
+            f"file for it, or ask"]
 
 
 def check_test_placement(course):
@@ -1157,6 +1241,7 @@ def run_all_checks(course):
     else that wants "is this course file okay?" See PLANNING.md's Sanity
     checks section, which this is meant to mirror."""
     return [
+        ("set through", check_set_through_current(course)),
         ("test placement", check_test_placement(course)),
         ("review before test", check_review_before_test(course)),
         ("self-grading", check_self_grading(course)),

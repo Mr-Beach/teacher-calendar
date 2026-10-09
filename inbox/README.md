@@ -55,6 +55,13 @@ Those are the days to ask Aaron about; the lesson code on each line is the
 
 `course` is required: `math6` or `math78`. A file without it is rejected.
 
+`week_of` (the week's Monday) also decides whether the week becomes
+**set** (PLANNING.md, "Set and planned days"). If it's the next unset week,
+the first school week after the course's `set_through` date, applying it
+moves `set_through` to that week's Friday. A file for a later week goes in
+as planned, and the summary says so. A file for a week that's already set
+is allowed, but any change to what students saw is marked as a change.
+
 Rules, per day:
 
 - `date` — required, a date in the course calendar.

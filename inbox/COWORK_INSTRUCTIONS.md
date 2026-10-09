@@ -32,7 +32,9 @@ PLANNING A WEEK
    Fix any error before going on. If it says a lesson doesn't match,
    the calendar has shifted. Re-run the needs list; don't force it.
 6. Show me a short summary, day by day: target, homework with due date,
-   and whether a link is set. Wait for my OK.
+   and whether a link is set. Say whether the week will become set (the
+   dry run says so: only the next unset week does; a later week goes in
+   as planned). Wait for my OK.
 7. After I say OK: create a branch named week/<Monday's date> (or
    week/<first>-and-<second> for two weeks), commit only the inbox files,
    and push. GitHub applies it and opens a pull request; merging it

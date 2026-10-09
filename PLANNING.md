@@ -198,6 +198,34 @@ The calendar is student-facing. That governs everything on it:
   vs. summative reads differently at a glance.
 - **No student names, grades, or anything student-identifying. Ever.**
 
+## Set and planned days
+
+Each course has a **set-through date** (`"set_through"` in the course
+file). Every day up to and including it is **set**: its target, homework,
+due dates, and links are final. Every day after it is **planned**: the
+expected lesson order and homework, which may still shift.
+
+I set one week at a time, normally by Friday's end of day for the week
+after. Applying the week file for the next unset week moves the date to
+that week's Friday (`scripts/apply_week.py`). A week file for a later week
+goes in as planned, and its summary says so. To set a week without a week
+file, change `set_through` in the course file.
+
+**A date nobody advanced can't silence notices.** The week students are in
+always counts as set, whatever `set_through` says: this week on a weekday,
+the coming week on a weekend (`engine.set_floor`). Change notices and the
+page both use whichever date is later, so a missed Friday only means next
+week stays planned until the weekend. The "set through" check flags a
+date that's behind, on the teacher look-ahead and in the build log.
+
+What students see: a line near the top ("Set through Fri 10/16. Later days
+are planned and may change."). Planned days look different but stay
+readable: a dashed "Planned" tag, a regular-weight title, a pencil hatch
+on the month grid, and "Planned" on a week whose class days are all
+planned. A planned day's details say it may still change, mark its
+homework "(planned)", and leave out the lesson link, even if one is
+stored.
+
 ## When the calendar changes
 
 Students and families who watch the calendar notice when it changes, so the
@@ -210,8 +238,9 @@ list, and the page builds two things from that log:
   day a test or project moves to says where it came from),
   "Due date moved", "HW dropped", or "Changed" for anything else. It's a
   dot on the day's Whole-year square, and the old version sits at the top
-  of the day's details. The tag shows for 7
-  days after the change, or until the day itself is past.
+  of the day's details. The tag shows on the class day of the change and
+  the next two class days (a weekend doesn't count), or until the day
+  itself is past. A newer change to the same day replaces its tag.
 - **Recent changes** on Upcoming: one line per edit, in my words, with the
   reason if I gave one, listed for 7 days.
 - **Coming up**: the next quiz or test tile carries the same tag when its
@@ -228,9 +257,25 @@ What counts is what someone could already have seen, from today on:
 - **Filling in a blank is not a change.** Adding detail to a planned day is
   the calendar working. So is changing a day that's already past.
 
-Which changed days get a tag: any in the next 5 class days, plus quiz,
-test, and project days and moved or dropped due dates anywhere. A re-flow that shifts the
-rest of the year shows up as its one summary line, not a hundred tags.
+Which changes count is decided by set and planned days (above):
+
+- **A set day** (set before the edit): a changed title, target, link, or
+  class work is tagged, and so is a moved or dropped assignment given on
+  a set day.
+- **A planned day** changes silently: no tag, no "Updated", and no line in
+  Recent changes if nothing else changed. If a shift moves 30 planned
+  days, students just see the new plan.
+- **Quizzes and tests** are the exception: a quiz or test date counts as
+  set as soon as it's on the calendar, so one appearing, disappearing, or
+  moving is tagged even on a planned day -- through the current unit's
+  test. A test months out isn't tagged; by the time students reach it,
+  the new date is simply the plan.
+- Writing to a set day is allowed (a week file can) and is marked as a
+  change.
+
+(A course without a set-through date falls back to the old rule: any
+change in the next 5 class days, plus quiz, test, and project days and
+moved or dropped due dates anywhere.)
 
 A typo fix in class work can be recorded as a small fix
 (`small_fix=True`), which doesn't tag it. A changed title or a moved due

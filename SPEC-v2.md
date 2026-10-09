@@ -163,19 +163,23 @@ due date can't be.
 
 **Best practices the editor nudges toward** (defaults, which a teacher can
 change; notices, never blocks):
-- **The next 5 class days are settled.** A change inside that window asks
-  for a one-line reason, and the editor says before saving how many days
-  families have already seen will change. Changes further out are logged
-  but tagged only when they touch a test or a due date.
+- **Set one week at a time.** Each calendar has a "set through" date
+  (v1 has it since 10/8: `set_through`, PLANNING.md's "Set and planned
+  days"). Days up to it are set: final, and a change to one is tagged and
+  logged for families, with a one-line reason. Days after it are planned:
+  shown as planned, and they change quietly, except a quiz or test date,
+  which counts as set as soon as it's shown. The editor offers to set
+  next week each Friday. Before saving a change to a set day, it says how
+  many set days will change.
 - **Never move a test or a due date earlier** once it's been shown. Later
   is fine, with a reason.
-- **Announce a test at least 5 class days ahead.** A test added inside the
-  window gets a notice.
+- **Announce a test at least 5 class days ahead.** A test added closer
+  than that gets a notice.
 - **Save changes together.** Saves made within a few minutes of each other
   count as one change, so a teacher fixing three things reads as one
   update, not three.
-- **Watch the count.** If the settled window has changed more than twice
-  in a week, the editor says so. That's a sign to plan less far into the
+- **Watch the count.** If set days have changed more than twice in a
+  week, the editor says so. That's a sign to plan less far into the
   detail, not to stop telling families.
 
 The record behind this is a change log per calendar: each save that alters

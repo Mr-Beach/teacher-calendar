@@ -201,8 +201,27 @@ def due_note(due, course):
     return None
 
 
+# Their dates count as set as soon as they're on the calendar (PLANNING.md,
+# "Set and planned days"), so they never look planned.
+ASSESSMENT_KINDS = ("Quiz", "Test", "Project", "Self-Grading")
+
+
+def is_planned(day):
+    """A lesson day after the course's set-through date (engine.set_through):
+    its lesson and homework are the plan, and may still shift. Never a
+    quiz or test day."""
+    return (day["type"] == "Instruction" and not day.get("set", True)
+            and day["kind"] not in ASSESSMENT_KINDS)
+
+
+PLANNED = ' <span class="plan-note" data-plan>(planned)</span>'
+
+
 def render_panel(day, course):
     parts = []
+    planned = is_planned(day)
+    if planned:
+        parts.append('<p class="pnl-planned" data-plan>Planned: this day may still change.</p>')
     if day.get("quiz_paired"):
         parts.append('<p class="pnl-quiz">+ Quiz today, sharing the period with this lesson</p>')
     if day.get("self_grading_paired"):
@@ -220,7 +239,7 @@ def render_panel(day, course):
         due = " " + muted(f"· due {short_date(hw['due'])}") if hw["due"] else ""
         log = (f'<span class="log-tag">Goes in the Practice Log due {short_date(hw["log_due"])}</span>'
                if hw.get("log_due") else "")
-        items.append(f"<li>{hw_text(hw)}{due}{log}</li>")
+        items.append(f"<li>{hw_text(hw)}{due}{PLANNED if planned else ''}{log}</li>")
     if items:
         parts.append('<div class="field pnl-hw"><span class="lbl">Homework given</span>'
                      f'<ul class="hw">{"".join(items)}</ul></div>')
@@ -239,7 +258,9 @@ def render_panel(day, course):
             key = due.get("log_link") or course.get("answer_key_link")
         key_html = (f'<a class="keylink" href="{esc(key)}" target="_blank" rel="noopener">'
                     f'{"Weekly quizzes" if redo else "Answer key"}{ARROW}</a>' if key else "")
-        given = f'<span class="given">(given {short_date(due["assigned"])})</span>'
+        given_planned = set_through_of(course) is not None and due["assigned"] > set_through_of(course)
+        given = (f'<span class="given">(given {short_date(due["assigned"])}'
+                 f'{"<span data-plan>, planned</span>" if given_planned else ""})</span>')
         note = due_note(due, course)
         note_html = f'<span class="due-note">{esc(note)}</span>' if note else ""
         # Laid out like the Homework list: the assignment, then a dark pill.
@@ -252,7 +273,10 @@ def render_panel(day, course):
                      f'{esc(", ".join(day["extra_materials"]))}</div>')
     if day["link"]:
         label = "Open weekly quizzes" if day["kind"] == "Quiz" else "Open the lesson"
-        parts.append(f'<a class="btn" href="{esc(day["link"])}" target="_blank" rel="noopener">'
+        # A planned day's link is left out of sight, not out of the page:
+        # the script shows it if the day is in the week students are in.
+        hide = " data-plan hidden" if planned else ""
+        parts.append(f'<a class="btn" href="{esc(day["link"])}" target="_blank" rel="noopener"{hide}>'
                      f'{label}{ARROW}</a>')
     return "".join(parts)
 
@@ -302,7 +326,8 @@ def render_row(day, course):
         return (f'<div class="day day-closed" data-date="{day["date"]}">'
                 f'<div class="row row-static">{when}{main}</div></div>')
     pid = f"p-{day['date']}"
-    return (f'<div class="day day-{kind}" data-date="{day["date"]}">'
+    planned = " day-planned" if is_planned(day) else ""
+    return (f'<div class="day day-{kind}{planned}" data-date="{day["date"]}">'
             f'<button type="button" class="row" aria-expanded="false" aria-controls="{pid}">'
             f'{when}{main}{CHEVRON}</button>'
             f'<div class="panel" id="{pid}" hidden>{render_panel(day, course)}</div></div>')
@@ -318,10 +343,20 @@ def render_weeks(calendar, course):
         heading = f'<h2 class="month-head">{MONTH_NAMES[month - 1]}</h2>' if month != prev_month else ""
         prev_month = month
         rows = "".join(render_row(d, course) for d in days)
+        # "Planned" goes by the week's heading, not on each day: the whole
+        # week, or "from" its first planned day if only part of it is.
+        lessons = [d for d in days if d["type"] == "Instruction" and d["kind"] not in ASSESSMENT_KINDS]
+        first_planned = next((d for d in lessons if is_planned(d)), None)
+        planned = ""
+        if first_planned:
+            label = ("Planned" if first_planned is lessons[0]
+                     else f"Planned from {first_planned['weekday']}")
+            planned = (f' <span class="week-planned" data-plan data-from="{first_planned["date"]}">'
+                       f'{label}</span>')
         out.append(
             f'<section class="week" data-monday="{monday.isoformat()}" data-start="{first}" '
             f'data-end="{last}">{heading}<h3 class="week-title"><span class="week-label"></span>'
-            f'<span class="week-range">{week_range(first, last)}</span></h3>'
+            f'<span class="week-range">{week_range(first, last)}</span>{planned}</h3>'
             f'<div class="days">{rows}</div></section>')
     return "".join(out)
 
@@ -354,13 +389,19 @@ def cell_labels(day):
 
 def render_cell(day):
     short, code, title = cell_labels(day)
-    label = f"{long_date(day['date'])}: {day_title(day)}" + (" (something due)" if day["due"] else "")
+    label = (f"{long_date(day['date'])}: {day_title(day)}" + (" (something due)" if day["due"] else "")
+             + (" (planned)" if is_planned(day) else ""))
     top = (f'<span class="cell-top"><span class="cell-num">{int(day["date"][8:])}</span>'
            f'{DUE_TAG if day["due"] else ""}{PAIRED_TAG if day.get("quiz_paired") else ""}'
            f'{SG_TAG if day.get("self_grading_paired") else ""}</span>')
     code_html = f'<span class="cell-code">{esc(code)}</span>' if code else ""
     title_html = f'<span class="cell-title">{esc(title)}</span>' if title else ""
-    return (f'<button type="button" class="cell cell-{day_kind(day)}" data-date="{day["date"]}" '
+    planned = " cell-planned" if is_planned(day) else ""
+    # A testing, Flex, or other in-school day isn't a day off: it doesn't
+    # get a day off's dotted outline.
+    if day["type"] not in ("Instruction", "No School"):
+        planned += " cell-event"
+    return (f'<button type="button" class="cell cell-{day_kind(day)}{planned}" data-date="{day["date"]}" '
             f'aria-label="{esc(label)}">{top}<span class="cell-short">{esc(short)}</span>'
             f'{code_html}{title_html}</button>')
 
@@ -472,6 +513,19 @@ def homework_data(calendar):
     } for d in calendar for hw in d["homework"] or [] if hw["due"]]
 
 
+def set_through_of(course):
+    return course.get("set_through")
+
+
+def set_line(course):
+    """The plain-words line near the top: how far the calendar is set."""
+    through = set_through_of(course)
+    if through is None:
+        return ""
+    return (f'<p class="setline" data-through="{through}"><b>Set through {short_date(through)}.</b> '
+            f'Later days are planned and may change.</p>')
+
+
 def build_page(course, calendar):
     """The whole page for one course. `calendar` is engine.render(course)[0]."""
     subtitle = " · ".join(x for x in (course.get("teacher") or TEACHER, course.get("school_year")) if x)
@@ -485,6 +539,8 @@ def build_page(course, calendar):
     page = PAGE
     for key, value in (("%%THEME%%", theme_css(course)),
                        ("%%TITLE%%", esc(course["course"])), ("%%SUBTITLE%%", esc(subtitle)),
+                       ("%%SETLINE%%", set_line(course)),
+                       ("%%SETCAL%%", " setcal" if set_through_of(course) else ""),
                        ("%%DATA%%", data), ("%%MONTHS%%", render_months(calendar)),
                        ("%%WEEKS%%", render_weeks(calendar, course)),
                        ("%%TOPICS%%", render_topics(calendar))):
@@ -741,6 +797,23 @@ PAGE = """<!doctype html>
   .chg-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); flex: none; }
   .cell-selected .chg-dot { background: var(--on-ink); }
   .pnl-changed { border-left: 3px solid var(--accent); padding-left: 10px; font-size: 14px; }
+  /* Set and planned days (a course's "set_through"): set days are final;
+     planned ones are pencilled in -- readable, but visibly not final. */
+  .setline { margin: 0 0 14px; padding: 10px 14px; border: 2px dashed var(--dashed); border-radius: 14px; background: var(--card); }
+  .week-planned { margin-left: 8px; font-size: 13px; font-weight: 700; color: var(--muted); border: 1.5px dashed var(--muted); border-radius: 6px; padding: 0 6px; }
+  .day-planned .row-title { font-weight: 400; }
+  .day-planned .when-num { font-weight: 400; }
+  /* Set lesson days are filled, with a firm outline; planned ones are
+     white with a faint one, like a plan pencilled in. (.setcal: only in a
+     course with a set-through date -- otherwise every day looks as before.) */
+  .cell-planned:not(.cell-selected) { background: var(--card); box-shadow: inset 0 0 0 1.5px var(--line); }
+  .setcal :is(.cell-lesson, .cell-opener, .cell-threeact):not(.cell-planned):not(.cell-selected):not(.cell-today) {
+    box-shadow: inset 0 0 0 1.5px var(--dash); }
+  /* Testing, Flex, other in-school days: a soft fill, not a day off's dotted outline. */
+  .cell-closed.cell-event { border: 0; }
+  .cell-closed.cell-event:not(.cell-selected) { background: var(--soft); }
+  .pnl-planned { font-size: 14px; color: var(--muted); font-style: italic; }
+  .plan-note { color: var(--muted); font-size: 14px; }
   .pnl-changed b { color: var(--accent); }
   .chglist { padding: 4px 14px; }
   .chg-item { padding: 10px 0; display: flex; flex-direction: column; gap: 4px; }
@@ -767,7 +840,7 @@ PAGE = """<!doctype html>
       <button type="button" data-view="year" aria-pressed="false">Whole year</button>
     </div>
 </div></header>
-<div class="wrap">
+<div class="wrap">%%SETLINE%%
 
   <main id="view-upcoming">
     <div class="cols">
@@ -810,7 +883,7 @@ PAGE = """<!doctype html>
       <button type="button" class="round" id="next-month" aria-label="Later month"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button>
       <button type="button" class="thismonth" id="this-month">This month</button>
     </div>
-    <div class="months" id="months">%%MONTHS%%</div>
+    <div class="months%%SETCAL%%" id="months">%%MONTHS%%</div>
     <section class="card detail" id="year-detail"></section>
     <div id="detail-spacer" aria-hidden="true"></div>
   </main>
@@ -859,6 +932,29 @@ PAGE = """<!doctype html>
   const TODAY = iso(new Date());
   const THIS_MONDAY = mondayOf(TODAY);
   const NEXT_MONDAY = addDays(THIS_MONDAY, 7);
+  // Set and planned days: the week students are in always counts as set
+  // (engine.set_floor) -- this week on a weekday, the coming week on a
+  // weekend -- even if the course's set-through date wasn't advanced.
+  // Its days lose their planned marks, and the top line says so.
+  let setThrough = null;  // the effective date, or null: no set-through date
+  (function setFloor() {
+    const line = document.querySelector('.setline');
+    if (!line) return;
+    const dow = parse(TODAY).getDay();
+    const floor = addDays(TODAY, dow === 6 ? 6 : dow === 0 ? 5 : 5 - dow);
+    setThrough = floor > line.dataset.through ? floor : line.dataset.through;
+    if (floor <= line.dataset.through) return;
+    line.querySelector('b').textContent = 'Set through ' + shortDate(floor) + '.';
+    document.querySelectorAll('.day-planned, .cell-planned').forEach((node) => {
+      if (node.dataset.date > floor) return;
+      node.classList.remove('day-planned', 'cell-planned');
+      node.querySelectorAll('[data-plan]').forEach((p) => {
+        if (p.tagName === 'A') p.hidden = false; else p.remove();
+      });
+      if (node.getAttribute('aria-label')) node.setAttribute('aria-label', node.getAttribute('aria-label').replace(' (planned)', ''));
+    });
+    document.querySelectorAll('.week-planned').forEach((p) => { if (p.dataset.from <= floor) p.remove(); });
+  })();
   const isClassDay = (d) => d.type === 'Instruction';
   const nextClass = (after) => DAYS.find((d) => d.date > after && isClassDay(d)) || null;
   // A course can put the current unit in focus (its "focus_current_unit"):
@@ -989,17 +1085,44 @@ PAGE = """<!doctype html>
 
   // ---- Changes families have already seen ----
   // Each entry in CHANGES is one confirmed edit (engine.record_change). It's
-  // listed under Recent changes for CHANGE_DAYS days after it was made, and
-  // each day it changed is tagged until then -- or until that day is past.
+  // listed under Recent changes for CHANGE_DAYS days after it was made. Each
+  // day it changed is tagged for less: the class day it was made and the
+  // next TAG_CLASS_DAYS - 1 class days (a weekend doesn't use any up), or
+  // until that day is past. Once students have seen the new plan, a tag is
+  // only noise.
   const CHANGE_DAYS = 7;
+  const TAG_CLASS_DAYS = 3;
   const CHANGE_LINKS = 5;
   // A tag says what happened to the day, not just that something did.
   const CHANGE_LABELS = { moved: 'Moved', 'due moved': 'Due date moved', dropped: 'HW dropped', changed: 'Changed' };
   const UPDATED_DAYS = 2;
   const within = (c, n) => c.logged <= TODAY && c.logged > addDays(TODAY, -n);
+  // Class days since an entry was logged, up to and including today.
+  const classDaysSince = (logged) => DAYS.filter((d) => d.date > logged && d.date <= TODAY && isClassDay(d)).length;
+  const tagFresh = (c) => classDaysSince(c.logged) < TAG_CLASS_DAYS;
   const byNewest = (a, b) => (a.logged < b.logged ? 1 : a.logged > b.logged ? -1 : 0);
   // An entry that only added content isn't a change (`changed` false).
-  const recentChanges = CHANGES.filter((c) => c.changed !== false && within(c, CHANGE_DAYS)).sort(byNewest);
+  // Change tags go on set days only (PLANNING.md, "Set and planned
+  // days"): a planned day changes quietly -- even one logged before set
+  // days existed -- unless a quiz or test moved there or away within the
+  // current unit (through its test). And the newest change to a day's
+  // lesson, or to one assignment, replaces an older tag about the same
+  // thing: the older one may no longer be true.
+  const ASSESSMENT = /\\b(Quiz|Test)\\b/;
+  const unitEnd = (DAYS.find((d) => d.date >= TODAY && d.kind === 'Test') || {}).date || '';
+  const tagShown = (d) => setThrough === null || d.date <= setThrough
+    || ((d.kind === 'moved' || d.kind === 'changed') && d.date <= unitEnd
+        && ASSESSMENT.test((d.was || '') + ' ' + (d.now || '')));
+  const taggedLater = new Set();
+  const recentChanges = CHANGES.map((c, i) => Object.assign({}, c, { order: i }))
+    .filter((c) => c.changed !== false && within(c, CHANGE_DAYS))
+    .sort((a, b) => byNewest(a, b) || b.order - a.order)
+    .map((c) => {
+      const about = (d) => d.date + (d.what === 'homework' ? ' hw ' + (d.was || '').replace(/ \\(due [^)]*\\)$/, '') : '');
+      const days = tagFresh(c) ? c.days.filter((d) => tagShown(d) && !taggedLater.has(about(d))) : [];
+      c.days.forEach((d) => taggedLater.add(about(d)));
+      return Object.assign(c, { days: days });
+    });
   const recentDetails = [].concat(...recentChanges.map((c) => c.days));
   function changeLine(c, d) {
     const p = el('p', 'pnl-changed');
@@ -1032,9 +1155,20 @@ PAGE = """<!doctype html>
         if (!Array.from(title.querySelectorAll('.chg-tag')).some((t) => t.textContent === label)) {
           title.appendChild(el('span', 'chg-tag', label));
         }
-        const panel = document.getElementById('p-' + d.date);
+        let panel = document.getElementById('p-' + d.date);
+        if (row.querySelector('.row-static')) {
+          // A day with no details to open (a closed day with nothing due):
+          // the change reads under its row, and is kept in a hidden panel
+          // so the Whole-year card can say what changed too.
+          row.querySelector('.row-main').appendChild(el('span', 'row-sub', changeLine(c, d).textContent));
+          if (!panel) {
+            panel = el('div', 'panel');
+            panel.id = 'p-' + d.date;
+            panel.hidden = true;
+            row.appendChild(panel);
+          }
+        }
         if (panel) panel.insertBefore(changeLine(c, d), panel.firstChild);
-        else row.querySelector('.row-main').appendChild(el('span', 'row-sub', changeLine(c, d).textContent));
       }
       const cell = document.querySelector('.cell[data-date="' + d.date + '"]');
       if (cell && !cell.querySelector('.chg-dot')) {
@@ -1048,7 +1182,7 @@ PAGE = """<!doctype html>
   // tagged as changed, which says more.
   function tagUpdates() {
     CHANGES.filter((c) => within(c, UPDATED_DAYS)).forEach((c) => (c.updated || []).forEach((date) => {
-      if (date < TODAY) return;
+      if (date < TODAY || (setThrough !== null && date > setThrough)) return;
       const title = document.querySelector('.day[data-date="' + date + '"] .row-title');
       if (title && !title.querySelector('.chg-tag, .upd-tag')) title.appendChild(el('span', 'upd-tag', 'Updated'));
     }));

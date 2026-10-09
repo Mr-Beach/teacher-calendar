@@ -40,10 +40,16 @@ nothing is half-applied.
 Usage:
     python3 scripts/apply_week.py inbox/2026-10-05.json [--dry-run] [--summary out.md]
 
+A course with a set-through date (engine.set_through) moves it to this
+week's Friday when this is the next unset week; a file for a later week
+goes in as planned and the summary says so (PLANNING.md, "Set and planned
+days").
+
 Exit status: 0 applied (or would apply), 1 the file was rejected.
 """
 import argparse
 import json
+from datetime import date, timedelta
 import re
 import sys
 from pathlib import Path
@@ -260,6 +266,33 @@ def _changes_note(entry):
             f"Tagged: {tagged}.\n")
 
 
+def advance_set_through(course, week_of):
+    """Set the week if it's the next unset one (PLANNING.md, "Set and
+    planned days"): a week file for the first school week after the
+    course's set-through date moves that date to the week's Friday. A file
+    for a set week, or one further out, leaves it alone -- planning ahead
+    stays planned. Returns a line for the summary, or "" for a course
+    without a set-through date."""
+    through = engine.set_through(course)
+    if through is None:
+        return ""
+    try:
+        monday = date.fromisoformat(week_of)
+    except ValueError:
+        return ""
+    friday = (monday + timedelta(days=4 - monday.weekday())).isoformat()
+    if friday <= through:
+        return (f"\nThis week is already set (set through {_md(through)}), so a change to "
+                f"what students saw is marked as one.\n")
+    between = [d for d in course["school_days"]
+               if through < d["date"] < monday.isoformat() and d["type"] == "Instruction"]
+    if between:
+        return (f"\nThis week goes in as **planned**: the calendar is set through {_md(through)}, "
+                f"and the week of {_md(between[0]['date'])} isn't set yet.\n")
+    course["set_through"] = friday
+    return f"\n**Set through moves to {_md(friday)}**: this week is now set.\n"
+
+
 def summarize(edits, impact, warnings, week_of):
     lines = [f"## Week of {week_of}", ""]
     if not edits:
@@ -338,13 +371,15 @@ def main(argv=None):
     # does, so the page can tag it (PLANNING.md, "When the calendar changes").
     logged = engine.record_change(course, before_calendar, f"Plans updated for the week of {_md(week_of)}")
     summary += _changes_note(logged)
+    set_line = advance_set_through(course, week_of)
+    summary += set_line
     if skipped:
         summary += (f"\nClass work is off for this course, so the class work for "
                     f"{', '.join(skipped)} was skipped.\n")
     print(summary)
     if args.summary:
         Path(args.summary).write_text(summary)
-    if not args.dry_run and edits:
+    if not args.dry_run and (edits or "Set through moves" in set_line):
         course_path.write_text(json.dumps(course, indent=2) + "\n")  # matches the file's existing encoding
     return 0
 

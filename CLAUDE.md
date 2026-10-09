@@ -103,7 +103,9 @@ session anyway, writing it as a week file and running
    words, and his reason if he gave one (PLANNING.md, "When the calendar
    changes"). One call per edit he confirms. Tell him which days it tags,
    or that it tagged none. If he says the edit is only a typo fix, pass
-   `small_fix=True`.
+   `small_fix=True`. Days after the course's `set_through` date are
+   planned and change silently, except quizzes and tests (PLANNING.md,
+   "Set and planned days").
 8. Show Aaron the summary and get a go-ahead before committing. Once
    confirmed, commit the edited course file (only — leave `docs/index.html`
    alone) and push to `main`. This repo is single-user and the whole point
