@@ -190,7 +190,8 @@
       "date": "2026-10-12",
       "weekday": "Mon",
       "type": "Instruction",
-      "note": null
+      "note": null,
+      "teacher_out": true
     },
     {
       "date": "2026-10-13",
@@ -3292,6 +3293,16 @@
       "logged": "2026-10-08",
       "summary": "Plans updated for the week of 10/12",
       "reason": null,
+      "changed": false,
+      "days": [],
+      "updated": [
+        "2026-10-12"
+      ]
+    },
+    {
+      "logged": "2026-10-09",
+      "summary": "Mr. Beach is out Mon 10/12",
+      "reason": "Out of school; a sub runs the planned lesson",
       "changed": false,
       "days": [],
       "updated": [
