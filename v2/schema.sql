@@ -2,7 +2,10 @@
 --
 -- D1 is SQLite, and v2/tests run this same file on Python's sqlite3, so
 -- keep it to plain SQLite. Apply it to D1 with:
---     npx wrangler d1 execute <database> --remote --file=v2/schema.sql
+--     npx wrangler d1 execute teacher-calendar-v2 --remote \
+--       --command="$(grep -v '^ *--' v2/schema.sql | sed 's/ *--.*$//')"
+-- (comments stripped, since wrangler reads a leading "--" as a flag;
+-- --file fails, see v2/seed.py).
 --
 -- A calendar is one JSON document (`calendars.doc`) in the course-file
 -- shape -- courses/math6.json minus its "school_days", plus "day_changes"

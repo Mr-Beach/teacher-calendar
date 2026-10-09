@@ -5,8 +5,8 @@ week grid, and her students get a page like mine. Read `SPEC-v2.md` first;
 this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
-**Status (2026-10-09):** M0, M1, and M2 done (see "M0 results", "M1
-results", "M2 results"). Next: M3. Color presets are in M1 and M7, my own trial run is
+**Status (2026-10-09):** M0 through M3 done (see "M0 results" through
+"M3 results"). Next: M4. Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
@@ -258,6 +258,38 @@ switches to the TypeScript port.
 - A demo calendar (`/demo/math6`, a `template_from` copy) to look at.
 - Parity test: importing `math6.json` into the store and rendering it
   produces the same bytes as `build_site.py`.
+
+**M3 results (2026-10-09).** Done; 14 tests in `v2/tests`.
+- **Live:** `beach-math.com/demo/math6` (and www) is served by the
+  `teacher-calendar-v2` Worker from the `teacher-calendar-v2` D1 database.
+  The routes are `/demo/*` only; `/`, `/math6`, `/math78`, apps, and
+  `/teacher` (302 to sign-in) checked unchanged after deploy. A cold
+  start served the 315 KB demo page in about 1.3-1.9 s, warm 0.2-0.3 s.
+- **Workers Build:** its own build in the dashboard, root directory
+  `v2`, deploy command `pip install uv && uv run pywrangler deploy`
+  (the build image's Python has pip; `uv` isn't listed as preinstalled),
+  watch paths `v2/*`, `engine.py`, `render.py`. `v2/wrangler.jsonc`'s
+  build step copies the repo root's `engine.py` and `render.py` into
+  `v2/src/` (git-ignored there), so both Workers run one engine.
+- `store.py` moved to `v2/src/` with `entry.py` and `d1.py`. The Workers
+  SDK wraps the D1 binding and converts None/null and rows to dicts
+  itself, so `d1.py` is a thin reshape. **Only reads have run on D1;**
+  `batch` (every save) first runs in M6.
+- **Pages render on save, and also on a visit when none is stored.**
+  Decision 6 missed that a re-seed (a snow day) changes school days
+  without any save, so seed.py now clears the school's stored pages and
+  each is rendered again, and stored, on its next visit. That's also how
+  the seeded demo gets its page.
+- The teacher's name on the page comes from her `teachers` row unless
+  the calendar names one itself (the demo shows "Demo Teacher").
+- Parity: Math 6 through the store renders the same bytes as
+  `build_site.py`; the demo page served by the Worker matched the
+  CPython render byte for byte.
+- The seed loads with `wrangler d1 execute --command`; `--file` failed
+  on D1's import API with an authentication error (see `v2/seed.py`).
+- The demo teacher's email is `demo@beach-math.invalid`, so no one can
+  sign in as her. The school is recorded as "Mr. Beach's school"
+  (families never see it).
 
 ### M4: sign-in and ownership
 

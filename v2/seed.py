@@ -7,7 +7,10 @@ agree on, and every other day a plain class day. Aaron's row is a teacher
 
 Usage:
     python3 v2/seed.py --email <Aaron's Google sign-in> --school "<school name>" > /tmp/seed.sql
-    npx wrangler d1 execute <database> --remote --file=/tmp/seed.sql
+    npx wrangler d1 execute teacher-calendar-v2 --remote --command="$(cat /tmp/seed.sql)"
+
+(--command, not --file: --file goes through D1's import API, which
+refused wrangler's sign-in on 10/9 with "Authentication error 10000".)
 
 The email is an argument, not written here, because this repo is public.
 
