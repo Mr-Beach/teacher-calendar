@@ -268,13 +268,15 @@
       "date": "2026-10-29",
       "weekday": "Thu",
       "type": "Instruction",
-      "note": null
+      "note": null,
+      "teacher_out": true
     },
     {
       "date": "2026-10-30",
       "weekday": "Fri",
       "type": "Instruction",
-      "note": null
+      "note": null,
+      "teacher_out": true
     },
     {
       "date": "2026-11-02",

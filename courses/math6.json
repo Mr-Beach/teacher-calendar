@@ -267,13 +267,15 @@
       "date": "2026-10-29",
       "weekday": "Thu",
       "type": "Instruction",
-      "note": null
+      "note": null,
+      "teacher_out": "4th period"
     },
     {
       "date": "2026-10-30",
       "weekday": "Fri",
       "type": "Instruction",
-      "note": "CEA #1 Window: 10/27 - 11/17"
+      "note": "CEA #1 Window: 10/27 - 11/17",
+      "teacher_out": true
     },
     {
       "date": "2026-11-02",

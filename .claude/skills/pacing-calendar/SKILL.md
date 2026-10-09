@@ -99,7 +99,9 @@ own documents (at-a-Glance guide, sample calendars, SPS school calendar).
   sequence shifts every entry after it, forward or back, by that many days.
 - `school_days` entries are what's actually pinned to a date (`type`,
   `note`). Spending or earning a day means changing a day's type
-  (`set_day`), not touching the sequence.
+  (`set_day`), not touching the sequence. A day Aaron's out ("I'm out
+  Friday") is `set_day(course, date, teacher_out=True)`, or the periods
+  in words for part of a day -- nothing moves (PLANNING.md, "Day types").
 - Quizzes are never stored — computed fresh every render from the Wednesday
   rule plus its exceptions (a test lands that week, first week back from a
   break of 5+ days, the day before Thanksgiving). **To override the rule on one

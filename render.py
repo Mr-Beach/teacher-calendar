@@ -170,12 +170,18 @@ def hw_text(item):
             f'{esc(item["text"])}{ARROW}</a>')
 
 
+def given_attr(c):
+    """The day a log's assignment is given, for the script to mark it if
+    that's still ahead (markNotGiven)."""
+    return f' data-given="{c["assigned"]}"' if c.get("assigned") else ""
+
+
 def log_checklist(item):
     """The assignments a Practice Log covers, as a checklist."""
     rows = []
     for c in item.get("includes") or []:
         due = " " + muted(f"(due {short_date(c['due'])})") if c.get("due") else ""
-        rows.append(f"<li>{hw_text(c)}{due}</li>")
+        rows.append(f"<li{given_attr(c)}>{hw_text(c)}{due}</li>")
     return f'<ul class="log">{"".join(rows)}</ul>' if rows else ""
 
 
@@ -203,9 +209,28 @@ def is_planned(day):
 PLANNED = ' <span class="plan-note" data-plan>(planned)</span>'
 
 
+def teacher_name(course):
+    return course.get("teacher") or TEACHER
+
+
+def out_line(day, course, short=False):
+    """'Mr. Beach is out today.' (or 'is out 4th period today.') for a day
+    with teacher_out set; the row's short form drops 'is' and 'today'. ""
+    otherwise."""
+    out = day.get("teacher_out")
+    if not out:
+        return ""
+    periods = "" if out is True else f" {out}"
+    if short:
+        return f"{teacher_name(course)} out{periods}"
+    return f"{teacher_name(course)} is out{periods} today."
+
+
 def render_panel(day, course):
     parts = []
     planned = is_planned(day)
+    if day.get("teacher_out"):
+        parts.append(f'<p class="pnl-out">{esc(out_line(day, course))}</p>')
     if planned:
         parts.append('<p class="pnl-planned" data-plan>Planned: this day may still change.</p>')
     if day.get("quiz_paired"):
@@ -270,11 +295,11 @@ def render_panel(day, course):
 
 # --- Upcoming: the week-by-week list -----------------------------------------
 
-def row_summary(day):
+def row_summary(day, course):
     """The lines under a row's title: what kind of day and what's due, then
     what's given. Due and given get a line each -- each line is cut short to
     fit, and on one shared line a long due item hid the homework given."""
-    bits = []
+    bits = [out_line(day, course, short=True)] if day.get("teacher_out") else []
     if day["kind"] == "Opener":
         bits.append("Topic opener")
     elif day["kind"] == "3-Act":
@@ -304,14 +329,12 @@ def render_row(day, course):
         title = f'<span class="tag tag-test">{esc(day["lesson_text"])}</span>'
     else:
         title = esc(day_title(day))
-    sub = "".join(f'<span class="row-sub">{esc(line)}</span>' for line in row_summary(day))
+    sub = "".join(f'<span class="row-sub">{esc(line)}</span>' for line in row_summary(day, course))
     # The same "Due" tag a Whole-year square gets, after the title.
     due = f" {DUE_TAG}" if day["due"] else ""
     main = f'<span class="row-main"><span class="row-title">{title}{due}</span>{sub}</span>'
-    # A closed day with nothing due has nothing more to show: no button.
-    if kind == "closed" and not day["due"]:
-        return (f'<div class="day day-closed" data-date="{day["date"]}">'
-                f'<div class="row row-static">{when}{main}</div></div>')
+    # Every day opens, even one with little to show: a closed day's
+    # details give its full note, which its row may cut short.
     pid = f"p-{day['date']}"
     planned = " day-planned" if is_planned(day) else ""
     return (f'<div class="day day-{kind}{planned}" data-date="{day["date"]}">'
@@ -444,7 +467,7 @@ def render_topics(calendar):
     """Every unit's homework, grouped under the Practice Log each assignment
     goes in -- all of it, planned or not: the script shows only what's been
     assigned by today, opens on this unit, and folds earlier ones away."""
-    logs = {hw["due"]: hw for d in calendar
+    logs = {hw["due"]: {**hw, "assigned": d["date"]} for d in calendar
             for hw in d["homework"] or [] if is_practice_log(hw) and hw["due"]}
     out = []
     for name, start, end in topic_spans(calendar):
@@ -469,7 +492,9 @@ def render_topics(calendar):
                 f'<li data-assigned="{hw["assigned"]}" data-due="{hw["due"]}">{hw_text(hw)}'
                 f'<span class="hw-when">given {short_date(hw["assigned"])} · due {short_date(hw["due"])}</span></li>'
                 for hw in sorted(groups[log_due], key=lambda h: (h["due"], h["assigned"])))
-            cards.append(f'<div class="card loggroup">{head}'
+            # A log's dates, so the script can show what it will hold while it's open.
+            span = f' data-log-from="{log["assigned"]}" data-log-due="{log_due}"' if log else ""
+            cards.append(f'<div class="card loggroup"{span}>{head}'
                          f'<ul class="topic-hw">{rows}</ul></div>')
         out.append(f'<section class="topic" data-start="{start}" data-end="{end}">'
                    f'<h2 class="section-title">{esc(name)} homework</h2>{"".join(cards)}'
@@ -495,7 +520,8 @@ def homework_data(calendar):
     return [{
         "text": hw["text"], "link": hw.get("link"), "assigned": d["date"], "due": hw["due"],
         "includes": [{"text": c["text"], "link": c.get("link"),
-                      "due_label": short_date(c["due"]) if c.get("due") else None}
+                      "due_label": short_date(c["due"]) if c.get("due") else None,
+                      "given": c.get("assigned")}
                      for c in hw.get("includes") or []],
     } for d in calendar for hw in d["homework"] or [] if hw["due"]]
 
@@ -649,7 +675,6 @@ PAGE = """<!doctype html>
   .days { background: var(--card); border: 2px solid var(--ink); border-radius: 14px; overflow: hidden; }
   .day + .day { border-top: 1.5px solid var(--line); }
   .row { width: 100%; display: grid; grid-template-columns: 48px minmax(0, 1fr) 20px; gap: 10px; align-items: center; padding: 11px 14px; background: none; border: 0; text-align: left; cursor: pointer; }
-  .row-static { grid-template-columns: 48px minmax(0, 1fr); cursor: default; padding-top: 8px; padding-bottom: 8px; }
   .when { text-align: center; }
   .when-dow { display: block; font-size: 12px; font-weight: 700; color: var(--muted); }
   .when-num { display: block; font-family: var(--display); font-weight: 800; font-size: 22px; line-height: 1; }
@@ -675,6 +700,7 @@ PAGE = """<!doctype html>
   @media (max-width: 420px) { .panel { padding-left: 16px; } }
   .panel p { margin: 0; }
   .pnl-quiz { font-weight: 700; color: var(--quiz-ink); }
+  .pnl-out { font-weight: 700; }
   .pnl-sg { font-weight: 700; }
   .pnl-note { font-style: italic; color: var(--muted); }
   .pnl-closed { font-style: italic; }
@@ -682,6 +708,11 @@ PAGE = """<!doctype html>
   .hw li + li { margin-top: 6px; }
   .log { list-style: "☐  "; font-size: 14px; }
   .log-tag { display: block; font-size: 13px; color: var(--muted); }
+  /* A Practice Log assignment not given yet: listed, so the log's whole
+     load shows, but faded and labeled (markNotGiven). */
+  .not-given { color: var(--muted); }
+  .not-given .hwlink { color: inherit; }
+  .not-given-note { display: block; font-size: 13px; }
   .hwlink { font-weight: 700; }
   /* What's due: the Homework list's style -- assignment, then a dark pill. */
   .pnl-due ul:not(.log) { list-style: none; margin: 2px 0 0; padding: 0; }
@@ -853,7 +884,7 @@ PAGE = """<!doctype html>
 
   <main id="view-homework" hidden>
     <div class="topics" id="topics">
-      <p class="topics-intro">Everything assigned so far this topic, grouped by the Practice Log it goes in.</p>
+      <p class="topics-intro">Everything assigned so far this topic, grouped by the Practice Log it goes in, plus what's still to come in a log that's open now.</p>
       %%TOPICS%%
       <button type="button" class="earlier" id="earlier-topics" hidden></button>
     </div>
@@ -1138,19 +1169,7 @@ PAGE = """<!doctype html>
         if (!Array.from(title.querySelectorAll('.chg-tag')).some((t) => t.textContent === label)) {
           title.appendChild(el('span', 'chg-tag', label));
         }
-        let panel = document.getElementById('p-' + d.date);
-        if (row.querySelector('.row-static')) {
-          // A day with no details to open (a closed day with nothing due):
-          // the change reads under its row, and is kept in a hidden panel
-          // so the Whole-year card can say what changed too.
-          row.querySelector('.row-main').appendChild(el('span', 'row-sub', changeLine(c, d).textContent));
-          if (!panel) {
-            panel = el('div', 'panel');
-            panel.id = 'p-' + d.date;
-            panel.hidden = true;
-            row.appendChild(panel);
-          }
-        }
+        const panel = document.getElementById('p-' + d.date);
         if (panel) panel.insertBefore(changeLine(c, d), panel.firstChild);
       }
       const cell = document.querySelector('.cell[data-date="' + d.date + '"]');
@@ -1244,6 +1263,16 @@ PAGE = """<!doctype html>
     a.href = item.link; a.target = '_blank'; a.rel = 'noopener';
     return a;
   }
+  // A Practice Log covers assignments not given yet. Every list of a log's
+  // assignments shows them -- what the log will hold -- faded, with the
+  // day each one comes ("planned for" past the set-through date, since that
+  // day can still move). Students add each to the log when it's given.
+  function markNotGiven(li, given) {
+    if (!given || given <= TODAY) return;
+    li.classList.add('not-given');
+    const when = (setThrough !== null && given > setThrough ? 'planned for ' : 'comes ') + shortDate(given);
+    li.appendChild(el('span', 'not-given-note', 'Not given yet · ' + when));
+  }
   const BOX = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"></rect></svg>';
   // Every assignment already given and not yet due, soonest first. Homework
   // planned for a later day stays out of the list until that day.
@@ -1263,6 +1292,7 @@ PAGE = """<!doctype html>
           const li = el('li');
           li.appendChild(linkOrText(c));
           if (c.due_label) li.appendChild(document.createTextNode(' (due ' + c.due_label + ')'));
+          markNotGiven(li, c.given);
           ul.appendChild(li);
         });
         body.appendChild(ul);
@@ -1276,16 +1306,24 @@ PAGE = """<!doctype html>
   }
 
   // ---- Homework: this topic's assignments, earlier topics folded away ----
-  // Every unit is on the page with all its homework; only what's been
-  // assigned by today shows. The unit today falls in opens; units already
-  // over sit behind "Show earlier topics", newest first; later ones stay out.
+  // Every unit is on the page with all its homework; what's been assigned
+  // by today shows, plus what's still to come in a Practice Log that's open
+  // now -- as on Upcoming's Homework list (markNotGiven). The unit today
+  // falls in opens; units already over sit behind "Show earlier topics",
+  // newest first; later ones stay out.
   function renderTopics() {
     const box = document.getElementById('topics');
     const topics = Array.from(box.querySelectorAll('.topic'));
     topics.forEach((t) => {
       t.querySelectorAll('li[data-assigned]').forEach((li) => {
-        li.hidden = li.dataset.assigned > TODAY;
+        const log = li.closest('.loggroup').dataset;
+        const logOpen = Boolean(log.logFrom) && log.logFrom <= TODAY && TODAY <= log.logDue;
+        li.hidden = li.dataset.assigned > TODAY && !logOpen;
         li.classList.toggle('hw-done', li.dataset.due < TODAY);
+        if (!li.hidden && li.dataset.assigned > TODAY) {
+          li.querySelector('.hw-when').textContent = 'due ' + shortDate(li.dataset.due);
+          markNotGiven(li, li.dataset.assigned);
+        }
       });
       t.querySelectorAll('.loggroup').forEach((g) => {
         g.hidden = !g.querySelector('li:not([hidden])');
@@ -1536,6 +1574,7 @@ PAGE = """<!doctype html>
   window.addEventListener('scroll', fitSide, { passive: true });
   window.addEventListener('resize', fitSide);
 
+  document.querySelectorAll('.log li[data-given]').forEach((li) => markNotGiven(li, li.dataset.given));
   tagChanges();  // first: the today card and Whole-year details copy the tagged panels
   tagUpdates();
   renderToday();

@@ -43,8 +43,19 @@ class PageTests(unittest.TestCase):
     def test_due_and_given_each_get_a_line(self):
         day = {"kind": "Lesson", "due": [{"text": "Practice Log: a long sentence"}, {"text": "pg 2"}],
                "homework": [{"text": "pg 5"}]}
-        self.assertEqual(render.row_summary(day), ["Due: Practice Log: a long sentence (+1 more)", "HW: pg 5"])
-        self.assertEqual(render.row_summary({**day, "kind": "3-Act", "due": []}), ["3-Act task · HW: pg 5"])
+        self.assertEqual(render.row_summary(day, {}), ["Due: Practice Log: a long sentence (+1 more)", "HW: pg 5"])
+        self.assertEqual(render.row_summary({**day, "kind": "3-Act", "due": []}, {}), ["3-Act task · HW: pg 5"])
+
+    def test_out_days_say_so_on_the_row_and_in_the_details(self):
+        day = {"kind": "Lesson", "due": [], "homework": [{"text": "pg 5"}], "teacher_out": True}
+        self.assertEqual(render.row_summary(day, {}), ["Mr. Beach out · HW: pg 5"])
+        self.assertEqual(render.out_line({**day, "teacher_out": "4th period"}, {"teacher": "Ms. Smith"}),
+                         "Ms. Smith is out 4th period today.")
+        course = json.loads((ROOT / "tests" / "golden" / "math6.json").read_text())
+        engine.set_day(course, "2026-10-13", teacher_out=True)  # a MAP testing day
+        page, _ = page_and_calendar(course)
+        panel = re.search(r'id="p-2026-10-13" hidden>(.*?)</div>', page).group(1)
+        self.assertIn('<p class="pnl-out">Mr. Beach is out today.</p>', panel)
 
     def test_topic_names_come_from_tests(self):
         self.assertEqual(render.topic_name("Topic 5 Test (CEA)"), "Topic 5")
@@ -66,10 +77,12 @@ class PageTests(unittest.TestCase):
                            if hw["due"] and not engine.is_practice_log(hw))
             self.assertEqual(view.count("<li data-assigned="), expected, slug)
 
-    def test_every_expandable_row_has_its_panel(self):
+    def test_every_row_opens_to_its_panel(self):
+        # Closed days too: their details give the full note.
         for slug, course in COURSES:
-            page, _ = page_and_calendar(course)
+            page, calendar = page_and_calendar(course)
             controls = re.findall(r'aria-controls="(p-[\d-]+)"', page)
+            self.assertEqual(controls, [f"p-{d['date']}" for d in calendar], slug)
             panels = re.findall(r'class="panel" id="(p-[\d-]+)"', page)
             self.assertEqual(controls, panels, slug)
             self.assertEqual(len(panels), len(set(panels)), slug)

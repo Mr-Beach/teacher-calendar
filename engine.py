@@ -376,25 +376,28 @@ def _practice_log_contents(placements):
     stored, so the list follows the homework as it's planned and never needs
     re-entering -- unless the log lists its own "includes" (a log whose
     window doesn't match its contents), whose items pick up the link of the
-    assignment they name. Keyed by (assigned date, log text)."""
+    assignment they name. Each item also says the day it's given
+    ("assigned"; None for one the calendar doesn't have), since a log can
+    cover assignments not given yet. Keyed by (assigned date, log text)."""
     assigned = [(day["date"], hw) for day, lesson in placements
                 for hw in _homework_with_links(lesson)]
-    links = {(hw["text"], hw["due"]): hw["link"] for _, hw in assigned}
+    given = {(hw["text"], hw["due"]): (date_, hw["link"]) for date_, hw in assigned}
     contents = {}
     for start, log in assigned:
         if not is_practice_log(log):
             continue
         if log.get("includes"):
-            contents[(start, log["text"])] = [
-                {**c, "link": links.get((c["text"], c["due"]))} for c in log["includes"]]
+            covered = log["includes"]
+        elif log["due"]:
+            covered = sorted(({"text": hw["text"], "due": hw["due"]} for _, hw in assigned
+                              if hw["due"] and not is_practice_log(hw) and start <= hw["due"] <= log["due"]),
+                             key=lambda hw: hw["due"])
+        else:
             continue
-        if not log["due"]:
-            continue
-        contents[(start, log["text"])] = sorted(
-            ({"text": hw["text"], "due": hw["due"], "link": hw["link"]}
-             for _, hw in assigned
-             if hw["due"] and not is_practice_log(hw) and start <= hw["due"] <= log["due"]),
-            key=lambda hw: hw["due"])
+        contents[(start, log["text"])] = []
+        for c in covered:
+            day, link = given.get((c["text"], c["due"]), (None, None))
+            contents[(start, log["text"])].append({**c, "link": link, "assigned": day})
     return contents
 
 
@@ -494,6 +497,8 @@ def render(course):
             "display": note or day["type"], "lesson_text": None, "kind": None,
             "quiz_paired": False, "self_grading_paired": False,
             "homework": None, "due": due_by_date.get(day["date"]), "note": note,
+            # True, or which periods ("4th period"): set_day's teacher_out.
+            "teacher_out": day.get("teacher_out"),
             "target": None, "classwork": None, "link": None, "extra_materials": None,
         }
         if day["type"] == "Instruction":
@@ -527,7 +532,8 @@ def render(course):
 _UNSET = object()
 
 
-def set_day(course, date_str, type=_UNSET, note=_UNSET, quiz=_UNSET, self_grading=_UNSET):
+def set_day(course, date_str, type=_UNSET, note=_UNSET, quiz=_UNSET, self_grading=_UNSET,
+            teacher_out=_UNSET):
     """Change an existing school day's type, note, and/or quiz override in
     place. Changing the type is how a day is spent (Instruction -> No
     School/Other, an assembly or snow day) or earned back (Flex ->
@@ -542,12 +548,20 @@ def set_day(course, date_str, type=_UNSET, note=_UNSET, quiz=_UNSET, self_gradin
     `self_grading="paired"` puts test self-grading in this day's period
     alongside its lesson (see SELF_GRADING_OVERRIDES); `None` removes it.
 
+    `teacher_out` marks a day the teacher is out, for the page's "Mr. Beach
+    is out today": True for every period of this course, or which ones as
+    words ("4th period") when only some are. `None` removes it. Nothing
+    moves -- a sub runs the day's plan.
+
     Omit an argument to leave it unchanged; pass `note=None` explicitly
     to clear an existing note (e.g. undoing an assembly note)."""
     if type is not _UNSET and type not in VALID_DAY_TYPES:
         raise ValueError(f"not a valid day type: {type!r} (want one of {sorted(VALID_DAY_TYPES)})")
     if quiz is not _UNSET and quiz is not None and quiz not in QUIZ_OVERRIDES:
         raise ValueError(f"not a valid quiz override: {quiz!r} (want one of {sorted(QUIZ_OVERRIDES)}, or None)")
+    if teacher_out is not _UNSET and not (teacher_out is None or teacher_out is True
+                                          or (isinstance(teacher_out, str) and teacher_out.strip())):
+        raise ValueError(f"teacher_out is True, the periods as words, or None, got {teacher_out!r}")
     if self_grading is not _UNSET and self_grading is not None and self_grading not in SELF_GRADING_OVERRIDES:
         raise ValueError(f"not a valid self_grading override: {self_grading!r} "
                          f"(want one of {sorted(SELF_GRADING_OVERRIDES)}, or None)")
@@ -560,6 +574,9 @@ def set_day(course, date_str, type=_UNSET, note=_UNSET, quiz=_UNSET, self_gradin
             new_quiz = day.get("quiz") if quiz is _UNSET else quiz
             if new_quiz in ("paired", "full") and new_type != "Instruction":
                 raise ValueError(f"{date_str} would be a '{new_type}' day -- a quiz needs an Instruction day")
+            new_out = day.get("teacher_out") if teacher_out is _UNSET else teacher_out
+            if new_out and new_type == "No School":
+                raise ValueError(f"{date_str} is a 'No School' day -- there's no class to be out of")
             day["type"] = new_type
             if note is not _UNSET:
                 day["note"] = note
@@ -571,6 +588,10 @@ def set_day(course, date_str, type=_UNSET, note=_UNSET, quiz=_UNSET, self_gradin
                 day.pop("self_grading", None)
             else:
                 day["self_grading"] = new_sg
+            if new_out is None:
+                day.pop("teacher_out", None)
+            else:
+                day["teacher_out"] = new_out.strip() if isinstance(new_out, str) else new_out
             return day
     raise ValueError(f"no school day dated {date_str}")
 
@@ -830,7 +851,7 @@ def _is_assessment(day):
 
 # What filling in a day adds. `display` and `title` are left out: the
 # lesson's name is there from the start of the year.
-_CONTENT_FIELDS = ("target", "classwork", "link", "extra_materials")
+_CONTENT_FIELDS = ("target", "classwork", "link", "extra_materials", "teacher_out")
 
 
 def _content_added(before_day, after_day):

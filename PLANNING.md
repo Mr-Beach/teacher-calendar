@@ -21,6 +21,14 @@ Every school day on the Days sheet is one of:
 Only `Instruction` days take lessons. Changing any day's type re-flows every
 lesson after it by one position.
 
+A day I'm out isn't a day type: a sub runs the planned lesson, so nothing
+moves. It's marked with `set_day(course, date, teacher_out=...)` -- `True`
+when I'm out for this course's whole day, or the periods in words
+(`"4th period"`) when only some are. Math 6 spans several periods on one
+calendar, so a partial day usually names the period; Math 7/8 is 6th
+period. The page says "Mr. Beach is out today." (or "out 4th period")
+on the day's row and in its details.
+
 ## Lesson kinds
 
 - `Lesson` — regular district lesson (a review day also uses this kind — it

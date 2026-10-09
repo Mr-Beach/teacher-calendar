@@ -277,6 +277,31 @@ class PracticeLogLinkTests(unittest.TestCase):
                                                          "link": "https://example.org/hw"}])
         return course
 
+    def test_teacher_out(self):
+        course = make_course("2026-10-05", "2026-10-09", lessons=4)
+        engine.set_day(course, "2026-10-06", teacher_out=" 4th period ")
+        engine.set_day(course, "2026-10-07", teacher_out=True)
+        days = by_date(course)
+        self.assertEqual((days["2026-10-06"]["teacher_out"], days["2026-10-07"]["teacher_out"]),
+                         ("4th period", True))
+        self.assertIsNone(days["2026-10-05"]["teacher_out"])
+        self.assertEqual(days["2026-10-07"]["lesson_text"], by_date(make_course(
+            "2026-10-05", "2026-10-09", lessons=4))["2026-10-07"]["lesson_text"])  # nothing moves
+        engine.set_day(course, "2026-10-07", teacher_out=None)
+        self.assertNotIn("teacher_out", course["school_days"][2])
+        for bad in (False, "", "  ", 4):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                engine.set_day(course, "2026-10-08", teacher_out=bad)
+        with self.assertRaises(ValueError):
+            engine.set_day(course, "2026-10-06", type="No School")
+
+    def test_each_assignment_in_a_log_says_when_its_given(self):
+        # The page marks the ones not given yet from this (markNotGiven).
+        days = by_date(self._two_week_log(3))
+        [log] = days["2026-10-05"]["homework"]
+        self.assertEqual([c["assigned"] for c in log["includes"]],
+                         ["2026-10-06", "2026-10-07", "2026-10-08"])
+
     def test_five_assignments_is_fine(self):
         self.assertEqual(engine.check_practice_log_size(self._two_week_log(5)), [])
 

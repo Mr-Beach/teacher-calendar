@@ -105,6 +105,8 @@ def format_course(course, window):
             lines.append(f"{indent}{day['target']}")
         if day["note"]:
             lines.append(f"{indent}note: {day['note']}")
+        if day.get("teacher_out"):
+            lines.append(f"{indent}out: {'all periods' if day['teacher_out'] is True else day['teacher_out']}")
         needs = missing_content(day, course)
         if needs:
             lines.append(f"{indent}needs: {', '.join(FIELD_LABELS[f] for f in needs)}")

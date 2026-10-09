@@ -47,6 +47,9 @@ def render_day(day, course=None):
         parts.append(f'<div class="line"><b>Class work</b> {esc(day["classwork"])}</div>')
     for hw in day["homework"] or []:
         parts.append(f'<div class="line"><b>HW</b> {esc(hw["text"])}</div>')
+    if day.get("teacher_out"):
+        out = "all periods" if day["teacher_out"] is True else day["teacher_out"]
+        parts.append(f'<div class="line note">Out: {esc(out)}</div>')
     if day["note"] and day["note"] != day["classwork"]:
         parts.append(f'<div class="line note">{esc(day["note"])}</div>')
     if needs:
