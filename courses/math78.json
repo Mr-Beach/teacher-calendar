@@ -196,13 +196,13 @@
       "date": "2026-10-13",
       "weekday": "Tue",
       "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "note": "MAP Testing"
     },
     {
       "date": "2026-10-14",
       "weekday": "Wed",
       "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "note": "MAP Testing"
     },
     {
       "date": "2026-10-15",
@@ -1002,13 +1002,13 @@
       "date": "2027-04-19",
       "weekday": "Mon",
       "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "note": "MAP Testing"
     },
     {
       "date": "2027-04-20",
       "weekday": "Tue",
       "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "note": "MAP Testing"
     },
     {
       "date": "2027-04-21",
@@ -1152,31 +1152,31 @@
       "date": "2027-05-24",
       "weekday": "Mon",
       "type": "Testing",
-      "note": "SBA Testing (exact dates vary by school)"
+      "note": "SBA Testing"
     },
     {
       "date": "2027-05-25",
       "weekday": "Tue",
       "type": "Testing",
-      "note": "SBA Testing (exact dates vary by school)"
+      "note": "SBA Testing"
     },
     {
       "date": "2027-05-26",
       "weekday": "Wed",
       "type": "Testing",
-      "note": "SBA Testing (exact dates vary by school)"
+      "note": "SBA Testing"
     },
     {
       "date": "2027-05-27",
       "weekday": "Thu",
       "type": "Testing",
-      "note": "SBA Testing (exact dates vary by school)"
+      "note": "SBA Testing"
     },
     {
       "date": "2027-05-28",
       "weekday": "Fri",
       "type": "Testing",
-      "note": "SBA Testing (exact dates vary by school)"
+      "note": "SBA Testing"
     },
     {
       "date": "2027-05-31",
@@ -3274,7 +3274,7 @@
         {
           "date": "2026-10-12",
           "what": "title",
-          "was": "MAP Testing (exact dates vary by school)",
+          "was": "MAP Testing",
           "now": "Topic 5 Practice: Simplify and Add Expressions",
           "kind": "changed"
         },
@@ -3282,7 +3282,7 @@
           "date": "2026-10-14",
           "what": "title",
           "was": "Quiz",
-          "now": "MAP Testing (exact dates vary by school)",
+          "now": "MAP Testing",
           "kind": "changed"
         }
       ],

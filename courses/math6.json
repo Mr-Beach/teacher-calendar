@@ -195,13 +195,13 @@
       "date": "2026-10-13",
       "weekday": "Tue",
       "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "note": "MAP Testing"
     },
     {
       "date": "2026-10-14",
       "weekday": "Wed",
       "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "note": "MAP Testing"
     },
     {
       "date": "2026-10-15",
@@ -1008,13 +1008,13 @@
       "date": "2027-04-20",
       "weekday": "Tue",
       "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "note": "MAP Testing"
     },
     {
       "date": "2027-04-21",
       "weekday": "Wed",
       "type": "Testing",
-      "note": "MAP Testing (exact dates vary by school)"
+      "note": "MAP Testing"
     },
     {
       "date": "2027-04-22",
@@ -3156,14 +3156,14 @@
           "date": "2026-10-12",
           "what": "title",
           "was": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
-          "now": "MAP Testing (exact dates vary by school)",
+          "now": "MAP Testing",
           "kind": "moved",
           "moved_to": "2026-10-14"
         },
         {
           "date": "2026-10-14",
           "what": "title",
-          "was": "MAP Testing (exact dates vary by school)",
+          "was": "MAP Testing",
           "now": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
           "kind": "changed"
         }
@@ -3179,7 +3179,7 @@
         {
           "date": "2026-10-12",
           "what": "title",
-          "was": "MAP Testing (exact dates vary by school)",
+          "was": "MAP Testing",
           "now": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
           "kind": "changed"
         },
@@ -3187,7 +3187,7 @@
           "date": "2026-10-14",
           "what": "title",
           "was": "T1L2 Fluently Add, Subtract, and Multiply Decimals",
-          "now": "MAP Testing (exact dates vary by school)",
+          "now": "MAP Testing",
           "kind": "moved",
           "moved_to": "2026-10-12"
         },
