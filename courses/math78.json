@@ -1664,10 +1664,10 @@
       "lesson_code": null,
       "district_title": "Topic 5 Practice: Simplify and Add Expressions",
       "kind": "Lesson",
-      "target": null,
+      "target": "I can simplify and add expressions and check them by substituting a value.",
       "classwork": null,
       "homework": null,
-      "link": null,
+      "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276277",
       "extra_materials": null
     },
     {
@@ -3285,6 +3285,16 @@
         }
       ],
       "updated": []
+    },
+    {
+      "logged": "2026-10-08",
+      "summary": "Plans updated for the week of 10/12",
+      "reason": null,
+      "changed": false,
+      "days": [],
+      "updated": [
+        "2026-10-12"
+      ]
     }
   ]
 }

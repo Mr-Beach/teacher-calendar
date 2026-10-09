@@ -1677,7 +1677,7 @@
       "lesson_code": "1.2",
       "district_title": "Fluently Add, Subtract, and Multiply Decimals",
       "kind": "Lesson",
-      "target": null,
+      "target": "I can use a strategy to fluently multiply decimals.",
       "classwork": null,
       "homework": null,
       "link": "https://districtlms.seattleschools.org/course/8516312158/materials?f=1039070545",
@@ -3343,6 +3343,16 @@
         }
       ],
       "updated": []
+    },
+    {
+      "logged": "2026-10-08",
+      "summary": "Plans updated for the week of 10/12",
+      "reason": null,
+      "changed": false,
+      "days": [],
+      "updated": [
+        "2026-10-15"
+      ]
     }
   ]
 }

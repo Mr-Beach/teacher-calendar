@@ -1,0 +1,11 @@
+{
+  "course": "math6",
+  "week_of": "2026-10-12",
+  "days": [
+    {
+      "date": "2026-10-15",
+      "expect": "1.2",
+      "target": "I can use a strategy to fluently multiply decimals."
+    }
+  ]
+}
