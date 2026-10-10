@@ -359,9 +359,9 @@ switches to the TypeScript port.
   calendar: no course tabs, a link back to the grid. `/teacher` is
   byte-identical (checked by building the site before and after).
 - `scripts/lookahead.py` and `lookahead_page.py` are copied into
-  `v2/src/` by the build, like `engine.py` and `render.py`. **The v2
-  Workers Build's watch paths need `scripts/lookahead*.py` added** in the
-  dashboard, or a change to only those files won't redeploy v2.
+  `v2/src/` by the build, like `engine.py` and `render.py`. Both are in
+  the v2 Workers Build's watch paths (added in the dashboard 10/9), so a
+  change to only those files still redeploys v2.
 - Checked with `pywrangler dev`: the bundle includes `editor.html` and
   the look-ahead modules, the Worker starts, and every signed-in path
   is 403 without a token. The grid was checked in Chrome at 1400px and
