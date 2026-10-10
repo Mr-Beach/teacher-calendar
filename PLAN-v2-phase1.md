@@ -265,11 +265,9 @@ switches to the TypeScript port.
   The routes are `/demo/*` only; `/`, `/math6`, `/math78`, apps, and
   `/teacher` (302 to sign-in) checked unchanged after deploy. A cold
   start served the 315 KB demo page in about 1.3-1.9 s, warm 0.2-0.3 s.
-- **Workers Build: not actually connected.** On 10/9 (M4) a push to
-  main built only v1; the API showed `teacher-calendar-v2` with no build
-  trigger and no builds ever, so M3's deploys were by hand. Until it's
-  connected, deploy with `uv run pywrangler deploy` from `v2/`. The
-  intended setup: its own build in the dashboard, root directory
+- **Workers Build: connected 10/9, in M4.** Through M3 it wasn't: a
+  push built only v1 (no trigger, no builds ever), so M3's deploys were
+  by hand. Now it's its own build in the dashboard, root directory
   `v2`, branch `main`, deploy command `pip install uv && uv run pywrangler deploy`
   (the build image's Python has pip; `uv` isn't listed as preinstalled),
   watch paths `v2/*`, `engine.py`, `render.py`. `v2/wrangler.jsonc`'s

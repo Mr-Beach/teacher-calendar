@@ -2,7 +2,8 @@
 // Workers Build (root directory v2/), in front of v1's on a few paths.
 // Each teacher gets a route pair below; every other path on beach-math.com
 // (/math6, /math78, /teacher, apps) still goes to v1's Worker.
-// Deploy: uv run pywrangler deploy (from v2/).
+// Deploy: a push to main that touches v2/, engine.py, or render.py runs
+// its Workers Build (connected 10/9). By hand: uv run pywrangler deploy.
 {
   "name": "teacher-calendar-v2",
   "main": "src/entry.py",
