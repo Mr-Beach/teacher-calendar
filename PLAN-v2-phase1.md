@@ -265,8 +265,12 @@ switches to the TypeScript port.
   The routes are `/demo/*` only; `/`, `/math6`, `/math78`, apps, and
   `/teacher` (302 to sign-in) checked unchanged after deploy. A cold
   start served the 315 KB demo page in about 1.3-1.9 s, warm 0.2-0.3 s.
-- **Workers Build:** its own build in the dashboard, root directory
-  `v2`, deploy command `pip install uv && uv run pywrangler deploy`
+- **Workers Build: not actually connected.** On 10/9 (M4) a push to
+  main built only v1; the API showed `teacher-calendar-v2` with no build
+  trigger and no builds ever, so M3's deploys were by hand. Until it's
+  connected, deploy with `uv run pywrangler deploy` from `v2/`. The
+  intended setup: its own build in the dashboard, root directory
+  `v2`, branch `main`, deploy command `pip install uv && uv run pywrangler deploy`
   (the build image's Python has pip; `uv` isn't listed as preinstalled),
   watch paths `v2/*`, `engine.py`, `render.py`. `v2/wrangler.jsonc`'s
   build step copies the repo root's `engine.py` and `render.py` into
@@ -304,7 +308,8 @@ switches to the TypeScript port.
   pages 200, `/teacher` 302.
 
 **M4 progress (2026-10-09).** The Worker's half is written; 30 tests in
-`v2/tests` (16 new in `test_access.py`). Not deployed yet.
+`v2/tests` (16 new in `test_access.py`). Deployed 10/9 by hand (version
+`9afa21e1`), since v2 has no Workers Build yet (see M3 results).
 - `v2/src/access.py` checks the token itself: RS256 in plain Python (no
   Web Crypto), so the tests run the Worker's own code on CPython. Keys
   are fetched from the team's certs and kept an hour; an unknown key ID
@@ -318,10 +323,13 @@ switches to the TypeScript port.
 - `wrangler.jsonc` routes `/edit`, `/edit/*`, `/api/*` (both hosts) to
   this Worker, and has `TEAM_DOMAIN` and `ACCESS_AUD`. The AUD is the
   live "beach-math.com" Access app's, checked on 10/9.
+- **Curl checks after deploy (10/9):** `/`, `/math6/`, `/math78/`,
+  `/tech-quest/`, `/demo/math6` 200 on both hosts; `/teacher` 302 to
+  sign-in; `/edit`, `/edit/math6`, `/api/calendars` 403 with no token or
+  a junk one, `cache-control: private, no-store`.
 - **Left:** add `beach-math.com/edit`, `beach-math.com/api` and their www
-  versions to that Access app (dashboard), push, then the curl checks.
-  Deploying before the Access step is safe: with no token, everything
-  there is a 403.
+  versions to that Access app (dashboard), then sign in at /edit and see
+  "Your calendars". Then M4 is done.
 
 ### M5: the editor, read-only
 
