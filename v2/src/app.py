@@ -202,7 +202,7 @@ def editor_home(teacher, calendars):
         f' {html.escape(title)} <span>its lessons and I-can targets, on your school\'s days</span></label>'
         for i, (key, title) in enumerate(TEMPLATES))
     starts += ('<label class="opt"><input type="radio" name="start" value="blank"> Blank year'
-               ' <span>your school\'s days, nothing planned</span></label>')
+               ' <span>your school\'s days, nothing planned, no quizzes</span></label>')
     return HOME.format(name=html.escape(teacher["name"]), items=items, starts=starts,
                        base=f"beach-math.com/{teacher['slug']}/")
 
@@ -338,8 +338,10 @@ async def create(db, teacher, payload):
         return error(400, "Your school's calendar isn't set up yet. Ask Mr. Beach.")
     if start == "blank":
         first, last = days[0]["date"][:4], days[-1]["date"][:4]
+        # Nothing assumed: no lessons and no quizzes until she sets them up.
         doc = {"course": title, "school_year": f"{first}-{last[2:]}" if first != last else first,
-               "show_classwork": False, "sequence": [], "changes": [], "day_changes": {}}
+               "show_classwork": False, "quiz_rule": {"enabled": False},
+               "sequence": [], "changes": [], "day_changes": {}}
     else:
         doc = engine.template_from(template_source(start), days)
     doc["course"] = title

@@ -449,17 +449,18 @@ a small preview of her own page in each one.
 - **A quiz rule change keeps the past** (`ops._pin_past`): the rule is
   one rule for the year, so without this, moving quizzes to Thursday in
   October would re-place September's lessons too. Each past day whose
-  quiz would change gets its own quiz setting back instead. One gap: a
-  past self-grading day can only sit on the quiz weekday, so after a
-  weekday change it reads "Quiz"; its date and every lesson around it
-  stay put.
+  quiz or self-grading would change gets its own day setting back
+  instead. For a past self-grading day that's a new engine override,
+  `self_grading: "full"` (a whole-period self-grading day on that date,
+  whatever the rule; added 10/10, my pages byte-identical), so it keeps
+  its name too.
 - **One quiz** (the day sheet): "No quiz this week", "Move the quiz..."
   to another class day that week or next (whole period, or alongside
   that day's lesson), and "Back to the usual quiz rule".
 - **Starting a calendar** (`/edit`, `POST /api/calendars`): title,
   address (filled in from the title), and Math 6, Math 7/8 Compacted
-  (`engine.template_from`), or a blank year (the default quiz rule
-  still puts Wednesday quizzes in it; Settings turns them off). The
+  (`engine.template_from`), or a blank year, which assumes nothing: no
+  lessons and quizzes off (10/10, Aaron's call). The
   build copies `courses/math6.json` and `math78.json` into the bundle as
   `src/templates/*.json.txt` (the bundle leaves `.json` out; checked
   with `pywrangler dev`). They're as of v2's last deploy: `courses/` isn't

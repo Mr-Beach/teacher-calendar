@@ -113,7 +113,10 @@ def quiz_rule(course):
 # self-grading in the same period as that day's lesson -- for a test whose
 # following Wednesday has no quiz slot to take (check_self_grading).
 # Nothing moves; the page shows "+ Test self-grading" on the lesson.
-SELF_GRADING_OVERRIDES = {"paired"}
+# "full" makes the day a whole-period self-grading day whatever the quiz
+# rule says, like a "full" quiz override (lessons flow past it). v2 uses it
+# to keep a past self-grading day where it was when the quiz weekday changes.
+SELF_GRADING_OVERRIDES = {"paired", "full"}
 
 
 def display_code(lesson_code):
@@ -266,9 +269,16 @@ def _is_stored_lesson(item):
 
 
 def _forced_quiz_dates(school_days):
-    """Days with a "full" quiz override: a full-period quiz whatever the rule says."""
+    """Days with a "full" quiz override, or a "full" self-grading one: a
+    full-period quiz slot whatever the rule says."""
     return {d["date"] for d in school_days
-            if d.get("quiz") == "full" and d["type"] == "Instruction"}
+            if (d.get("quiz") == "full" or d.get("self_grading") == "full") and d["type"] == "Instruction"}
+
+
+def _forced_self_grading_dates(school_days):
+    """Days with a "full" self-grading override (SELF_GRADING_OVERRIDES)."""
+    return {d["date"] for d in school_days
+            if d.get("self_grading") == "full" and d["type"] == "Instruction"}
 
 
 def _full_dates(rule, quiz_dates, forced):
@@ -345,7 +355,8 @@ def _placement(course):
     school_days, sequence = course["school_days"], course["sequence"]
     rule = quiz_rule(course)
     quiz_dates = _compute_quiz_dates(school_days, sequence, rule)
-    self_grading = _compute_self_grading_dates(school_days, sequence, quiz_dates, rule)
+    self_grading = (_compute_self_grading_dates(school_days, sequence, quiz_dates, rule)
+                    | _forced_self_grading_dates(school_days))
     full = _full_dates(rule, quiz_dates, _forced_quiz_dates(school_days))
     placements, leftover = _place(school_days, sequence, full, self_grading & full)
     shared = quiz_dates - full
@@ -1116,6 +1127,8 @@ def check_self_grading(course):
         if witem is SELF_GRADING_ITEM or wed in shared_sg:
             continue
         week = week_monday(wed)
+        if any(i is SELF_GRADING_ITEM and week_monday(d["date"]) == week for d, i in placements):
+            continue  # a "full" self-grading day elsewhere that week
         if any(d.get("self_grading") == "paired" and _is_stored_lesson(i)
                and week_monday(d["date"]) == week
                for d, i in placements):

@@ -158,10 +158,9 @@ class CreateTests(SignedInCase):
         cal = await store.load_calendar(self.db, me, "advisory")
         self.assertEqual((cal.course["sequence"], cal.course["theme"]), ([], "forest"))
         days = json.loads((await self.get("/api/calendars/advisory/days")).body)
-        # Nothing planned; the default quiz rule still puts in Wednesday quizzes.
-        self.assertTrue(all(d["kind"] is None for d in days["days"] if d["type"] == "Instruction"
-                            and not d["computed"]))
-        self.assertTrue(any(d["kind"] == "Quiz" for d in days["days"]))
+        # Nothing assumed: no lessons, no quizzes.
+        self.assertTrue(all(d["kind"] is None for d in days["days"] if d["type"] == "Instruction"))
+        self.assertFalse(days["settings"]["quiz"]["enabled"])
 
     async def test_refused(self):
         good = {"title": "Math 6", "slug": "new-one", "start": "math6"}

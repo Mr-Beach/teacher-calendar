@@ -391,27 +391,39 @@ def _settings(course, op):
     return ("Settings: " + "; ".join(said)) if said else "Settings saved"
 
 
+# What a day has in its quiz slot, and the day settings (set_day's quiz
+# and self_grading overrides) that put exactly that there.
+_SLOT_PINS = {"self-grading": (None, "full"), "quiz": ("full", None),
+              "self-grading paired": ("none", "paired"), "quiz paired": ("paired", None),
+              None: ("none", None)}
+
+
+def _slot(day):
+    if day["kind"] == "Self-Grading":
+        return "self-grading"
+    if day["kind"] == "Quiz":
+        return "quiz"
+    if day.get("self_grading_paired"):
+        return "self-grading paired"
+    return "quiz paired" if day["quiz_paired"] else None
+
+
 def _pin_past(course, before_calendar, today):
     """Keep every day before `today` as it was, after a quiz-rule change:
     the rule is one rule for the year, so moving quizzes to Thursday in
     October would otherwise re-place September too, and families would
     see last month's lessons on different days. Each past day whose quiz
-    changed gets its own quiz setting back (set_day's per-day override)."""
+    or self-grading changed gets its own day setting back."""
     before = {d["date"]: d for d in before_calendar if d["date"] < today}
-    for _ in range(4):  # an override can shift a test week; settles fast
+    for _ in range(4):  # a pin can shift a test week; settles fast
         changed = False
         for day in engine.render(course)[0]:
             was = before.get(day["date"])
-            if was is None or day["type"] != "Instruction":
+            if was is None or day["type"] != "Instruction" or _slot(was) == _slot(day):
                 continue
-            # A self-grading day holds a quiz slot. It can only sit on the
-            # quiz weekday, so after a weekday change it's kept as a quiz day
-            # (its title reads "Quiz"; nothing around it moves).
-            had = "full" if was["kind"] in ("Quiz", "Self-Grading") else "paired" if was["quiz_paired"] else None
-            has = "full" if day["kind"] in ("Quiz", "Self-Grading") else "paired" if day["quiz_paired"] else None
-            if had != has:
-                engine.set_day(course, day["date"], quiz=had or "none")
-                changed = True
+            quiz, self_grading = _SLOT_PINS[_slot(was)]
+            engine.set_day(course, day["date"], quiz=quiz, self_grading=self_grading)
+            changed = True
         if not changed:
             return
 

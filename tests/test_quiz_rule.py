@@ -97,6 +97,22 @@ class QuizRuleTests(unittest.TestCase):
         monday = date.fromisoformat(test_date) - timedelta(days=date.fromisoformat(test_date).weekday())
         self.assertEqual(kinds[(monday + timedelta(days=10)).isoformat()], "Self-Grading")
 
+    def test_a_full_self_grading_override(self):
+        # A whole-period self-grading day on any date, whatever the rule:
+        # lessons flow past it, and the test before it isn't flagged.
+        course = make_course(test_at=8, quiz_rule={"enabled": False})
+        test_day = next(d for d in engine.render(course)[0] if d["kind"] == "Test")
+        friday = (engine.week_monday(test_day["date"]) + timedelta(days=11)).isoformat()
+        before = {d["date"]: d for d in engine.render(course)[0]}
+        engine.set_day(course, friday, self_grading="full")
+        after = {d["date"]: d for d in engine.render(course)[0]}
+        self.assertEqual(after[friday]["kind"], "Self-Grading")
+        next_day = min(d for d in after if d > friday)
+        self.assertEqual(after[next_day]["lesson_text"], before[friday]["lesson_text"])
+        self.assertEqual(engine.check_self_grading(course), [])
+        engine.set_day(course, friday, self_grading=None)
+        self.assertEqual({d["date"]: d for d in engine.render(course)[0]}, before)
+
     def test_self_grading_off(self):
         course = make_course(quiz_rule={"self_grading": False}, test_at=8)
         self.assertNotIn("Self-Grading", [d["kind"] for d in engine.render(course)[0]])

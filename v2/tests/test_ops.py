@@ -277,14 +277,9 @@ class SettingsTests(unittest.TestCase):
                       "today": today}, SCHOOL)
         after = engine.render(c)[0]
 
-        def past(cal):
-            # Each past day: closed or not, its lesson, and whether the quiz
-            # took its period. A self-grading day can only sit on the quiz
-            # weekday, so a past one pinned after a weekday change reads
-            # "Quiz"; its date and the lessons around it don't move.
-            return [(d["date"], d["type"], d["lesson_text"] if d["kind"] not in ("Quiz", "Self-Grading") else "quiz",
-                     d["quiz_paired"]) for d in cal if d["date"] < "2026-11-02"]
-        self.assertEqual(past(after), past(before))
+        self.assertEqual([d for d in after if d["date"] < "2026-11-02"],
+                         [d for d in before if d["date"] < "2026-11-02"])
+        self.assertTrue(any(d["kind"] == "Self-Grading" for d in after if d["date"] < "2026-11-02"))
         later = [d for d in after if d["date"] >= "2026-11-02"]
         self.assertTrue(any(d["quiz_paired"] and d["weekday"] == "Fri" for d in later))
         self.assertFalse(any(d["kind"] == "Quiz" for d in later))
