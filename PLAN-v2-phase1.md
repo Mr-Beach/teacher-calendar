@@ -5,7 +5,7 @@ week grid, and her students get a page like mine. Read `SPEC-v2.md` first;
 this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
-**Status (2026-10-09):** M0 through M3 done (see "M0 results" through
+**Status (2026-10-09):** M0 through M4 done (see "M0 results" through
 "M4 results"). Next: M5. Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
