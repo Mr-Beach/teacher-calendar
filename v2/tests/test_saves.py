@@ -75,6 +75,23 @@ class SaveTests(SignedInCase):
         self.assertIn("web address", json.loads(reply.body)["error"])
         self.assertEqual((await self.current()).version, 1)
 
+    async def test_a_rename_that_is_a_move_comes_back_with_choices(self):
+        cal = await self.current()
+        placed = [(d, item) for d, item in engine.place(cal.course)[0]
+                  if d["date"] >= self.lesson["date"] and engine._is_stored_lesson(item)]
+        k = next(k for k, (_, item) in enumerate(placed[:-1])
+                 if item.get("lesson_code") and placed[k + 1][1].get("lesson_code") not in (None, item["lesson_code"]))
+        nxt = engine.display_code(placed[k + 1][1]["lesson_code"])
+        reply = await self.post("/api/calendars/math6/edit", {"version": 1, "op": {
+            "op": "edit", "date": placed[k][0]["date"], "fields": {"title": nxt}}})
+        self.assertEqual(reply.status, 400)
+        data = json.loads(reply.body)
+        self.assertIn(nxt, data["error"])
+        self.assertTrue(data["choices"] and all(c["op"]["op"] == "start_next" for c in data["choices"]))
+        self.assertEqual((await self.current()).version, 1)
+        reply = await self.post("/api/calendars/math6/edit", {"version": 1, "op": data["choices"][0]["op"]})
+        self.assertEqual(reply.status, 200, reply.body)
+
     async def test_refusals(self):
         good = {"version": 1, "op": {"op": "edit", "date": self.lesson["date"], "fields": {"title": "x"}}}
         cases = [

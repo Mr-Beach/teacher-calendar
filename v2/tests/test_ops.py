@@ -303,6 +303,133 @@ class SettingsTests(unittest.TestCase):
                 self.settings(course(), **settings)
 
 
+class RenameAsAnotherLessonTests(unittest.TestCase):
+    """Retitling a day as a lesson that's already elsewhere is a move: the
+    edit is refused with the moves she most likely meant, and each one
+    keeps every lesson exactly once (the bug Aaron hit in M7b: renaming
+    T1L3 to T1L4 left T1L4 on two days and T1L3 on none)."""
+
+    def setUp(self):
+        self.c = course()
+
+    def first_day(self, code, k=0):
+        return [d["date"] for d in engine.render(self.c)[0]
+                if (d["lesson_text"] or "").startswith(engine.display_code(code) + " ")][k]
+
+    def shown(self):
+        return [d["lesson_text"] for d in engine.render(self.c)[0] if d["lesson_text"]]
+
+    def rename(self, date_, title, **fields):
+        return ops.apply(self.c, {"op": "edit", "date": date_, "fields": {"title": title, **fields}}, SCHOOL)
+
+    def refused(self, date_, title, **fields):
+        before = copy.deepcopy(self.c)
+        with self.assertRaises(ops.Conflict) as e:
+            self.rename(date_, title, **fields)
+        self.assertEqual(self.c, before)  # nothing changed
+        return e.exception
+
+    def codes(self):
+        return [e["lesson_code"] for e in self.c["sequence"]]
+
+    def test_next_lesson_on_its_only_day_asks_skip_or_later(self):
+        day = self.first_day("1.8")  # one day of T1L8, then T1L9
+        e = self.refused(day, "T1L9 Solve Problems")
+        self.assertIn("T1L9 is already on", str(e))
+        self.assertEqual([c["label"] for c in e.choices], ["Skip T1L8", "Teach T1L8 after T1L9"])
+
+        skipped = copy.deepcopy(self.c)
+        ops.apply(skipped, e.choices[0]["op"], SCHOOL)
+        self.assertNotIn("1.8", [x["lesson_code"] for x in skipped["sequence"]])
+        self.assertTrue((days(skipped)[day]["lesson_text"] or "").startswith("T1L9 "))
+
+        summary = ops.apply(self.c, e.choices[1]["op"], SCHOOL)
+        self.assertIn("moved up to", summary)
+        nxt = days(self.c)
+        self.assertTrue(nxt[day]["lesson_text"].startswith("T1L9 "))
+        self.assertEqual(self.codes().count("1.8"), 1)
+        self.assertEqual(self.codes().index("1.8"), self.codes().index("1.9") + 1)
+
+    def test_next_lesson_on_a_later_day_drops_the_rest(self):
+        day = self.first_day("1.7", 1)  # T1L7's second day
+        e = self.refused(day, "T1L8", target="I can divide mixed numbers.")
+        self.assertEqual([c["label"] for c in e.choices], ["Start T1L8 today"])
+        n = len(self.c["sequence"])
+        ops.apply(self.c, e.choices[0]["op"], SCHOOL)
+        self.assertEqual((len(self.c["sequence"]), self.codes().count("1.7")), (n - 1, 1))
+        after = days(self.c)[day]
+        self.assertTrue(after["lesson_text"].startswith("T1L8 "))
+        self.assertEqual(after["target"], "I can divide mixed numbers.")  # the rest of the save, on T1L8
+
+    def test_previous_lesson_is_another_day_of_it(self):
+        day = self.first_day("1.8")
+        e = self.refused(day, "T1L7 Divide Fractions")
+        self.assertEqual([c["label"] for c in e.choices], ["Another day of T1L7"])
+        ops.apply(self.c, e.choices[0]["op"], SCHOOL)
+        self.assertEqual(self.codes().count("1.7"), 3)
+        self.assertTrue(days(self.c)[day]["lesson_text"].startswith("T1L7 "))
+        self.assertEqual(self.codes().count("1.8"), 1)  # T1L8 moved a day later, not lost
+
+    def test_a_lesson_further_away_is_refused_without_a_move(self):
+        e = self.refused(self.first_day("1.8"), "T4L1")
+        self.assertEqual(e.choices, [])
+        self.assertIn("T4L1 is already on", str(e))
+
+    def test_its_own_code_or_a_free_title_is_a_rename(self):
+        day = self.first_day("1.8")
+        self.rename(day, "T1L8 Mixed numbers")
+        self.rename(day, "Topic 1 Review")  # free titles repeat on purpose
+        self.assertEqual(days(self.c)[day]["lesson_text"], "Topic 1 Review")
+
+
+class PlainTitleRenameTests(unittest.TestCase):
+    """The same, on a calendar whose lessons have no codes (a blank year's):
+    only the lessons either side are checked, and she can keep it as typed."""
+
+    def setUp(self):
+        self.c = course()
+        for entry in self.c["sequence"]:
+            entry["lesson_code"] = None
+
+    def day_of(self, title, k=0):
+        return [d["date"] for d in engine.render(self.c)[0] if d["lesson_text"] == title][k]
+
+    def rename(self, date_, title, **op):
+        return ops.apply(self.c, {"op": "edit", "date": date_, "fields": {"title": title}, **op}, SCHOOL)
+
+    def test_the_next_lesson(self):
+        add, divide = "Fluently Add, Subtract, and Multiply Decimals", "Fluently Divide Whole Numbers and Decimals"
+        day = self.day_of(add)
+        with self.assertRaises(ops.Conflict) as e:
+            self.rename(day, divide.upper())
+        labels = [c["label"] for c in e.exception.choices]
+        self.assertEqual(labels, [f"Skip {add}", f"Teach {add} after {divide}", "Keep it as typed"])
+        ops.apply(self.c, e.exception.choices[1]["op"], SCHOOL)
+        titles = [x["district_title"] for x in self.c["sequence"]]
+        self.assertEqual(titles.count(add), 2)
+        self.assertEqual(days(self.c)[day]["lesson_text"], divide)
+
+    def test_keep_it_as_typed(self):
+        add, divide = "Fluently Add, Subtract, and Multiply Decimals", "Fluently Divide Whole Numbers and Decimals"
+        day = self.day_of(add, 1)
+        with self.assertRaises(ops.Conflict) as e:
+            self.rename(day, divide)
+        self.assertEqual([c["label"] for c in e.exception.choices], ["Start " + divide + " today", "Keep it as typed"])
+        ops.apply(self.c, e.exception.choices[-1]["op"], SCHOOL)
+        self.assertEqual(days(self.c)[day]["lesson_text"], divide)
+
+    def test_the_lesson_before(self):
+        day = self.day_of("Fluently Add, Subtract, and Multiply Decimals")
+        with self.assertRaises(ops.Conflict) as e:
+            self.rename(day, "Operate with Decimals")
+        self.assertEqual(e.exception.choices[0]["label"], "Another day of Operate with Decimals")
+
+    def test_a_title_further_away_is_a_rename(self):
+        day = self.day_of("Fluently Add, Subtract, and Multiply Decimals")
+        self.rename(day, "Divide Fractions")  # "Review" twice a year is on purpose
+        self.assertEqual(days(self.c)[day]["lesson_text"], "Divide Fractions")
+
+
 class ApplyTests(unittest.TestCase):
     def test_malformed(self):
         for op in (None, [], {"op": "edit"}, {"op": "edit", "date": "10/20"}, {"op": "drop", "date": "2026-10-20"}):

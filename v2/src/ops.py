@@ -9,7 +9,10 @@ the way it guards Aaron's.
 
 An operation is a dict with an "op" and a "date" (YYYY-MM-DD):
 
-    edit       {"fields": {...}}   change the lesson on that date
+    edit       {"fields": {...}}   change the lesson on that date; a title
+                                   naming another lesson is refused with
+                                   the moves she likely meant (Conflict),
+                                   unless "keep": true
     add        {"fields": {...}}   a new lesson on that date; it and every
                                    later lesson move one class day later
                                    (on an empty day, the next empty day)
@@ -26,6 +29,14 @@ An operation is a dict with an "op" and a "date" (YYYY-MM-DD):
                 "how": "full"|"paired"}  for the whole period or alongside
                                    its lesson
     quiz_rule  {}                  the day goes back to the quiz rule
+    start_next {"then": "skip"|"later", the next lesson starts that day: the
+                "fields": {...}}   rest of this one is dropped (or, when
+                                   that day was its first, skipped or
+                                   taught after the next one); fields
+                                   then go on the day as in edit
+    another_day {"fields": {...}}  another day of the lesson before that
+                                   day's, there; later lessons move one
+                                   class day later
 
 and one that isn't about a day (M7):
 
@@ -61,6 +72,16 @@ LINK_RE = re.compile(r"https?://\S+", re.IGNORECASE)
 
 class OpError(ValueError):
     """An edit that can't be made, said so she can fix it."""
+
+
+class Conflict(OpError):
+    """An edit that names a lesson already elsewhere in the year. The
+    editor shows `choices` as buttons, each {"label", "hint", "op"}: the
+    operation she most likely meant."""
+
+    def __init__(self, message, choices=()):
+        super().__init__(message)
+        self.choices = list(choices)
 
 
 def when(iso):
@@ -203,10 +224,160 @@ def _date_of(course, entry):
     return next(day["date"] for day, item in _placements(course) if item is entry)
 
 
+def _key(entry):
+    """What makes two entries days of the same lesson: its code, or for a
+    lesson without one (a blank year's), its title."""
+    code = entry.get("lesson_code")
+    return ("code", code) if code else ("title", entry["district_title"].casefold())
+
+
+def _run(seq, i):
+    """(first, last): the indexes of the lesson at `i`, all its days (a
+    two-day lesson is two entries with the same code side by side, or
+    without codes, the same title)."""
+    key = _key(seq[i])
+    first = last = i
+    while first > 0 and _key(seq[first - 1]) == key:
+        first -= 1
+    while last + 1 < len(seq) and _key(seq[last + 1]) == key:
+        last += 1
+    return first, last
+
+
+def _names(title, entry):
+    """Whether `title` names `entry`'s lesson: its code as shown, in front
+    ("T1L4 ..."), or for a lesson without a code, its whole title."""
+    code = entry.get("lesson_code")
+    if code:
+        return title == engine.display_code(code) or title.startswith(engine.display_code(code) + " ")
+    return title.casefold() == entry["district_title"].casefold()
+
+
+def _named_code(title, seq, own):
+    """The code of another lesson in the year that `title` starts with as
+    shown ("T1L4 ..."), or None."""
+    codes = {e["lesson_code"] for e in seq if e.get("lesson_code") and e["lesson_code"] != own}
+    named = [c for c in codes if title == engine.display_code(c)
+             or title.startswith(engine.display_code(c) + " ")]
+    return max(named, key=lambda c: len(engine.display_code(c)), default=None)
+
+
+def _check_rename(course, date_, i, fields):
+    """Raise Conflict when she retitles the lesson on `date_` as one that's
+    already elsewhere in the year. That's a move, not a rename: renamed in
+    place, the lesson would show twice and the one it replaced would be
+    lost. The choices are the moves she most likely meant: start the next
+    lesson today, or another day of the one before.
+
+    A code (T1L4) is checked against the whole year. A title without one
+    is checked only against the lessons either side: "Review" in October
+    and again in March is on purpose. Two plain titles side by side might
+    be too (two work days), so those also offer keeping it as typed."""
+    seq = course["sequence"]
+    title = " ".join((fields.get("title") or "").split())
+    first, last = _run(seq, i)
+    nxt = seq[last + 1] if last + 1 < len(seq) else None
+    prev = seq[first - 1] if first > 0 else None
+    forward = nxt is not None and _names(title, nxt)
+    backward = not forward and i == first and prev is not None and _names(title, prev)
+    named = _named_code(title, seq, seq[i].get("lesson_code"))
+    if not (forward or backward or named):
+        return
+    rest = {k: v for k, v in fields.items() if k != "title"}
+    op = {"date": date_, "fields": rest}
+
+    def short(entry):
+        return engine.display_code(entry["lesson_code"]) if entry.get("lesson_code") else entry["district_title"]
+
+    here = short(seq[i])
+    keep = []
+    if (forward or backward) and not (nxt if forward else prev).get("lesson_code"):
+        keep = [{"label": "Keep it as typed",
+                 "hint": f"Both days say {title}. {here} comes off this day, and nothing moves.",
+                 "op": {"op": "edit", "keep": True, "date": date_, "fields": fields}}]
+    if forward:
+        shown, n = short(nxt), last - i + 1
+        said = f"{shown} is already on {_when_entry(course, nxt)}."
+        moves = f"Later lessons each move {n} class day{'s' * (n != 1)} earlier."
+        if i > first:
+            raise Conflict(said, [
+                {"label": f"Start {shown} today", "hint": f"{here} ends early. {moves}",
+                 "op": {"op": "start_next", **op}}] + keep)
+        raise Conflict(said, [
+            {"label": f"Skip {here}", "hint": f"{shown} starts today. {moves}",
+             "op": {"op": "start_next", "then": "skip", **op}},
+            {"label": f"Teach {here} after {shown}", "hint": "They swap places. Nothing else moves.",
+             "op": {"op": "start_next", "then": "later", **op}}] + keep)
+    if backward:
+        shown = short(prev)
+        raise Conflict(f"{shown} was on {_when_entry(course, prev)}.", [
+            {"label": f"Another day of {shown}",
+             "hint": f"{here} and every lesson after it move one class day later.",
+             "op": {"op": "another_day", **op}}] + keep)
+    shown = engine.display_code(named)
+    raise Conflict(f"{shown} is already on {_when_entry(course, next(e for e in seq if e.get('lesson_code') == named))}. "
+                   "Change the lessons around it there, or give this day another title.")
+
+
+def _when_entry(course, entry):
+    return next((when(day["date"]) for day, item in _placements(course) if item is entry),
+                "a day past the end of the year")
+
+
 def _edit(course, op):
     i = _lesson_index(course, op["date"])
-    entry = engine.edit_lesson(course, i, **_fields(op.get("fields"), course["sequence"][i]))
+    fields = op.get("fields")
+    if isinstance(fields, dict) and "title" in fields and op.get("keep") is not True:
+        _check_rename(course, op["date"], i, fields)
+    entry = engine.edit_lesson(course, i, **_fields(fields, course["sequence"][i]))
     return f"Plans for {when(op['date'])} updated: {_title(entry)}"
+
+
+def _rest_fields(course, op):
+    """The day's other changes, from the same save, on what's there now."""
+    fields = op.get("fields") or {}
+    if not isinstance(fields, dict):
+        raise OpError("That edit didn't come through. Reload and try again.")
+    fields = {k: v for k, v in fields.items() if k != "title"}
+    if fields:
+        i = _lesson_index(course, op["date"])
+        engine.edit_lesson(course, i, **_fields(fields, course["sequence"][i]))
+
+
+def _start_next(course, op):
+    seq = course["sequence"]
+    i = _lesson_index(course, op["date"])
+    first, last = _run(seq, i)
+    if last + 1 >= len(seq):
+        raise OpError(f"There's no lesson after {_title(seq[i])}.")
+    here, nxt = seq[i], seq[last + 1]
+    end = _run(seq, last + 1)[1]
+    then = "skip" if i > first else op.get("then")
+    if then == "skip":
+        del seq[i:last + 1]
+        said = f"{_title(here)} {'ends early' if i > first else 'skipped'}; {_title(nxt)} starts {when(op['date'])}"
+    elif then == "later":
+        seq[i:end + 1] = seq[last + 1:end + 1] + seq[i:last + 1]
+        said = f"{_title(nxt)} moved up to {when(op['date'])}, before {_title(here)}"
+    else:
+        raise OpError("Skip it, or teach it after the next lesson?")
+    _rest_fields(course, op)
+    return said
+
+
+def _another_day(course, op):
+    seq = course["sequence"]
+    i = _lesson_index(course, op["date"])
+    first = _run(seq, i)[0]
+    if first == 0:
+        raise OpError(f"There's no lesson before {_title(seq[i])}.")
+    before = seq[first - 1]
+    copy = {key: before.get(key) for key in ("topic", "lesson_code", "district_title", "kind",
+                                              "target", "classwork", "link", "extra_materials")}
+    engine.insert_lesson(course, first, copy)
+    _rest_fields(course, op)
+    return (f"Another day of {_title(before)} on {when(op['date'])}; "
+            "later lessons each move one class day later")
 
 
 def _add(course, op):
@@ -457,7 +628,7 @@ def _quiz_settings(course, quiz, today=None):
     return said
 
 
-OPS = {"edit": _edit, "add": _add, "copy_week": _copy_week, "paste": _paste,
+OPS = {"edit": _edit, "add": _add, "start_next": _start_next, "another_day": _another_day, "copy_week": _copy_week, "paste": _paste,
        "skip_quiz": _skip_quiz, "move_quiz": _move_quiz, "quiz_rule": _quiz_rule_day}
 DAY_OPS = {"close": _close, "open": _open}
 

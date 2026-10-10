@@ -506,6 +506,25 @@ My students never see it, and `/math6` and `/math78` stay on git. My Google
 account gets a teacher row as well as admin. Anything confusing or slow
 gets fixed before M8.
 
+**M7b findings so far.**
+- **Renaming a day as the next lesson (10/10, fixed).** Retitling Fri's
+  T1L3 as T1L5 left T1L5 on two days and T1L3 on none: a natural way to
+  say "we moved on," but `edit` only relabels. Now a title naming another
+  lesson is a move, not a rename (`ops._check_rename`): the save is
+  refused (`ops.Conflict`, a 400 with `choices`) and the sheet shows the
+  moves as buttons. The next lesson on a lesson's first day: "Skip T1L3"
+  or "Teach T1L3 after T1L5" (Aaron's call: ask, don't pick). On a later
+  day of it: "Start T1L5 today" (the rest is dropped). The lesson before:
+  "Another day of T1L3" (inserted; nothing overwritten). Further away:
+  refused, no move offered. New operations `start_next` and `another_day`;
+  the save's other field changes land on whatever lesson ends up on that day.
+  Codes (T#L#) are checked against the whole year. Plain titles (a blank
+  year has no codes) only against the lessons either side, since "Review"
+  recurs on purpose, and those also offer "Keep it as typed" (an `edit`
+  with `"keep": true`). Two-day lessons without codes are told apart by
+  title. 100 tests; the T1L3 to T1L5 swap clicked through in Chrome on a
+  local Math 6 copy.
+
 ### M8: ready for the trial
 
 - The spec's "Before building" items are done: the admin heads-up and the

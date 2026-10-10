@@ -137,6 +137,9 @@
   .actions .left { margin-right: auto; display: flex; flex-wrap: wrap; gap: 8px; }
   .error { color: var(--danger); font-size: .9rem; margin: 0; }
   .error:empty { display: none; }
+  .choices { display: grid; gap: 10px; }
+  .choices:empty { display: none; }
+  .choices div { display: grid; gap: 4px; justify-items: start; }
   .closer { display: grid; gap: 8px; border-top: 1px solid var(--border); padding-top: 12px; }
   .map { display: flex; flex-wrap: wrap; gap: 8px; }
   .map label { display: grid; gap: 2px; font-size: .75rem; color: var(--muted); flex: 1 1 8rem; }
@@ -227,6 +230,7 @@
       </div>
     </div>
     <p class="error" id="sheet-error" role="alert"></p>
+    <div class="choices" id="sheet-choices"></div>
     <div class="actions">
       <span class="left" id="sheet-more"></span>
       <button type="button" id="sheet-cancel">Cancel</button>
@@ -547,7 +551,11 @@
           throw stale;
         }
         if (r.status === 403) throw new Error("You're signed out. Reload the page to sign in again.");
-        if (!r.ok) throw new Error(j.error || "That didn't save (" + r.status + "). Try again.");
+        if (!r.ok) {
+          var refused = new Error(j.error || "That didn't save (" + r.status + "). Try again.");
+          refused.choices = j.choices || [];
+          throw refused;
+        }
         load(j.calendar);
         var bits = [j.summary + "."];
         if (j.message) bits.push(j.message);
@@ -565,6 +573,7 @@
   var sheet = document.getElementById("sheet");
   var form = document.getElementById("sheet-form");
   var sheetError = document.getElementById("sheet-error");
+  var sheetChoices = document.getElementById("sheet-choices");
   var sheetMore = document.getElementById("sheet-more");
   var closer = document.getElementById("closer");
   var hwRows = document.getElementById("hw-rows");
@@ -599,6 +608,7 @@
     if (!day || busy) return;
     editing = { date: isoDate, mode: mode || (isLessonDay(day) ? "edit" : "add") };
     sheetError.textContent = "";
+    sheetChoices.textContent = "";
     sheetMore.textContent = "";
     form.reset();
     hwRows.textContent = "";
@@ -701,6 +711,8 @@
     if (e.key === "Enter") { e.preventDefault(); document.getElementById("close-day").click(); }
   };
   document.getElementById("sheet-cancel").onclick = function () { sheet.close(); };
+  // Choices answer the title she saved; a new title needs a new answer.
+  form.elements.title.oninput = function () { sheetChoices.textContent = ""; sheetError.textContent = ""; };
 
   function formFields() {
     var f = form.elements;
@@ -746,10 +758,23 @@
     act(op);
   };
 
+  // A refusal can come with choices: retitling a day as a lesson that's
+  // already elsewhere is a move, and the server offers the moves she
+  // most likely meant (start the next lesson today, another day of the
+  // one before).
   function act(op) {
     sheetError.textContent = "";
+    sheetChoices.textContent = "";
     send("edit", { op: op, small_fix: form.elements.small_fix.checked })
-      .then(function () { sheet.close(); }, function (err) { sheetError.textContent = err.message; });
+      .then(function () { sheet.close(); }, function (err) {
+        sheetError.textContent = err.message;
+        (err.choices || []).forEach(function (c, k) {
+          var box = el("div");
+          box.appendChild(button(c.label, k ? "" : "primary", function () { act(c.op); }));
+          box.appendChild(el("p", "hint", c.hint));
+          sheetChoices.appendChild(box);
+        });
+      });
   }
 
   // --- Repeat a week, undo ---------------------------------------------------

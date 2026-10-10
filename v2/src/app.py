@@ -300,6 +300,8 @@ async def save_edit(db, teacher, cal, payload):
     before, before_left = engine.render(cal.course)
     try:
         summary = ops.apply(cal.course, payload.get("op"), cal.school_days)
+    except ops.Conflict as e:  # a rename that's really a move: offer the moves
+        return Reply(400, JSON, json.dumps({"error": str(e), "choices": e.choices}, ensure_ascii=False))
     except ValueError as e:  # ops.OpError, or the engine's own refusal
         return error(400, str(e))
     entry = engine.record_change(cal.course, before, summary, small_fix=payload.get("small_fix") is True)
