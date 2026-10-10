@@ -62,8 +62,9 @@ class EditorTests(SignedInCase):
         days = {d["date"]: d for d in data["days"]}
         for day in rendered:
             got = days[day["date"]]
+            shown = None if day["lesson_text"] == engine.NO_LESSON else day["lesson_text"]
             self.assertEqual((got["type"], got["kind"], got["lesson_text"], got["link"]),
-                             (day["type"], day["kind"], day["lesson_text"], day["link"]))
+                             (day["type"], day["kind"], shown, day["link"]))
             self.assertEqual(got["computed"], day["kind"] in ("Quiz", "Self-Grading"))
             self.assertEqual([h["text"] for h in got["homework"]],
                              [h["text"] for h in day["homework"] or []])

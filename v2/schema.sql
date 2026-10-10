@@ -63,12 +63,16 @@ CREATE TABLE calendars (
 
 -- Every version of every calendar, the current one included: who saved
 -- it and when. Undo, recovery from a bad edit, and the record of who
--- changed what.
+-- changed what. `restored_from` is set on a version an undo saved: it's
+-- a copy of that earlier version, so undoing again steps back past it
+-- (store.undo). Added 10/9 for M6, on D1 with:
+--   ALTER TABLE revisions ADD COLUMN restored_from INTEGER
 CREATE TABLE revisions (
   calendar_id INTEGER NOT NULL REFERENCES calendars(id),
   version INTEGER NOT NULL,
   doc TEXT NOT NULL,
   saved_by INTEGER NOT NULL REFERENCES teachers(id),
   saved_at TEXT NOT NULL DEFAULT (datetime('now')),
+  restored_from INTEGER,
   PRIMARY KEY (calendar_id, version)
 );

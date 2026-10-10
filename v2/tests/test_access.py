@@ -210,9 +210,11 @@ class RouteTests(SignedInCase):
         self.assertIn("<!doctype html>", reply.body.lower())
         self.assertEqual((await self.get("/beach/nothing", email=None)).status, 404)
 
-    async def test_only_reads(self):
-        reply = await self.get("/api/calendars/math6", method="POST")
-        self.assertEqual(reply.status, 405)
+    async def test_methods(self):
+        # POSTs go to /api only (M6's edits); anything else is refused.
+        for method, path in (("POST", "/edit/math6"), ("POST", "/beach/math6"), ("PUT", "/api/calendars/math6"),
+                             ("DELETE", "/api/calendars/math6")):
+            self.assertEqual((await self.get(path, method=method)).status, 405, (method, path))
 
 
 if __name__ == "__main__":

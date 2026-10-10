@@ -161,11 +161,12 @@ async def create_calendar(db, teacher, slug, course, page_html=None, calendar_ty
     return await load_calendar(db, teacher, slug)
 
 
-async def save_calendar(db, teacher, cal, page_html):
+async def save_calendar(db, teacher, cal, page_html, restored_from=None):
     """Save `cal.course` (and its freshly rendered family page) as the next
     version, if `cal.version` is still current. On success `cal.version`
     moves up to the saved version. Raises StaleVersion if someone saved
-    in between, and LookupError if the calendar isn't hers."""
+    in between, and LookupError if the calendar isn't hers.
+    `restored_from` is for undo: the version this save copies."""
     title, doc = _doc_json(cal)
     changed, _ = await db.batch([
         ("UPDATE calendars SET doc = ?, title = ?, page_html = ?, version = version + 1, "
@@ -174,9 +175,9 @@ async def save_calendar(db, teacher, cal, page_html):
         # Copies the row just saved. On a stale save the UPDATE changed
         # nothing, and this either finds no row at that version or finds
         # the other tab's save, whose revision already exists -- IGNORE.
-        ("INSERT OR IGNORE INTO revisions (calendar_id, version, doc, saved_by) "
-         "SELECT id, version, doc, ? FROM calendars WHERE id = ? AND version = ?",
-         (teacher["id"], cal.id, cal.version + 1)),
+        ("INSERT OR IGNORE INTO revisions (calendar_id, version, doc, saved_by, restored_from) "
+         "SELECT id, version, doc, ?, ? FROM calendars WHERE id = ? AND version = ?",
+         (teacher["id"], restored_from, cal.id, cal.version + 1)),
     ])
     if changed != 1:
         if await db.first("SELECT 1 FROM calendars WHERE id = ? AND owner_id = ?", cal.id, teacher["id"]):
@@ -184,6 +185,31 @@ async def save_calendar(db, teacher, cal, page_html):
         raise LookupError(f"no calendar {cal.slug!r} for this teacher")
     cal.version += 1
     return cal.version
+
+
+async def undo_target(db, cal):
+    """The version an undo of `cal` goes back to, or None if there's
+    nothing to undo. Normally the one before it; but a version an undo
+    saved is a copy of an earlier one, so undoing it steps back from
+    that one instead (undo, undo goes back two saves, never forward)."""
+    version = cal.version
+    while version > 1:
+        row = await db.first("SELECT restored_from FROM revisions WHERE calendar_id = ? AND version = ?",
+                             cal.id, version)
+        if row is None or row["restored_from"] is None:
+            return version - 1
+        version = row["restored_from"]
+    return None
+
+
+async def revision_course(db, cal, version):
+    """A course dict for `cal` as it was at `version`, over today's
+    school days."""
+    row = await db.first("SELECT doc FROM revisions WHERE calendar_id = ? AND version = ?",
+                         cal.id, version)
+    if row is None:
+        raise LookupError(f"{cal.slug} has no version {version}")
+    return engine.course_for_render(cal.school_days, json.loads(row["doc"]))
 
 
 def family_page(course, teacher):

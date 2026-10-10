@@ -5,8 +5,8 @@ week grid, and her students get a page like mine. Read `SPEC-v2.md` first;
 this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
-**Status (2026-10-09):** M0 through M5 done (see "M0 results" through
-"M5 results"). Next: M6. Color presets are in M1 and M7, my own trial run is
+**Status (2026-10-09):** M0 through M6 done (see "M0 results" through
+"M6 results"). Next: M7. Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
@@ -385,6 +385,41 @@ the change, and keeps a revision.
   the sequence.
 - "Small fix" checkbox on a save, as in `record_change(small_fix=True)`.
 - Undo the last save (from `revisions`).
+
+**M6 results (2026-10-09).** Done; 61 tests in `v2/tests` (new:
+`test_ops.py`, `test_saves.py`).
+- `v2/src/ops.py` is the operations (decision 5), each keyed by date:
+  `edit`, `add` (a new lesson on that date; it and the rest move one
+  class day later, or it fills the next empty day), `close` / `open`
+  (`set_day`; a day closed on the school's calendar can't be opened),
+  `copy_week` (the week's lessons again right after it, homework due as
+  many days after its new date as before), and `paste`. Each goes
+  through `engine.py`'s own functions. Links (lesson and homework) must
+  be `http(s)://`: they land on the family page, so `javascript:` and
+  the like are refused.
+- `POST /api/calendars/<slug>/edit` and `/undo`: check the version (409
+  if another tab saved), apply, `record_change` (with "small fix"),
+  render the family page, save with a revision. The answer has the new
+  version, a sentence for her (`diff_impact`: where days started
+  changing, lessons now running past the year, which days families see
+  tagged -- the first three and a count), and the year, redrawn. A POST
+  must be JSON with a matching Origin (no cross-site edits on her
+  cookie).
+- Undo copies the version before, as a new version with
+  `revisions.restored_from` set, so undo, undo steps back two saves,
+  never forward. **New column**: `ALTER TABLE revisions ADD COLUMN
+  restored_from INTEGER` on D1 (in `schema.sql`).
+- `editor.html`: tap a day for its sheet (title with suggestions from
+  the year and the next lesson code, kind, target, class work if shown,
+  link, homework rows, small fix); "Add a lesson before this", "No
+  school this day..." with a note, "Turn class back on". Each week has
+  "Repeat this week" and "Paste plans": paste from Word/Sheets, columns
+  guessed from a header row and changeable, shown highlighted with
+  Keep / Clear before anything saves. Undo is in the bar.
+- Clicked through in Chrome (Playwright, local `app.handle` on sqlite,
+  a fresh Math 6 copy): edit, a refused link, close (button and Enter),
+  undo, reopen a testing day, paste with a header row, repeat a week,
+  and the family page showing the edits; no sideways scroll at 390px.
 
 ### M7: settings
 

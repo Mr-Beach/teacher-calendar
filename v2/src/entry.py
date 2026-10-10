@@ -24,10 +24,17 @@ class Default(WorkerEntrypoint):
         global KEYS
         if KEYS is None:
             KEYS = access.Keys(self.env.TEAM_DOMAIN, fetch_text)
-        reply = await app.handle(request.method, urlsplit(request.url).path,
+        url = urlsplit(request.url)
+        body, same_origin = None, False
+        if request.method == "POST":
+            body = await request.text()
+            origin = request.headers.get("origin")
+            same_origin = ((request.headers.get("content-type") or "").startswith("application/json")
+                           and origin is not None and urlsplit(origin).netloc == url.netloc)
+        reply = await app.handle(request.method, url.path,
                                  request.headers.get("cf-access-jwt-assertion"),
-                                 D1(self.env.DB), KEYS, self.env)
+                                 D1(self.env.DB), KEYS, self.env, body, same_origin)
         headers = {"content-type": reply.content_type, **reply.headers}
-        if app.signed_in_area(urlsplit(request.url).path):
+        if app.signed_in_area(url.path):
             headers["cache-control"] = "private, no-store"
         return Response(reply.body, status=reply.status, headers=headers)

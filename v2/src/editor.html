@@ -6,15 +6,21 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Calendar editor</title>
 <!--
-  v2's editor (PLAN-v2-phase1.md, M5 and decision 8): one file, plain
+  v2's editor (PLAN-v2-phase1.md, M5, M6, and decision 8): one file, plain
   JavaScript, no build step. app.py serves it at /edit/<calendar> once it
   has checked the calendar is hers; it reads /api/calendars/<calendar>/days
-  and pages through the year a week at a time. Read-only until M6.
+  and pages through the year a week at a time.
 
   The grid: columns are the week's days, rows are lesson, class work (only
   when the calendar shows it), homework, and link. Quizzes and self-grading
   days are computed by the engine, so they're marked "auto", never editable.
   On a phone each day is a card instead.
+
+  Editing (M6): tap a day to edit it, add a lesson, or close it; each week
+  can be repeated or pasted into. Every save is one operation sent to
+  /api/calendars/<calendar>/edit (ops.py) with the version this page was
+  looking at; the answer is the whole year again, which is redrawn. A
+  paste is shown highlighted and unsaved until she keeps it.
 -->
 <style>
   :root {
@@ -23,6 +29,8 @@
     --border: #e3e3e0; --accent: #6366f1; --accent-text: #ffffff;
     --closed: #f0f0ee; --auto-bg: #ecfdf5; --auto-text: #047857;
     --gap-bg: #fff7ed; --gap-text: #9a3412; --today: #eef2ff;
+    --pending: #fef9c3; --pending-text: #713f12; --danger: #b91c1c;
+    --hover: #f3f4f6;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -30,9 +38,12 @@
       --border: #2e3036; --accent: #818cf8; --accent-text: #111827;
       --closed: #1a1b1f; --auto-bg: #10291f; --auto-text: #6ee7b7;
       --gap-bg: #3a2414; --gap-text: #fdba74; --today: #252a45;
+      --pending: #3d3510; --pending-text: #fde68a; --danger: #f87171;
+      --hover: #26282e;
     }
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   body {
     background: var(--bg); color: var(--text); margin: 0; padding: 16px;
     font: 15px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -45,10 +56,14 @@
   .links { font-size: .9rem; color: var(--muted); margin: 0 0 12px; }
   .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .bar .range { font-weight: 600; margin-right: auto; }
-  .bar button, .seg button {
+  button {
     font: inherit; color: var(--text); background: var(--card); cursor: pointer;
     border: 1px solid var(--border); border-radius: 10px; padding: 6px 12px;
   }
+  button:disabled { opacity: .5; cursor: default; }
+  button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  button.danger { color: var(--danger); }
+  button.small { font-size: .8rem; padding: 3px 9px; border-radius: 8px; }
   .seg { display: inline-flex; }
   .seg button { border-radius: 0; }
   .seg button:first-child { border-radius: 10px 0 0 10px; }
@@ -58,14 +73,18 @@
   .status { color: var(--muted); padding: 24px 0; }
 
   .week { margin-bottom: 20px; }
-  .week h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em;
-             color: var(--muted); margin: 0 0 6px; }
+  .week-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 6px; }
+  .week-head h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em;
+                  color: var(--muted); margin: 0 auto 0 0; }
   .grid {
     display: grid; grid-template-columns: 6.5rem repeat(5, minmax(0, 1fr));
     background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
   }
   .col { display: grid; grid-template-rows: subgrid; grid-row: span var(--rows); min-width: 0; }
   .col + .col { border-left: 1px solid var(--border); }
+  .col.editable { cursor: pointer; }
+  .col.editable:hover .cell:not(.head) { background: var(--hover); }
+  .col.editable:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .cell { padding: 8px 10px; border-top: 1px solid var(--border); min-width: 0; overflow-wrap: anywhere; }
   .cell:first-child { border-top: 0; }
   .labels .cell { color: var(--muted); font-size: .8rem; font-weight: 600; }
@@ -75,17 +94,58 @@
   .label { display: none; }
   .closed .cell:not(.head) { background: var(--closed); color: var(--muted); }
   .closed .span { grid-row: span calc(var(--rows) - 1); font-style: italic; }
+  .col.pending .cell:not(.head), .col.editable.pending:hover .cell:not(.head) { background: var(--pending); color: var(--pending-text); }
   .title { font-weight: 600; }
   .sub { color: var(--muted); font-size: .85rem; margin-top: 2px; }
+  .pending .sub { color: inherit; opacity: .8; }
   .empty { color: var(--muted); }
   .chip { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase;
           letter-spacing: .04em; border-radius: 4px; padding: 1px 6px; margin: 0 4px 2px 0;
           background: var(--closed); color: var(--muted); vertical-align: 1px; }
   .chip.auto { background: var(--auto-bg); color: var(--auto-text); }
   .chip.needs { background: var(--gap-bg); color: var(--gap-text); text-transform: none; letter-spacing: 0; }
+  .chip.new { background: var(--pending-text); color: var(--pending); }
   .auto-cell { background: var(--auto-bg); }
   ul.hw { margin: 0; padding-left: 1.1em; }
   ul.hw li + li { margin-top: 4px; }
+
+  /* The edit sheet, the paste box, and the bars at the bottom. */
+  dialog {
+    width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0;
+    border: 1px solid var(--border); border-radius: 14px; background: var(--card); color: var(--text);
+  }
+  dialog::backdrop { background: rgb(0 0 0 / .4); }
+  dialog form { padding: 16px; display: grid; gap: 12px; }
+  dialog h3 { margin: 0; font-size: 1.1rem; }
+  dialog .hint { margin: 0; color: var(--muted); font-size: .85rem; }
+  label.field { display: grid; gap: 4px; font-size: .85rem; font-weight: 600; }
+  input, select, textarea {
+    font: inherit; font-weight: 400; color: var(--text); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 8px; padding: 7px 9px; width: 100%; min-width: 0;
+  }
+  textarea { resize: vertical; min-height: 4.5em; }
+  fieldset { border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px 10px; margin: 0;
+             display: grid; gap: 8px; }
+  legend { font-size: .85rem; font-weight: 600; padding: 0 4px; }
+  .hw-row { display: grid; grid-template-columns: minmax(0, 1fr) 9.5rem auto; gap: 6px; align-items: start; }
+  .hw-row .hw-link { grid-column: 1 / 3; }
+  .check { display: flex; gap: 8px; align-items: center; font-size: .9rem; }
+  .check input { width: auto; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+  .actions .left { margin-right: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+  .error { color: var(--danger); font-size: .9rem; margin: 0; }
+  .error:empty { display: none; }
+  .closer { display: grid; gap: 8px; border-top: 1px solid var(--border); padding-top: 12px; }
+  .map { display: flex; flex-wrap: wrap; gap: 8px; }
+  .map label { display: grid; gap: 2px; font-size: .75rem; color: var(--muted); flex: 1 1 8rem; }
+
+  .dock { position: sticky; bottom: 0; max-width: 1200px; margin: 0 auto; display: grid; gap: 8px; padding-bottom: 8px; }
+  .notice { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: var(--card);
+            border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px;
+            box-shadow: 0 4px 16px rgb(0 0 0 / .12); }
+  .notice p { margin: 0 auto 0 0; flex: 1 1 16rem; }
+  .notice.pending { background: var(--pending); color: var(--pending-text); }
+  .notice.bad { border-color: var(--danger); }
 
   @media (max-width: 760px) {
     .grid { display: block; background: none; border: 0; border-radius: 0; overflow: visible; }
@@ -95,6 +155,9 @@
     .col + .col { border-left: 1px solid var(--border); }
     .label { display: block; color: var(--muted); font-size: .75rem; font-weight: 600; }
     .cell.blank { display: none; }
+    .hw-row { grid-template-columns: minmax(0, 1fr) auto; }
+    .hw-row .hw-due { grid-column: 1; }
+    .hw-row .hw-link { grid-column: 1 / 3; }
   }
 </style>
 </head>
@@ -111,15 +174,90 @@
     <span class="seg" role="group" aria-label="Weeks shown">
       <button type="button" data-weeks="1">1 week</button><button type="button" data-weeks="2">2</button><button type="button" data-weeks="4">4</button>
     </span>
+    <button type="button" id="undo" title="Undo your last save">Undo</button>
   </div>
 </header>
 <main id="main"><p class="status">Loading&hellip;</p></main>
+<div class="dock" id="dock" aria-live="polite"></div>
+
+<datalist id="titles"></datalist>
+<datalist id="links"></datalist>
+<datalist id="hwtexts"></datalist>
+
+<dialog id="sheet">
+  <form method="dialog" id="sheet-form" novalidate>
+    <h3 id="sheet-title"></h3>
+    <p class="hint" id="sheet-hint"></p>
+    <div id="sheet-fields">
+      <div style="display:grid; gap:12px">
+        <label class="field">Lesson title
+          <input name="title" list="titles" autocomplete="off" required>
+        </label>
+        <label class="field">Kind
+          <select name="kind"></select>
+        </label>
+        <label class="field">I-can target
+          <textarea name="target" rows="2"></textarea>
+        </label>
+        <label class="field" id="classwork-field">Class work
+          <textarea name="classwork" rows="2"></textarea>
+        </label>
+        <label class="field">Lesson link
+          <input name="link" type="url" list="links" placeholder="https://" autocomplete="off">
+        </label>
+        <fieldset>
+          <legend>Homework</legend>
+          <div id="hw-rows" style="display:grid; gap:10px"></div>
+          <div><button type="button" class="small" id="hw-add">+ Add an assignment</button></div>
+        </fieldset>
+        <label class="check"><input type="checkbox" name="small_fix">
+          Small fix (a typo): don't mark it Updated for families</label>
+      </div>
+    </div>
+    <p class="error" id="sheet-error" role="alert"></p>
+    <div class="actions">
+      <span class="left" id="sheet-more"></span>
+      <button type="button" id="sheet-cancel">Cancel</button>
+      <button type="submit" class="primary" id="sheet-save">Save</button>
+    </div>
+    <div class="closer" id="closer" hidden>
+      <label class="field">No school this day: why? (families see this)
+        <input name="note" placeholder="e.g. Assembly, field trip" autocomplete="off">
+      </label>
+      <div class="actions"><button type="button" class="danger" id="close-day">Make it no school</button></div>
+      <p class="hint">Lessons from this day on each move one class day later.</p>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="paste">
+  <form method="dialog" id="paste-form" novalidate>
+    <h3>Paste plans</h3>
+    <p class="hint">Copy rows from a table in Word or Google Sheets, one row per class day, and paste them here.
+      Quiz days and days with no school are skipped.</p>
+    <label class="field">Starting
+      <input type="date" name="start" required>
+    </label>
+    <label class="field">Pasted table
+      <textarea name="text" rows="6" placeholder="Paste here"></textarea>
+    </label>
+    <div class="map" id="paste-map"></div>
+    <p class="hint" id="paste-count"></p>
+    <p class="error" id="paste-error" role="alert"></p>
+    <div class="actions">
+      <button type="button" id="paste-cancel">Cancel</button>
+      <button type="submit" class="primary">Show it on the calendar</button>
+    </div>
+  </form>
+</dialog>
+
 <script>
 (function () {
   "use strict";
   var slug = location.pathname.split("/").filter(Boolean)[1];
   var main = document.getElementById("main");
-  var data, byDate = {}, rows, start, weeks = 2;
+  var dock = document.getElementById("dock");
+  var data, byDate = {}, rows, start, weeks = 2, busy = false, pending = null;
   try { weeks = +localStorage.getItem("editor-weeks") || 2; } catch (e) {}
   if ([1, 2, 4].indexOf(weeks) < 0) weeks = 2;
 
@@ -128,6 +266,12 @@
     if (cls) n.className = cls;
     if (text != null) n.textContent = text;
     return n;
+  }
+  function button(text, cls, onclick) {
+    var b = el("button", cls, text);
+    b.type = "button";
+    b.onclick = onclick;
+    return b;
   }
   // Dates as "YYYY-MM-DD" strings, done in UTC so no time zone shifts a day.
   function parse(iso) { var p = iso.split("-"); return new Date(Date.UTC(+p[0], p[1] - 1, +p[2])); }
@@ -141,6 +285,12 @@
   var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
   function short(isoDate) { var d = parse(isoDate); return (d.getUTCMonth() + 1) + "/" + d.getUTCDate(); }
   function long(isoDate) { var d = parse(isoDate); return MONTHS[d.getUTCMonth()] + " " + d.getUTCDate(); }
+  function when(isoDate) { return WEEKDAYS[(parse(isoDate).getUTCDay() + 6) % 7] + " " + short(isoDate); }
+
+  // What kind of day this is, for the editor.
+  function isLessonDay(day) { return day && day.type === "Instruction" && !day.computed && day.lesson_text && day.kind; }
+
+  // --- The grid ------------------------------------------------------------
 
   function cell(label, cls) {
     var c = el("div", "cell" + (cls ? " " + cls : ""));
@@ -151,29 +301,36 @@
   function lessonCell(day) {
     var c = cell("Lesson", day.computed ? "auto-cell" : "");
     var t = el("div", "title");
+    if (day.pending && !day.lesson_text) t.appendChild(el("span", "chip new", "new"));
     if (day.computed) t.appendChild(el("span", "chip auto", "auto"));
     else if (day.kind && day.kind !== "Lesson") t.appendChild(el("span", "chip", day.kind));
-    t.appendChild(document.createTextNode(day.lesson_text || ""));
-    if (!day.lesson_text) t.appendChild(el("span", "empty", "Nothing planned"));
+    t.appendChild(document.createTextNode(day.title_shown || day.lesson_text || ""));
+    if (!day.lesson_text && !day.title_shown) t.appendChild(el("span", "empty", "Nothing planned"));
     c.appendChild(t);
     if (day.quiz_paired) c.appendChild(el("span", "chip auto", "+ quiz"));
     if (day.self_grading_paired) c.appendChild(el("span", "chip auto", "+ self-grading"));
     if (day.target) c.appendChild(el("div", "sub", day.target));
     if (day.teacher_out) c.appendChild(el("div", "sub", "Out: " + (day.teacher_out === true ? "all periods" : day.teacher_out)));
     if (day.note && day.note !== day.classwork) c.appendChild(el("div", "sub", day.note));
-    if (day.needs.length) c.appendChild(el("span", "chip needs", "Needs " + day.needs.join(" & ")));
+    if (day.needs.length && !day.pending) c.appendChild(el("span", "chip needs", "Needs " + day.needs.join(" & ")));
     return c;
   }
 
+  function dash(c) { c.classList.add("blank"); c.appendChild(el("span", "empty", "—")); return c; }
+
   function homeworkCell(day) {
     var c = cell("Homework");
-    if (!day.homework.length && !day.due.length) { c.classList.add("blank"); c.appendChild(el("span", "empty", "—")); return c; }
+    if (!day.homework.length && !day.due.length) return dash(c);
     var ul = el("ul", "hw");
     day.homework.forEach(function (hw) {
       var li = el("li");
-      if (hw.link) { var a = el("a", null, hw.text); a.href = hw.link; a.target = "_blank"; a.rel = "noopener"; li.appendChild(a); }
-      else li.appendChild(document.createTextNode(hw.text));
-      if (hw.due) li.appendChild(el("div", "sub", "due " + WEEKDAYS[(parse(hw.due).getUTCDay() + 6) % 7] + " " + short(hw.due)));
+      if (hw.link) {
+        var a = el("a", null, hw.text);
+        a.href = hw.link; a.target = "_blank"; a.rel = "noopener";
+        a.onclick = function (e) { e.stopPropagation(); };
+        li.appendChild(a);
+      } else li.appendChild(document.createTextNode(hw.text));
+      if (hw.due) li.appendChild(el("div", "sub", "due " + when(hw.due)));
       ul.appendChild(li);
     });
     if (day.homework.length) c.appendChild(ul);
@@ -183,22 +340,40 @@
 
   function linkCell(day) {
     var c = cell("Link");
-    if (!day.link) { c.classList.add("blank"); c.appendChild(el("span", "empty", "—")); return c; }
+    if (!day.link) return dash(c);
     var a = el("a", null, "Open");
     a.href = day.link; a.target = "_blank"; a.rel = "noopener";
+    a.onclick = function (e) { e.stopPropagation(); };
     try { a.title = new URL(day.link, location.href).hostname; } catch (e) {}
     c.appendChild(a);
     return c;
   }
 
+  function classworkCell(day) {
+    var c = cell("Class work");
+    if (!day.classwork) return dash(c);
+    c.appendChild(document.createTextNode(day.classwork));
+    return c;
+  }
+
   function column(isoDate, i) {
     var day = byDate[isoDate];
+    if (pending && pending.days[isoDate]) day = pending.days[isoDate];
     var col = el("div", "col");
     if (isoDate === data.today) col.classList.add("today");
+    if (day && day.pending) col.classList.add("pending");
     var head = cell(null, "head");
     head.appendChild(el("span", null, WEEKDAYS[i]));
     head.appendChild(document.createTextNode(short(isoDate)));
     col.appendChild(head);
+    if (day && !pending) {
+      col.classList.add("editable");
+      col.tabIndex = 0;
+      col.setAttribute("role", "button");
+      col.setAttribute("aria-label", "Edit " + when(isoDate));
+      col.onclick = function () { openSheet(isoDate); };
+      col.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openSheet(isoDate); } };
+    }
     if (!day || day.type !== "Instruction") {
       col.classList.add("closed");
       col.appendChild(cell(null, "span")).appendChild(document.createTextNode(day ? day.display : "No school"));
@@ -213,7 +388,13 @@
     for (var w = 0; w < weeks; w++) {
       var mon = addDays(start, 7 * w);
       var sec = el("section", "week");
-      sec.appendChild(el("h2", null, "Week of " + long(mon)));
+      var head = el("div", "week-head");
+      head.appendChild(el("h2", null, "Week of " + long(mon)));
+      if (!pending) {
+        head.appendChild(button("Repeat this week", "small", repeatWeek.bind(null, mon)));
+        head.appendChild(button("Paste plans", "small", openPaste.bind(null, mon)));
+      }
+      sec.appendChild(head);
       var grid = el("div", "grid");
       grid.style.setProperty("--rows", rows.length + 1);
       var labels = el("div", "col labels");
@@ -231,7 +412,394 @@
     });
     document.getElementById("prev").disabled = addDays(start, -3) < data.days[0].date;
     document.getElementById("next").disabled = addDays(start, 7 * weeks) > data.days[data.days.length - 1].date;
+    document.getElementById("undo").disabled = busy || !!pending || data.version < 2;
   }
+
+  // The year as the server sent it, and the suggestions built from it:
+  // what each row has held before, and the next lesson code in sequence.
+  function load(d) {
+    data = d;
+    byDate = {};
+    d.days.forEach(function (day) { byDate[day.date] = day; });
+    rows = [{ label: "Lesson", make: lessonCell }];
+    if (d.show_classwork) rows.push({ label: "Class work", make: classworkCell });
+    rows.push({ label: "Homework", make: homeworkCell }, { label: "Link", make: linkCell });
+    var titles = {}, links = {}, hw = {};
+    d.days.forEach(function (day) {
+      if (isLessonDay(day)) titles[day.lesson_text] = 1;
+      if (day.link) links[day.link] = 1;
+      day.homework.forEach(function (h) { hw[h.text] = 1; if (h.link) links[h.link] = 1; });
+    });
+    fill("titles", Object.keys(titles));
+    fill("links", Object.keys(links));
+    fill("hwtexts", Object.keys(hw));
+  }
+  function fill(id, values) {
+    var list = document.getElementById(id);
+    list.textContent = "";
+    values.sort().forEach(function (v) { var o = el("option"); o.value = v; list.appendChild(o); });
+  }
+  // "T1L4" when the lesson before isoDate is T1L3.
+  function nextCode(isoDate) {
+    var prev = data.days.filter(function (d) { return d.date < isoDate && isLessonDay(d); }).pop();
+    var m = prev && /^(.*?\bT\d+L)(\d+)\b/.exec(prev.lesson_text);
+    return m ? m[1] + (+m[2] + 1) + " " : null;
+  }
+
+  // --- Saving ----------------------------------------------------------------
+
+  function notice(text, cls, extra) {
+    dock.textContent = "";
+    var n = el("div", "notice" + (cls ? " " + cls : ""));
+    n.appendChild(el("p", null, text));
+    (extra || []).forEach(function (b) { n.appendChild(b); });
+    n.appendChild(button("×", "small", function () { dock.textContent = ""; }));
+    dock.appendChild(n);
+  }
+
+  // POST one edit (or undo). Resolves with the answer, or rejects with a
+  // sentence to show her.
+  function send(what, body) {
+    busy = true;
+    draw();
+    body.version = data.version;
+    return fetch("/api/calendars/" + encodeURIComponent(slug) + "/" + what, {
+      method: "POST", credentials: "same-origin",
+      headers: { "content-type": "application/json" }, body: JSON.stringify(body)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (r.status === 409) {
+          var reload = button("Reload", "small", function () { location.reload(); });
+          var stale = new Error(j.error || "This calendar changed somewhere else. Reload to see the latest.");
+          notice(stale.message, "bad", [reload]);
+          stale.shown = true;  // already in the notice, with its Reload button
+          throw stale;
+        }
+        if (r.status === 403) throw new Error("You're signed out. Reload the page to sign in again.");
+        if (!r.ok) throw new Error(j.error || "That didn't save (" + r.status + "). Try again.");
+        load(j.calendar);
+        var bits = [j.summary + "."];
+        if (j.message) bits.push(j.message);
+        notice("Saved. " + bits.join(" "));
+        return j;
+      });
+    }, function () {
+      throw new Error("That didn't reach the server. Check your connection and try again.");
+    }).then(function (j) { busy = false; draw(); return j; },
+            function (e) { busy = false; draw(); throw e; });
+  }
+
+  // --- The edit sheet --------------------------------------------------------
+
+  var sheet = document.getElementById("sheet");
+  var form = document.getElementById("sheet-form");
+  var sheetError = document.getElementById("sheet-error");
+  var sheetMore = document.getElementById("sheet-more");
+  var closer = document.getElementById("closer");
+  var hwRows = document.getElementById("hw-rows");
+  var editing = null;   // {date, mode: "edit" | "add"}
+
+  function hwRow(hw) {
+    var row = el("div", "hw-row");
+    var text = el("input"); text.name = "hw-text"; text.placeholder = "Assignment"; text.setAttribute("list", "hwtexts");
+    text.autocomplete = "off"; text.value = hw ? hw.text : "";
+    var due = el("input", "hw-due"); due.type = "date"; due.name = "hw-due"; due.value = hw && hw.due ? hw.due : "";
+    due.setAttribute("aria-label", "Due");
+    var link = el("input", "hw-link"); link.type = "url"; link.name = "hw-link"; link.placeholder = "Assignment link (optional)";
+    link.setAttribute("list", "links"); link.autocomplete = "off"; link.value = hw && hw.link ? hw.link : "";
+    var remove = button("Remove", "small", function () { row.remove(); });
+    row.appendChild(text); row.appendChild(due); row.appendChild(remove); row.appendChild(link);
+    hwRows.appendChild(row);
+    return text;
+  }
+  document.getElementById("hw-add").onclick = function () { hwRow(null).focus(); };
+
+  function setKinds(current) {
+    var sel = form.elements.kind;
+    sel.textContent = "";
+    var kinds = ["Lesson", "Test", "Project"];
+    if (current && kinds.indexOf(current) < 0) kinds.unshift(current);
+    kinds.forEach(function (k) { var o = el("option", null, k); o.value = k; sel.appendChild(o); });
+    sel.value = current || "Lesson";
+  }
+
+  function openSheet(isoDate, mode) {
+    var day = byDate[isoDate];
+    if (!day || busy) return;
+    editing = { date: isoDate, mode: mode || (isLessonDay(day) ? "edit" : "add") };
+    sheetError.textContent = "";
+    sheetMore.textContent = "";
+    form.reset();
+    hwRows.textContent = "";
+    document.getElementById("classwork-field").hidden = !data.show_classwork;
+    var fields = document.getElementById("sheet-fields");
+    var save = document.getElementById("sheet-save");
+    var title = document.getElementById("sheet-title");
+    var hint = document.getElementById("sheet-hint");
+    closer.hidden = true;
+    hint.textContent = "";
+
+    if (day.type !== "Instruction") {
+      title.textContent = when(isoDate) + ": " + day.display;
+      fields.hidden = true; save.hidden = true;
+      if (day.school_closed) hint.textContent = "This day is closed on the school's calendar.";
+      else {
+        hint.textContent = "Turning class back on moves lessons from this day on one class day earlier.";
+        sheetMore.appendChild(button("Turn class back on", "primary", function () {
+          act({ op: "open", date: isoDate });
+        }));
+      }
+    } else if (day.computed) {
+      title.textContent = when(isoDate) + ": " + day.lesson_text;
+      fields.hidden = true; save.hidden = true;
+      hint.textContent = "Quizzes and self-grading days are placed by your quiz rule, so they move on their own when lessons do.";
+      sheetMore.appendChild(button("No school this day…", "danger", showCloser));
+    } else {
+      fields.hidden = false; save.hidden = false;
+      var adding = editing.mode === "add";
+      title.textContent = (adding ? "Add a lesson on " : "") + when(isoDate) + (adding ? "" : ": " + day.lesson_text);
+      save.textContent = adding ? "Add lesson" : "Save";
+      if (adding && isLessonDay(day)) hint.textContent = "The new lesson goes on " + when(isoDate) + ". " +
+        day.lesson_text + " and every lesson after it move one class day later.";
+      else if (adding) hint.textContent = "A new lesson for this day.";
+      setKinds(adding ? "Lesson" : day.kind);
+      var suggest = nextCode(isoDate);
+      if (adding) form.elements.title.value = suggest || "";
+      else {
+        form.elements.title.value = day.lesson_text;
+        form.elements.target.value = day.target || "";
+        form.elements.classwork.value = day.classwork || "";
+        form.elements.link.value = day.link || "";
+        day.homework.forEach(hwRow);
+      }
+      if (!day.homework.length || adding) hwRow(null);
+      if (!adding) sheetMore.appendChild(button("Add a lesson before this", "small", function () { openSheet(isoDate, "add"); }));
+      sheetMore.appendChild(button("No school this day…", "small danger", showCloser));
+    }
+    if (!sheet.open) sheet.showModal();
+    if (!fields.hidden) {
+      form.elements.title.focus();
+      form.elements.title.setSelectionRange(form.elements.title.value.length, form.elements.title.value.length);
+    }
+  }
+
+  function showCloser() {
+    closer.hidden = false;
+    form.elements.note.focus();
+  }
+  document.getElementById("close-day").onclick = function () {
+    act({ op: "close", date: editing.date, note: form.elements.note.value });
+  };
+  form.elements.note.onkeydown = function (e) {
+    if (e.key === "Enter") { e.preventDefault(); document.getElementById("close-day").click(); }
+  };
+  document.getElementById("sheet-cancel").onclick = function () { sheet.close(); };
+
+  function formFields() {
+    var f = form.elements;
+    var homework = [];
+    hwRows.querySelectorAll(".hw-row").forEach(function (row) {
+      var text = row.querySelector('[name="hw-text"]').value.trim();
+      if (!text) return;
+      homework.push({ text: text, due: row.querySelector('[name="hw-due"]').value || null,
+                      link: row.querySelector('[name="hw-link"]').value.trim() || null });
+    });
+    var out = { title: f.title.value, kind: f.kind.value, target: f.target.value,
+                link: f.link.value.trim(), homework: homework };
+    if (data.show_classwork) out.classwork = f.classwork.value;
+    return out;
+  }
+
+  // Only what she changed, so a save that changes nothing doesn't log one.
+  function changedFields(day, fields) {
+    var was = { title: day.lesson_text, kind: day.kind, target: day.target || "", link: day.link || "",
+                classwork: day.classwork || "",
+                homework: day.homework.map(function (h) { return { text: h.text, due: h.due || null, link: h.link || null }; }) };
+    var out = {};
+    Object.keys(fields).forEach(function (k) {
+      var a = k === "homework" ? JSON.stringify(fields[k]) : (fields[k] || "").trim().replace(/\s+/g, " ");
+      var b = k === "homework" ? JSON.stringify(was[k]) : was[k];
+      if (a !== b) out[k] = fields[k];
+    });
+    return out;
+  }
+
+  form.onsubmit = function (e) {
+    e.preventDefault();
+    if (document.getElementById("sheet-fields").hidden) return;
+    var fields = formFields();
+    if (!fields.title.trim()) { sheetError.textContent = "A lesson needs a title."; return; }
+    var op;
+    if (editing.mode === "add") op = { op: "add", date: editing.date, fields: fields };
+    else {
+      var changed = changedFields(byDate[editing.date], fields);
+      if (!Object.keys(changed).length) { sheet.close(); return; }
+      op = { op: "edit", date: editing.date, fields: changed };
+    }
+    act(op);
+  };
+
+  function act(op) {
+    sheetError.textContent = "";
+    send("edit", { op: op, small_fix: form.elements.small_fix.checked })
+      .then(function () { sheet.close(); }, function (err) { sheetError.textContent = err.message; });
+  }
+
+  // --- Repeat a week, undo ---------------------------------------------------
+
+  function repeatWeek(mon) {
+    var lessons = [0, 1, 2, 3, 4].map(function (i) { return byDate[addDays(mon, i)]; }).filter(isLessonDay);
+    if (!lessons.length) { notice("The week of " + long(mon) + " has no lessons to repeat."); return; }
+    var n = lessons.length;
+    if (!confirm("Add this week's " + n + " lesson" + (n > 1 ? "s" : "") + " again, right after it? " +
+                 "Lessons already planned after this week move " + n + " class day" + (n > 1 ? "s" : "") + " later.")) return;
+    send("edit", { op: { op: "copy_week", date: mon } }).catch(failed);
+  }
+
+  document.getElementById("undo").onclick = function () {
+    if (!confirm("Undo your last save? Families' page goes back too.")) return;
+    send("undo", {}).catch(failed);
+  };
+  function failed(err) { if (!err.shown) notice(err.message, "bad"); }
+
+  // --- Paste -----------------------------------------------------------------
+
+  var paste = document.getElementById("paste");
+  var pasteForm = document.getElementById("paste-form");
+  var pasteMap = document.getElementById("paste-map");
+  var pasteError = document.getElementById("paste-error");
+  var FIELDS = [["", "Skip"], ["title", "Lesson title"], ["target", "I-can target"], ["hw", "Homework"],
+                ["due", "Homework due"], ["link", "Lesson link"], ["classwork", "Class work"]];
+  var table = [];
+
+  function openPaste(mon) {
+    pasteForm.reset();
+    pasteMap.textContent = "";
+    pasteError.textContent = "";
+    document.getElementById("paste-count").textContent = "";
+    var first = [0, 1, 2, 3, 4].map(function (i) { return addDays(mon, i); })
+      .filter(function (d) { return byDate[d] && byDate[d].type === "Instruction"; })[0];
+    pasteForm.elements.start.value = first || mon;
+    paste.showModal();
+    pasteForm.elements.text.focus();
+  }
+  document.getElementById("paste-cancel").onclick = function () { paste.close(); };
+
+  // Guess each column from a header row ("Homework", "Due") or its contents.
+  function guess(header, values) {
+    var h = (header || "").toLowerCase();
+    if (/due/.test(h)) return "due";
+    if (/home ?work|hw|assign/.test(h)) return "hw";
+    if (/target|i can|objective|goal/.test(h)) return "target";
+    if (/link|url/.test(h)) return "link";
+    if (/class ?work|activity/.test(h)) return "classwork";
+    if (/lesson|title|topic/.test(h)) return "title";
+    if (/^date|^day/.test(h)) return "";
+    if (!values.length) return null;
+    if (values.every(function (v) { return !v || /^https?:\/\//i.test(v); })) return "link";
+    if (values.every(function (v) { return !v || /^i can\b/i.test(v); })) return "target";
+    if (values.every(function (v) { return !v || /^\d{1,2}\/\d{1,2}(\/\d{2,4})?$|^\d{4}-\d\d-\d\d$/.test(v); })) return "";
+    return null;
+  }
+
+  pasteForm.elements.text.oninput = function () {
+    var text = pasteForm.elements.text.value.replace(/\r/g, "").replace(/\n+$/, "");
+    var lines = text ? text.split("\n") : [];
+    var sep = lines.some(function (l) { return l.indexOf("\t") >= 0; }) ? "\t" : null;
+    table = lines.map(function (l) { return (sep ? l.split(sep) : [l]).map(function (c) { return c.trim(); }); });
+    var cols = table.reduce(function (n, r) { return Math.max(n, r.length); }, 0);
+    var header = table.length > 1 && table[0].some(function (c) { return guess(c, []) !== null && c.length < 30; })
+                 && !table[0].some(function (c) { return /^https?:/.test(c); });
+    pasteMap.dataset.header = header ? "1" : "";
+    pasteMap.textContent = "";
+    var used = {};
+    for (var c = 0; c < cols; c++) {
+      var values = table.slice(header ? 1 : 0).map(function (r) { return r[c] || ""; });
+      var g = guess(header ? table[0][c] : "", values);
+      if (g === null || used[g]) g = used.title ? (used.target ? "" : "target") : "title";
+      if (g) used[g] = 1;
+      var lab = el("label", null, "Column " + (c + 1) + (header ? ": " + table[0][c] : ""));
+      var sel = el("select");
+      FIELDS.forEach(function (f) { var o = el("option", null, f[1]); o.value = f[0]; sel.appendChild(o); });
+      sel.value = g;
+      lab.appendChild(sel);
+      pasteMap.appendChild(lab);
+    }
+    var n = table.length - (header ? 1 : 0);
+    document.getElementById("paste-count").textContent = n ? n + " row" + (n > 1 ? "s" : "") + ", one per class day." : "";
+  };
+
+  // A due date as she'd type it: 2026-10-20, 10/20, or 10/20/26.
+  function dueDate(text) {
+    if (!text) return null;
+    if (/^\d{4}-\d\d-\d\d$/.test(text)) return text;
+    var m = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?$/.exec(text);
+    if (!m) return undefined;
+    var first = parse(data.days[0].date);
+    var year = m[3] ? (m[3].length === 2 ? 2000 + +m[3] : +m[3])
+                    : first.getUTCFullYear() + (+m[1] < first.getUTCMonth() + 1 ? 1 : 0);
+    return year + "-" + String(m[1]).padStart(2, "0") + "-" + String(m[2]).padStart(2, "0");
+  }
+
+  pasteForm.onsubmit = function (e) {
+    e.preventDefault();
+    pasteError.textContent = "";
+    var startDate = pasteForm.elements.start.value;
+    var map = Array.prototype.map.call(pasteMap.querySelectorAll("select"), function (s) { return s.value; });
+    var body = table.slice(pasteMap.dataset.header ? 1 : 0);
+    if (!body.length) { pasteError.textContent = "Paste a table first."; return; }
+    if (!startDate || !byDate[startDate] && !data.days.some(function (d) { return d.date >= startDate; })) {
+      pasteError.textContent = "Pick a starting day in the school year."; return;
+    }
+    var out = [];
+    for (var i = 0; i < body.length; i++) {
+      var row = {}, hw = null, due = null;
+      for (var c = 0; c < map.length; c++) {
+        var v = body[i][c] || "";
+        if (!map[c] || !v) continue;
+        if (map[c] === "hw") hw = v;
+        else if (map[c] === "due") {
+          due = dueDate(v);
+          if (due === undefined) { pasteError.textContent = "Row " + (i + 1) + ": “" + v + "” isn't a date like 10/20."; return; }
+        } else row[map[c]] = v;
+      }
+      if (hw) row.homework = [{ text: hw, due: due }];
+      out.push(row);
+    }
+    // Lay the rows on class days the way the server will, to show them.
+    var days = {}, k = 0;
+    var targets = data.days.filter(function (d) { return d.date >= startDate && d.type === "Instruction" && !d.computed; });
+    if (targets.length < out.length) { pasteError.textContent = "The rows run past the last class day of the year."; return; }
+    out.forEach(function (row, i) {
+      var day = targets[i], shown = Object.assign({}, day, { pending: true });
+      if (row.title) shown.title_shown = row.title;
+      if (row.target) shown.target = row.target;
+      if (row.link) shown.link = row.link;
+      if (row.classwork) shown.classwork = row.classwork;
+      if (row.homework) shown.homework = row.homework;
+      if (Object.keys(row).length) { days[day.date] = shown; k++; }
+    });
+    if (!k) { pasteError.textContent = "Every pasted row is empty, or every column is set to Skip."; return; }
+    pending = { start: startDate, rows: out, days: days };
+    paste.close();
+    start = monday(startDate);
+    if (out.length > 5 && weeks < 2) weeks = 2;
+    draw();
+    var keep = button("Keep", "primary small", function () {
+      var p = pending;
+      pending = null;
+      send("edit", { op: { op: "paste", date: p.start, rows: p.rows } })
+        .catch(function (err) { pending = p; draw(); if (!err.shown) showPending(err.message); });
+    });
+    showPending();
+    function showPending(err) {
+      var clear = button("Clear", "small", function () { pending = null; dock.textContent = ""; draw(); });
+      notice((err ? err + " " : "") + k + " day" + (k > 1 ? "s" : "") + " pasted, highlighted. Not saved yet.",
+             "pending", [keep, clear]);
+    }
+  };
+
+  // --- Paging ------------------------------------------------------------------
 
   document.getElementById("prev").onclick = function () { start = addDays(start, -7 * weeks); draw(); };
   document.getElementById("next").onclick = function () { start = addDays(start, 7 * weeks); draw(); };
@@ -243,6 +811,9 @@
       draw();
     };
   });
+  window.addEventListener("beforeunload", function (e) {
+    if (pending) { e.preventDefault(); e.returnValue = ""; }
+  });
 
   fetch("/api/calendars/" + encodeURIComponent(slug) + "/days", { credentials: "same-origin" })
     .then(function (r) {
@@ -252,16 +823,7 @@
       return r.json();
     })
     .then(function (d) {
-      data = d;
-      d.days.forEach(function (day) { byDate[day.date] = day; });
-      rows = [{ label: "Lesson", make: lessonCell }];
-      if (d.show_classwork) rows.push({ label: "Class work", make: function (day) {
-        var c = cell("Class work");
-        if (!day.classwork) { c.classList.add("blank"); c.appendChild(el("span", "empty", "—")); }
-        else c.appendChild(document.createTextNode(day.classwork));
-        return c;
-      } });
-      rows.push({ label: "Homework", make: homeworkCell }, { label: "Link", make: linkCell });
+      load(d);
       document.title = d.title + " · editor";
       document.getElementById("title").textContent = d.title;
       document.getElementById("family").href = d.family_page;
