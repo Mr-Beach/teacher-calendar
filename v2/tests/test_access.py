@@ -18,6 +18,7 @@ from types import SimpleNamespace
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "v2" / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))  # lookahead_page, for /edit/<calendar>/ahead
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import access  # noqa: E402
 import app  # noqa: E402
@@ -141,9 +142,10 @@ class TokenTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.certs.fetches, 2)
 
 
-class RouteTests(unittest.IsolatedAsyncioTestCase):
+class SignedInCase(unittest.IsolatedAsyncioTestCase):
     """app.handle at the real clock: these tokens are good until 33658
-    unless a test says otherwise."""
+    unless a test says otherwise. teacher@example.com owns "math6";
+    other@example.com owns "secret"."""
 
     async def asyncSetUp(self):
         quiet = unittest.mock.patch("builtins.print")
@@ -163,6 +165,9 @@ class RouteTests(unittest.IsolatedAsyncioTestCase):
         if token is None and email:
             token = sign(claims(email=email, nbf=0, exp=10**12))
         return await app.handle(method, path, token, self.db, self.keys, ENV)
+
+
+class RouteTests(SignedInCase):
 
     async def test_signed_in_pages_need_a_good_token(self):
         h, b, s = sign(claims(nbf=0, exp=10**12)).split(".")

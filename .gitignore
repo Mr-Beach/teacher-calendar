@@ -24,10 +24,12 @@ Claude outputs/
 # Wrangler CLI cache (account ID etc.); local only
 .wrangler/
 
-# v2 Worker: engine.py and render.py are copied into v2/src/ at build time
+# v2 Worker: engine.py, render.py, and scripts/lookahead*.py are copied into v2/src/ at build time
 # (v2/wrangler.jsonc, "build"); the repo-root files are the real ones.
 v2/src/engine.py
 v2/src/render.py
+v2/src/lookahead.py
+v2/src/lookahead_page.py
 v2/.venv-workers/
 v2/python_modules/
 v2/pylock.toml

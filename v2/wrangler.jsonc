@@ -2,8 +2,9 @@
 // Workers Build (root directory v2/), in front of v1's on a few paths.
 // Each teacher gets a route pair below; every other path on beach-math.com
 // (/math6, /math78, /teacher, apps) still goes to v1's Worker.
-// Deploy: a push to main that touches v2/, engine.py, or render.py runs
-// its Workers Build (connected 10/9). By hand: uv run pywrangler deploy.
+// Deploy: a push to main that touches v2/, engine.py, render.py, or
+// scripts/lookahead*.py runs its Workers Build (connected 10/9; those are
+// its watch paths). By hand: uv run pywrangler deploy.
 {
   "name": "teacher-calendar-v2",
   "main": "src/entry.py",
@@ -11,8 +12,9 @@
   "compatibility_flags": ["python_workers"],
   "workers_dev": false,
   // engine.py and render.py are the repo root's, copied in on every build
-  // and dev run, so v1 and v2 always run one engine (decision 1).
-  "build": { "command": "cp ../engine.py ../render.py src/" },
+  // and dev run, so v1 and v2 always run one engine (decision 1). So are
+  // scripts/lookahead*.py, for /edit/<calendar>/ahead (decision 7).
+  "build": { "command": "cp ../engine.py ../render.py ../scripts/lookahead.py ../scripts/lookahead_page.py src/" },
   "routes": [
     { "pattern": "beach-math.com/demo/*", "zone_name": "beach-math.com" },
     { "pattern": "www.beach-math.com/demo/*", "zone_name": "beach-math.com" },

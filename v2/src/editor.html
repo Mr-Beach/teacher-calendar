@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Calendar editor</title>
+<!--
+  v2's editor (PLAN-v2-phase1.md, M5 and decision 8): one file, plain
+  JavaScript, no build step. app.py serves it at /edit/<calendar> once it
+  has checked the calendar is hers; it reads /api/calendars/<calendar>/days
+  and pages through the year a week at a time. Read-only until M6.
+
+  The grid: columns are the week's days, rows are lesson, class work (only
+  when the calendar shows it), homework, and link. Quizzes and self-grading
+  days are computed by the engine, so they're marked "auto", never editable.
+  On a phone each day is a card instead.
+-->
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7f5; --card: #ffffff; --text: #1f2328; --muted: #6b7280;
+    --border: #e3e3e0; --accent: #6366f1; --accent-text: #ffffff;
+    --closed: #f0f0ee; --auto-bg: #ecfdf5; --auto-text: #047857;
+    --gap-bg: #fff7ed; --gap-text: #9a3412; --today: #eef2ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16171a; --card: #1f2126; --text: #e8e8e6; --muted: #9ca3af;
+      --border: #2e3036; --accent: #818cf8; --accent-text: #111827;
+      --closed: #1a1b1f; --auto-bg: #10291f; --auto-text: #6ee7b7;
+      --gap-bg: #3a2414; --gap-text: #fdba74; --today: #252a45;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text); margin: 0; padding: 16px;
+    font: 15px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: var(--accent); }
+  header, main { max-width: 1200px; margin: 0 auto; }
+  header { margin-bottom: 16px; }
+  .crumbs { font-size: .9rem; margin: 0 0 4px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  .links { font-size: .9rem; color: var(--muted); margin: 0 0 12px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .bar .range { font-weight: 600; margin-right: auto; }
+  .bar button, .seg button {
+    font: inherit; color: var(--text); background: var(--card); cursor: pointer;
+    border: 1px solid var(--border); border-radius: 10px; padding: 6px 12px;
+  }
+  .seg { display: inline-flex; }
+  .seg button { border-radius: 0; }
+  .seg button:first-child { border-radius: 10px 0 0 10px; }
+  .seg button:last-child { border-radius: 0 10px 10px 0; }
+  .seg button + button { border-left: 0; }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  .status { color: var(--muted); padding: 24px 0; }
+
+  .week { margin-bottom: 20px; }
+  .week h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em;
+             color: var(--muted); margin: 0 0 6px; }
+  .grid {
+    display: grid; grid-template-columns: 6.5rem repeat(5, minmax(0, 1fr));
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  }
+  .col { display: grid; grid-template-rows: subgrid; grid-row: span var(--rows); min-width: 0; }
+  .col + .col { border-left: 1px solid var(--border); }
+  .cell { padding: 8px 10px; border-top: 1px solid var(--border); min-width: 0; overflow-wrap: anywhere; }
+  .cell:first-child { border-top: 0; }
+  .labels .cell { color: var(--muted); font-size: .8rem; font-weight: 600; }
+  .head { font-weight: 600; font-size: .9rem; }
+  .head span { color: var(--muted); font-weight: 400; margin-right: 4px; }
+  .today .head { background: var(--today); }
+  .label { display: none; }
+  .closed .cell:not(.head) { background: var(--closed); color: var(--muted); }
+  .closed .span { grid-row: span calc(var(--rows) - 1); font-style: italic; }
+  .title { font-weight: 600; }
+  .sub { color: var(--muted); font-size: .85rem; margin-top: 2px; }
+  .empty { color: var(--muted); }
+  .chip { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase;
+          letter-spacing: .04em; border-radius: 4px; padding: 1px 6px; margin: 0 4px 2px 0;
+          background: var(--closed); color: var(--muted); vertical-align: 1px; }
+  .chip.auto { background: var(--auto-bg); color: var(--auto-text); }
+  .chip.needs { background: var(--gap-bg); color: var(--gap-text); text-transform: none; letter-spacing: 0; }
+  .auto-cell { background: var(--auto-bg); }
+  ul.hw { margin: 0; padding-left: 1.1em; }
+  ul.hw li + li { margin-top: 4px; }
+
+  @media (max-width: 760px) {
+    .grid { display: block; background: none; border: 0; border-radius: 0; overflow: visible; }
+    .col.labels { display: none; }
+    .col { display: block; background: var(--card); border: 1px solid var(--border);
+           border-radius: 12px; overflow: hidden; margin-bottom: 8px; }
+    .col + .col { border-left: 1px solid var(--border); }
+    .label { display: block; color: var(--muted); font-size: .75rem; font-weight: 600; }
+    .cell.blank { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <p class="crumbs"><a href="/edit">&larr; Your calendars</a></p>
+  <h1 id="title">Calendar</h1>
+  <p class="links"><a id="family" href="#">Family page</a> &middot; <a id="ahead" href="#">Look-ahead</a></p>
+  <div class="bar">
+    <span class="range" id="range"></span>
+    <button type="button" id="prev" aria-label="Earlier">&lsaquo; Earlier</button>
+    <button type="button" id="now">This week</button>
+    <button type="button" id="next" aria-label="Later">Later &rsaquo;</button>
+    <span class="seg" role="group" aria-label="Weeks shown">
+      <button type="button" data-weeks="1">1 week</button><button type="button" data-weeks="2">2</button><button type="button" data-weeks="4">4</button>
+    </span>
+  </div>
+</header>
+<main id="main"><p class="status">Loading&hellip;</p></main>
+<script>
+(function () {
+  "use strict";
+  var slug = location.pathname.split("/").filter(Boolean)[1];
+  var main = document.getElementById("main");
+  var data, byDate = {}, rows, start, weeks = 2;
+  try { weeks = +localStorage.getItem("editor-weeks") || 2; } catch (e) {}
+  if ([1, 2, 4].indexOf(weeks) < 0) weeks = 2;
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  // Dates as "YYYY-MM-DD" strings, done in UTC so no time zone shifts a day.
+  function parse(iso) { var p = iso.split("-"); return new Date(Date.UTC(+p[0], p[1] - 1, +p[2])); }
+  function iso(d) { return d.toISOString().slice(0, 10); }
+  function addDays(isoDate, n) { var d = parse(isoDate); d.setUTCDate(d.getUTCDate() + n); return iso(d); }
+  function monday(isoDate) {
+    var dow = parse(isoDate).getUTCDay();   // 0 Sunday .. 6 Saturday
+    return addDays(isoDate, dow === 0 ? 1 : dow === 6 ? 2 : 1 - dow);  // a weekend starts next week
+  }
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  function short(isoDate) { var d = parse(isoDate); return (d.getUTCMonth() + 1) + "/" + d.getUTCDate(); }
+  function long(isoDate) { var d = parse(isoDate); return MONTHS[d.getUTCMonth()] + " " + d.getUTCDate(); }
+
+  function cell(label, cls) {
+    var c = el("div", "cell" + (cls ? " " + cls : ""));
+    if (label) c.appendChild(el("span", "label", label));
+    return c;
+  }
+
+  function lessonCell(day) {
+    var c = cell("Lesson", day.computed ? "auto-cell" : "");
+    var t = el("div", "title");
+    if (day.computed) t.appendChild(el("span", "chip auto", "auto"));
+    else if (day.kind && day.kind !== "Lesson") t.appendChild(el("span", "chip", day.kind));
+    t.appendChild(document.createTextNode(day.lesson_text || ""));
+    if (!day.lesson_text) t.appendChild(el("span", "empty", "Nothing planned"));
+    c.appendChild(t);
+    if (day.quiz_paired) c.appendChild(el("span", "chip auto", "+ quiz"));
+    if (day.self_grading_paired) c.appendChild(el("span", "chip auto", "+ self-grading"));
+    if (day.target) c.appendChild(el("div", "sub", day.target));
+    if (day.teacher_out) c.appendChild(el("div", "sub", "Out: " + (day.teacher_out === true ? "all periods" : day.teacher_out)));
+    if (day.note && day.note !== day.classwork) c.appendChild(el("div", "sub", day.note));
+    if (day.needs.length) c.appendChild(el("span", "chip needs", "Needs " + day.needs.join(" & ")));
+    return c;
+  }
+
+  function homeworkCell(day) {
+    var c = cell("Homework");
+    if (!day.homework.length && !day.due.length) { c.classList.add("blank"); c.appendChild(el("span", "empty", "—")); return c; }
+    var ul = el("ul", "hw");
+    day.homework.forEach(function (hw) {
+      var li = el("li");
+      if (hw.link) { var a = el("a", null, hw.text); a.href = hw.link; a.target = "_blank"; a.rel = "noopener"; li.appendChild(a); }
+      else li.appendChild(document.createTextNode(hw.text));
+      if (hw.due) li.appendChild(el("div", "sub", "due " + WEEKDAYS[(parse(hw.due).getUTCDay() + 6) % 7] + " " + short(hw.due)));
+      ul.appendChild(li);
+    });
+    if (day.homework.length) c.appendChild(ul);
+    day.due.forEach(function (text) { c.appendChild(el("div", "sub", "Due today: " + text)); });
+    return c;
+  }
+
+  function linkCell(day) {
+    var c = cell("Link");
+    if (!day.link) { c.classList.add("blank"); c.appendChild(el("span", "empty", "—")); return c; }
+    var a = el("a", null, "Open");
+    a.href = day.link; a.target = "_blank"; a.rel = "noopener";
+    try { a.title = new URL(day.link, location.href).hostname; } catch (e) {}
+    c.appendChild(a);
+    return c;
+  }
+
+  function column(isoDate, i) {
+    var day = byDate[isoDate];
+    var col = el("div", "col");
+    if (isoDate === data.today) col.classList.add("today");
+    var head = cell(null, "head");
+    head.appendChild(el("span", null, WEEKDAYS[i]));
+    head.appendChild(document.createTextNode(short(isoDate)));
+    col.appendChild(head);
+    if (!day || day.type !== "Instruction") {
+      col.classList.add("closed");
+      col.appendChild(cell(null, "span")).appendChild(document.createTextNode(day ? day.display : "No school"));
+      return col;
+    }
+    rows.forEach(function (r) { col.appendChild(r.make(day)); });
+    return col;
+  }
+
+  function draw() {
+    main.textContent = "";
+    for (var w = 0; w < weeks; w++) {
+      var mon = addDays(start, 7 * w);
+      var sec = el("section", "week");
+      sec.appendChild(el("h2", null, "Week of " + long(mon)));
+      var grid = el("div", "grid");
+      grid.style.setProperty("--rows", rows.length + 1);
+      var labels = el("div", "col labels");
+      labels.appendChild(el("div", "cell head", ""));
+      rows.forEach(function (r) { labels.appendChild(el("div", "cell", r.label)); });
+      grid.appendChild(labels);
+      for (var i = 0; i < 5; i++) grid.appendChild(column(addDays(mon, i), i));
+      sec.appendChild(grid);
+      main.appendChild(sec);
+    }
+    document.getElementById("range").textContent =
+      long(start) + " – " + long(addDays(start, 7 * weeks - 3));
+    document.querySelectorAll(".seg button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(+b.dataset.weeks === weeks));
+    });
+    document.getElementById("prev").disabled = addDays(start, -3) < data.days[0].date;
+    document.getElementById("next").disabled = addDays(start, 7 * weeks) > data.days[data.days.length - 1].date;
+  }
+
+  document.getElementById("prev").onclick = function () { start = addDays(start, -7 * weeks); draw(); };
+  document.getElementById("next").onclick = function () { start = addDays(start, 7 * weeks); draw(); };
+  document.getElementById("now").onclick = function () { start = monday(data.today); draw(); };
+  document.querySelectorAll(".seg button").forEach(function (b) {
+    b.onclick = function () {
+      weeks = +b.dataset.weeks;
+      try { localStorage.setItem("editor-weeks", String(weeks)); } catch (e) {}
+      draw();
+    };
+  });
+
+  fetch("/api/calendars/" + encodeURIComponent(slug) + "/days", { credentials: "same-origin" })
+    .then(function (r) {
+      if (!r.ok) throw new Error(r.status === 404 ? "This calendar wasn't found." :
+                                 r.status === 403 ? "You're signed out. Reload to sign in again." :
+                                 "The calendar didn't load (" + r.status + "). Try reloading.");
+      return r.json();
+    })
+    .then(function (d) {
+      data = d;
+      d.days.forEach(function (day) { byDate[day.date] = day; });
+      rows = [{ label: "Lesson", make: lessonCell }];
+      if (d.show_classwork) rows.push({ label: "Class work", make: function (day) {
+        var c = cell("Class work");
+        if (!day.classwork) { c.classList.add("blank"); c.appendChild(el("span", "empty", "—")); }
+        else c.appendChild(document.createTextNode(day.classwork));
+        return c;
+      } });
+      rows.push({ label: "Homework", make: homeworkCell }, { label: "Link", make: linkCell });
+      document.title = d.title + " · editor";
+      document.getElementById("title").textContent = d.title;
+      document.getElementById("family").href = d.family_page;
+      document.getElementById("ahead").href = "/edit/" + encodeURIComponent(d.slug) + "/ahead";
+      var first = d.days.length ? d.days[0].date : d.today;
+      start = monday(d.today < first ? first : d.today);
+      draw();
+    })
+    .catch(function (e) { main.textContent = ""; main.appendChild(el("p", "status", e.message)); });
+})();
+</script>
+</body>
+</html>

@@ -5,8 +5,8 @@ week grid, and her students get a page like mine. Read `SPEC-v2.md` first;
 this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
-**Status (2026-10-09):** M0 through M4 done (see "M0 results" through
-"M4 results"). Next: M5. Color presets are in M1 and M7, my own trial run is
+**Status (2026-10-09):** M0 through M5 done (see "M0 results" through
+"M5 results"). Next: M6. Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
@@ -341,6 +341,33 @@ switches to the TypeScript port.
   link (class work only if her calendar turns it on). Quizzes and other
   recurring activities show as computed, not editable cells.
 - `/edit/<calendar>/ahead` is the look-ahead (decision 7).
+
+**M5 results (2026-10-09).** Done; 36 tests in `v2/tests` (6 new in
+`test_editor.py`).
+- `v2/src/editor.html` is the editor: one file, plain JavaScript
+  (decision 8). `/edit/<calendar>` serves it once the calendar is hers
+  (anything else is the same 404 as M4). It reads
+  `/api/calendars/<calendar>/days`, the whole year rendered, once, and
+  pages by week from there: 1, 2, or 4 weeks (remembered per browser),
+  Earlier / This week / Later. Columns are Mon-Fri; a closed day is one
+  grey cell with its name. Rows are lesson (with target, notes, "out"
+  days, and the look-ahead's "Needs ..." flag), class work only if the
+  calendar shows it, homework (with due dates, and what's due that day),
+  and link. Quizzes and self-grading days are marked "auto". On a phone
+  each day is a card.
+- `/edit/<calendar>/ahead` is v1's `lookahead_page.build_page` for one
+  calendar: no course tabs, a link back to the grid. `/teacher` is
+  byte-identical (checked by building the site before and after).
+- `scripts/lookahead.py` and `lookahead_page.py` are copied into
+  `v2/src/` by the build, like `engine.py` and `render.py`. **The v2
+  Workers Build's watch paths need `scripts/lookahead*.py` added** in the
+  dashboard, or a change to only those files won't redeploy v2.
+- Checked with `pywrangler dev`: the bundle includes `editor.html` and
+  the look-ahead modules, the Worker starts, and every signed-in path
+  is 403 without a token. The grid was checked in Chrome at 1400px and
+  390px against the real Math 6 and Math 7/8 files.
+- Nothing to see signed in yet: my teacher row has no calendar until
+  M7b (or a seeded one, if I want to look sooner).
 
 ### M6: editing
 

@@ -1,9 +1,12 @@
 """v2's routes (PLAN-v2-phase1.md), as plain Python so v2/tests run them.
 
-    GET /<teacher>/<calendar>     the calendar's family page; public
-    GET /edit                     signed in: her calendars (M5 makes this the editor)
-    GET /api/calendars            signed in: her calendars, as JSON
-    GET /api/calendars/<slug>     signed in: one of hers, as JSON; 404 if not hers
+    GET /<teacher>/<calendar>          the calendar's family page; public
+    GET /edit                          signed in: her calendars
+    GET /edit/<slug>                   signed in: the editor (editor.html), read-only until M6
+    GET /edit/<slug>/ahead             signed in: her look-ahead (decision 7)
+    GET /api/calendars                 signed in: her calendars, as JSON
+    GET /api/calendars/<slug>          signed in: one of hers, as JSON; 404 if not hers
+    GET /api/calendars/<slug>/days     signed in: its rendered year, as the editor reads it
 
 Everything under /edit and /api is signed-in only (decision 4): the
 Access token is checked, and its email looked up as a teacher, before the
@@ -16,8 +19,12 @@ paths reach it at all.
 """
 import html
 import json
+from pathlib import Path
 
 import access
+import engine
+import lookahead
+import lookahead_page
 import store
 
 HTML = "text/html; charset=utf-8"
@@ -31,6 +38,11 @@ PAGE = """<!doctype html>
 {body}
 </body></html>
 """
+# The editor is one HTML file with plain JavaScript (decision 8); it reads
+# the calendar from /api/calendars/<slug>/days.
+EDITOR = (Path(__file__).resolve().parent / "editor.html").read_text()
+# Days the engine computes (PLANNING.md): shown in the grid, never editable.
+COMPUTED_KINDS = {"Quiz", "Self-Grading"}
 NOT_FOUND = PAGE.format(title="Not found", body="<h1>Page not found</h1>\n"
                         "<p>Check the address your teacher gave you.</p>")
 
@@ -66,7 +78,8 @@ async def signed_in_teacher(db, token, keys, env):
 
 def editor_home(teacher, calendars):
     items = "\n".join(
-        f'<li><a href="/{teacher["slug"]}/{c["slug"]}">{html.escape(c["title"])}</a></li>'
+        f'<li><a href="/edit/{c["slug"]}">{html.escape(c["title"])}</a>'
+        f' &middot; <a href="/{teacher["slug"]}/{c["slug"]}">family page</a></li>'
         for c in calendars) or "<li>None yet.</li>"
     return PAGE.format(title="Your calendars", body=(
         f"<h1>Your calendars</h1>\n<p>Signed in as {html.escape(teacher['name'])}.</p>\n"
@@ -75,6 +88,41 @@ def editor_home(teacher, calendars):
 
 def calendar_json(c):
     return {k: c[k] for k in ("slug", "type", "title", "version", "updated_at")}
+
+
+def editor_day(day, course):
+    """One rendered day (engine.render) as the grid shows it."""
+    out = {k: day[k] for k in ("date", "weekday", "type", "display", "kind", "lesson_text",
+                               "target", "link", "note", "teacher_out", "quiz_paired",
+                               "self_grading_paired")}
+    out["classwork"] = day["classwork"] if engine.shows_classwork(course) else None
+    out["homework"] = [{k: hw.get(k) for k in ("text", "due", "link")} for hw in day["homework"] or []]
+    out["due"] = [hw["text"] for hw in day["due"] or []]
+    out["computed"] = day["kind"] in COMPUTED_KINDS
+    out["needs"] = [lookahead.FIELD_LABELS[f] for f in lookahead.missing_content(day, course)]
+    return out
+
+
+def calendar_days(teacher, cal):
+    """/api/calendars/<slug>/days: the whole year, rendered. The editor
+    pages through it by week without asking again."""
+    calendar, _ = engine.render(cal.course)
+    return {"slug": cal.slug, "title": cal.course["course"], "version": cal.version,
+            "family_page": f"/{teacher['slug']}/{cal.slug}",
+            "show_classwork": engine.shows_classwork(cal.course),
+            "today": engine.school_today().isoformat(),
+            "days": [editor_day(d, cal.course) for d in calendar]}
+
+
+def ahead_page(cal):
+    return lookahead_page.build_page(
+        [(cal.slug, cal.course)], source="from your calendar",
+        back=f'\n  <p><a href="/edit/{cal.slug}">&larr; {html.escape(cal.course["course"])}</a></p>')
+
+
+async def load_owned(db, teacher, slug):
+    """Her calendar `slug`, or None (not hers, missing, or not a slug)."""
+    return await store.load_calendar(db, teacher, slug) if store.SLUG_RE.fullmatch(slug) else None
 
 
 async def handle(method, path, token, db, keys, env):
@@ -99,6 +147,16 @@ async def handle(method, path, token, db, keys, env):
             cals = {c["slug"]: c for c in await store.list_calendars(db, teacher)}
             if parts[2] in cals:
                 return Reply(200, JSON, json.dumps(calendar_json(cals[parts[2]])))
+        if parts[:1] == ["edit"] and len(parts) in (2, 3) and parts[2:] in ([], ["ahead"]):
+            cal = await load_owned(db, teacher, parts[1])
+            if cal and len(parts) == 2:
+                return Reply(200, HTML, EDITOR)
+            if cal:
+                return Reply(200, HTML, ahead_page(cal))
+        if len(parts) == 4 and parts[:2] == ["api", "calendars"] and parts[3] == "days":
+            cal = await load_owned(db, teacher, parts[2])
+            if cal:
+                return Reply(200, JSON, json.dumps(calendar_days(teacher, cal), ensure_ascii=False))
         return Reply(404, JSON if parts[0] == "api" else HTML,
                      '{"error": "not found"}' if parts[0] == "api" else NOT_FOUND)
 

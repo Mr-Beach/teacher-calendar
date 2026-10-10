@@ -86,8 +86,10 @@ def render_course(slug, course, start):
             f'{render_checks(course)}{body}<button class="more" type="button">Show 10 more days</button></article>')
 
 
-def build_page(courses, today=None):
-    """`courses` is a list of (slug, course dict), as in build_site.py."""
+def build_page(courses, today=None, source="from the course files", back=""):
+    """`courses` is a list of (slug, course dict), as in build_site.py.
+    v2's editor (v2/src/app.py) passes one calendar, so no course tabs,
+    its own `source` line, and `back`, a link (HTML) above the heading."""
     # School time, not the build machine's UTC: an evening build would
     # otherwise start tomorrow and leave today off the page.
     start = (today or engine.school_today()).isoformat()
@@ -95,6 +97,11 @@ def build_page(courses, today=None):
         f'<button type="button" data-show="{esc(slug)}">{esc(c["course"])}</button>'
         for slug, c in courses
     )
+    if len(courses) > 1:
+        tabs = ('\n  <div class="tabs" role="group" aria-label="Course">\n'
+                f'    <button type="button" data-show="all">Both</button>{tabs}\n  </div>')
+    else:
+        tabs = ""
     articles = "".join(render_course(slug, c, start) for slug, c in courses)
     built = date.fromisoformat(start)
     return f"""<!doctype html>
@@ -185,12 +192,9 @@ def build_page(courses, today=None):
 </style>
 </head>
 <body>
-<div class="top">
+<div class="top">{back}
   <h1>Look-ahead</h1>
-  <p class="built">Next {WINDOW} school days &middot; updated {built.strftime("%a")} {built.month}/{built.day} from the course files</p>
-  <div class="tabs" role="group" aria-label="Course">
-    <button type="button" data-show="all">Both</button>{tabs}
-  </div>
+  <p class="built">Next {WINDOW} school days &middot; updated {built.strftime("%a")} {built.month}/{built.day} {source}</p>{tabs}
 </div>
 <main>
 {articles}
