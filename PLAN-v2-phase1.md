@@ -552,7 +552,19 @@ students).
 - **Upload the district calendar or pacing guide** and have it fill the
   school days or the sequence. That's reading a PDF or photo into the
   grid, which is Phase 3's "fill from a source", and it lands the same
-  way: highlighted, unsaved, kept or cleared.
+  way: highlighted, unsaved, kept or cleared. **Decided 10/10, for a later
+  version:** teachers upload in the editor; both kinds (a pacing calendar
+  fills the sequence, Flex, and testing days; a school-year calendar
+  fills the closures). Reading is both: a calendar in a layout
+  `scripts/import_district_calendar.py` knows goes through its rules
+  (exact, free); any other goes to the Claude API (needs an API key as a
+  v2 Worker secret, cents per upload). Either way, every date is checked
+  against her school's days, she sees days per topic, and nothing saves
+  until she keeps it. Why not rules alone: four calendars from one
+  district took four readers and ~15 fixes, so a new district's layout
+  would stop until code is written. Why not AI alone: it can be
+  confidently wrong (the bad-workbook incident), which the checks and the
+  review are for.
 - **A wider curriculum list.** Publishers' lesson orders aren't freely
   available as data, so the list can't be bought or scraped. It grows
   from teachers instead: a calendar a teacher has finished can become a
