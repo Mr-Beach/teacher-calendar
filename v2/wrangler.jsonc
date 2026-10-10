@@ -2,8 +2,8 @@
 // Workers Build (root directory v2/), in front of v1's on a few paths.
 // Each teacher gets a route pair below; every other path on beach-math.com
 // (/math6, /math78, /teacher, apps) still goes to v1's Worker.
-// Deploy: a push to main that touches v2/, engine.py, render.py, or
-// scripts/lookahead*.py runs its Workers Build (connected 10/9; those are
+// Deploy: a push to main that touches v2/, engine.py, render.py,
+// scripts/lookahead*.py, or curricula/ runs its Workers Build (connected 10/9; those are
 // its watch paths). By hand: uv run pywrangler deploy.
 {
   "name": "teacher-calendar-v2",
@@ -14,10 +14,10 @@
   // engine.py and render.py are the repo root's, copied in on every build
   // and dev run, so v1 and v2 always run one engine (decision 1). So are
   // scripts/lookahead*.py, for /edit/<calendar>/ahead (decision 7), and
-  // courses/math6.json and math78.json, what a new calendar can start from
-  // (M7, app.TEMPLATES) -- as .json.txt, since the bundle takes .txt and
-  // .html files as text but leaves .json out.
-  "build": { "command": "cp ../engine.py ../render.py ../scripts/lookahead.py ../scripts/lookahead_page.py src/ && mkdir -p src/templates && cp ../courses/math6.json src/templates/math6.json.txt && cp ../courses/math78.json src/templates/math78.json.txt" },
+  // curricula/*.json, what a new calendar can start from (app.TEMPLATES)
+  // -- as .json.txt, since the bundle takes .txt and .html files as text
+  // but leaves .json out.
+  "build": { "command": "cp ../engine.py ../render.py ../scripts/lookahead.py ../scripts/lookahead_page.py src/ && mkdir -p src/templates && for f in ../curricula/*.json; do cp $f src/templates/$(basename $f).txt; done" },
   "routes": [
     { "pattern": "beach-math.com/demo/*", "zone_name": "beach-math.com" },
     { "pattern": "www.beach-math.com/demo/*", "zone_name": "beach-math.com" },

@@ -58,21 +58,30 @@ PAGE = """<!doctype html>
 # the calendar from /api/calendars/<slug>/days.
 EDITOR = (Path(__file__).resolve().parent / "editor.html").read_text()
 MAX_BODY = 256 * 1024  # a paste of a few weeks is a few KB
-# What a new calendar can start from (M7): Aaron's courses, copied with
-# engine.template_from -- lessons and targets, none of his links or
-# homework. The build copies courses/<key>.json to src/templates/<key>.json.txt
+# What a new calendar can start from (M7): the district's own sequence of
+# each course's curriculum, read from its sample calendar into
+# curricula/<key>.json (scripts/import_district_calendar.py) -- lessons in
+# the district's order and day counts, its Flex and testing days, and
+# nothing anyone chose for a class. engine.template_from lays it on her
+# school's days. The build copies them to src/templates/<key>.json.txt
 # (wrangler.jsonc: the Worker bundle leaves .json files out); run from the
 # repo, they're read where they are.
-TEMPLATES = (("math6", "Math 6"), ("math78", "Math 7/8 Compacted"))
+TEMPLATES = (("math6", "Math 6"), ("math78", "Math 7/8 Compacted"), ("math8", "Math 8"),
+             ("algebra1", "Algebra 1"))
 HERE = Path(__file__).resolve().parent
 MAX_CALENDARS = 20
+_SOURCES = {}
 
 
 def template_source(key):
-    for path in (HERE / "templates" / f"{key}.json.txt", HERE.parent.parent / "courses" / f"{key}.json"):
-        if path.exists():
-            return json.loads(path.read_text())
-    raise LookupError(f"no template {key!r}")
+    if key not in _SOURCES:
+        for path in (HERE / "templates" / f"{key}.json.txt", HERE.parent.parent / "curricula" / f"{key}.json"):
+            if path.exists():
+                _SOURCES[key] = json.loads(path.read_text())
+                break
+        else:
+            raise LookupError(f"no template {key!r}")
+    return _SOURCES[key]
 
 
 # Days the engine computes (PLANNING.md): shown in the grid, never editable.
@@ -199,7 +208,7 @@ def editor_home(teacher, calendars):
         for c in calendars) or "<li>None yet.</li>"
     starts = "".join(
         f'<label class="opt"><input type="radio" name="start" value="{key}"{" checked" if i == 0 else ""}>'
-        f' {html.escape(title)} <span>its lessons and I-can targets, on your school\'s days</span></label>'
+        f' {html.escape(title)} <span>{html.escape(template_source(key)["curriculum"])}, in the district\'s order</span></label>'
         for i, (key, title) in enumerate(TEMPLATES))
     starts += ('<label class="opt"><input type="radio" name="start" value="blank"> Blank year'
                ' <span>your school\'s days, nothing planned, no quizzes</span></label>')

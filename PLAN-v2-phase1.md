@@ -458,14 +458,29 @@ a small preview of her own page in each one.
   to another class day that week or next (whole period, or alongside
   that day's lesson), and "Back to the usual quiz rule".
 - **Starting a calendar** (`/edit`, `POST /api/calendars`): title,
-  address (filled in from the title), and Math 6, Math 7/8 Compacted
-  (`engine.template_from`), or a blank year, which assumes nothing: no
-  lessons and quizzes off (10/10, Aaron's call). The
+  address (filled in from the title), and a curriculum (below) or a
+  blank year, which assumes nothing: no lessons and quizzes off (10/10,
+  Aaron's call).
+- **Curricula, not my calendars (10/10).** A calendar starts from the
+  district's own sequence of the course's curriculum, never a copy of my
+  courses (which carry my audit cuts and projects). `curricula/<key>.json`
+  for Math 6, Math 7/8 Compacted, Math 8, and Algebra 1, read from the
+  district's 2026-27 sample calendars (`data/`, gitignored) by
+  `scripts/import_district_calendar.py`: every lesson in the district's
+  order and day counts (a two-day lesson is two entries), Openers, 3-Acts,
+  and tests, its Flex and MAP/SBA days, and nothing a teacher chooses
+  (quizzes, the review reminder, and class work off). The PDFs' text comes
+  out scrambled, so it reads their tables with pdfplumber; every date is
+  checked against the school's calendar, and each topic's day count
+  against the district's at-a-glance (all match, or differ where the
+  glance disagrees with its own calendar; `v2/tests/test_curricula.py`
+  says where). Aaron reviews them day by day on a private page before any
+  teacher uses them. I-can targets are empty until they come from the
+  publisher's own list (Savvas; IM publishes its own openly). The
   build copies `courses/math6.json` and `math78.json` into the bundle as
   `src/templates/*.json.txt` (the bundle leaves `.json` out; checked
-  with `pywrangler dev`). They're as of v2's last deploy: `courses/` isn't
-  in its watch paths, which only matters for a teacher starting a new
-  calendar.
+  with `pywrangler dev`). `curricula/` needs adding to the v2 build's
+  watch paths so a re-import redeploys.
 - Clicked through in Chrome: start from Math 7/8 (and a duplicate
   address refused), settings with the previews, the quiz moved to
   Thursdays, skip and restore a quiz, move one alongside a lesson; phone

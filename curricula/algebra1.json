@@ -1,0 +1,3139 @@
+{
+  "course": "Algebra 1",
+  "school_year": "2026-27",
+  "curriculum": "Illustrative Mathematics Algebra 1 (with IM Grade 8 lessons)",
+  "source": "Seattle Public Schools, Algebra 1 Sample Calendar 2026-27",
+  "show_classwork": false,
+  "review_before_test": false,
+  "quiz_rule": {
+    "enabled": false
+  },
+  "school_days": [
+    {
+      "date": "2026-09-02",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-03",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-04",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-07",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-09-08",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-09",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-10",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-11",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-14",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-15",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-16",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-17",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-18",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-21",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-22",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-23",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-24",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-25",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-28",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-29",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-09-30",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-01",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-02",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-05",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-06",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-07",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-08",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-09",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": "No School State In-Service Day"
+    },
+    {
+      "date": "2026-10-12",
+      "weekday": "Mon",
+      "type": "Testing",
+      "note": "MAP Testing"
+    },
+    {
+      "date": "2026-10-13",
+      "weekday": "Tue",
+      "type": "Testing",
+      "note": "MAP Testing"
+    },
+    {
+      "date": "2026-10-14",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-15",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-16",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-19",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-20",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-21",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-22",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-23",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-26",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-27",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-28",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-29",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-10-30",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-02",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-03",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-04",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-05",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-06",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-09",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-10",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-11",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-11-12",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-13",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-16",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-17",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-18",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-19",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-20",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-23",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-24",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-11-25",
+      "weekday": "Wed",
+      "type": "Flex",
+      "note": "Flex Day"
+    },
+    {
+      "date": "2026-11-26",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-11-27",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-11-30",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-01",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-02",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-03",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-04",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-07",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-08",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-09",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-10",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-11",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-14",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-15",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-16",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-17",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2026-12-18",
+      "weekday": "Fri",
+      "type": "Flex",
+      "note": "Early Dismissal"
+    },
+    {
+      "date": "2026-12-21",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-22",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-23",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-12-24",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-25",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-28",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2026-12-29",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-12-30",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2026-12-31",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-01-01",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-01-04",
+      "weekday": "Mon",
+      "type": "Flex",
+      "note": "Flex Day"
+    },
+    {
+      "date": "2027-01-05",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-06",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-07",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-08",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-11",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-12",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-13",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-14",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-15",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-18",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-01-19",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-20",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-21",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-22",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-25",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-26",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-01-27",
+      "weekday": "Wed",
+      "type": "Flex",
+      "note": "Flex Day"
+    },
+    {
+      "date": "2027-01-28",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": "No School (Day between semesters)"
+    },
+    {
+      "date": "2027-01-29",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-01",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-02",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-03",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-04",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-05",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-08",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-09",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-10",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-11",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-12",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-15",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-02-16",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-02-17",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-02-18",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-02-19",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-02-22",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-23",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-24",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-25",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-02-26",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-01",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-02",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-03",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-04",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-05",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-08",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-09",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-10",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-11",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-12",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-15",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-16",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-17",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-18",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-19",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-22",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-23",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-24",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-25",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-26",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-29",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-30",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-03-31",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-01",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-02",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-05",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-06",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-07",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-08",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-09",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-12",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-04-13",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-04-14",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-04-15",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-04-16",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-04-19",
+      "weekday": "Mon",
+      "type": "Testing",
+      "note": "MAP Testing"
+    },
+    {
+      "date": "2027-04-20",
+      "weekday": "Tue",
+      "type": "Testing",
+      "note": "MAP Testing"
+    },
+    {
+      "date": "2027-04-21",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-22",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-23",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-26",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-27",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-28",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-29",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-04-30",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-03",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-04",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-05",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-06",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-07",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-10",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-11",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-12",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-13",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-14",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-17",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-18",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-19",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-20",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-21",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-24",
+      "weekday": "Mon",
+      "type": "Testing",
+      "note": "SBA Testing"
+    },
+    {
+      "date": "2027-05-25",
+      "weekday": "Tue",
+      "type": "Testing",
+      "note": "SBA Testing"
+    },
+    {
+      "date": "2027-05-26",
+      "weekday": "Wed",
+      "type": "Testing",
+      "note": "SBA Testing"
+    },
+    {
+      "date": "2027-05-27",
+      "weekday": "Thu",
+      "type": "Testing",
+      "note": "SBA Testing"
+    },
+    {
+      "date": "2027-05-28",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-05-31",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-06-01",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-02",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-03",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-04",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-07",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-08",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-09",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-10",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-11",
+      "weekday": "Fri",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-14",
+      "weekday": "Mon",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-15",
+      "weekday": "Tue",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-16",
+      "weekday": "Wed",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-17",
+      "weekday": "Thu",
+      "type": "Instruction",
+      "note": null
+    },
+    {
+      "date": "2027-06-18",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": "No School (Holiday)"
+    },
+    {
+      "date": "2027-06-21",
+      "weekday": "Mon",
+      "type": "Other",
+      "note": "Last Day Early Dismissal"
+    },
+    {
+      "date": "2027-06-22",
+      "weekday": "Tue",
+      "type": "Other",
+      "note": "Snow make up if needed"
+    },
+    {
+      "date": "2027-06-23",
+      "weekday": "Wed",
+      "type": "Other",
+      "note": "Snow make up if needed"
+    },
+    {
+      "date": "2027-06-24",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-06-25",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-06-28",
+      "weekday": "Mon",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-06-29",
+      "weekday": "Tue",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-06-30",
+      "weekday": "Wed",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-07-01",
+      "weekday": "Thu",
+      "type": "No School",
+      "note": null
+    },
+    {
+      "date": "2027-07-02",
+      "weekday": "Fri",
+      "type": "No School",
+      "note": null
+    }
+  ],
+  "sequence": [
+    {
+      "topic": "0",
+      "lesson_code": null,
+      "district_title": "Unit 0 Day 1",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "0",
+      "lesson_code": null,
+      "district_title": "Unit 0 Day 2",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "0",
+      "lesson_code": null,
+      "district_title": "Unit 0 Day 3",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Check Your Readiness",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 1: Getting to Know You",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 2: Data Representations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 3: A Gallery of Data + Section A Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 4: The Shape of Distributions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 5: Calculating Measures of Center and Variability + Section B Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 9: Technological Graphing",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 10: The Effect of Extremes",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 11: Comparing and Contrasting Data Distributions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 12: Standard Deviation",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 13: More Standard Deviation",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 14: Outliers",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 15: Comparing Data Sets + Section D Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Lesson 16: Analyzing Data",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "1",
+      "lesson_code": null,
+      "district_title": "Unit 1 End of Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Check Your Readiness",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 1: Planning a Party + Lesson 2: Writing Equations to Model Relationships (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 3: Writing Equations to Model Relationships (Part 2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 4: Equations and Their Solutions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 5: Equations and Their Graphs + Section A Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 4 Lesson 3: Balanced Moves + Grade 8 Unit 4 Lesson 4: More Balanced Moves",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 6: Equivalent Equations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 7: Explaining Steps for Rewriting Equations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 8: Which Variable to Solve for? (Part 1) + Lesson 9: Which Variable to Solve for? (Part 2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 3 Lesson 8: Translating to y=mx+b + Grade 8 Unit 3 Lesson 9: Slopes Don't Have to Be Positive",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 3 Lesson 10: Calculating Slope",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 3 Lesson 12: Equations of All Kinds of Lines",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 10: Connecting Equations to Graphs (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 11: Connecting Equations to Graphs (Part 2) + Section B Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 4 Lesson 12: Systems of Equations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 12: Writing and Graphing Systems of Linear Equations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 13: Solving Systems by Substitution",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 14: Solving Systems by Elimination (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 15: Solving Systems by Elimination (Part 2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 16: Solving Systems by Elimination (Part 3)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 17: Systems of Linear Equations and Their Solutions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 18: Asking About Solving Systems + Section C Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Lesson 19: Linear Patterns",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "2",
+      "lesson_code": null,
+      "district_title": "Unit 2 End of Unit Assessment (CEA)",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Check Your Readiness",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 6 Lesson 9: Looking for Associations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Lesson 1: Two-way Tables + Lesson 2: Relative Frequency Tables",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Lesson 2: Relative Frequency Tables + Lesson 3: Associations in Categorical Data + Section A Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 6 Lesson 3: What a Point in a Scatter Plot Means",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 6 Lesson 4: Fitting a Line to Data",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Lesson 4: Linear Models",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Lesson 5: Fitting Lines",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Lesson 7: The Correlation Coefficient",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Lesson 8: Using the Correlation Coefficient",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Lesson 9: Causal Relationships",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "3",
+      "lesson_code": null,
+      "district_title": "Unit 3 End of Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Check Your Readiness",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 1: Representing Situations with Inequalities",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 2: Solutions to Inequalities in One Variable",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 3: Writing and Solving Inequalities in One Variable + Section A Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 4: Graphing Linear Inequalities in Two Variables (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 5: Graphing Linear Inequalities in Two Variables (Part 2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 6: Solving Problems with Inequalities in Two Variables + Section B Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 7: Solutions to Systems of Linear Inequalities in Two Variables",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 8: Solving Problems with Systems of Linear Inequalities in Two Variables",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Lesson 9: Modeling with Systems of Inequalities in Two Variables + Section C Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "4",
+      "lesson_code": null,
+      "district_title": "Unit 4 End of Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Check Your Readiness",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 5 Lesson 2: Introduction to Functions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Grade 8 Unit 5 Lesson 3: Equations for Functions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 1: Describing and Graphing Situations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 2: Function Notation",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 3: Interpreting and Using Function Notation",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 4: Using Function Notation to Describe Rules (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 5: Using Function Notation to Describe Rules (Part 2) + Section A Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 6: Features of Graphs",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 7: Using Graphs to Find Average Rate of Change",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 8: Interpreting and Creating Graphs",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 9: Comparing Graphs + Section B Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Mid-Unit Assessment (CEA)",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 10: Domain and Range (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 11: Domain and Range (Part 2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 12: Piecewise Functions + Section C Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 13: Absolute Value Functions (Part 1) + Lesson 14: Absolute Value Functions(Part2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 15: Solving Equations with Absolute Values",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 16: Solve Inequalities with Absolute Values + Section D Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 17: Inverse Functions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 19: Writing Inverse Functions to Solve Problems",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Lesson 20: Using Functions to Model Battery Power (can be used as the review)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "5",
+      "lesson_code": null,
+      "district_title": "Unit 5 End of Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Check Your Readiness",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 1: Growing and Growing",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 2: Patterns of Growth + Section A Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 3: Representing Exponential Growth",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 4: Representing Exponential Decay",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 5: Understanding Decay",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 6: Analyzing Graphs + Section B Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 7: Using Negative Exponents",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 8: Exponential Rules",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 9: Unit Fractional Exponents + Section C Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 11: Exponential Situations as Functions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 12: Interpreting Exponential Functions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 13: Looking at Rates of Change",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 14: Modeling Exponential Behavior",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 15: Reasoning about Exponential Graphs (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 16: Reasoning about Exponential Graphs (Part 2) + Section D Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Mid-Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 18: Functions Involving Percent Change",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 19: Compounding Interest",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 20: Different Compounding Intervals",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 21: Expressed in Different Ways + Section E Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 22: Which One Changes Faster?",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 23: Changes over Equal Intervals + Section F Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Lesson 24: Predicting Populations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "6",
+      "lesson_code": null,
+      "district_title": "Unit 6 End of Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Check Your Readiness + Unit 8 Check Your Readiness",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 1: A Different Kind of Change + Lesson 2: How Does it Change?",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7: Section A Checkpoint + Lesson 3: Building Quadratic Functions from Geometric Patterns",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 4: Comparing Quadratic and Exponential Functions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 5: Building Quadratic Functions to Describe Situations (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lessons 6 & 7: Building Quadratic Functions to Describe Situations (Part 2 &3)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7: Section B Checkpoint + Lesson 8: Equivalent Quadratic Expressions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 9: Standard Form and Factored Form",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 10: Graphs of Functions in Standard and Factored Forms + Section C Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Mid-Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 11: Graphing from the Factored Form",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 12: Graphing the Standard Form (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 14: Graphs that Represent Situations",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 15: Vertex Form",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 16: Graphing from the Vertex Form",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Lesson 17: Changing the Vertex + Section D Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "7",
+      "lesson_code": null,
+      "district_title": "Unit 7 End of Unit Assessment (CEA)",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 1: Finding Unknown Inputs",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 2: When and Why Do We Write Quadratic Equations?",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8: Section A Checkpoint + Lesson 3: Solving Quadratic Equations by Reasoning",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 4: Solving Quadratic Equations with the Zero-Product Property",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 5: How Many Solutions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 6: Rewriting Quadratic Expressions in Factored Form (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 7: Rewriting Quadratic Expressions in Factored Form (Part 2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 8: Rewriting Quadratic Expressions in Factored Form (Part 3)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 9: Solving Quadratic Equations by Using Factored Form",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 10: Rewriting Quadratic Expressions in Factored Form (Part 4) + Section B Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Mid-Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 11: What are Percent Squares",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 12: Completing the Square (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 13: Completing the Square (Part 2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 14: Completing the Square (Part 3)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 15: Quadratic Equations with Irrational Solutions + Section C Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 16: The Quadratic Formula",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 17: Applying the Quadratic Formula (Part 1)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 18: Applying the Quadratic Formula (Part 2)",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 19: Deriving the Quadratic Formula",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 20: Rational and Irrational Solutions",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 21: Sums and Products of Rational and Irrational Numbers + Section D Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 22: Rewriting Quadratic Expressions in Vertex Form",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 23: Using Quadratic Expressions in Vertex Form to Solve Problems + Section E Checkpoint",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Lesson 24: Using Quadratic Equations to Model Situations and Solve Problems",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 Review",
+      "kind": "Lesson",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    },
+    {
+      "topic": "8",
+      "lesson_code": null,
+      "district_title": "Unit 8 End of Unit Assessment",
+      "kind": "Test",
+      "target": null,
+      "classwork": null,
+      "homework": null,
+      "link": null,
+      "extra_materials": null
+    }
+  ],
+  "changes": []
+}
