@@ -643,7 +643,9 @@ def split_course(course, school_days):
 # What a copy of a course keeps (SPEC-v2, Phase 1: "start from a copy of my
 # Math 6 sequence"): the district's sequence and the I-can targets, nothing
 # that points at the original teacher's accounts or is her own planning.
-_TEMPLATE_KEEPS = ("course", "school_year", "quiz_rhythm_start", "show_classwork",
+# "credits": the attribution its licensed content requires (a curriculum's
+# publisher targets), which has to travel with them.
+_TEMPLATE_KEEPS = ("course", "school_year", "quiz_rhythm_start", "show_classwork", "credits",
                    "focus_current_unit", "daily_materials", "due_notes", "review_before_test")
 _TEMPLATE_LESSON_KEEPS = ("topic", "lesson_code", "district_title", "kind", "target")
 

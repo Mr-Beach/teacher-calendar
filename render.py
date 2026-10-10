@@ -561,9 +561,23 @@ def build_page(course, calendar):
                        ("%%SETCAL%%", " setcal" if set_through(course) else ""),
                        ("%%DATA%%", data), ("%%MONTHS%%", render_months(calendar, course)),
                        ("%%WEEKS%%", render_weeks(calendar, course)),
-                       ("%%TOPICS%%", render_topics(calendar))):
+                       ("%%TOPICS%%", render_topics(calendar)),
+                       ("%%CREDITS%%", credits_html(course))):
         page = page.replace(key, value)
     return page
+
+
+def credits_html(course):
+    """The credit lines a course's licensed content needs (its "credits",
+    e.g. IM's for learning targets taken from IM v.360, which its CC BY-NC
+    license requires wherever they're shown). Nothing for a course with
+    none, so Aaron's pages are unchanged."""
+    lines = course.get("credits") or []
+    if not lines:
+        return ""
+    body = "".join(f"<p>{esc(line)}</p>" for line in lines)
+    return ('\n<footer class="credits" style="max-width: 720px; margin: 24px auto 32px; padding: 0 16px; '
+            f'color: var(--muted); font-size: 12px; line-height: 1.5; text-align: center">{body}</footer>')
 
 
 PAGE = """<!doctype html>
@@ -919,7 +933,7 @@ PAGE = """<!doctype html>
     <section class="card detail" id="year-detail"></section>
     <div id="detail-spacer" aria-hidden="true"></div>
   </main>
-</div>
+</div>%%CREDITS%%
 <script>
 %%DATA%%
 (function () {

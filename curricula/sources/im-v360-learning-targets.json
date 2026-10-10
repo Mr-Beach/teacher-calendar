@@ -1,0 +1,1413 @@
+{
+  "source": "Illustrative Mathematics v.360 learning targets, accessim.org (student unit pages), fetched 2026-10-10",
+  "license": "CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/)",
+  "attribution": "Learning targets based on IM® TK–12 Math v.360 authored by Illustrative Mathematics and licensed under CC BY-NC 4.0.",
+  "courses": {
+    "algebra-1": {
+      "1": {
+        "url": "https://accessim.org/9-12-aga/algebra-1/unit-1/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Getting to Know You",
+            "targets": [
+              "I can tell statistical questions from non-statistical questions and can explain the difference.",
+              "I can tell the difference between numerical and categorical data."
+            ]
+          },
+          "2": {
+            "title": "Data Representations",
+            "targets": [
+              "I can find the five-number summary for data.",
+              "I can use a dot plot, histogram, or box plot to represent data."
+            ]
+          },
+          "3": {
+            "title": "A Gallery of Data",
+            "targets": [
+              "I can graphically represent the data that I collected and critique the representations of others’ data."
+            ]
+          },
+          "4": {
+            "title": "The Shape of Distributions",
+            "targets": [
+              "I can use a graphical representation of data to suggest a situation that produced the data pictured.",
+              "I can use the terms \"symmetric,\" \"skewed,\" \"uniform,\" \"bimodal,\" and \"bell-shaped\" to describe the shape of a distribution."
+            ]
+          },
+          "5": {
+            "title": "Calculating Measures of Center and Variability",
+            "targets": [
+              "I can calculate mean absolute deviation, interquartile range, mean, and median for a set of data."
+            ]
+          },
+          "6": {
+            "title": "Mystery Computations",
+            "targets": [
+              "I can determine basic relationships between cell values in a spreadsheet by changing the values and noticing what happens in another cell."
+            ]
+          },
+          "7": {
+            "title": "Spreadsheet Computations",
+            "targets": [
+              "I can use a spreadsheet as a calculator to find solutions to word problems."
+            ]
+          },
+          "8": {
+            "title": "Spreadsheet Shortcuts",
+            "targets": [
+              "I can use shortcuts to fill in cells on a spreadsheet."
+            ]
+          },
+          "9": {
+            "title": "Technological Graphing",
+            "targets": [
+              "I can use technology to create graphic representations of data and calculate statistics."
+            ]
+          },
+          "10": {
+            "title": "The Effect of Extremes",
+            "targets": [
+              "I can describe how an extreme value will affect the mean and median.",
+              "I can use the shape of a distribution to compare the mean and median."
+            ]
+          },
+          "11": {
+            "title": "Comparing and Contrasting Data Distributions",
+            "targets": [
+              "I can arrange data sets in order of variability, given graphic representations."
+            ]
+          },
+          "12": {
+            "title": "Standard Deviation",
+            "targets": [
+              "I can describe standard deviation as a measure of variability.",
+              "I can use technology to compute standard deviation."
+            ]
+          },
+          "13": {
+            "title": "More Standard Deviation",
+            "targets": [
+              "I can use standard deviation to say something about a situation."
+            ]
+          },
+          "14": {
+            "title": "Outliers",
+            "targets": [
+              "I can find values that are outliers, investigate their source, and figure out what to do with them.",
+              "I can tell how an outlier affects mean, median, IQR, or standard deviation."
+            ]
+          },
+          "15": {
+            "title": "Comparing Data Sets",
+            "targets": [
+              "I can compare and contrast situations using measures of center and measures of variability."
+            ]
+          },
+          "16": {
+            "title": "Analyzing Data",
+            "targets": [
+              "I can collect data from an experiment and compare the results using measures of center and measures of variability."
+            ]
+          }
+        }
+      },
+      "2": {
+        "url": "https://accessim.org/9-12-aga/algebra-1/unit-2/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Planning a Party",
+            "targets": [
+              "I can explain the meaning of the term “constraints.”",
+              "I can tell which quantities in a situation can vary and which ones cannot.",
+              "I can use letters and numbers to write expressions representing the quantities in a situation."
+            ]
+          },
+          "2": {
+            "title": "Writing Equations to Model Relationships (Part 1)",
+            "targets": [
+              "I can tell which quantities in a situation can vary and which ones cannot.",
+              "I can use letters and numbers to write equations representing the relationships in a situation."
+            ]
+          },
+          "3": {
+            "title": "Writing Equations to Model Relationships (Part 2)",
+            "targets": [
+              "I can use words and equations to describe the patterns I see in a table of values or in a set of calculations.",
+              "When given a description of a situation, I can use representations like diagrams and tables to help make sense of the situation and write equations for it."
+            ]
+          },
+          "4": {
+            "title": "Equations and Their Solutions",
+            "targets": [
+              "I can explain what it means for a value or pair of values to be a solution to an equation.",
+              "I can find solutions to equations by reasoning about a situation or by using algebra."
+            ]
+          },
+          "5": {
+            "title": "Equations and Their Graphs",
+            "targets": [
+              "I can use graphing technology to graph linear equations and identify solutions to the equations.",
+              "I understand how the coordinates of the points on the graph of a linear equation are related to the equation.",
+              "When given the graph of a linear equation, I can explain the meaning of the points on the graph in terms of the situation it represents."
+            ]
+          },
+          "6": {
+            "title": "Equivalent Equations",
+            "targets": [
+              "I can tell whether two expressions are equivalent and explain why or why not.",
+              "I know and can identify the moves that can be made to transform an equation into an equivalent one.",
+              "I understand what it means for two equations to be equivalent, and how equivalent equations can be used to describe the same situation in different ways."
+            ]
+          },
+          "7": {
+            "title": "Explaining Steps for Rewriting Equations",
+            "targets": [
+              "I can explain why some algebraic moves create equivalent equations but some do not.",
+              "I know how equivalent equations are related to the steps of solving equations.",
+              "I know what it means for an equation to have no solutions and can recognize such an equation."
+            ]
+          },
+          "8": {
+            "title": "Which Variable to Solve for? (Part 1)",
+            "targets": [
+              "Given an equation, I can solve for a particular variable (like height, time, or length) when the equation would be more useful in that form.",
+              "I know the meaning of the phrase “to solve for a variable.”"
+            ]
+          },
+          "9": {
+            "title": "Which Variable to Solve for? (Part 2)",
+            "targets": [
+              "I can write an equation to describe a situation that involves multiple quantities whose values are not known, and then solve the equation for a particular variable.",
+              "I know how solving for a variable can be used to quickly calculate the values of that variable."
+            ]
+          },
+          "10": {
+            "title": "Connecting Equations to Graphs (Part 1)",
+            "targets": [
+              "I can describe the connections between an equation of the form ax+by=c, the features of its graph, and the rate of change in the situation."
+            ]
+          },
+          "11": {
+            "title": "Connecting Equations to Graphs (Part 2)",
+            "targets": [
+              "I can find the slope and vertical intercept of a line with equation ax+by=c."
+            ]
+          },
+          "12": {
+            "title": "Writing and Graphing Systems of Linear Equations",
+            "targets": [
+              "I can explain what we mean by “the solution to a system of linear equations” and can explain how the solution is represented graphically.",
+              "I can explain what we mean when we refer to two equations as a system of equations.",
+              "I can use tables and graphs to solve systems of equations."
+            ]
+          },
+          "13": {
+            "title": "Solving Systems by Substitution",
+            "targets": [
+              "I can solve systems of equations by substituting a variable or an expression.",
+              "I know more than one way to perform substitution and can decide which way or what to substitute based on how the given equations are written."
+            ]
+          },
+          "14": {
+            "title": "Solving Systems by Elimination (Part 1)",
+            "targets": [
+              "I can solve systems of equations by adding or subtracting them to eliminate a variable.",
+              "I know that adding or subtracting equations in a system creates a new equation, where one of the solutions to this equation is the solution to the system."
+            ]
+          },
+          "15": {
+            "title": "Solving Systems by Elimination (Part 2)",
+            "targets": [
+              "I can explain why adding or subtracting two equations that share a solution results in a new equation that also shares the same solution."
+            ]
+          },
+          "16": {
+            "title": "Solving Systems by Elimination (Part 3)",
+            "targets": [
+              "I can solve systems of equations by multiplying each side of one or both equations by a factor, then adding or subtracting the equations to eliminate a variable.",
+              "I understand that multiplying each side of an equation by a factor creates an equivalent equation whose graph and solutions are the same as that of the original equation."
+            ]
+          },
+          "17": {
+            "title": "Systems of Linear Equations and Their Solutions",
+            "targets": [
+              "I can tell how many solutions a system has by graphing the equations or by analyzing the parts of the equations and considering how they affect the features of the graphs.",
+              "I know the possibilities for the number of solutions a system of equations could have."
+            ]
+          },
+          "18": {
+            "title": "Asking about Solving Systems",
+            "targets": [
+              "I can get more information about a problem in order to write and solve a system of linear equations."
+            ]
+          },
+          "19": {
+            "title": "Linear Patterns",
+            "targets": [
+              "I can solve linear equations algebraically.",
+              "I can write linear equations to create a pattern."
+            ]
+          }
+        }
+      },
+      "3": {
+        "url": "https://accessim.org/9-12-aga/algebra-1/unit-3/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Two-Way Tables",
+            "targets": [
+              "I can calculate missing values in a two-way table.",
+              "I can create a two-way table for categorical data given information about a situation.",
+              "I can describe what the values in a two-way table mean in the context of the situation."
+            ]
+          },
+          "2": {
+            "title": "Relative Frequency Tables",
+            "targets": [
+              "I can calculate values in a relative frequency table and describe what the values mean in everyday language."
+            ]
+          },
+          "3": {
+            "title": "Associations in Categorical Data",
+            "targets": [
+              "I can look for patterns in two-way tables and relative frequency tables to see if there is a possible association between two variables."
+            ]
+          },
+          "4": {
+            "title": "Linear Models",
+            "targets": [
+              "I can describe the rate of change and y-intercept for a linear model that represents a situation.",
+              "I can draw a linear model that fits the data well and use the linear model to estimate values I want to find."
+            ]
+          },
+          "5": {
+            "title": "Fitting Lines",
+            "targets": [
+              "I can describe the rate of change and y-intercept for a linear model that represents a situation.",
+              "I can use technology to find the line of best fit."
+            ]
+          },
+          "6": {
+            "title": "Residuals",
+            "targets": [
+              "I can plot and calculate residuals for a data set and use the information to judge whether a linear model is a good fit."
+            ]
+          },
+          "7": {
+            "title": "The Correlation Coefficient",
+            "targets": [
+              "I can describe the goodness of fit of a linear model using the correlation coefficient.",
+              "I can match the correlation coefficient with a scatter plot and linear model."
+            ]
+          },
+          "8": {
+            "title": "Using the Correlation Coefficient",
+            "targets": [
+              "I can describe the strength of a relationship between two variables.",
+              "I can use technology to find the correlation coefficient and explain what the value tells me about a linear model that represents a situation."
+            ]
+          },
+          "9": {
+            "title": "Causal Relationships",
+            "targets": [
+              "I can look for connections between two variables to analyze whether or not there is a causal relationship."
+            ]
+          },
+          "10": {
+            "title": "Fossils and Flags",
+            "targets": [
+              "I can collect data, create a linear model to fit the data, determine if the linear model is a good fit, and use the information from my linear model to answer questions."
+            ]
+          }
+        }
+      },
+      "4": {
+        "url": "https://accessim.org/9-12-aga/algebra-1/unit-4/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Representing Situations with Inequalities",
+            "targets": [
+              "I can write inequalities that represent the constraints in a situation."
+            ]
+          },
+          "2": {
+            "title": "Solutions to Inequalities in One Variable",
+            "targets": [
+              "I can graph the solution to an inequality in one variable.",
+              "I can solve one-variable inequalities and interpret the solutions in terms of the situation.",
+              "I understand that the solution to an inequality is a range of values (such as x\\gt7) that makes the inequality true."
+            ]
+          },
+          "3": {
+            "title": "Writing and Solving Inequalities in One Variable",
+            "targets": [
+              "I can analyze the structure of an inequality in one variable to help determine if the solution is greater or less than the solution to the related equation.",
+              "I can write and solve inequalities to answer questions about a situation."
+            ]
+          },
+          "4": {
+            "title": "Graphing Linear Inequalities in Two Variables (Part 1)",
+            "targets": [
+              "Given a two-variable inequality and the graph of the related equation, I can determine on which side of the line the solutions to the inequality will fall.",
+              "I can describe the graph that represents the solutions to a linear inequality in two variables."
+            ]
+          },
+          "5": {
+            "title": "Graphing Linear Inequalities in Two Variables (Part 2)",
+            "targets": [
+              "Given a two-variable inequality that represents a situation, I can interpret points in the coordinate plane and decide if they are solutions to the inequality.",
+              "I can find the solutions to a two-variable inequality by using the graph of a related two-variable equation.",
+              "I can write inequalities to describe the constraints in a situation."
+            ]
+          },
+          "6": {
+            "title": "Solving Problems with Inequalities in Two Variables",
+            "targets": [
+              "I can use graphing technology to find the solution to a two-variable inequality.",
+              "When given inequalities, graphs, and descriptions that represent the constraints in a situation, I can connect the different representations and interpret them in terms of the situation."
+            ]
+          },
+          "7": {
+            "title": "Solutions to Systems of Linear Inequalities in Two Variables",
+            "targets": [
+              "I can write a system of inequalities to describe a situation, find the solution by graphing, and interpret points in the solution.",
+              "I know what is meant by \"the solutions to a system of inequalities\" and can describe the graphs that represent the solutions.",
+              "When given descriptions and graphs that represent two different constraints, I can find values that satisfy each constraint individually, and values that satisfy both constraints at once."
+            ]
+          },
+          "8": {
+            "title": "Solving Problems with Systems of Linear Inequalities in Two Variables",
+            "targets": [
+              "I can explain how to tell if a point on the boundary of the graph of the solutions to a system of inequalities is a solution or not."
+            ]
+          },
+          "9": {
+            "title": "Modeling with Systems of Inequalities in Two Variables",
+            "targets": [
+              "I can interpret inequalities and graphs in a mathematical model.",
+              "I know how to choose variables, specify the constraints, and write inequalities to create a mathematical model."
+            ]
+          }
+        }
+      },
+      "5": {
+        "url": "https://accessim.org/9-12-aga/algebra-1/unit-5/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Describing and Graphing Situations",
+            "targets": [
+              "I can explain when a relationship between two quantities is a function.",
+              "I can identify independent and dependent variables in a function and use words and graphs to represent the function.",
+              "I can make sense of descriptions and graphs of functions and explain what they tell us about situations."
+            ]
+          },
+          "2": {
+            "title": "Function Notation",
+            "targets": [
+              "I can use function notation to express functions that have specific inputs and outputs.",
+              "I understand what function notation is and why it exists.",
+              "When given a statement written in function notation, I can explain what it means in terms of a situation."
+            ]
+          },
+          "3": {
+            "title": "Interpreting and Using Function Notation",
+            "targets": [
+              "I can describe the connections between a statement in function notation and the graph of the function.",
+              "I can use function notation to efficiently represent a relationship between two quantities in a situation.",
+              "I can use statements in function notation to sketch a graph of a function."
+            ]
+          },
+          "4": {
+            "title": "Using Function Notation to Describe Rules (Part 1)",
+            "targets": [
+              "I can make sense of rules of functions when they are written in function notation, and create tables and graphs to represent the functions.",
+              "I can write equations that represent the rules of functions."
+            ]
+          },
+          "5": {
+            "title": "Using Function Notation to Describe Rules (Part 2)",
+            "targets": [
+              "I can use technology to graph a function given in function notation and use the graph to find the values of the function.",
+              "I know different ways to find the value of a function and to solve equations written in function notation.",
+              "I know what makes a function a linear function."
+            ]
+          },
+          "6": {
+            "title": "Features of Graphs",
+            "targets": [
+              "I can identify important features of graphs of functions and explain what they mean in the situations represented.",
+              "I understand and can use the terms “horizontal intercept,” “vertical intercept,” “maximum,” and “minimum” when talking about functions and their graphs."
+            ]
+          },
+          "7": {
+            "title": "Using Graphs to Find Average Rate of Change",
+            "targets": [
+              "I understand the meaning of the term “average rate of change.”",
+              "When given a graph of a function, I can estimate or calculate the average rate of change between two points."
+            ]
+          },
+          "8": {
+            "title": "Interpreting and Creating Graphs",
+            "targets": [
+              "I can explain the average rate of change of a function in terms of a situation.",
+              "I can make sense of important features of a graph and explain what they mean in a situation.",
+              "When given a description or a visual representation of a situation, I can sketch a graph that shows important features of the situation."
+            ]
+          },
+          "9": {
+            "title": "Comparing Graphs",
+            "targets": [
+              "I can compare the features of graphs of functions and explain what they mean in the situations represented.",
+              "I can make sense of an equation of the form f(x)=g(x) in terms of a situation and a graph, and know how to find the solutions."
+            ]
+          },
+          "10": {
+            "title": "Domain and Range (Part 1)",
+            "targets": [
+              "I know what is meant by the “domain” and “range” of a function.",
+              "When given a description of a function in a situation, I can determine a reasonable domain and range for the function."
+            ]
+          },
+          "11": {
+            "title": "Domain and Range (Part 2)",
+            "targets": [
+              "When given a description of a function in a situation, I can determine a reasonable domain and range for the function."
+            ]
+          },
+          "12": {
+            "title": "Piecewise Functions",
+            "targets": [
+              "I can make sense of a graph of a piecewise function in terms of a situation and sketch a graph of the function when the rules are given.",
+              "I can make sense of the rules of a piecewise function when they are written in function notation and explain what they mean in the situation represented.",
+              "I understand what makes a function a piecewise function."
+            ]
+          },
+          "13": {
+            "title": "Absolute Value Functions (Part 1)",
+            "targets": [
+              "Given a set of numerical guesses and a target number, I can calculate absolute errors and create a scatter plot of the data.",
+              "I can analyze and describe features of a scatter plot that shows absolute error data.",
+              "I can describe the general relationship between guesses and absolute errors using words or equations."
+            ]
+          },
+          "14": {
+            "title": "Absolute Value Functions (Part 2)",
+            "targets": [
+              "I can describe the effects of adding a number to the expression that defines an absolute value function.",
+              "I can explain the meaning of absolute value function in terms of distance.",
+              "When given an absolute value function in words or in function notation, I can make sense of it and create a table of values and a graph to represent it."
+            ]
+          },
+          "15": {
+            "title": "Inverse Functions",
+            "targets": [
+              "I understand the meaning of “inverse function” and how it could be found.",
+              "When given a linear function that represents a situation, I can use words and equations to describe the inverse function."
+            ]
+          },
+          "16": {
+            "title": "Finding and Interpreting Inverse Functions",
+            "targets": [
+              "I can explain the meaning of an inverse function in terms of a situation.",
+              "When I have an equation that defines a linear function, I know how to find its inverse."
+            ]
+          },
+          "17": {
+            "title": "Writing Inverse Functions to Solve Problems",
+            "targets": [
+              "I can write a linear function to model given data and find the inverse of the function.",
+              "When given a linear function defined using function notation, I know how to find its inverse."
+            ]
+          },
+          "18": {
+            "title": "Using Functions to Model Battery Power",
+            "targets": [
+              "I can write a function to describe a situation and make predictions."
+            ]
+          }
+        }
+      },
+      "6": {
+        "url": "https://accessim.org/9-12-aga/algebra-1/unit-6/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Growing and Growing",
+            "targets": [
+              "I can compare growth patterns using calculations and graphs."
+            ]
+          },
+          "2": {
+            "title": "Patterns of Growth",
+            "targets": [
+              "I can use words and expressions to describe patterns in tables of values.",
+              "When I have descriptions of linear and exponential relationships, I can write expressions and create tables of values to represent them."
+            ]
+          },
+          "3": {
+            "title": "Representing Exponential Growth",
+            "targets": [
+              "I can explain the connections between an equation and a graph that represents exponential growth.",
+              "I can write and interpret an equation that represents exponential growth."
+            ]
+          },
+          "4": {
+            "title": "Representing Exponential Decay",
+            "targets": [
+              "I can explain the meanings of a and b in an equation that represents exponential decay and is written as y=a \\boldcdot b^x."
+            ]
+          },
+          "5": {
+            "title": "Understanding Decay",
+            "targets": [
+              "I can use only multiplication to represent \"decreasing a quantity by a fraction of itself.\"",
+              "I can write an expression or equation to represent a quantity that decays exponentially.",
+              "I know the meanings of “exponential growth” and “exponential decay.”"
+            ]
+          },
+          "6": {
+            "title": "Analyzing Graphs",
+            "targets": [
+              "I can use graphs to compare and contrast situations that involve exponential decay.",
+              "I can use information from a graph to write an equation that represents exponential decay."
+            ]
+          },
+          "7": {
+            "title": "Using Negative Exponents",
+            "targets": [
+              "I can describe the meaning of a negative exponent in equations that represent exponential decay.",
+              "I can write and graph an equation that represents exponential decay to solve problems."
+            ]
+          },
+          "8": {
+            "title": "Exponential Situations as Functions",
+            "targets": [
+              "I can use function notation to write equations that represent exponential relationships.",
+              "When I see relationships in descriptions, tables, equations, or graphs, I can determine whether the relationships are functions."
+            ]
+          },
+          "9": {
+            "title": "Interpreting Exponential Functions",
+            "targets": [
+              "I can analyze a situation and determine whether it makes sense to connect the points on the graph that represents the situation.",
+              "When I see a graph of an exponential function, I can make sense of and describe the relationship using function notation."
+            ]
+          },
+          "10": {
+            "title": "Looking at Rates of Change",
+            "targets": [
+              "I can calculate the average rate of change of a function over a specified period of time.",
+              "I know how the average rate of change of an exponential function differs from that of a linear function."
+            ]
+          },
+          "11": {
+            "title": "Modeling Exponential Behavior",
+            "targets": []
+          },
+          "12": {
+            "title": "Reasoning about Exponential Graphs (Part 1)",
+            "targets": [
+              "I can describe the effect of changing a and b on a graph that represents f(x)=a \\boldcdot b^x.",
+              "I can use equations and graphs to compare exponential functions."
+            ]
+          },
+          "13": {
+            "title": "Reasoning about Exponential Graphs (Part 2)",
+            "targets": [
+              "I can explain the meaning of the intersection of the graphs of two functions in terms of the situations they represent.",
+              "When I know two points on a graph of an exponential function, I can write an equation for the function."
+            ]
+          },
+          "14": {
+            "title": "Recalling Percent Change",
+            "targets": [
+              "I can find the result of applying a percent increase or decrease on a quantity.",
+              "I can write different expressions to represent a starting amount and a percent increase or decrease."
+            ]
+          },
+          "15": {
+            "title": "Functions Involving Percent Change",
+            "targets": [
+              "I can use graphs to illustrate and compare different percent increases.",
+              "I can write a numerical expression or an algebraic expression to represent the result of applying a percent increase repeatedly."
+            ]
+          },
+          "16": {
+            "title": "Compounding Interest",
+            "targets": [
+              "I can explain why applying a percent increase, p, n times is like or unlike applying the percent increase np."
+            ]
+          },
+          "17": {
+            "title": "Different Compounding Intervals",
+            "targets": [
+              "I can calculate interest when I know the starting balance, interest rate, and compounding intervals.",
+              "When given interest rates and compounding intervals, I can choose the better investment option."
+            ]
+          },
+          "18": {
+            "title": "Expressed in Different Ways",
+            "targets": [
+              "I can solve problems using exponential expressions written in different ways.",
+              "I can write equivalent expressions to represent situations that involve repeated percent increase or decrease."
+            ]
+          },
+          "19": {
+            "title": "Which One Changes Faster?",
+            "targets": [
+              "I can use tables, calculations, and graphs to compare growth rates of linear and exponential functions and to predict how the quantities change eventually."
+            ]
+          },
+          "20": {
+            "title": "Changes over Equal Intervals",
+            "targets": [
+              "I can calculate rates of change of functions given graphs, equations, or tables.",
+              "I can use rates of change to describe how a linear function and an exponential function change over equal intervals."
+            ]
+          },
+          "21": {
+            "title": "Predicting Populations",
+            "targets": [
+              "I can determine how well a chosen model fits the given information.",
+              "I can determine whether to use a linear function or an exponential function to model real-world data."
+            ]
+          }
+        }
+      },
+      "7": {
+        "url": "https://accessim.org/9-12-aga/algebra-1/unit-7/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "A Different Kind of Change",
+            "targets": [
+              "I can create drawings, tables, and graphs that represent the area of a garden.",
+              "I can recognize a situation represented by a graph that increases and then decreases."
+            ]
+          },
+          "2": {
+            "title": "How Does It Change?",
+            "targets": [
+              "I can describe how a pattern is growing.",
+              "I can tell whether a pattern is growing linearly, exponentially, or quadratically.",
+              "I know a quadratic expression has a squared term."
+            ]
+          },
+          "3": {
+            "title": "Building Quadratic Functions from Geometric Patterns",
+            "targets": [
+              "I can explain using graphs, tables, or calculations that exponential functions eventually grow faster than do quadratic functions.",
+              "I can recognize quadratic functions written in different ways.",
+              "I can use information from a pattern of shapes to write a quadratic function."
+            ]
+          },
+          "4": {
+            "title": "Comparing Quadratic and Exponential Functions",
+            "targets": [
+              "I can explain using graphs, tables, or calculations that exponential functions eventually grow faster than do quadratic functions."
+            ]
+          },
+          "5": {
+            "title": "Building Quadratic Functions to Describe Situations (Part 1)",
+            "targets": [
+              "I can explain the meaning of the terms in a quadratic expression that represents the height of a falling object.",
+              "I can use tables, graphs, and equations to represent the height of a falling object."
+            ]
+          },
+          "6": {
+            "title": "Building Quadratic Functions to Describe Situations (Part 2)",
+            "targets": [
+              "I can create quadratic functions and graphs that represent a situation.",
+              "I can relate the vertex of a graph and the zeros of a function to a situation.",
+              "I know that the domain of a function can depend on the situation it represents."
+            ]
+          },
+          "7": {
+            "title": "Building Quadratic Functions to Describe Situations (Part 3)",
+            "targets": [
+              "I can choose a domain that makes sense in a revenue situation.",
+              "I can model revenue with quadratic functions and graphs.",
+              "I can relate the vertex of a graph and the zeros of a function to a revenue situation."
+            ]
+          },
+          "8": {
+            "title": "Equivalent Quadratic Expressions",
+            "targets": [
+              "I can rewrite quadratic expressions in different forms by using an area diagram or the distributive property."
+            ]
+          },
+          "9": {
+            "title": "Standard Form and Factored Form",
+            "targets": [
+              "I can rewrite quadratic expressions given in factored form in standard form, using either the distributive property or a diagram.",
+              "I know the difference between “factored form” and “standard form.”"
+            ]
+          },
+          "10": {
+            "title": "Graphs of Functions in Standard and Factored Forms",
+            "targets": [
+              "I can explain the meaning of the intercepts on a graph of a quadratic function in terms of the situation it represents.",
+              "I know how the numbers in the factored form of a quadratic expression relate to the intercepts of its graph."
+            ]
+          },
+          "11": {
+            "title": "Graphing from the Factored Form",
+            "targets": [
+              "I can graph a quadratic function given in factored form.",
+              "I know how to find the vertex and y-intercept of the graph of a quadratic function in factored form without graphing it first."
+            ]
+          },
+          "12": {
+            "title": "Graphing the Standard Form (Part 1)",
+            "targets": [
+              "I can explain how the a and c in y=ax^2+bx+c affect the graph of the equation.",
+              "I understand how graphs, tables, and equations that represent the same quadratic function are related."
+            ]
+          },
+          "13": {
+            "title": "Graphing the Standard Form (Part 2)",
+            "targets": [
+              "I can explain how the b in y=ax^2+bx+c affects the graph of the equation.",
+              "I can match equations given in standard and factored form with their graph."
+            ]
+          },
+          "14": {
+            "title": "Graphs That Represent Situations",
+            "targets": [
+              "I can explain how a quadratic equation and its graph relate to a situation."
+            ]
+          },
+          "15": {
+            "title": "Vertex Form",
+            "targets": [
+              "I can recognize the “vertex form” of a quadratic equation.",
+              "I can relate the numbers in the vertex form of a quadratic equation to its graph."
+            ]
+          },
+          "16": {
+            "title": "Graphing from the Vertex Form",
+            "targets": [
+              "I can graph a quadratic function given in vertex form, showing a maximum or minimum and the y-intercept.",
+              "I know how to find a maximum or a minimum of a quadratic function given in vertex form without first graphing it."
+            ]
+          },
+          "17": {
+            "title": "Changing the Vertex",
+            "targets": [
+              "I can describe how changing a number in the vertex form of a quadratic function affects its graph."
+            ]
+          }
+        }
+      },
+      "8": {
+        "url": "https://accessim.org/9-12-aga/algebra-1/unit-8/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Finding Unknown Inputs",
+            "targets": [
+              "I can explain the meaning of a solution to an equation in terms of a situation.",
+              "I can write a quadratic equation that represents a situation."
+            ]
+          },
+          "2": {
+            "title": "When and Why Do We Write Quadratic Equations?",
+            "targets": [
+              "I can recognize the factored form of a quadratic expression and know when it can be useful for solving problems.",
+              "I can use a graph to find the solutions to a quadratic equation but also know its limitations."
+            ]
+          },
+          "3": {
+            "title": "Solving Quadratic Equations by Reasoning",
+            "targets": [
+              "I can find solutions to quadratic equations by reasoning about the values that make the equation true.",
+              "I know that quadratic equations may have two solutions."
+            ]
+          },
+          "4": {
+            "title": "Solving Quadratic Equations with the Zero Product Property",
+            "targets": [
+              "I can explain the meaning of the “zero product property.”",
+              "I can find solutions to quadratic equations when one side is a product of factors and the other side is zero."
+            ]
+          },
+          "5": {
+            "title": "How Many Solutions?",
+            "targets": [
+              "I can explain why dividing by a variable to solve a quadratic equation is not a good strategy.",
+              "I know that quadratic equations can have no solutions and can explain why when there are none."
+            ]
+          },
+          "6": {
+            "title": "Rewriting Quadratic Expressions in Factored Form (Part 1)",
+            "targets": [
+              "I can explain how the numbers in a quadratic expression in factored form relate to the numbers in an equivalent expression in standard form.",
+              "When given quadratic expressions in factored form, I can rewrite them in standard form.",
+              "When given quadratic expressions in the form of x^2+bx+c, I can rewrite them in factored form."
+            ]
+          },
+          "7": {
+            "title": "Rewriting Quadratic Expressions in Factored Form (Part 2)",
+            "targets": [
+              "I can explain how the numbers and signs in a quadratic expression in factored form relate to the numbers and signs in an equivalent expression in standard form.",
+              "When given a quadratic expression given in standard form with a negative constant term, I can write an equivalent expression in factored form."
+            ]
+          },
+          "8": {
+            "title": "Rewriting Quadratic Expressions in Factored Form (Part 3)",
+            "targets": [
+              "I can explain why multiplying a sum and a difference, (x+m)(x-m), results in a quadratic expression with no linear term."
+            ]
+          },
+          "9": {
+            "title": "Solving Quadratic Equations by Using Factored Form",
+            "targets": [
+              "I can rearrange a quadratic equation to be written as an expression in factored form equal to zero and find the solutions.",
+              "I can recognize the number of solutions for a quadratic equation from the factored form."
+            ]
+          },
+          "10": {
+            "title": "Rewriting Quadratic Expressions in Factored Form (Part 4)",
+            "targets": [
+              "I can use the factored form of a quadratic expression or a graph of a quadratic function to answer questions about a situation.",
+              "When given quadratic expressions of the form ax^2+bx+c, where a is not 1, I can write equivalent expressions in factored form."
+            ]
+          },
+          "11": {
+            "title": "What Are Perfect Squares?",
+            "targets": [
+              "I can recognize perfect-square expressions written in different forms.",
+              "I can recognize quadratic equations that have a perfect-square expression and solve the equations."
+            ]
+          },
+          "12": {
+            "title": "Completing the Square (Part 1)",
+            "targets": [
+              "I can explain what it means to “complete the square” and describe how to do it.",
+              "I can solve quadratic equations by completing the square and finding square roots."
+            ]
+          },
+          "13": {
+            "title": "Completing the Square (Part 2)",
+            "targets": [
+              "When given a quadratic equation in which the coefficient of the squared term is 1, I can solve it by completing the square."
+            ]
+          },
+          "14": {
+            "title": "Completing the Square (Part 3)",
+            "targets": [
+              "I can complete the square for quadratic expressions of the form ax^2+bx+c, where a is not 1, and explain the process.",
+              "I can solve quadratic equations in which the squared term coefficient is not 1 by completing the square."
+            ]
+          },
+          "15": {
+            "title": "Quadratic Equations with Irrational Solutions",
+            "targets": [
+              "I can use the radical and “plus-minus” symbols to represent solutions to quadratic equations.",
+              "I know why the plus-minus symbol is used when solving quadratic equations by finding square roots."
+            ]
+          },
+          "16": {
+            "title": "The Quadratic Formula",
+            "targets": [
+              "I can use the quadratic formula to solve quadratic equations.",
+              "I know some methods for solving quadratic equations can be more convenient than others."
+            ]
+          },
+          "17": {
+            "title": "Applying the Quadratic Formula (Part 1)",
+            "targets": [
+              "I can use the quadratic formula to solve an equation and interpret the solutions in terms of a situation."
+            ]
+          },
+          "18": {
+            "title": "Applying the Quadratic Formula (Part 2)",
+            "targets": [
+              "I can identify common errors when using the quadratic formula.",
+              "I know some ways to tell if a number is a solution to a quadratic equation."
+            ]
+          },
+          "19": {
+            "title": "Deriving the Quadratic Formula",
+            "targets": [
+              "I can explain the steps and complete some missing steps for deriving the quadratic formula.",
+              "I know how the quadratic formula is related to the process of completing the square for a quadratic equation ax^2+bx+c=0."
+            ]
+          },
+          "20": {
+            "title": "Rational and Irrational Solutions",
+            "targets": [
+              "I can explain why adding a rational number and an irrational number produces an irrational number.",
+              "I can explain why multiplying a rational number (except 0) and an irrational number produces an irrational number.",
+              "I can explain why the sum or product of two rational numbers is rational."
+            ]
+          },
+          "21": {
+            "title": "Sums and Products of Rational and Irrational Numbers",
+            "targets": [
+              "I can explain why adding a rational number and an irrational number produces an irrational number.",
+              "I can explain why multiplying a rational number (except 0) and an irrational number produces an irrational number.",
+              "I can explain why the sum or product of two rational numbers is rational."
+            ]
+          },
+          "22": {
+            "title": "Rewriting Quadratic Expressions in Vertex Form",
+            "targets": [
+              "I can identify the vertex of the graph of a quadratic function when the expression that defines it is written in vertex form.",
+              "I know the meaning of the term “vertex form” and can recognize examples of quadratic expressions written in this form.",
+              "When given a quadratic expression in standard form, I can rewrite it in vertex form."
+            ]
+          },
+          "23": {
+            "title": "Using Quadratic Expressions in Vertex Form to Solve Problems",
+            "targets": [
+              "I can find the maximum or minimum of a function by writing, in vertex form, the quadratic expression that defines it.",
+              "When given a quadratic function in vertex form, I can explain why the vertex is a maximum or minimum."
+            ]
+          },
+          "24": {
+            "title": "Using Quadratic Equations to Model Situations and Solve Problems",
+            "targets": [
+              "I can interpret information about a quadratic function given its equation or a graph.",
+              "I can rewrite quadratic functions in different but equivalent forms of my choosing and use that form to solve problems.",
+              "In situations modeled by quadratic functions, I can decide which form to use depending on the questions being asked."
+            ]
+          }
+        }
+      }
+    },
+    "grade-8": {
+      "3": {
+        "url": "https://accessim.org/6-8/grade-8/unit-3/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Understanding Proportional Relationships",
+            "targets": [
+              "I can graph a proportional relationship from a story.",
+              "I can use the constant of proportionality to compare the pace of different animals."
+            ]
+          },
+          "2": {
+            "title": "Graphs of Proportional Relationships",
+            "targets": [
+              "I can graph a proportional relationship from an equation.",
+              "I can tell when two graphs are of the same proportional relationship even if the scales are different."
+            ]
+          },
+          "3": {
+            "title": "Representing Proportional Relationships",
+            "targets": [
+              "I can scale and label coordinate axes in order to graph a proportional relationship."
+            ]
+          },
+          "4": {
+            "title": "Comparing Proportional Relationships",
+            "targets": [
+              "I can compare proportional relationships represented in different ways."
+            ]
+          },
+          "5": {
+            "title": "Introduction to Linear Relationships",
+            "targets": [
+              "I can find the rate of change of a linear relationship by figuring out the slope of the line representing the relationship."
+            ]
+          },
+          "6": {
+            "title": "More Linear Relationships",
+            "targets": [
+              "I can interpret the vertical intercept of a graph of a real-world situation.",
+              "I can match graphs to the real-world situations they represent by identifying the slope and the vertical intercept."
+            ]
+          },
+          "7": {
+            "title": "Representations of Linear Relationships",
+            "targets": [
+              "I can use patterns to write a linear equation to represent a situation.",
+              "I can write an equation for the relationship between the total volume in a graduated cylinder and the number of objects added to the graduated cylinder."
+            ]
+          },
+          "8": {
+            "title": "Translating to y=mx+b",
+            "targets": [
+              "I can explain where to find the slope and vertical intercept in both an equation and its graph.",
+              "I can write equations of lines using y=mx+b."
+            ]
+          },
+          "9": {
+            "title": "Slopes Don't Have to Be Positive",
+            "targets": [
+              "I can create a graph of a situation that has a negative slope.",
+              "I can determine if a situation or a graph has a slope that is positive, negative, or zero and explain how I know."
+            ]
+          },
+          "10": {
+            "title": "Calculating Slope",
+            "targets": [
+              "I can calculate positive and negative slopes given two points on the line."
+            ]
+          },
+          "11": {
+            "title": "Line Designs",
+            "targets": [
+              "I can describe a line precisely enough that another student can draw it."
+            ]
+          },
+          "12": {
+            "title": "Equations of All Kinds of Lines",
+            "targets": [
+              "I can write equations of lines that have a positive or a negative slope.",
+              "I can write equations of vertical and horizontal lines."
+            ]
+          },
+          "13": {
+            "title": "Solutions to Linear Equations",
+            "targets": [
+              "I know that the graph of an equation is a visual representation of all the solutions to the equation.",
+              "I understand what the solution to an equation in two variables is."
+            ]
+          },
+          "14": {
+            "title": "More Solutions to Linear Equations",
+            "targets": [
+              "I can find solutions (x, y) to linear equations given either the x- or y-value to start from."
+            ]
+          },
+          "15": {
+            "title": "Using Linear Relations to Solve Problems",
+            "targets": [
+              "I can write linear equations to reason about real-world situations."
+            ]
+          }
+        }
+      },
+      "4": {
+        "url": "https://accessim.org/6-8/grade-8/unit-4/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Writing Equivalent Equations",
+            "targets": [
+              "I can describe moves that change one equation into an equivalent equation."
+            ]
+          },
+          "2": {
+            "title": "Keeping the Equation Balanced",
+            "targets": [
+              "I can add or remove blocks from a hanger and keep the hanger balanced.",
+              "I can represent balanced hangers with equations."
+            ]
+          },
+          "3": {
+            "title": "Balanced Moves",
+            "targets": [
+              "I can add, subtract, multiply, or divide each side of an equation by the same expression to get a new equation with the same solution."
+            ]
+          },
+          "4": {
+            "title": "More Balanced Moves",
+            "targets": [
+              "I can make sense of multiple ways to solve an equation."
+            ]
+          },
+          "5": {
+            "title": "Solving Any Linear Equation",
+            "targets": [
+              "I can solve an equation where the variable appears on both sides."
+            ]
+          },
+          "6": {
+            "title": "Strategic Solving",
+            "targets": [
+              "I can solve linear equations in one variable."
+            ]
+          },
+          "7": {
+            "title": "All, Some, or No Solutions",
+            "targets": [
+              "I can determine whether an equation has no solutions, one solution, or infinitely many solutions."
+            ]
+          },
+          "8": {
+            "title": "How Many Solutions?",
+            "targets": [
+              "I can solve equations with different numbers of solutions."
+            ]
+          },
+          "9": {
+            "title": "When Are They the Same?",
+            "targets": [
+              "I can use an expression to find when two things, like height, are the same in a real-world situation."
+            ]
+          },
+          "10": {
+            "title": "On or Off the Line?",
+            "targets": [
+              "I can identify ordered pairs that are solutions to an equation.",
+              "I can interpret ordered pairs that are solutions to an equation."
+            ]
+          },
+          "11": {
+            "title": "On Both of the Lines",
+            "targets": [
+              "I can use graphs to find an ordered pair that two real-world situations have in common."
+            ]
+          },
+          "12": {
+            "title": "Systems of Equations",
+            "targets": [
+              "I can explain the solution to a system of equations in a real-world context.",
+              "I can explain what a system of equations is.",
+              "I can make graphs to find an ordered pair that two real-world situations have in common."
+            ]
+          },
+          "13": {
+            "title": "Solving Systems of Equations",
+            "targets": [
+              "I can graph a system of equations.",
+              "I can solve systems of equations using algebra."
+            ]
+          },
+          "14": {
+            "title": "Solving More Systems",
+            "targets": [
+              "I can use the structure of equations to help me figure out how many solutions a system of equations has."
+            ]
+          },
+          "15": {
+            "title": "Writing Systems of Equations",
+            "targets": [
+              "I can write a system of equations from a real-world situation."
+            ]
+          },
+          "16": {
+            "title": "Solving Problems with Systems of Equations",
+            "targets": [
+              "I can use a system of equations to represent a real-world situation and answer questions about the situation."
+            ]
+          }
+        }
+      },
+      "5": {
+        "url": "https://accessim.org/6-8/grade-8/unit-5/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Inputs and Outputs",
+            "targets": [
+              "I can write rules when I know input-output pairs.",
+              "I know how an input-output diagram represents a rule."
+            ]
+          },
+          "2": {
+            "title": "Introduction to Functions",
+            "targets": [
+              "I know that a function is a rule with exactly one output for each allowable input.",
+              "I know that if a rule has exactly one output for each allowable input, then the output depends on the input."
+            ]
+          },
+          "3": {
+            "title": "Equations for Functions",
+            "targets": [
+              "I can find the output of a function when I know the input.",
+              "I can name the independent and dependent variables for a given function and represent the function with an equation."
+            ]
+          },
+          "4": {
+            "title": "Tables, Equations, and Graphs of Functions",
+            "targets": [
+              "I can identify graphs that do, and do not, represent functions.",
+              "I can use a graph of a function to find the output for a given input and to find the input(s) for a given output."
+            ]
+          },
+          "5": {
+            "title": "More Graphs of Functions",
+            "targets": [
+              "I can explain the story told by the graph of a function."
+            ]
+          },
+          "6": {
+            "title": "Even More Graphs of Functions",
+            "targets": [
+              "I can draw the graph of a function that represents a real-world situation."
+            ]
+          },
+          "7": {
+            "title": "Connecting Representations of Functions",
+            "targets": [
+              "I can compare inputs and outputs of functions that are represented in different ways."
+            ]
+          },
+          "8": {
+            "title": "Linear Functions",
+            "targets": [
+              "I can determine whether a function is increasing or decreasing based on whether its rate of change is positive or negative.",
+              "I can explain in my own words how the graph of a linear function relates to its rate of change and initial value."
+            ]
+          },
+          "9": {
+            "title": "Linear Models",
+            "targets": [
+              "I can decide when a linear function is a good model for data and when it is not.",
+              "I can use data points to model a linear function."
+            ]
+          },
+          "10": {
+            "title": "Piecewise Linear Functions",
+            "targets": [
+              "I can create graphs of nonlinear functions with pieces of linear functions."
+            ]
+          },
+          "11": {
+            "title": "Filling Containers",
+            "targets": [
+              "I can collect data about a function and represent it as a graph.",
+              "I can describe the graph of a function in words."
+            ]
+          },
+          "12": {
+            "title": "How Much Will Fit?",
+            "targets": [
+              "I know that volume is the amount of space contained inside a three-dimensional figure.",
+              "I recognize the following three-dimensional shapes: cylinder, cone, rectangular prism, and sphere."
+            ]
+          },
+          "13": {
+            "title": "The Volume of a Cylinder",
+            "targets": [
+              "I can find the volume of a cylinder in mathematical and real-world situations.",
+              "I know the formula for volume of a cylinder."
+            ]
+          },
+          "14": {
+            "title": "Finding Cylinder Dimensions",
+            "targets": [
+              "I can find missing information about a cylinder if I know its volume and some other information."
+            ]
+          },
+          "15": {
+            "title": "The Volume of a Cone",
+            "targets": [
+              "I can find the volume of a cone in mathematical and real-world situations.",
+              "I know the formula for the volume of a cone."
+            ]
+          },
+          "16": {
+            "title": "Finding Cone Dimensions",
+            "targets": [
+              "I can find missing information about a cone if I know its volume and some other information."
+            ]
+          },
+          "17": {
+            "title": "Scaling One Dimension",
+            "targets": [
+              "I can create a graph of the relationship between volume and height for all cylinders and cones with a fixed radius.",
+              "I can explain in my own words why changing the height by a scale factor changes the volume by the same scale factor."
+            ]
+          },
+          "18": {
+            "title": "Scaling Two Dimensions",
+            "targets": [
+              "I can create a graph representing the relationship between volume and radius for all cones (or cylinders) with a fixed height.",
+              "I can explain in my own words why changing the radius by a scale factor changes the volume by the scale factor squared."
+            ]
+          },
+          "19": {
+            "title": "Estimating a Hemisphere",
+            "targets": [
+              "I can estimate the volume of a hemisphere by calculating the volume of a shape I know is larger and the volume of a shape I know is smaller."
+            ]
+          },
+          "20": {
+            "title": "The Volume of a Sphere",
+            "targets": [
+              "I can find the volume of a sphere when I know the radius."
+            ]
+          },
+          "21": {
+            "title": "Cylinders, Cones, and Spheres",
+            "targets": [
+              "I can find the radius of a sphere if I know its volume.",
+              "I can solve mathematical and real-world problems about the volume of cylinders, cones, and spheres."
+            ]
+          },
+          "22": {
+            "title": "Volume as a Function of...",
+            "targets": [
+              "I can compare functions about volume represented in different ways."
+            ]
+          }
+        }
+      },
+      "6": {
+        "url": "https://accessim.org/6-8/grade-8/unit-6/learning-targets?a=student",
+        "lessons": {
+          "1": {
+            "title": "Organizing Data",
+            "targets": [
+              "I can organize data to see patterns more clearly."
+            ]
+          },
+          "2": {
+            "title": "Plotting Data",
+            "targets": [
+              "I can draw a scatter plot to show data that has two paired variables."
+            ]
+          },
+          "3": {
+            "title": "What a Point in a Scatter Plot Means",
+            "targets": [
+              "I can describe the meaning of a point in a scatter plot in context."
+            ]
+          },
+          "4": {
+            "title": "Fitting a Line to Data",
+            "targets": [
+              "I can pick out outliers on a scatter plot.",
+              "I can use a model to predict values for data."
+            ]
+          },
+          "5": {
+            "title": "Describing Trends in Scatter Plots",
+            "targets": [
+              "I can draw a line to fit data in a scatter plot.",
+              "I can say whether data in a scatter plot has a positive or negative association (or neither)."
+            ]
+          },
+          "6": {
+            "title": "The Slope of a Fitted Line",
+            "targets": [
+              "I can use the slope of a line fit to data in a scatter plot to say how the variables are connected in real-world situations."
+            ]
+          },
+          "7": {
+            "title": "Observing More Patterns in Scatter Plots",
+            "targets": [
+              "I can pick out clusters in data from a scatter plot.",
+              "I can use a scatter plot to decide if two variables have a linear association."
+            ]
+          },
+          "8": {
+            "title": "Analyzing Bivariate Data",
+            "targets": [
+              "I can analyze a set of data to determine associations between two variables."
+            ]
+          },
+          "9": {
+            "title": "Looking for Associations",
+            "targets": [
+              "I can identify the same data represented in a bar graph, a segmented bar graph, and a two-way table.",
+              "I can use a two-way frequency table or relative frequency table to find associations among variables."
+            ]
+          },
+          "10": {
+            "title": "Using Data Displays to Find Associations",
+            "targets": [
+              "I can create relative frequency tables, bar graphs, and segmented bar graphs from frequency tables to find associations among variables."
+            ]
+          },
+          "11": {
+            "title": "Gone in 30 Seconds",
+            "targets": [
+              "I can collect data and analyze it for associations using scatter plots, two-way tables, and segmented bar graphs."
+            ]
+          }
+        }
+      }
+    }
+  }
+}

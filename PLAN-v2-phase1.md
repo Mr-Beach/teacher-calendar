@@ -475,8 +475,15 @@ a small preview of her own page in each one.
   against the district's at-a-glance (all match, or differ where the
   glance disagrees with its own calendar; `v2/tests/test_curricula.py`
   says where). Aaron reviews them day by day on a private page before any
-  teacher uses them. I-can targets are empty until they come from the
-  publisher's own list (Savvas; IM publishes its own openly). The
+  teacher uses them. I-can targets come only from a publisher's own list:
+  Algebra 1 has IM v.360's (10/10; `scripts/add_learning_targets.py`, from
+  `curricula/sources/im-v360-learning-targets.json`) on 129 of its 165
+  days, matched by unit and lesson and checked by title (the district
+  numbers Units 5 and 6 differently from IM; four lessons are the
+  district's own and stay blank). IM v.360 is CC BY-NC 4.0, so the
+  credit line travels with them (`credits`, kept by `template_from`) and
+  shows at the foot of the family page (`render.credits_html`; nothing
+  for a course without credits). Savvas's targets wait on Aaron's export. The
   build copies `courses/math6.json` and `math78.json` into the bundle as
   `src/templates/*.json.txt` (the bundle leaves `.json` out; checked
   with `pywrangler dev`). `curricula/` needs adding to the v2 build's

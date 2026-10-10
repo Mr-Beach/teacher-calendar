@@ -11,7 +11,9 @@ PDFs have them, which needs no PDF library.
 Run: python3 -m unittest discover -s v2/tests
 """
 import collections
+import copy
 import json
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -63,8 +65,9 @@ class CurriculumTests(unittest.TestCase):
                 for e in c["sequence"]:
                     self.assertIn(e["kind"], engine.VALID_LESSON_KINDS - {"Quiz"})
                     self.assertTrue(e["district_title"].strip())
-                    self.assertEqual([e[f] for f in ("target", "homework", "link", "classwork")],
-                                     [None] * 4)
+                    self.assertEqual([e[f] for f in ("homework", "link", "classwork")], [None] * 3)
+                    if key != "algebra1":  # targets only from a publisher's list (IM's, so far)
+                        self.assertIsNone(e["target"])
 
     def test_day_counts_per_topic(self):
         for key in KEYS:
@@ -86,6 +89,65 @@ class CurriculumTests(unittest.TestCase):
         self.assertEqual((days["2026-09-09"]["type"], days["2026-09-09"]["note"]), ("Flex", "Flex Day"))
         self.assertEqual(days["2026-10-20"]["note"], "MAP Testing")
         self.assertEqual(days["2027-05-19"]["note"], "SBA Testing")
+
+
+class TargetTests(unittest.TestCase):
+    """IM v.360's learning targets on Algebra 1 (scripts/add_learning_targets.py)."""
+
+    def setUp(self):
+        import add_learning_targets
+        self.t = add_learning_targets
+        self.source = json.loads(add_learning_targets.SOURCE.read_text())
+        self.c = load("algebra1")
+        self.by_title = {e["district_title"]: e["target"] for e in self.c["sequence"]}
+
+    def lesson(self, course, unit, n):
+        return self.source["courses"][course][unit]["lessons"][n]
+
+    def test_the_committed_file_is_up_to_date(self):
+        again = copy.deepcopy(self.c)
+        self.t.apply_im(again, self.source)
+        self.assertEqual(again, self.c)
+
+    def test_matched_by_number_or_by_title(self):
+        self.assertEqual(self.by_title["Unit 1 Lesson 1: Getting to Know You"],
+                         " ".join(self.lesson("algebra-1", "1", "1")["targets"]))
+        # The district's Unit 6 Lesson 11 is IM v.360's Lesson 8, by title.
+        self.assertEqual(self.by_title["Unit 6 Lesson 11: Exponential Situations as Functions"],
+                         " ".join(self.lesson("algebra-1", "6", "8")["targets"]))
+        self.assertEqual(self.by_title["Unit 6 Lesson 15: Reasoning about Exponential Graphs (Part 1)"],
+                         " ".join(self.lesson("algebra-1", "6", "12")["targets"]))
+        both = self.by_title["Grade 8 Unit 4 Lesson 3: Balanced Moves + Grade 8 Unit 4 Lesson 4: More Balanced Moves"]
+        for n in ("3", "4"):
+            self.assertIn(self.lesson("grade-8", "4", n)["targets"][0], both)
+
+    def test_none_guessed(self):
+        for title, target in self.by_title.items():
+            if re.search(r"Review|Readiness|Assessment|Day \d|Exponential Rules|Absolute Values|"
+                         r"Unit Fractional", title) and "Lesson" not in title.split(":")[0]:
+                self.assertIsNone(target, title)
+        self.assertIsNone(self.by_title["Unit 6 Lesson 8: Exponential Rules"])
+        self.assertGreaterEqual(sum(1 for t in self.by_title.values() if t), 129)
+
+    def test_credit_goes_with_them(self):
+        self.assertEqual(self.c["credits"], [self.source["attribution"]])
+        self.assertIn("CC BY-NC 4.0", self.c["credits"][0])
+        doc = engine.template_from(self.c, SCHOOL)
+        self.assertEqual(doc["credits"], self.c["credits"])
+        course = engine.course_for_render(SCHOOL, doc)
+        import render
+        page = render.build_page(course, engine.render(course)[0])
+        self.assertIn('class="credits"', page)
+        self.assertIn("Illustrative Mathematics", page)
+        math6 = engine.course_for_render(SCHOOL, engine.template_from(load("math6"), SCHOOL))
+        self.assertNotIn('class="credits"', render.build_page(math6, engine.render(math6)[0]))
+
+    def test_titles(self):
+        self.assertTrue(self.t.same_title("What are Percent Squares", "What Are Perfect Squares?"))
+        self.assertFalse(self.t.same_title("Exponential Rules", "Recalling Percent Change"))
+        unit = {"12": {"title": "Reasoning about Exponential Graphs (Part 1)"},
+                "13": {"title": "Reasoning about Exponential Graphs (Part 2)"}}
+        self.assertIs(self.t.find_lesson(unit, "16", "Reasoning about Exponential Graphs (Part 2)"), unit["13"])
 
 
 class CellTests(unittest.TestCase):

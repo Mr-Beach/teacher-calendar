@@ -6,8 +6,9 @@ the district's order and with its day counts (a lesson the district gives
 two days is two entries), and the district's Flex and testing days. It's
 shaped like a course file, so engine.template_from takes it as it takes
 Aaron's courses. It holds nothing anyone chose for a class: no quizzes
-(quiz_rule off), no homework, no links, and no I-can targets yet (those
-come from the publisher's own list). Its review-day reminder is off too:
+(quiz_rule off), no homework, no links. Its I-can targets come only from
+the publisher's own list (scripts/add_learning_targets.py; so far IM's,
+for Algebra 1). Its review-day reminder is off too:
 the district's calendars don't plan review days, and whether to is hers.
 
 Each calendar month is a table in the PDF; pdfplumber reads its cells (plain
@@ -509,6 +510,11 @@ def main(argv=None):
     for line in log:
         print("  ".join(line))
     print(f"{len(curriculum['sequence'])} lessons")
+    if args.key == "algebra1":  # IM's own targets (scripts/add_learning_targets.py)
+        import add_learning_targets
+        for problem in add_learning_targets.apply_im(
+                curriculum, json.loads(add_learning_targets.SOURCE.read_text())):
+            print("  targets:", problem)
     if args.write:
         out = ROOT / "curricula" / f"{args.key}.json"
         out.parent.mkdir(exist_ok=True)
