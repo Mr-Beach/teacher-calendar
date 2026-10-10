@@ -6,7 +6,7 @@ this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
 **Status (2026-10-09):** M0 through M3 done (see "M0 results" through
-"M3 results"). Next: M4. Color presets are in M1 and M7, my own trial run is
+"M3 results"). M4 in progress ("M4 progress"). Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
@@ -302,6 +302,26 @@ switches to the TypeScript port.
   teacher's calendar is refused (404, so the request doesn't reveal that
   it exists). Then the curl checks from the site-hosting skill: student
   pages 200, `/teacher` 302.
+
+**M4 progress (2026-10-09).** The Worker's half is written; 30 tests in
+`v2/tests` (16 new in `test_access.py`). Not deployed yet.
+- `v2/src/access.py` checks the token itself: RS256 in plain Python (no
+  Web Crypto), so the tests run the Worker's own code on CPython. Keys
+  are fetched from the team's certs and kept an hour; an unknown key ID
+  refetches at most every 5 minutes.
+- `v2/src/app.py` holds the routes, outside the Worker shell
+  (`entry.py`), so tests run them on sqlite. Everything under `/edit`
+  and `/api` checks the token and the teacher before the path, so every
+  refusal is the same 403; another teacher's calendar is the same 404 as
+  a missing one. For now `/edit` lists her calendars and `/api/calendars`
+  (and `/api/calendars/<slug>`) returns them as JSON. M5 replaces `/edit`.
+- `wrangler.jsonc` routes `/edit`, `/edit/*`, `/api/*` (both hosts) to
+  this Worker, and has `TEAM_DOMAIN` and `ACCESS_AUD`. The AUD is the
+  live "beach-math.com" Access app's, checked on 10/9.
+- **Left:** add `beach-math.com/edit`, `beach-math.com/api` and their www
+  versions to that Access app (dashboard), push, then the curl checks.
+  Deploying before the Access step is safe: with no token, everything
+  there is a 403.
 
 ### M5: the editor, read-only
 

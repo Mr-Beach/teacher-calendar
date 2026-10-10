@@ -14,8 +14,22 @@
   "build": { "command": "cp ../engine.py ../render.py src/" },
   "routes": [
     { "pattern": "beach-math.com/demo/*", "zone_name": "beach-math.com" },
-    { "pattern": "www.beach-math.com/demo/*", "zone_name": "beach-math.com" }
+    { "pattern": "www.beach-math.com/demo/*", "zone_name": "beach-math.com" },
+    // Signed-in only: the Access app "beach-math.com" must cover these
+    // paths too, and the Worker checks its token on every request anyway.
+    { "pattern": "beach-math.com/edit", "zone_name": "beach-math.com" },
+    { "pattern": "www.beach-math.com/edit", "zone_name": "beach-math.com" },
+    { "pattern": "beach-math.com/edit/*", "zone_name": "beach-math.com" },
+    { "pattern": "www.beach-math.com/edit/*", "zone_name": "beach-math.com" },
+    { "pattern": "beach-math.com/api/*", "zone_name": "beach-math.com" },
+    { "pattern": "www.beach-math.com/api/*", "zone_name": "beach-math.com" }
   ],
+  // The Access app's team and audience tag (neither is secret: both are
+  // in every token). access.verify accepts only tokens for this app.
+  "vars": {
+    "TEAM_DOMAIN": "https://beach-math.cloudflareaccess.com",
+    "ACCESS_AUD": "3e2baf895240ceac1559d297f04dd29b73ad038ffbc2e82b7aca61c1b00ec520"
+  },
   "d1_databases": [
     { "binding": "DB", "database_name": "teacher-calendar-v2", "database_id": "e36dfb8e-ed59-44ad-a5b0-e6ce84ac0ea8" }
   ],
