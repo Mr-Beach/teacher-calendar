@@ -6,7 +6,7 @@ this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
 **Status (2026-10-09):** M0 through M3 done (see "M0 results" through
-"M3 results"). M4 in progress ("M4 progress"). Color presets are in M1 and M7, my own trial run is
+"M4 results"). Next: M5. Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
@@ -305,7 +305,7 @@ switches to the TypeScript port.
   it exists). Then the curl checks from the site-hosting skill: student
   pages 200, `/teacher` 302.
 
-**M4 progress (2026-10-09).** The Worker's half is written; 30 tests in
+**M4 results (2026-10-09).** Done; 30 tests in
 `v2/tests` (16 new in `test_access.py`). Deployed 10/9 by hand (version
 `9afa21e1`), since v2 has no Workers Build yet (see M3 results).
 - `v2/src/access.py` checks the token itself: RS256 in plain Python (no
@@ -325,9 +325,14 @@ switches to the TypeScript port.
   `/tech-quest/`, `/demo/math6` 200 on both hosts; `/teacher` 302 to
   sign-in; `/edit`, `/edit/math6`, `/api/calendars` 403 with no token or
   a junk one, `cache-control: private, no-store`.
-- **Left:** add `beach-math.com/edit`, `beach-math.com/api` and their www
-  versions to that Access app (dashboard), then sign in at /edit and see
-  "Your calendars". Then M4 is done.
+- **Access:** `beach-math.com/edit`, `beach-math.com/api` and their www
+  versions added to the "beach-math.com" app. From outside, `/edit`,
+  `/edit/*`, `/api/*` now 302 to sign-in like `/teacher`; student pages
+  still 200. Signed in, /edit showed "Your calendars", signed in as Mr.
+  Beach, none yet. One Access app means one sign-in covers `/teacher`
+  and `/edit`.
+- The v2 Workers Build was connected during M4 (see M3 results): main
+  only, watch paths `v2/*`, `engine.py`, `render.py`; no preview builds.
 
 ### M5: the editor, read-only
 
