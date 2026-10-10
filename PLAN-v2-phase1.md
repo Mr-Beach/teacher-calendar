@@ -524,6 +524,13 @@ gets fixed before M8.
   with `"keep": true`). Two-day lessons without codes are told apart by
   title. 100 tests; the T1L3 to T1L5 swap clicked through in Chrome on a
   local Math 6 copy.
+- **A lesson number written out (10/10, fixed).** "Topic 1 Lesson 5
+  Multiply Fractions" typed over T1L4 (the 3-Act) saved as a rename: only
+  "T1L5" in front was read. Now one pattern reads the number however it's
+  written (T1L5, T1 L5, Topic 1 Lesson 5, Unit 1 Lesson 5, U1L5, 1.5,
+  Lesson 1.5, M8 T5L1), across the year, and a name alone ("Multiply
+  fractions") against the lessons either side. Algebra 1 has no codes, so
+  its "Unit 1 Lesson 4: ..." titles are read the same way. 103 tests.
 
 ### M8: ready for the trial
 

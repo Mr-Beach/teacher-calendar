@@ -244,22 +244,50 @@ def _run(seq, i):
     return first, last
 
 
-def _names(title, entry):
-    """Whether `title` names `entry`'s lesson: its code as shown, in front
-    ("T1L4 ..."), or for a lesson without a code, its whole title."""
+# A lesson's number at the start of a title, however she writes it:
+# "T1L5", "T1 L5", "Topic 1 Lesson 5", "Unit 1 Lesson 5", "U1L5", "1.5",
+# "Lesson 1.5", with an "M8" in front for Math 7/8's Math 8 lessons.
+_NUMBER_RE = re.compile(
+    r"\s*(?:(m\d+)\s+)?"
+    r"(?:t(\d+)\s*[-.,:]?\s*l(\d+)"
+    r"|(?:topic|unit|u)\s*(\d+)\s*[-.,:]?\s*(?:lesson|l)\s*(\d+)"
+    r"|(?:lesson\s*)?(\d+)\.(\d+))\b", re.IGNORECASE)
+
+
+def _read_title(title):
+    """(number, prefix text, name): number is (book, topic, lesson) or
+    None; prefix text the number as she wrote it; name the rest, for
+    comparing ("Multiply Fractions" names T1L5 Multiply Fractions)."""
+    m = _NUMBER_RE.match(title or "")
+    if not m:
+        return None, None, _plain(title)
+    a, b = next((int(x), int(y)) for x, y in zip(m.groups()[1::2], m.groups()[2::2]) if x)
+    return ((m.group(1) or "").casefold(), a, b), m.group(0).strip(), _plain(title[m.end():])
+
+
+def _plain(text):
+    return " ".join(re.sub(r"[^\w\s]", " ", text or "").casefold().split())
+
+
+def _lesson(entry):
+    """(numbers, short name, name) for a sequence entry: the lesson
+    numbers it covers ("5.3 & 5.6" is two), how a button names it, and
+    its title without the number."""
     code = entry.get("lesson_code")
     if code:
-        return title == engine.display_code(code) or title.startswith(engine.display_code(code) + " ")
-    return title.casefold() == entry["district_title"].casefold()
+        book = (re.match(r"(m\d+)\s", code, re.IGNORECASE) or [None, ""])[1].casefold()
+        numbers = {(book, int(a), int(b)) for a, b in re.findall(r"(\d+)\.(\d+)", code)}
+        return numbers, engine.display_code(code), _plain(entry["district_title"])
+    number, written, name = _read_title(entry["district_title"])
+    return ({number} if number else set()), written or entry["district_title"], name
 
 
-def _named_code(title, seq, own):
-    """The code of another lesson in the year that `title` starts with as
-    shown ("T1L4 ..."), or None."""
-    codes = {e["lesson_code"] for e in seq if e.get("lesson_code") and e["lesson_code"] != own}
-    named = [c for c in codes if title == engine.display_code(c)
-             or title.startswith(engine.display_code(c) + " ")]
-    return max(named, key=lambda c: len(engine.display_code(c)), default=None)
+def _names(title, entry):
+    """Whether the title she typed names `entry`'s lesson: by its number,
+    however written, or with no number, by its name."""
+    number, _, name = _read_title(title)
+    numbers, _, entry_name = _lesson(entry)
+    return number in numbers if number else bool(name) and name == entry_name
 
 
 def _check_rename(course, date_, i, fields):
@@ -269,34 +297,37 @@ def _check_rename(course, date_, i, fields):
     lost. The choices are the moves she most likely meant: start the next
     lesson today, or another day of the one before.
 
-    A code (T1L4) is checked against the whole year. A title without one
-    is checked only against the lessons either side: "Review" in October
+    A lesson number (T1L5, Topic 1 Lesson 5, Unit 1 Lesson 5, 1.5) is
+    checked against the whole year. A name alone ("Multiply Fractions")
+    only against the lessons either side: a title like "Review" in October
     and again in March is on purpose. Two plain titles side by side might
     be too (two work days), so those also offer keeping it as typed."""
     seq = course["sequence"]
     title = " ".join((fields.get("title") or "").split())
+    number = _read_title(title)[0]
+    if number and number in _lesson(seq[i])[0]:
+        return  # its own number, renamed
     first, last = _run(seq, i)
     nxt = seq[last + 1] if last + 1 < len(seq) else None
     prev = seq[first - 1] if first > 0 else None
     forward = nxt is not None and _names(title, nxt)
     backward = not forward and i == first and prev is not None and _names(title, prev)
-    named = _named_code(title, seq, seq[i].get("lesson_code"))
-    if not (forward or backward or named):
+    elsewhere = None
+    if number and not (forward or backward):
+        elsewhere = next((e for k, e in enumerate(seq)
+                          if not first <= k <= last and number in _lesson(e)[0]), None)
+    if not (forward or backward or elsewhere):
         return
     rest = {k: v for k, v in fields.items() if k != "title"}
     op = {"date": date_, "fields": rest}
-
-    def short(entry):
-        return engine.display_code(entry["lesson_code"]) if entry.get("lesson_code") else entry["district_title"]
-
-    here = short(seq[i])
+    here = _lesson(seq[i])[1]
     keep = []
-    if (forward or backward) and not (nxt if forward else prev).get("lesson_code"):
+    if (forward or backward) and not number:
         keep = [{"label": "Keep it as typed",
                  "hint": f"Both days say {title}. {here} comes off this day, and nothing moves.",
                  "op": {"op": "edit", "keep": True, "date": date_, "fields": fields}}]
     if forward:
-        shown, n = short(nxt), last - i + 1
+        shown, n = _lesson(nxt)[1], last - i + 1
         said = f"{shown} is already on {_when_entry(course, nxt)}."
         moves = f"Later lessons each move {n} class day{'s' * (n != 1)} earlier."
         if i > first:
@@ -309,13 +340,12 @@ def _check_rename(course, date_, i, fields):
             {"label": f"Teach {here} after {shown}", "hint": "They swap places. Nothing else moves.",
              "op": {"op": "start_next", "then": "later", **op}}] + keep)
     if backward:
-        shown = short(prev)
+        shown = _lesson(prev)[1]
         raise Conflict(f"{shown} was on {_when_entry(course, prev)}.", [
             {"label": f"Another day of {shown}",
              "hint": f"{here} and every lesson after it move one class day later.",
              "op": {"op": "another_day", **op}}] + keep)
-    shown = engine.display_code(named)
-    raise Conflict(f"{shown} is already on {_when_entry(course, next(e for e in seq if e.get('lesson_code') == named))}. "
+    raise Conflict(f"{_lesson(elsewhere)[1]} is already on {_when_entry(course, elsewhere)}. "
                    "Change the lessons around it there, or give this day another title.")
 
 

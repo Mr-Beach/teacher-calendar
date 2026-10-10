@@ -4,6 +4,7 @@ calendar copied from Math 6 the way a new teacher's is.
 Run: python3 -m unittest discover -s v2/tests
 """
 import copy
+import json
 import re
 import sys
 import unittest
@@ -428,6 +429,46 @@ class PlainTitleRenameTests(unittest.TestCase):
         day = self.day_of("Fluently Add, Subtract, and Multiply Decimals")
         self.rename(day, "Divide Fractions")  # "Review" twice a year is on purpose
         self.assertEqual(days(self.c)[day]["lesson_text"], "Divide Fractions")
+
+
+class LessonNumberTests(unittest.TestCase):
+    """However she writes the number (Aaron, M7b: "Topic 1 Lesson 5
+    Multiply Fractions" typed over the day before T1L5 was saved as a
+    rename)."""
+
+    def test_reading_a_number(self):
+        for title, number in [("T1L5 Multiply", ("", 1, 5)), ("t1 l5", ("", 1, 5)),
+                              ("Topic 1 Lesson 5 Multiply Fractions", ("", 1, 5)),
+                              ("Topic 1, Lesson 5", ("", 1, 5)), ("Unit 1 Lesson 5: Center", ("", 1, 5)),
+                              ("U1L5", ("", 1, 5)), ("1.5 Multiply", ("", 1, 5)), ("Lesson 1.5", ("", 1, 5)),
+                              ("M8 T5L1", ("m8", 5, 1)),
+                              ("Topic 2 Review", None), ("Unit 0 Day 1", None), ("3-Act: Ratios", None),
+                              ("Multiply Fractions", None), ("T1L", None)]:
+            with self.subTest(title):
+                self.assertEqual(ops._read_title(title)[0], number)
+
+    def test_topic_lesson_written_out_over_the_day_before(self):
+        c = course()
+        rendered = engine.render(c)[0]
+        k = next(k for k, d in enumerate(rendered) if (d["lesson_text"] or "").startswith("T1L5 "))
+        day = next(d for d in reversed(rendered[:k]) if d["type"] == "Instruction" and d["kind"] not in ("Quiz", "Self-Grading"))
+        for title in ("Topic 1 Lesson 5 Multiply Fractions", "1.5", "Multiply fractions"):
+            with self.subTest(title), self.assertRaises(ops.Conflict) as e:
+                ops.apply(c, {"op": "edit", "date": day["date"], "fields": {"title": title}}, SCHOOL)
+            self.assertTrue(str(e.exception).startswith("T1L5 is already on"))
+        with self.assertRaises(ops.Conflict) as e:  # a number further away, written out
+            ops.apply(c, {"op": "edit", "date": day["date"], "fields": {"title": "Topic 4 Lesson 1"}}, SCHOOL)
+        self.assertEqual(e.exception.choices, [])
+
+    def test_algebra_1s_numbers_are_in_its_titles(self):
+        c = engine.course_for_render(SCHOOL, engine.template_from(
+            json.loads((Path(__file__).resolve().parents[2] / "curricula" / "algebra1.json").read_text()), SCHOOL))
+        rendered = engine.render(c)[0]
+        k = next(k for k, d in enumerate(rendered) if (d["lesson_text"] or "").startswith("Unit 1 Lesson 4:"))
+        day = next(d for d in reversed(rendered[:k]) if d["type"] == "Instruction" and d["lesson_text"])
+        with self.assertRaises(ops.Conflict) as e:
+            ops.apply(c, {"op": "edit", "date": day["date"], "fields": {"title": "U1L4"}}, SCHOOL)
+        self.assertTrue(str(e.exception).startswith("Unit 1 Lesson 4 is already on"))
 
 
 class ApplyTests(unittest.TestCase):
