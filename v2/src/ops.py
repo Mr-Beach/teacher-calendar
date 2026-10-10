@@ -21,6 +21,20 @@ An operation is a dict with an "op" and a "date" (YYYY-MM-DD):
                                    that date on, quizzes and closed days
                                    skipped; a day with nothing planned
                                    gets a new lesson
+    skip_quiz  {}                  no quiz that day (the rule's or a moved one)
+    move_quiz  {"to": date,        that day's quiz goes to another class day,
+                "how": "full"|"paired"}  for the whole period or alongside
+                                   its lesson
+    quiz_rule  {}                  the day goes back to the quiz rule
+
+and one that isn't about a day (M7):
+
+    settings   {"settings": {...}} the class title ("course"), the name
+                                   families see ("teacher"), colors
+                                   ("theme"), "show_classwork",
+                                   "review_before_test", and the quiz rule
+                                   ("quiz": enabled, weekday, every_weeks,
+                                   sits)
 
 "fields" can hold title, kind, target, link, classwork, and homework (a
 list of {"text", "due", "link"}). The title is what the grid shows: a
@@ -291,7 +305,148 @@ def _paste(course, op):
     return f"Plans pasted for {len(filled)} day{'s' * (len(filled) != 1)} from {when(filled[0])} to {when(filled[-1])}"
 
 
-OPS = {"edit": _edit, "add": _add, "copy_week": _copy_week, "paste": _paste}
+def _quiz_on(course, date_):
+    """Whether a quiz shows on `date_` (its own day, or alongside a lesson)."""
+    day = next((d for d in engine.render(course)[0] if d["date"] == date_), None)
+    return day is not None and (day["kind"] == "Quiz" or day["quiz_paired"])
+
+
+def _skip_quiz(course, op):
+    if not _quiz_on(course, op["date"]):
+        raise OpError(f"There's no quiz on {when(op['date'])}.")
+    engine.set_day(course, op["date"], quiz="none")
+    return f"No quiz {when(op['date'])}"
+
+
+def _move_quiz(course, op):
+    to, how = op.get("to"), op.get("how", "full")
+    if not _quiz_on(course, op["date"]):
+        raise OpError(f"There's no quiz on {when(op['date'])} to move.")
+    if how not in ("full", "paired"):
+        raise OpError("A quiz takes the whole period or shares it with the lesson.")
+    day, item = _placement(course, to) if isinstance(to, str) else (None, None)
+    if day is None or day["type"] != "Instruction" or _is_computed(item) or to == op["date"]:
+        raise OpError("Move the quiz to another class day.")
+    engine.set_day(course, op["date"], quiz="none")
+    engine.set_day(course, to, quiz=how)
+    return (f"The quiz on {when(op['date'])} moved to {when(to)}"
+            + (", alongside the lesson" if how == "paired" else ""))
+
+
+def _quiz_rule_day(course, op):
+    day, _ = _placement(course, op["date"])
+    if not day.get("quiz"):
+        raise OpError(f"{when(op['date'])} already follows your quiz rule.")
+    engine.set_day(course, op["date"], quiz=None)
+    return f"{when(op['date'])} is back to the usual quiz rule"
+
+
+THEMES = ("teal", "plum", "forest", "slate")  # render.THEMES, in the order she sees them
+QUIZ_SETTINGS = {"enabled", "weekday", "every_weeks", "sits"}
+
+
+def _settings(course, op):
+    """The calendar's settings. Returns a summary of what changed."""
+    new = op.get("settings")
+    if not isinstance(new, dict) or not new:
+        raise OpError("Nothing to change.")
+    unknown = set(new) - {"course", "teacher", "theme", "show_classwork", "review_before_test", "quiz"}
+    if unknown:
+        raise OpError(f"Unknown setting: {sorted(unknown)[0]}")
+    said = []
+    if "course" in new:
+        title = _text(new["course"], "class title", required=True)
+        if len(title) > 80:
+            raise OpError("Keep the class title under 80 characters.")
+        if title != course.get("course"):
+            course["course"] = title
+            said.append(f"class title is now {title}")
+    if "teacher" in new:
+        name = _text(new["teacher"], "name")
+        if name and len(name) > 60:
+            raise OpError("Keep your name under 60 characters.")
+        if name != course.get("teacher"):
+            if name:
+                course["teacher"] = name
+            else:
+                course.pop("teacher", None)  # back to the name on her account
+            said.append("name updated")
+    if "theme" in new:
+        if new["theme"] not in THEMES:
+            raise OpError(f"Colors are one of {', '.join(THEMES)}.")
+        if new["theme"] != (course.get("theme") or "teal"):
+            course["theme"] = new["theme"]
+            said.append("colors changed")
+    for key, words in (("show_classwork", "class work shown"), ("review_before_test", "review-day reminder")):
+        if key in new:
+            if not isinstance(new[key], bool):
+                raise OpError("That setting is on or off.")
+            if new[key] != course.get(key, True):
+                course[key] = new[key]
+                said.append(f"{words} {'on' if new[key] else 'off'}")
+    if "quiz" in new:
+        # "today" is for tests; JSON from the page can't carry a date.
+        today = op.get("today") if isinstance(op.get("today"), Date) else None
+        said += _quiz_settings(course, new["quiz"], today)
+    return ("Settings: " + "; ".join(said)) if said else "Settings saved"
+
+
+def _pin_past(course, before_calendar, today):
+    """Keep every day before `today` as it was, after a quiz-rule change:
+    the rule is one rule for the year, so moving quizzes to Thursday in
+    October would otherwise re-place September too, and families would
+    see last month's lessons on different days. Each past day whose quiz
+    changed gets its own quiz setting back (set_day's per-day override)."""
+    before = {d["date"]: d for d in before_calendar if d["date"] < today}
+    for _ in range(4):  # an override can shift a test week; settles fast
+        changed = False
+        for day in engine.render(course)[0]:
+            was = before.get(day["date"])
+            if was is None or day["type"] != "Instruction":
+                continue
+            # A self-grading day holds a quiz slot. It can only sit on the
+            # quiz weekday, so after a weekday change it's kept as a quiz day
+            # (its title reads "Quiz"; nothing around it moves).
+            had = "full" if was["kind"] in ("Quiz", "Self-Grading") else "paired" if was["quiz_paired"] else None
+            has = "full" if day["kind"] in ("Quiz", "Self-Grading") else "paired" if day["quiz_paired"] else None
+            if had != has:
+                engine.set_day(course, day["date"], quiz=had or "none")
+                changed = True
+        if not changed:
+            return
+
+
+def _quiz_settings(course, quiz, today=None):
+    if not isinstance(quiz, dict) or set(quiz) - QUIZ_SETTINGS:
+        raise OpError("Those quiz settings didn't come through. Reload and try again.")
+    before_calendar = engine.render(course)[0]
+    before = engine.quiz_rule(course)
+    rule = dict(course.get("quiz_rule") or {})
+    rule.update(quiz)
+    course["quiz_rule"] = rule
+    try:
+        after = engine.quiz_rule(course)
+    except ValueError:
+        raise OpError("Quizzes go on a weekday, every week or every other week, "
+                      "for the whole period or alongside the lesson.") from None
+    if not isinstance(after["enabled"], bool):
+        raise OpError("Quizzes are on or off.")
+    _pin_past(course, before_calendar, (today or engine.school_today()).isoformat())
+    if not after["enabled"]:
+        return [] if not before["enabled"] else ["quizzes off"]
+    said = [] if before["enabled"] else ["quizzes on"]
+    if after["weekday"] != before["weekday"]:
+        said.append(f"quizzes on {engine._WEEKDAY_NAMES[after['weekday']]}s")
+    if after["every_weeks"] != before["every_weeks"]:
+        said.append("quizzes every week" if after["every_weeks"] == 1 else "quizzes every other week")
+    if after["sits"] != before["sits"]:
+        said.append("quizzes take the whole period" if after["sits"] == "full"
+                    else "quizzes share the period with the lesson")
+    return said
+
+
+OPS = {"edit": _edit, "add": _add, "copy_week": _copy_week, "paste": _paste,
+       "skip_quiz": _skip_quiz, "move_quiz": _move_quiz, "quiz_rule": _quiz_rule_day}
 DAY_OPS = {"close": _close, "open": _open}
 
 
@@ -301,6 +456,8 @@ def apply(course, op, school_days):
     if not isinstance(op, dict):
         raise OpError("That edit didn't come through. Reload and try again.")
     name, date_ = op.get("op"), op.get("date")
+    if name == "settings":
+        return _settings(course, op)
     try:
         Date.fromisoformat(date_)
     except (TypeError, ValueError):

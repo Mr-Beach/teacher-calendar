@@ -129,5 +129,77 @@ class SaveTests(SignedInCase):
         self.assertNotIn("Edit one", json.dumps(cal.course))
 
 
+class CreateTests(SignedInCase):
+    async def post(self, payload, email="teacher@example.com", same_origin=True):
+        token = sign(claims(email=email, nbf=0, exp=10**12))
+        return await app.handle("POST", "/api/calendars", token, self.db, self.keys, ENV,
+                                json.dumps(payload), same_origin)
+
+    async def test_from_a_template(self):
+        reply = await self.post({"title": "Math 7/8, Period 6", "slug": "period-6", "start": "math78"})
+        self.assertEqual(reply.status, 200, reply.body)
+        self.assertEqual(json.loads(reply.body), {"slug": "period-6", "editor": "/edit/period-6"})
+        me = await store.teacher_by_email(self.db, "teacher@example.com")
+        cal = await store.load_calendar(self.db, me, "period-6")
+        self.assertEqual(cal.course["course"], "Math 7/8, Period 6")
+        source = app.template_source("math78")
+        self.assertEqual([e["district_title"] for e in cal.course["sequence"]],
+                         [e["district_title"] for e in source["sequence"]])
+        self.assertTrue(all(e["link"] is None and e["homework"] is None for e in cal.course["sequence"]))
+        page = (await self.get("/beach/period-6", email=None)).body
+        self.assertIn("Math 7/8, Period 6", page)
+        self.assertNotIn("districtlms", page)  # none of Aaron's links come along
+        self.assertEqual((await self.get("/edit/period-6")).status, 200)
+
+    async def test_blank(self):
+        reply = await self.post({"title": "Advisory", "slug": "advisory", "start": "blank", "theme": "forest"})
+        self.assertEqual(reply.status, 200, reply.body)
+        me = await store.teacher_by_email(self.db, "teacher@example.com")
+        cal = await store.load_calendar(self.db, me, "advisory")
+        self.assertEqual((cal.course["sequence"], cal.course["theme"]), ([], "forest"))
+        days = json.loads((await self.get("/api/calendars/advisory/days")).body)
+        # Nothing planned; the default quiz rule still puts in Wednesday quizzes.
+        self.assertTrue(all(d["kind"] is None for d in days["days"] if d["type"] == "Instruction"
+                            and not d["computed"]))
+        self.assertTrue(any(d["kind"] == "Quiz" for d in days["days"]))
+
+    async def test_refused(self):
+        good = {"title": "Math 6", "slug": "new-one", "start": "math6"}
+        for bad in ({**good, "slug": "math6"}, {**good, "slug": "Bad Slug"}, {**good, "slug": "x" * 41},
+                    {**good, "title": " "}, {**good, "start": "../secret"}, {**good, "start": None}):
+            with self.subTest(bad=bad):
+                self.assertEqual((await self.post(bad)).status, 400)
+        self.assertEqual((await self.post(good, same_origin=False)).status, 403)
+        self.assertEqual((await self.post(good, email="stranger@example.com")).status, 403)
+        self.assertEqual([c["slug"] for c in json.loads((await self.get("/api/calendars")).body)], ["math6"])
+
+    async def test_the_home_page_offers_the_templates(self):
+        body = (await self.get("/edit")).body
+        for key, title in app.TEMPLATES:
+            self.assertIn(f'value="{key}"', body)
+        self.assertIn('value="blank"', body)
+        self.assertIn("beach-math.com/beach/", body)
+
+
+class PreviewTests(SignedInCase):
+    async def test_her_page_in_each_preset_saving_nothing(self):
+        import render
+        for theme in ("teal", "plum", "forest", "slate"):
+            reply = await self.get(f"/api/calendars/math6/preview/{theme}")
+            self.assertEqual(reply.status, 200)
+            if render.THEMES[theme]:
+                self.assertIn(render.THEMES[theme]["--accent"], reply.body)
+        self.assertEqual((await self.get("/api/calendars/math6/preview/neon")).status, 404)
+        self.assertEqual((await self.get("/api/calendars/secret/preview/plum")).status, 404)
+        me = await store.teacher_by_email(self.db, "teacher@example.com")
+        self.assertEqual((await store.load_calendar(self.db, me, "math6")).version, 1)
+
+    async def test_settings_in_the_days(self):
+        data = json.loads((await self.get("/api/calendars/math6/days")).body)
+        st = data["settings"]
+        self.assertEqual((st["theme"], st["quiz"]["weekday"], st["account_name"]), ("teal", "Wed", "Mr. Beach"))
+        self.assertIn("quiz_override", data["days"][0])
+
+
 if __name__ == "__main__":
     unittest.main()

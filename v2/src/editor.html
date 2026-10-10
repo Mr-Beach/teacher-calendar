@@ -16,8 +16,10 @@
   days are computed by the engine, so they're marked "auto", never editable.
   On a phone each day is a card instead.
 
-  Editing (M6): tap a day to edit it, add a lesson, or close it; each week
-  can be repeated or pasted into. Every save is one operation sent to
+  Editing (M6): tap a day to edit it, add a lesson, or close it, or skip or
+  move its quiz (M7); each week can be repeated or pasted into. Settings
+  (M7): title, name, the quiz rule, reminders, class work, and colors,
+  each preset previewed on her own page (/preview/<theme>). Every save is one operation sent to
   /api/calendars/<calendar>/edit (ops.py) with the version this page was
   looking at; the answer is the whole year again, which is redrawn. A
   paste is shown highlighted and unsaved until she keeps it.
@@ -138,6 +140,15 @@
   .closer { display: grid; gap: 8px; border-top: 1px solid var(--border); padding-top: 12px; }
   .map { display: flex; flex-wrap: wrap; gap: 8px; }
   .map label { display: grid; gap: 2px; font-size: .75rem; color: var(--muted); flex: 1 1 8rem; }
+  .themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+  .theme { display: grid; gap: 4px; font-size: .85rem; cursor: pointer; }
+  .theme .frame { position: relative; height: 150px; overflow: hidden; border-radius: 8px;
+                  border: 2px solid var(--border); background: var(--bg); }
+  .theme input:checked + .frame { border-color: var(--accent); }
+  .theme input { position: absolute; opacity: 0; }
+  .theme input:focus-visible + .frame { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme iframe { width: 400%; height: 400%; border: 0; transform: scale(.25); transform-origin: 0 0;
+                  pointer-events: none; }
 
   .dock { position: sticky; bottom: 0; max-width: 1200px; margin: 0 auto; display: grid; gap: 8px; padding-bottom: 8px; }
   .notice { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: var(--card);
@@ -175,6 +186,7 @@
       <button type="button" data-weeks="1">1 week</button><button type="button" data-weeks="2">2</button><button type="button" data-weeks="4">4</button>
     </span>
     <button type="button" id="undo" title="Undo your last save">Undo</button>
+    <button type="button" id="settings-open">Settings</button>
   </div>
 </header>
 <main id="main"><p class="status">Loading&hellip;</p></main>
@@ -226,6 +238,64 @@
       </label>
       <div class="actions"><button type="button" class="danger" id="close-day">Make it no school</button></div>
       <p class="hint">Lessons from this day on each move one class day later.</p>
+    </div>
+    <div class="closer" id="quizbox" hidden>
+      <label class="field">Move this quiz to
+        <select name="quiz_to"></select>
+      </label>
+      <label class="field">It takes
+        <select name="quiz_how">
+          <option value="full">the whole period (lessons move later)</option>
+          <option value="paired">part of the period, alongside that day's lesson</option>
+        </select>
+      </label>
+      <div class="actions"><button type="button" class="primary" id="quiz-move">Move the quiz</button></div>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="settings">
+  <form method="dialog" id="settings-form" novalidate>
+    <h3>Settings</h3>
+    <label class="field">Class title (families see this)
+      <input name="course" autocomplete="off" required>
+    </label>
+    <label class="field">Your name as families see it
+      <input name="teacher" autocomplete="off">
+    </label>
+    <fieldset>
+      <legend>Quizzes</legend>
+      <label class="check"><input type="checkbox" name="quiz_enabled"> A quiz every week or two</label>
+      <div class="map" id="quiz-rule">
+        <label>On
+          <select name="quiz_weekday">
+            <option value="Mon">Mondays</option><option value="Tue">Tuesdays</option>
+            <option value="Wed">Wednesdays</option><option value="Thu">Thursdays</option>
+            <option value="Fri">Fridays</option>
+          </select>
+        </label>
+        <label>How often
+          <select name="quiz_every"><option value="1">Every week</option><option value="2">Every other week</option></select>
+        </label>
+        <label>It takes
+          <select name="quiz_sits">
+            <option value="full">The whole period</option>
+            <option value="shared">Part of the period</option>
+          </select>
+        </label>
+      </div>
+      <p class="hint">No quiz the week of a test or the week back from a long break. To skip or move one quiz, tap its day.</p>
+    </fieldset>
+    <label class="check"><input type="checkbox" name="review_before_test"> Remind me when a test has no review day before it</label>
+    <label class="check"><input type="checkbox" name="show_classwork"> Show class work (a row for each day's activity)</label>
+    <fieldset>
+      <legend>Colors</legend>
+      <div class="themes" id="themes"></div>
+    </fieldset>
+    <p class="error" id="settings-error" role="alert"></p>
+    <div class="actions">
+      <button type="button" id="settings-cancel">Cancel</button>
+      <button type="submit" class="primary">Save settings</button>
     </div>
   </form>
 </dialog>
@@ -413,6 +483,7 @@
     document.getElementById("prev").disabled = addDays(start, -3) < data.days[0].date;
     document.getElementById("next").disabled = addDays(start, 7 * weeks) > data.days[data.days.length - 1].date;
     document.getElementById("undo").disabled = busy || !!pending || data.version < 2;
+    document.getElementById("settings-open").disabled = busy || !!pending;
   }
 
   // The year as the server sent it, and the suggestions built from it:
@@ -537,6 +608,7 @@
     var title = document.getElementById("sheet-title");
     var hint = document.getElementById("sheet-hint");
     closer.hidden = true;
+    quizbox.hidden = true;
     hint.textContent = "";
 
     if (day.type !== "Instruction") {
@@ -553,7 +625,8 @@
       title.textContent = when(isoDate) + ": " + day.lesson_text;
       fields.hidden = true; save.hidden = true;
       hint.textContent = "Quizzes and self-grading days are placed by your quiz rule, so they move on their own when lessons do.";
-      sheetMore.appendChild(button("No school this day…", "danger", showCloser));
+      if (day.kind === "Quiz") quizButtons(isoDate, day);
+      sheetMore.appendChild(button("No school this day…", "small danger", showCloser));
     } else {
       fields.hidden = false; save.hidden = false;
       var adding = editing.mode === "add";
@@ -574,6 +647,7 @@
       }
       if (!day.homework.length || adding) hwRow(null);
       if (!adding) sheetMore.appendChild(button("Add a lesson before this", "small", function () { openSheet(isoDate, "add"); }));
+      if (!adding) quizButtons(isoDate, day);
       sheetMore.appendChild(button("No school this day…", "small danger", showCloser));
     }
     if (!sheet.open) sheet.showModal();
@@ -584,9 +658,42 @@
   }
 
   function showCloser() {
+    quizbox.hidden = true;
     closer.hidden = false;
     form.elements.note.focus();
   }
+
+  // A quiz on this day (its own, or alongside the lesson): skip it or
+  // move it. A day with its own quiz change can go back to the rule.
+  var quizbox = document.getElementById("quizbox");
+  function quizButtons(isoDate, day) {
+    if (day.kind === "Quiz" || day.quiz_paired) {
+      sheetMore.appendChild(button("No quiz this week", "small", function () { act({ op: "skip_quiz", date: isoDate }); }));
+      sheetMore.appendChild(button("Move the quiz…", "small", function () { showQuizMove(isoDate); }));
+    }
+    if (day.quiz_override) {
+      sheetMore.appendChild(button("Back to the usual quiz rule", "small", function () { act({ op: "quiz_rule", date: isoDate }); }));
+    }
+  }
+  function showQuizMove(isoDate) {
+    closer.hidden = true;
+    var sel = form.elements.quiz_to;
+    sel.textContent = "";
+    // Class days that week and the next, other than this one.
+    var mon = monday(isoDate);
+    data.days.filter(function (d) {
+      return d.date >= mon && d.date < addDays(mon, 12) && d.date !== isoDate && d.type === "Instruction" && !d.computed;
+    }).forEach(function (d) {
+      var o = el("option", null, when(d.date) + (d.lesson_text ? ": " + d.lesson_text : ""));
+      o.value = d.date;
+      sel.appendChild(o);
+    });
+    quizbox.hidden = false;
+    sel.focus();
+  }
+  document.getElementById("quiz-move").onclick = function () {
+    act({ op: "move_quiz", date: editing.date, to: form.elements.quiz_to.value, how: form.elements.quiz_how.value });
+  };
   document.getElementById("close-day").onclick = function () {
     act({ op: "close", date: editing.date, note: form.elements.note.value });
   };
@@ -799,6 +906,75 @@
     }
   };
 
+  // --- Settings (M7) ----------------------------------------------------------
+
+  var settingsBox = document.getElementById("settings");
+  var sform = document.getElementById("settings-form");
+  var settingsError = document.getElementById("settings-error");
+  var THEME_NAMES = { teal: "Teal", plum: "Plum", forest: "Forest", slate: "Slate" };
+
+  function openSettings() {
+    var st = data.settings;
+    settingsError.textContent = "";
+    sform.elements.course.value = st.course;
+    sform.elements.teacher.value = st.teacher;
+    sform.elements.teacher.placeholder = st.account_name;
+    sform.elements.quiz_enabled.checked = st.quiz.enabled;
+    sform.elements.quiz_weekday.value = st.quiz.weekday;
+    sform.elements.quiz_every.value = String(st.quiz.every_weeks);
+    sform.elements.quiz_sits.value = st.quiz.sits;
+    sform.elements.review_before_test.checked = st.review_before_test;
+    sform.elements.show_classwork.checked = st.show_classwork;
+    showRule();
+    // Each preset as a small preview of her own page.
+    var box = document.getElementById("themes");
+    box.textContent = "";
+    st.themes.forEach(function (name) {
+      var lab = el("label", "theme");
+      var input = el("input");
+      input.type = "radio"; input.name = "theme"; input.value = name; input.checked = name === st.theme;
+      var frame = el("span", "frame");
+      var iframe = el("iframe");
+      iframe.title = (THEME_NAMES[name] || name) + " preview";
+      iframe.loading = "lazy";
+      iframe.tabIndex = -1;
+      iframe.src = "/api/calendars/" + encodeURIComponent(slug) + "/preview/" + name + "?v=" + data.version;
+      frame.appendChild(iframe);
+      lab.appendChild(input); lab.appendChild(frame);
+      lab.appendChild(document.createTextNode(THEME_NAMES[name] || name));
+      box.appendChild(lab);
+    });
+    settingsBox.showModal();
+  }
+  function showRule() { document.getElementById("quiz-rule").hidden = !sform.elements.quiz_enabled.checked; }
+  sform.elements.quiz_enabled.onchange = showRule;
+  document.getElementById("settings-open").onclick = function () { if (data && !busy && !pending) openSettings(); };
+  document.getElementById("settings-cancel").onclick = function () { settingsBox.close(); };
+
+  sform.onsubmit = function (e) {
+    e.preventDefault();
+    var st = data.settings, f = sform.elements, out = {};
+    if (!f.course.value.trim()) { settingsError.textContent = "The class needs a title."; return; }
+    if (f.course.value.trim() !== st.course) out.course = f.course.value;
+    if (f.teacher.value.trim() !== st.teacher) out.teacher = f.teacher.value;
+    var theme = (sform.querySelector('input[name="theme"]:checked') || {}).value;
+    if (theme && theme !== st.theme) out.theme = theme;
+    if (f.review_before_test.checked !== st.review_before_test) out.review_before_test = f.review_before_test.checked;
+    if (f.show_classwork.checked !== st.show_classwork) out.show_classwork = f.show_classwork.checked;
+    var quiz = { enabled: f.quiz_enabled.checked, weekday: f.quiz_weekday.value,
+                 every_weeks: +f.quiz_every.value, sits: f.quiz_sits.value }, q = {};
+    Object.keys(quiz).forEach(function (k) { if (quiz[k] !== st.quiz[k]) q[k] = quiz[k]; });
+    if (Object.keys(q).length) out.quiz = q;
+    if (!Object.keys(out).length) { settingsBox.close(); return; }
+    send("edit", { op: { op: "settings", settings: out } })
+      .then(function () { settingsBox.close(); showTitle(); },
+            function (err) { settingsError.textContent = err.message; });
+  };
+  function showTitle() {
+    document.title = data.title + " · editor";
+    document.getElementById("title").textContent = data.title;
+  }
+
   // --- Paging ------------------------------------------------------------------
 
   document.getElementById("prev").onclick = function () { start = addDays(start, -7 * weeks); draw(); };
@@ -824,8 +1000,7 @@
     })
     .then(function (d) {
       load(d);
-      document.title = d.title + " · editor";
-      document.getElementById("title").textContent = d.title;
+      showTitle();
       document.getElementById("family").href = d.family_page;
       document.getElementById("ahead").href = "/edit/" + encodeURIComponent(d.slug) + "/ahead";
       var first = d.days.length ? d.days[0].date : d.today;

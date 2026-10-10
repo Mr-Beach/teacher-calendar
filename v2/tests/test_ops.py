@@ -201,6 +201,113 @@ class PasteTests(unittest.TestCase):
                 ops.apply(copy.deepcopy(c), {"op": "paste", "date": date_, "rows": rows}, SCHOOL)
 
 
+class QuizDayTests(unittest.TestCase):
+    def setUp(self):
+        self.c = course()
+        rendered = engine.render(self.c)[0]
+        self.quiz = next(d for d in rendered if d["kind"] == "Quiz" and d["date"] > "2026-10-01")
+        self.lesson = next(d for d in rendered if d["date"] > self.quiz["date"] and d["kind"] == "Lesson")
+
+    def test_skip_and_back(self):
+        original = engine.render(self.c)[0]
+        self.assertIn("No quiz", ops.apply(self.c, {"op": "skip_quiz", "date": self.quiz["date"]}, SCHOOL))
+        self.assertNotEqual(days(self.c)[self.quiz["date"]]["kind"], "Quiz")
+        with self.assertRaises(ops.OpError):
+            ops.apply(self.c, {"op": "skip_quiz", "date": self.quiz["date"]}, SCHOOL)
+        ops.apply(self.c, {"op": "quiz_rule", "date": self.quiz["date"]}, SCHOOL)
+        self.assertEqual(engine.render(self.c)[0], original)
+        with self.assertRaises(ops.OpError):
+            ops.apply(self.c, {"op": "quiz_rule", "date": self.quiz["date"]}, SCHOOL)
+
+    def test_move_full_or_alongside(self):
+        c = copy.deepcopy(self.c)
+        ops.apply(c, {"op": "move_quiz", "date": self.quiz["date"], "to": self.lesson["date"]}, SCHOOL)
+        self.assertEqual(days(c)[self.lesson["date"]]["kind"], "Quiz")
+        self.assertNotEqual(days(c)[self.quiz["date"]]["kind"], "Quiz")
+        c = copy.deepcopy(self.c)
+        summary = ops.apply(c, {"op": "move_quiz", "date": self.quiz["date"], "to": self.lesson["date"],
+                                "how": "paired"}, SCHOOL)
+        self.assertIn("alongside", summary)
+        after = days(c)
+        # The quiz shares that day's period; its old day is a lesson again,
+        # so the lessons between move a day earlier.
+        self.assertTrue(after[self.lesson["date"]]["quiz_paired"])
+        self.assertEqual(after[self.lesson["date"]]["kind"], "Lesson")
+        self.assertEqual(after[self.quiz["date"]]["kind"], "Lesson")
+
+    def test_move_refused(self):
+        closed = next(d for d in engine.render(self.c)[0] if d["type"] == "No School")
+        for op in ({"to": self.quiz["date"]}, {"to": closed["date"]}, {"to": None},
+                   {"to": self.lesson["date"], "how": "sideways"}):
+            with self.subTest(op=op), self.assertRaises(ops.OpError):
+                ops.apply(copy.deepcopy(self.c), {"op": "move_quiz", "date": self.quiz["date"], **op}, SCHOOL)
+        with self.assertRaises(ops.OpError):  # no quiz there to move
+            ops.apply(self.c, {"op": "move_quiz", "date": self.lesson["date"], "to": self.quiz["date"]}, SCHOOL)
+
+
+class SettingsTests(unittest.TestCase):
+    def settings(self, c, **settings):
+        return ops.apply(c, {"op": "settings", "settings": settings}, SCHOOL)
+
+    def settings_before_school(self, c, **settings):
+        # Set up before the year starts, so there's no past to keep.
+        return ops.apply(c, {"op": "settings", "settings": settings, "today": date(2026, 8, 1)}, SCHOOL)
+
+    def test_quiz_rule(self):
+        c = course()
+        before = {d["date"] for d in engine.render(c)[0] if d["kind"] == "Quiz"}
+        summary = self.settings_before_school(c, quiz={"weekday": "Thu", "every_weeks": 2})
+        self.assertIn("Thursdays", summary)
+        self.assertIn("every other week", summary)
+        after = [d for d in engine.render(c)[0] if d["kind"] == "Quiz"]
+        self.assertTrue(after and all(d["weekday"] == "Thu" for d in after))
+        self.assertLess(len(after), len(before))
+        self.assertIn("quizzes off", self.settings_before_school(c, quiz={"enabled": False}))
+        self.assertFalse(any(d["kind"] == "Quiz" for d in engine.render(c)[0]))
+        self.assertIn("quizzes on", self.settings_before_school(c, quiz={"enabled": True}))
+        self.settings_before_school(c, quiz={"sits": "shared"})
+        self.assertTrue(any(d["quiz_paired"] for d in engine.render(c)[0]))
+        self.assertFalse(any(d["kind"] == "Quiz" for d in engine.render(c)[0]))
+
+    def test_a_rule_change_leaves_the_past_alone(self):
+        c = course()
+        before = engine.render(c)[0]
+        today = date(2026, 11, 2)
+        ops.apply(c, {"op": "settings", "settings": {"quiz": {"weekday": "Fri", "sits": "shared"}},
+                      "today": today}, SCHOOL)
+        after = engine.render(c)[0]
+
+        def past(cal):
+            # Each past day: closed or not, its lesson, and whether the quiz
+            # took its period. A self-grading day can only sit on the quiz
+            # weekday, so a past one pinned after a weekday change reads
+            # "Quiz"; its date and the lessons around it don't move.
+            return [(d["date"], d["type"], d["lesson_text"] if d["kind"] not in ("Quiz", "Self-Grading") else "quiz",
+                     d["quiz_paired"]) for d in cal if d["date"] < "2026-11-02"]
+        self.assertEqual(past(after), past(before))
+        later = [d for d in after if d["date"] >= "2026-11-02"]
+        self.assertTrue(any(d["quiz_paired"] and d["weekday"] == "Fri" for d in later))
+        self.assertFalse(any(d["kind"] == "Quiz" for d in later))
+
+    def test_the_rest(self):
+        c = course()
+        summary = self.settings(c, course="Math 6, Period 2", teacher="Ms. Rivera", theme="plum",
+                                show_classwork=True, review_before_test=False)
+        self.assertEqual((c["course"], c["teacher"], c["theme"], c["show_classwork"], c["review_before_test"]),
+                         ("Math 6, Period 2", "Ms. Rivera", "plum", True, False))
+        self.assertIn("class title", summary)
+        self.settings(c, teacher="")
+        self.assertNotIn("teacher", c)  # back to her account's name
+        self.assertEqual(self.settings(c, theme="plum"), "Settings saved")
+
+    def test_refused(self):
+        for settings in ({}, {"theme": "neon"}, {"course": " "}, {"course": "x" * 81}, {"show_classwork": "yes"},
+                         {"quiz": {"weekday": "Sat"}}, {"quiz": {"every_weeks": 3}}, {"quiz": {"sits": "half"}},
+                         {"quiz": {"link": "x"}}, {"quiz": {"enabled": "maybe"}}, {"owner": 2}):
+            with self.subTest(settings=settings), self.assertRaises(ops.OpError):
+                self.settings(course(), **settings)
+
+
 class ApplyTests(unittest.TestCase):
     def test_malformed(self):
         for op in (None, [], {"op": "edit"}, {"op": "edit", "date": "10/20"}, {"op": "drop", "date": "2026-10-20"}):

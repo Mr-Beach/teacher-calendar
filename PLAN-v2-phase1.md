@@ -5,8 +5,9 @@ week grid, and her students get a page like mine. Read `SPEC-v2.md` first;
 this file is the how, not the what. Milestones are in build order, and each
 one ends in something that can be checked before the next starts.
 
-**Status (2026-10-09):** M0 through M6 done (see "M0 results" through
-"M6 results"). Next: M7. Color presets are in M1 and M7, my own trial run is
+**Status (2026-10-10):** M0 through M7 done (see "M0 results" through
+"M7 results"). Next: M7b, my own trial run (it needs the `beach/*` route
+first; see M7 results). Color presets are in M1 and M7, my own trial run is
 M7b, and layout choice is in "Later" (end of this file).
 
 ## Decisions
@@ -436,6 +437,42 @@ quiz changes, and class-day notes. Closures come from the school record,
 so she never enters holidays. "Blank year" is the last choice; uploading
 the district calendar instead is in "Later". Picking a color preset, shown as
 a small preview of her own page in each one.
+
+**M7 results (2026-10-10).** Done; 74 tests in `v2/tests`.
+- **Settings** (`ops.py`, the `settings` operation; the editor's
+  Settings sheet): class title, her name as families see it (blank goes
+  back to her account's name), the quiz rule (on or off, weekday, every
+  week or every other, whole period or shared), the review-day reminder,
+  showing class work, and colors. Each preset is shown as a small live
+  preview of her own page (`/api/calendars/<slug>/preview/<theme>`,
+  rendered, never saved).
+- **A quiz rule change keeps the past** (`ops._pin_past`): the rule is
+  one rule for the year, so without this, moving quizzes to Thursday in
+  October would re-place September's lessons too. Each past day whose
+  quiz would change gets its own quiz setting back instead. One gap: a
+  past self-grading day can only sit on the quiz weekday, so after a
+  weekday change it reads "Quiz"; its date and every lesson around it
+  stay put.
+- **One quiz** (the day sheet): "No quiz this week", "Move the quiz..."
+  to another class day that week or next (whole period, or alongside
+  that day's lesson), and "Back to the usual quiz rule".
+- **Starting a calendar** (`/edit`, `POST /api/calendars`): title,
+  address (filled in from the title), and Math 6, Math 7/8 Compacted
+  (`engine.template_from`), or a blank year (the default quiz rule
+  still puts Wednesday quizzes in it; Settings turns them off). The
+  build copies `courses/math6.json` and `math78.json` into the bundle as
+  `src/templates/*.json.txt` (the bundle leaves `.json` out; checked
+  with `pywrangler dev`). They're as of v2's last deploy: `courses/` isn't
+  in its watch paths, which only matters for a teacher starting a new
+  calendar.
+- Clicked through in Chrome: start from Math 7/8 (and a duplicate
+  address refused), settings with the previews, the quiz moved to
+  Thursdays, skip and restore a quiz, move one alongside a lesson; phone
+  width.
+- **Before M7b:** my calendars' family pages need the route pair
+  `beach-math.com/beach/*` (and `www.`) in `v2/wrangler.jsonc`, like
+  `demo/*`. Not added yet: it changes what that path serves (a 404
+  either way today).
 
 ### M7b: my trial run
 
