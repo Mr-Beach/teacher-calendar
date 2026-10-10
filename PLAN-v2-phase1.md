@@ -471,8 +471,7 @@ a small preview of her own page in each one.
   width.
 - **Before M7b:** my calendars' family pages need the route pair
   `beach-math.com/beach/*` (and `www.`) in `v2/wrangler.jsonc`, like
-  `demo/*`. Not added yet: it changes what that path serves (a 404
-  either way today).
+  `demo/*`. Added 10/10. Her pair (`<her slug>/*`) comes in M8.
 
 ### M7b: my trial run
 

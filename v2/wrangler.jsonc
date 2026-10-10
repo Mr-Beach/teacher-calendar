@@ -21,6 +21,9 @@
   "routes": [
     { "pattern": "beach-math.com/demo/*", "zone_name": "beach-math.com" },
     { "pattern": "www.beach-math.com/demo/*", "zone_name": "beach-math.com" },
+    // Aaron's own v2 calendars (M7b's practice calendar).
+    { "pattern": "beach-math.com/beach/*", "zone_name": "beach-math.com" },
+    { "pattern": "www.beach-math.com/beach/*", "zone_name": "beach-math.com" },
     // Signed-in only: the Access app "beach-math.com" must cover these
     // paths too, and the Worker checks its token on every request anyway.
     { "pattern": "beach-math.com/edit", "zone_name": "beach-math.com" },
