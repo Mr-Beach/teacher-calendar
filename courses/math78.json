@@ -1669,7 +1669,12 @@
       "kind": "Lesson",
       "target": "I can simplify and add expressions and check them by substituting a value.",
       "classwork": null,
-      "homework": null,
+      "homework": [
+        {
+          "text": "Topic 5 Lessons 3 and 6 Practice, Part 2: workbook pg 272 #15\u201317 and #20, pg 289\u2013290 #14 and #17",
+          "due": "2026-10-16"
+        }
+      ],
       "link": "https://districtlms.seattleschools.org/course/8516312082/materials?f=1038276277",
       "extra_materials": null
     },
@@ -3303,6 +3308,16 @@
       "logged": "2026-10-09",
       "summary": "Mr. Beach is out Mon 10/12",
       "reason": "Out of school; a sub runs the planned lesson",
+      "changed": false,
+      "days": [],
+      "updated": [
+        "2026-10-12"
+      ]
+    },
+    {
+      "logged": "2026-10-09",
+      "summary": "Plans updated for the week of 10/12",
+      "reason": null,
       "changed": false,
       "days": [],
       "updated": [
